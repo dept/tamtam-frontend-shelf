@@ -38,5 +38,5 @@ jquery
 ```
 
 ## Developers
-* Jeroen Reumkens
-* Adrian Klingen (co author)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
