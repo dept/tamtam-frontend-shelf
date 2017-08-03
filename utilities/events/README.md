@@ -1,0 +1,66 @@
+
+# Javascript Event libary
+
+## Table of contents
+1. [What does it do](#what-does-it-do)
+2. [Install](#install)
+3. [How to use](#how-to-use)
+4. [Dependencies](#dependencies)
+5. [Developers](#developers)
+
+
+## What does it do
+* Trigger events throughout Javascript modules.
+* VueJS like event binding on DOM elements.
+
+## Install
+```javascript
+// Without enabling logging
+import './src/modules/util/events';
+
+// Optionally enable logging
+import Events from './src/modules/util/events';
+Events.logging = (!Environment.isProduction() && !Environment.isAcceptation());
+```
+
+## How to use
+### Bind and listen to events in Javascript
+```javascript
+
+import Events from './src/modules/util/events';
+
+// Listen to events
+Events.$on('eventname', (e, data) => yourOwnFunction(data));
+
+// Trigger events
+Events.$trigger('eventname', data);
+
+```
+
+### Bind events on DOM node
+
+Modules gives you the option to bind on events without the need to write Javascript for this.
+`<button type="button" on:[event].[prevent|stop]>Click me</button>`. On the 'event' place you can put every native JS event.
+You also have the option to automatically execute preventDefault of stopPropagation by adding `.prevent` or `.stop`.
+
+You also have the option to pass a (string only!) parameter to the event as data:
+`<button type="button" on:click.prevent="playVideo(12)">Play Video</button>`
+ The above code will pass 12 as a stirng parameter to the playVideo event.
+
+
+```html
+
+<button type="button" on:click="eventname">Click me</button>
+<button type="button" on:click.prevent="eventname">Click me</button>
+<button type="button" on:click.prevent="playVideo(12)">Play Video</button>
+
+<input type="text" on:focus="focusEvent">
+
+```
+
+## Dependencies
+This package doest not have any dependencies.
+
+## Developers
+* Jeroen Reumkens
+* Adrian Klingen (co author)
