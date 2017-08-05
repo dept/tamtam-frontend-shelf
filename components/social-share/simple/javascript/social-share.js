@@ -12,6 +12,8 @@ class SocialShare {
 
     Events.$on('social-share::facebook', () => this.showFacebookDialogue());
     Events.$on('social-share::twitter', () => this.showTwitterDialogue());
+    Events.$on('social-share::pinterest', () => this.showPinterestDialogue());
+    Events.$on('social-share::linkedin', () => this.showLinkedInDialogue());
     Events.$on('social-share::email', () => this.showEmailDialogue());
 
   }
@@ -28,6 +30,18 @@ class SocialShare {
 
   }
 
+  showPinterestDialogue() {
+
+    this.openDialogue( `http://pinterest.com/pin/create/button/?url=${window.location.href}`);
+
+  }
+
+  showLinkedInDialogue() {
+
+    this.openDialogue( `https://www.linkedin.com/shareArticle?url=${window.location.href}`);
+
+  }
+
   showEmailDialogue() {
 
     window.location.href = `mailto:?body=${window.location.href}`;
@@ -35,7 +49,7 @@ class SocialShare {
   }
 
   openDialogue(url) {
-    window.open(encodeURI(url), 'Delen','height=500,width=700');
+    window.open(encodeURI(url), 'Share','height=500,width=700');
   }
 
 }
