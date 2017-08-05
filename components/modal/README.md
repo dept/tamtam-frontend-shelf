@@ -65,7 +65,7 @@ Events.$trigger('modal::bind', '#modal-custom');
 ```
 
 ## Dependencies
-* [core-js/fn/array/from](https://github.com/zloirock/core-js/blob/master/fn/array/from.js) for IE11 support
+* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [Events component](/utilities/events/)
 
 ## Developers
