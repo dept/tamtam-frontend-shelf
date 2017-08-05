@@ -10,8 +10,8 @@
 
 
 ## What does it do
-Listen to click events and open a native window popup with share dialogue. Always shares the current page url.<br>
-Currently only supports Twitter, Facebook and Email.
+* Render share component with social media buttons
+* Listen to click events and open a native window popup with share dialogue. Always shares the current page url.
 
 ## Install
 ```javascript
@@ -20,19 +20,9 @@ import './src/modules/social-share';
 ```
 
 ## How to use
-Create DOM elements (buttons) that trigger the share events.
-```html
-<button on:click.prevent="social-share::facebook">
-    Share me on Facebook
-</button>
-
-<button on:click.prevent="social-share::twitter">
-    Share me on the Twitters
-</button>
-
-<button on:click.prevent="social-share::email">
-    Share me via E-mail
-</button>
+Include component in your template. Binding of clicks will be handles by the [Events component](/utilities/events/);
+```htmlmixed
+{% include "components/social-share.html" %}
 ```
 
 ## Dependencies
