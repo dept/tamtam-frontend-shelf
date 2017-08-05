@@ -1,0 +1,27 @@
+{% macro modal(data) %}
+
+    <div class="c-modal{% if data.size %} modal-size--{{ data.size }}{% endif %}"
+        {%- if data.id %} id="{{ data.id }}"{% endif -%}
+        data-js-hook="modal"
+        tabindex="-1">
+        
+        <div class="modal__container">
+        
+            <div class="modal__content" role="dialog">
+
+                {{ caller() }}
+
+                {% if not data.noClose %}
+                <button type="button" class="modal__button-close" data-js-hook="button-modal-close" aria-title="Close modalbox">
+                    {% svg "icons/remove" %}
+                </button>
+                {% endif %}
+
+            </div>
+
+        </div>
+        
+        <div class="modal__background" data-js-hook="button-modal-close"></div>
+    </div>
+
+{% endmacro %}
