@@ -44,7 +44,7 @@ Create modalbox in HTML.
 ### Custom
 
 Custom html element
-```twig
+```html
 <div id="modal-custom">
     I am a custom modalbox
 
