@@ -6,7 +6,7 @@ const html = document.documentElement;
 
 const MODAL_HOOK = '[data-js-hook="modal"]';
 
-const MODAL_VISIBLE_CLASS = 'is--showing';
+const MODAL_VISIBLE_CLASS = 'modal--is-showing';
 const MODAL_HTML_CLASS = 'is--modal-open';
 
 const MODAL_CLOSE_HOOK = '[data-js-hook="button-modal-close"]';
