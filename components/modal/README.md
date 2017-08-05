@@ -24,7 +24,7 @@ import './src/modules/modal';
 ### Default
 
 Create modalbox in HTML.
-```twig
+```htmlmixed
 {% from 'components/modal.html' import modal  %}
 
 {% call modal({
@@ -44,7 +44,7 @@ Create modalbox in HTML.
 ### Custom
 
 Custom html element
-```html
+```htmlmixed
 <div id="modal-custom">
     I am a custom modalbox
 
