@@ -1,41 +1,41 @@
 const eventEl = document.querySelector('html');
-
 class Events {
 
-  get logging() {
-    return this._logging;
-  }
+    get logging() {
+        return this._logging;
+    }
 
-  set logging(boolean) {
-    this._logging = boolean;
-  }
+    set logging(boolean) {
+        this._logging = boolean;
+    }
 
-  constructor() {
+    constructor() {
+        this._logging = false;
+        readAndBindEventsFromDOM();
+    }
 
-    this._logging = false;
+    $on(event, callback) {
+        if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
+        eventEl.addEventListener(event, ev => {
+            callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
+        });
+    }
 
-    readAndBindEventsFromDOM();
-
-  }
-
-  $on(event, callback) {
-
-    if ( this.logging ) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
-
-    eventEl.addEventListener(event, ev => {callback(ev, ev.detail)} );
-
-  }
-
-  $trigger(event, data) {
-
-    if ( this.logging ) { console.log('Event triggered', '--- Name:', event, '--- Params:', data); }
-
-    const _event = document.createEvent('CustomEvent');
-    _event.initCustomEvent(event, true, true, data);
-
-    eventEl.dispatchEvent(_event);
-
-  }
+    $trigger(event, data, currentTarget) {
+        if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
+        const _event = document.createEvent('CustomEvent');
+        let _data;
+        if (currentTarget) {
+            _data = {
+                currentTarget,
+                data
+            }
+        } else {
+            _data = data;
+        }
+        _event.initCustomEvent(event, true, true, _data);
+        eventEl.dispatchEvent(_event);
+    }
 
 }
 
@@ -50,46 +50,37 @@ const _Events = new Events();
  * These are than passed to bindEvent.
  */
 function readAndBindEventsFromDOM() {
-
-  const elements = _domFind(eventEl, element => {
-      return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
-});
-
-  elements.map( (el) => {
-    const attrs = [].slice.call(el.attributes);
-
-  attrs
-  // Filter attributes starting with on:
-    .filter( (attr) => attr.name.slice(0,3) === 'on:')
-  // Listen to the native event.
-.map( (attr) => bindEvent( attr.ownerElement, attr.name, attr.value ));
-});
-
+    const elements = _domFind(eventEl, element => {
+        return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
+    });
+    elements.map((el) => {
+        const attrs = [].slice.call(el.attributes);
+        attrs
+            // Filter attributes starting with on:
+            .filter((attr) => attr.name.slice(0, 3) === 'on:')
+            // Listen to the native event.
+            .map((attr) => bindEvent(attr.ownerElement, attr.name, attr.value));
+    });
 }
 
 /**
  * Bind events
  * @param targetEl
- * @param attrName - data attribute name, eg. on:click.prevent
+ * @param attrName  - data attribute name, eg. on:click.prevent
  * @param attrValue - value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
  */
 function bindEvent(targetEl, attrName, attrValue) {
-
-  // Split on dot and colon.
-  const attrs  = attrName.split(/on:|\./);
-  const nativeEvent = attrs[1];
-  const modifiers = attrs.splice(1);
-  const [eventToTrigger, eventData]   = parseEventString(attrValue);
-
-  // Filters out only the clicked element, based on event attribute.
-  const delegateFilter = el => el === targetEl;
-
-  eventEl.addEventListener(nativeEvent, _delegate(delegateFilter, (e) => {
-
-      runModifiers(modifiers, e);
-  _Events.$trigger(eventToTrigger, eventData);
-
-}));
+    // Split on dot and colon.
+    const attrs = attrName.split(/on:|\./);
+    const nativeEvent = attrs[1];
+    const modifiers = attrs.splice(1);
+    const [eventToTrigger, eventData] = parseEventString(attrValue);
+    // Filters out only the clicked element, based on event attribute.
+    const delegateFilter = el => el === targetEl;
+    eventEl.addEventListener(nativeEvent, _delegate(delegateFilter, (e) => {
+        runModifiers(modifiers, e);
+        _Events.$trigger(eventToTrigger, eventData, targetEl);
+    }));
 }
 
 /**
@@ -98,18 +89,15 @@ function bindEvent(targetEl, attrName, attrValue) {
  * @param e
  */
 function runModifiers(modifiers, e) {
-  modifiers.map( (modifier) => {
-
-    if ( modifier === 'prevent' || modifier === 'preventDefault' ) {
-    e.preventDefault();
-  }
-  if ( modifier === 'stop' || modifier === 'stopPropagation' ) {
-    e.stopPropagation();
-  }
-
-});
+    modifiers.map((modifier) => {
+        if (modifier === 'prevent' || modifier === 'preventDefault') {
+            e.preventDefault();
+        }
+        if (modifier === 'stop' || modifier === 'stopPropagation') {
+            e.stopPropagation();
+        }
+    });
 }
-
 
 /**
  * Event string is attrValue, which can be either only an event name, or an event name with params:
@@ -119,14 +107,11 @@ function runModifiers(modifiers, e) {
  * @returns {[*,*]}
  */
 function parseEventString(eventString) {
-
-  const eventStringSplitted = eventString.split(new RegExp((/\(|\)/g)));
-  return [eventStringSplitted[0], eventStringSplitted[1]];
-
+    const eventStringSplitted = eventString.split(new RegExp((/\(|\)/g)));
+    return [eventStringSplitted[0], eventStringSplitted[1]];
 }
 
 /* DOM and Event helpers */
-
 /**
  * Event delegation. Bind clicks on parent, for live elements,
  * on event traverse up the DOM to find the clicked parent if present.
@@ -135,22 +120,18 @@ function parseEventString(eventString) {
  * @returns {Function}
  */
 function _delegate(criteria, callback) {
-
-  return function(e) {
-    let el = e.target;
-
-    if ( criteria(el) ) {
-      callback.apply(this, arguments);
-    }
-
-    while( (el = el.parentNode) ) {
-      if (!criteria(el)) { continue; }
-      e.delegateTarget = el;
-      callback.apply(this, arguments);
-      return;
-    }
-  };
-
+    return function (e) {
+        let el = e.target;
+        if (criteria(el)) {
+            callback.apply(this, arguments);
+        }
+        while ((el = el.parentNode)) {
+            if (!criteria(el)) { continue; }
+            e.delegateTarget = el;
+            callback.apply(this, arguments);
+            return;
+        }
+    };
 }
 
 /**
@@ -161,23 +142,28 @@ function _delegate(criteria, callback) {
  * @returns {Array}
  */
 function _domFind(element, predicate, results = []) {
-
-  if (!element.children) {
+    if (!element.children) {
+        return results;
+    }
+    if (predicate(element)) {
+        results.push(element);
+    }
+    if (element.children && element.children.length) {
+        [].slice.call(element.children).map(child => {
+            _domFind(child, predicate, results);
+        });
+    }
     return results;
-  }
+}
 
-  if (predicate(element)) {
-    results.push(element);
-  }
-
-  if (element.children && element.children.length) {
-    [].slice.call(element.children).map(child => {
-      _domFind(child, predicate, results);
-  });
-  }
-
-  return results;
-
+/**
+ * Extracts and returns specific properties from an given object
+ * @param object   - Object to pick from
+ * @param propName - Property name to return
+ * @returns {Object}
+ */
+function extractPropFromObject(object, propName) {
+    return (object && object[propName]) ? object[propName] : null;
 }
 
 export default _Events;
