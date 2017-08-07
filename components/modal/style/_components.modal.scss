@@ -49,6 +49,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
 }
 
 .modal__container {
+    z-index: 1;
     margin-left: auto;
     margin-right: auto;
     padding: 0 $modal-gutter-small;
