@@ -24,10 +24,13 @@ class Events {
     }
 
     $on(event, callback) {
+
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
+
         eventEl.addEventListener(event, ev => {
             callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
         });
+
     }
 
     $trigger(event, data, currentTarget) {
@@ -38,6 +41,7 @@ class Events {
         const _event = new CustomEvent(event, { detail: _data });
 
         eventEl.dispatchEvent(_event);
+
     }
 
 }
@@ -53,17 +57,21 @@ const _Events = new Events();
  * These are than passed to bindEvent.
  */
 function readAndBindEventsFromDOM() {
+
+    // Elements that have attributes starting with on:
     const elements = _domFind(eventEl, element => {
         return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
     });
+
     elements.map((el) => {
         const attrs = [].slice.call(el.attributes);
         attrs
-            // Filter attributes starting with on:
+        // Filter attributes (so not elements this time) starting with on:
             .filter((attr) => attr.name.slice(0, 3) === 'on:')
             // Listen to the native event.
             .map((attr) => bindEvent(attr.ownerElement, attr.name, attr.value));
     });
+
 }
 
 /**
@@ -73,17 +81,21 @@ function readAndBindEventsFromDOM() {
  * @param attrValue - value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
  */
 function bindEvent(targetEl, attrName, attrValue) {
+
     // Split on dot and colon.
     const attrs = attrName.split(/on:|\./);
     const nativeEvent = attrs[1];
     const modifiers = attrs.splice(1);
     const [eventToTrigger, eventData] = parseEventString(attrValue);
+
     // Filters out only the clicked element, based on event attribute.
     const delegateFilter = el => el === targetEl;
+
     eventEl.addEventListener(nativeEvent, _delegate(delegateFilter, (e) => {
         runModifiers(modifiers, e);
         _Events.$trigger(eventToTrigger, eventData, targetEl);
     }));
+
 }
 
 /**
@@ -92,6 +104,7 @@ function bindEvent(targetEl, attrName, attrValue) {
  * @param e
  */
 function runModifiers(modifiers, e) {
+
     modifiers.map((modifier) => {
         if (modifier === 'prevent' || modifier === 'preventDefault') {
             e.preventDefault();
@@ -100,6 +113,7 @@ function runModifiers(modifiers, e) {
             e.stopPropagation();
         }
     });
+
 }
 
 /**
@@ -110,8 +124,10 @@ function runModifiers(modifiers, e) {
  * @returns {[*,*]}
  */
 function parseEventString(eventString) {
+
     const eventStringSplitted = eventString.split(new RegExp((/\(|\)/g)));
     return [eventStringSplitted[0], eventStringSplitted[1]];
+
 }
 
 /* DOM and Event helpers */
@@ -123,6 +139,7 @@ function parseEventString(eventString) {
  * @returns {Function}
  */
 function _delegate(criteria, callback) {
+
     return function (e) {
         let el = e.target;
         if (criteria(el)) {
@@ -135,6 +152,7 @@ function _delegate(criteria, callback) {
             return;
         }
     };
+
 }
 
 /**
@@ -145,6 +163,7 @@ function _delegate(criteria, callback) {
  * @returns {Array}
  */
 function _domFind(element, predicate, results = []) {
+
     if (!element.children) {
         return results;
     }
@@ -157,6 +176,7 @@ function _domFind(element, predicate, results = []) {
         });
     }
     return results;
+
 }
 
 /**
@@ -186,6 +206,7 @@ function polyfillCustomEvent() {
     CustomEvent.prototype = window.Event.prototype;
 
     window.CustomEvent = CustomEvent;
+
 }
 
 export default _Events;
