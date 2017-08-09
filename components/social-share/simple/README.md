@@ -22,11 +22,11 @@ import './src/modules/social-share';
 ## How to use
 Include component in your template. Binding of clicks will be handles by the [Events component](/utilities/events/);
 ```htmlmixed
-{% include "components/social-share.html" %}
+{% include 'components/social-share.html' %}
 ```
 
 ## Dependencies
 * [Events component](/utilities/events/)
 
 ## Developers
-* Jeroen Reumkens
+* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
