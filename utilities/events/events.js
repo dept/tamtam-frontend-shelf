@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.0
+ * @shelf-version: 1.0.0
  * Events utility
  */
 const eventEl = document.querySelector('html');
