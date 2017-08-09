@@ -1,4 +1,9 @@
+/**
+ * @version: 1.0.0
+ * Events utility
+ */
 const eventEl = document.querySelector('html');
+
 class Events {
 
     get logging() {
@@ -10,8 +15,12 @@ class Events {
     }
 
     constructor() {
+
+        polyfillCustomEvent();
+
         this._logging = false;
         readAndBindEventsFromDOM();
+
     }
 
     $on(event, callback) {
@@ -22,18 +31,12 @@ class Events {
     }
 
     $trigger(event, data, currentTarget) {
+
         if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
-        const _event = document.createEvent('CustomEvent');
-        let _data;
-        if (currentTarget) {
-            _data = {
-                currentTarget,
-                data
-            }
-        } else {
-            _data = data;
-        }
-        _event.initCustomEvent(event, true, true, _data);
+
+        let _data = currentTarget ? {currentTarget, data} : data;
+        const _event = new CustomEvent(event, { detail: _data });
+
         eventEl.dispatchEvent(_event);
     }
 
@@ -164,6 +167,25 @@ function _domFind(element, predicate, results = []) {
  */
 function extractPropFromObject(object, propName) {
     return (object && object[propName]) ? object[propName] : null;
+}
+
+/**
+ * Polyfill for customEvent
+ */
+function polyfillCustomEvent() {
+
+    if ( typeof window.CustomEvent === "function" ) return false;
+
+    function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+
+    window.CustomEvent = CustomEvent;
 }
 
 export default _Events;
