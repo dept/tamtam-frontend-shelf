@@ -1,15 +1,16 @@
-import 'core-js/fn/array/from';
+/* @version: 1.0.0 */
 
+import 'core-js/fn/array/from';
 import Events from './util/events';
 
 const html = document.documentElement;
 
 const MODAL_HOOK = '[data-js-hook="modal"]';
+const MODAL_CLOSE_HOOK = '[data-js-hook="button-modal-close"]';
 
 const MODAL_VISIBLE_CLASS = 'modal--is-showing';
 const MODAL_HTML_CLASS = 'is--modal-open';
 
-const MODAL_CLOSE_HOOK = '[data-js-hook="button-modal-close"]';
 
 
 class Modal {
@@ -28,13 +29,19 @@ class Modal {
 
     }
 
+    onRegisterCustomModal(event, data) {
+        this.registerCustomModal(data);
+    }
+
     /**
-     * Bind modals by custom hook
-     *
+     * Register new modals by custom hook.
      */
-    customBind(event, data) {
-        
-        const modals = document.querySelectorAll(data.hook);
+    registerCustomModal( data) {
+        if ( !data ) {
+            return;
+        }
+
+        const modals = document.querySelectorAll(data.selector);
         const noBodyClass = data.noBodyClass || false;
 
         Array.from(modals).forEach((modal) => {
@@ -44,11 +51,9 @@ class Modal {
     }
 
     /**
-     * Setup an object per found modal
-     *
+     * Setup an object per found modal.
      */
     setupModalRegistry(el, noBodyClass) {
-
         const id = el.getAttribute('id');
 
         const triggerBtn = document.querySelectorAll(`[aria-controls=${id}]`);
@@ -68,33 +73,39 @@ class Modal {
     }
 
     /**
-     * Bind all general events
-     *
+     * Bind all general events.
      */
     bindEvents() {
 
         Events.$on('modal::close', (event, data) => this.closeModal(event, data));
         Events.$on('modal::open', (event, data) => this.openModal(event, data));
 
-        Events.$on('modal::bind', (event, data) => this.customBind(event, data));
+        Events.$on('modal::register', (event, data) => this.onRegisterCustomModal(event, data));
 
     }
 
     /**
-     * Bind all modal specific events
-     *
+     * Bind all modal specific events.
      */
     bindModalEvents({ triggerBtn, closeBtn, id, noBodyClass }) {
 
         Array.from(triggerBtn).forEach(el => {
 
-            el.addEventListener('click', () => { Events.$trigger('modal::open', { id, noBodyClass }); });
+            el.addEventListener('click', () => {
+                Events.$trigger('modal::open', {
+                    data: { id, noBodyClass }
+                });
+            });
 
         });
 
         Array.from(closeBtn).forEach(el => {
 
-            el.addEventListener('click', () => { Events.$trigger('modal::close', { id, noBodyClass }); });
+            el.addEventListener('click', () => {
+                Events.$trigger('modal::close', {
+                    data: { id, noBodyClass }
+                });
+            });
 
         });
 
@@ -106,11 +117,9 @@ class Modal {
     }
 
     /**
-     * Open modal by id
-     *
+     * Open modal by id.
      */
     openModal(event, data) {
-
         const modal = this.registeredModals[`modal-${data.id}`];
 
         if (!modal) { return; }
@@ -127,23 +136,22 @@ class Modal {
     }
 
     /**
-     * Close modal by id if none given close all
-     *
+     * Close modal by id if none given close all.
      */
     closeModal(event, data) {
 
-        // Get current modal from all known modals
-        const modal = this.registeredModals[`modal-${data.id}`];
-
         // If no ID is given we will close all modals
-        if (!data.id) {
+        if (!data || !data.id) {
 
             for (const modalIndex of Object.keys(this.registeredModals)) {
-                this.closeModal(null, this.registeredModals[modalIndex].id);
+                this.closeModal(null, {id:this.registeredModals[modalIndex].id});
             }
 
             return;
         }
+
+        // Get current modal from all known modals
+        const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
         if (!modal) { return; }

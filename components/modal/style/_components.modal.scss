@@ -1,3 +1,5 @@
+// @version 1.0.0
+
 $modal-max-width: 1600px !default;
 $modal-gutter: $global-spacing * 2 !default;
 $modal-gutter-small: $global-spacing * 2 !default;
@@ -23,21 +25,22 @@ $modal-transition-ease: $ease-in-out-quad !default;
     transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
     transition-property: opacity, left;
     -webkit-overflow-scrolling: touch;
+
     @include screen-tablet-portrait-and-bigger {
         align-items: center;
     }
+}
 
-    &.modal--is-showing {
-        left: 0;
+.modal--is-showing {
+    left: 0;
+    opacity: 1;
+    transition: $modal-transition-time $modal-transition-ease, 0ms;
+    transition-property: opacity, left;
+
+    .modal__content {
         opacity: 1;
-        transition: $modal-transition-time $modal-transition-ease, 0ms;
-        transition-property: opacity, left;
-
-        .modal__content {
-            opacity: 1;
-            transition: $modal-transition-time $modal-transition-ease 100ms, $modal-transition-time $modal-transition-ease;
-            transition-property: transform, opacity;
-        }
+        transition: $modal-transition-time $modal-transition-ease 100ms, $modal-transition-time $modal-transition-ease;
+        transition-property: transform, opacity;
     }
 }
 

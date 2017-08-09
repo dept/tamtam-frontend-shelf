@@ -21,7 +21,8 @@ import './src/modules/modal';
 
 ## How to use
 
-### Default
+### Default modal
+#### Add to page
 
 Create modalbox in HTML.
 ```htmlmixed
@@ -34,16 +35,34 @@ Create modalbox in HTML.
     Your content here.
 
 {% endcall %}
-
+```
+Add a button to trigger the modal
+```htmlmixed
 <button type="button" aria-controls="modal-example" aria-title="Open modalbox">
     Open example modalbox
 </button>
+```
+#### Toggle modal via JS
+```
+Events.$trigger('modal::open', {
+    data: {id: 'modal-example'}
+});
 
+Events.$trigger('modal::close', {
+    data: {id: 'modal-example'}
+});
+
+// If you don't pass any parameters to the close event, all open modals are closed.
+Events.$trigger('modal::close');
 ```
 
-### Custom
 
-Custom html element
+### Custom modal
+#### Add to page
+You might want to register a custom element element which behaves just like a normal modal. 
+You can do this by adding this new html element including trigger to the DOM, and register it
+on the Modal class.
+
 ```htmlmixed
 <div id="modal-custom">
     I am a custom modalbox
@@ -54,15 +73,25 @@ Custom html element
 </div>
 
 <button type="button" aria-controls="modal-custom" aria-title="Open modalbox">
-    Open example modalbox
+    Open custom modalbox
 </button>
 
 ```
 
-Bind custom html element to modal.
+#### Register custom modal via JS
 ```javascript
-Events.$trigger('modal::bind', '#modal-custom');
+const registerOptions = {
+    selector: '#modal-custom',  // required
+    noBodyClass: false          // optional
+};
+
+Events.$trigger('modal::register', registerOptions);
+// or
+Modal.registerCustomModal(registerOptions);
 ```
+
+#### Open custom modal via JS
+Opening of the modal is the same as for the normal modals.
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
