@@ -1,4 +1,6 @@
-/* @version: 1.0.0 */
+/**
+ *  @shelf-version: 1.0.0
+ */
 
 import 'core-js/fn/array/from';
 import Events from './util/events';
