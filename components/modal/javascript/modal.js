@@ -20,7 +20,7 @@ class Modal {
 
         const modals = document.querySelectorAll(MODAL_HOOK);
 
-        Array.from(modals).forEach((modal) => this.setupModalRegistry(modal));
+        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
 
         this.bindEvents();
 
@@ -37,7 +37,7 @@ class Modal {
         const noBodyClass = data.noBodyClass || false;
 
         // Loop trough all found modals based on hook
-        Array.from(modals).forEach((modal) => this.setupModalRegistry(modal, noBodyClass));
+        Array.from(modals).forEach(modal => this.setupModalRegistry(modal, noBodyClass));
 
     }
 
