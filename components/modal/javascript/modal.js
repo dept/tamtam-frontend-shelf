@@ -84,20 +84,12 @@ class Modal {
      */
     bindModalEvents({ triggerBtn, closeBtn, id }) {
 
-        Array.from(triggerBtn).forEach((el) => {
+        Array.from(triggerBtn).forEach((el) => el.addEventListener('click', () => Events.$trigger('modal::open', id)) );
 
-            el.addEventListener('click', () => { Events.$trigger('modal::open', id); });
-
-        });
-
-        Array.from(closeBtn).forEach((el) => {
-
-            el.addEventListener('click', () => { Events.$trigger('modal::close', id); });
-
-        });
+        Array.from(closeBtn).forEach((el) => el.addEventListener('click', () => Events.$trigger('modal::close', id)) );
 
         // Close on ESCAPE_KEY
-        document.addEventListener('keyup', (event) => {
+        document.addEventListener('keyup', event => {
             if (event.keyCode == 27) { this.closeModal() }
         });
 
@@ -118,6 +110,8 @@ class Modal {
         modal.el.setAttribute('tabindex', 1)
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
 
+        Events.$trigger('focustrap::activate', { data: modal.el });
+
     }
 
     /**
@@ -135,7 +129,7 @@ class Modal {
             for (const modalIndex of Object.keys(this.registeredModals)) {
                 this.closeModal(null, this.registeredModals[modalIndex].id);
             }
-
+            Events.$trigger('focustrap::deactivate');
             return;
         }
 
@@ -148,6 +142,8 @@ class Modal {
         // Remove tabindex and remove visible class
         modal.el.setAttribute('tabindex', 0)
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
+
+        Events.$trigger('focustrap::deactivate');
 
     }
 
