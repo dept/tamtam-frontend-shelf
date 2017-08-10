@@ -20,33 +20,33 @@ class Modal {
 
         const modals = document.querySelectorAll(MODAL_HOOK);
 
-        Array.from(modals).forEach((modal) => {
-            this.setupModalRegistry(modal);
-        });
+        Array.from(modals).forEach((modal) => this.setupModalRegistry(modal));
 
         this.bindEvents();
 
     }
 
     /**
-     * Bind modals by custom hook
-     *
+     * Bind event based on custom hook
+     * @param event
+     * @param data - { hook, nobodyClass }
      */
-    customBind(event, CUSTOM_HOOK) {
+    customBind(event, data) {
 
-        const modals = document.querySelectorAll(CUSTOM_HOOK);
+        const modals = document.querySelectorAll(data.hook);
+        const noBodyClass = data.noBodyClass || false;
 
-        Array.from(modals).forEach((modal) => {
-            this.setupModalRegistry(modal);
-        });
+        // Loop trough all found modals based on hook
+        Array.from(modals).forEach((modal) => this.setupModalRegistry(modal, noBodyClass));
 
     }
 
     /**
      * Setup an object per found modal
-     *
+     * @param el          - Single modalbox
+     * @param noBodyClass - If set doesn't add class to body when modal is active
      */
-    setupModalRegistry(el) {
+    setupModalRegistry(el, noBodyClass) {
 
         const id = el.getAttribute('id');
 
@@ -57,7 +57,8 @@ class Modal {
             el,
             id,
             triggerBtn,
-            closeBtn
+            closeBtn,
+            noBodyClass
         };
 
         this.registeredModals[`modal-${id}`] = modal;
@@ -67,47 +68,54 @@ class Modal {
 
     /**
      * Bind all general events
-     *
      */
     bindEvents() {
 
-        Events.$on('modal::close', (event, id) => this.closeModal(event, id));
-        Events.$on('modal::open', (event, id) => this.openModal(event, id));
+        Events.$on('modal::close', (event, data) => this.closeModal(event, data));
+        Events.$on('modal::open', (event, data) => this.openModal(event, data));
 
-        Events.$on('modal::bind', (event, CUSTOM_HOOK) => this.customBind(event, CUSTOM_HOOK));
+        Events.$on('modal::bind', (event, data) => this.customBind(event, data));
 
     }
 
     /**
      * Bind all modal specific events
-     *
+     * @param id          - Modal id
+     * @param triggerBtn  - Button to open modal
+     * @param closeBtn    - Button to close modal
+     * @param noBodyClass - If set doesn't add class to body when modal is active
      */
-    bindModalEvents({ triggerBtn, closeBtn, id }) {
+    bindModalEvents({ id, triggerBtn, closeBtn, noBodyClass }) {
 
-        Array.from(triggerBtn).forEach((el) => el.addEventListener('click', () => Events.$trigger('modal::open', id)) );
+        Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => Events.$trigger('modal::open', { data: { id, noBodyClass } })));
 
-        Array.from(closeBtn).forEach((el) => el.addEventListener('click', () => Events.$trigger('modal::close', id)) );
+        Array.from(closeBtn).forEach(el => el.addEventListener('click', () => Events.$trigger('modal::close', { data: { id, noBodyClass } })));
 
         // Close on ESCAPE_KEY
         document.addEventListener('keyup', event => {
-            if (event.keyCode == 27) { this.closeModal() }
+            if (event.keyCode == 27) { this.closeModal(); }
         });
 
     }
 
     /**
-     * Open modal by id
-     *
+     * Open modal by given id
+     * @param event
+     * @param data - { id, noBodyClass }
      */
-    openModal(event, id) {
+    openModal(event, data) {
 
-        const modal = this.registeredModals[`modal-${id}`];
+        const modal = this.registeredModals[`modal-${data.id}`];
 
         if (!modal) { return; }
 
-        html.classList.add(MODAL_HTML_CLASS);
+        // Add modal open class to html element if noBodyClass is false
+        if (!data.noBodyClass) {
+            html.classList.add(MODAL_HTML_CLASS);
+        }
 
-        modal.el.setAttribute('tabindex', 1)
+        // Add tabindex and add visible class
+        modal.el.setAttribute('tabindex', 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
 
         Events.$trigger('focustrap::activate', { data: modal.el });
@@ -115,32 +123,34 @@ class Modal {
     }
 
     /**
-     * Close modal by id if none given close all
-     *
+     * Close modal by id, if none gives it will close all
+     * @param event
+     * @param data - { id, noBodyClass }
      */
-    closeModal(event, id) {
-
-        // Get current modal from all known modals
-        const modal = this.registeredModals[`modal-${id}`];
+    closeModal(event, data) {
 
         // If no ID is given we will close all modals
-        if (!id) {
-
+        if (!data || !data.id) {
             for (const modalIndex of Object.keys(this.registeredModals)) {
-                this.closeModal(null, this.registeredModals[modalIndex].id);
+                this.closeModal(null, { id: this.registeredModals[modalIndex].id });
+                Events.$trigger('focustrap::deactivate');
             }
-            Events.$trigger('focustrap::deactivate');
             return;
         }
+
+        // Get current modal from all known modals
+        const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
         if (!modal) { return; }
 
-        // Remove modal open class off html element
-        html.classList.remove(MODAL_HTML_CLASS);
+        // Remove modal open class off html element if noBodyClass is false
+        if (!data.noBodyClass) {
+            html.classList.remove(MODAL_HTML_CLASS);
+        }
 
         // Remove tabindex and remove visible class
-        modal.el.setAttribute('tabindex', 0)
+        modal.el.setAttribute('tabindex', 0);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
 
         Events.$trigger('focustrap::deactivate');
