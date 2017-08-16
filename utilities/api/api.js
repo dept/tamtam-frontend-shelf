@@ -13,8 +13,6 @@ class API {
 
     constructor() {
 
-        this.environment = Environment.get();
-
     }
 
     setEndpointBase(environment, endpoint) {
@@ -34,7 +32,7 @@ class API {
         if ( json === true || (json === 'local' && Environment.isLocal()) ) {
             return endpointBase.json + path + `--${method}.json`;
         } else {
-            return endpointBase[this.environment] + path;
+            return endpointBase[ Environment.get() ] + path;
         }
 
     }
