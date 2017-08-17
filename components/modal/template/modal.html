@@ -1,26 +1,40 @@
+{#
+    @shelf-version: 1.0.0
+    Modal macro
+    Usage as a call, inject the modal content there.
+
+    Options:
+        Required
+        id {string|int}     - Adds an id to the modal
+
+        Optional
+        size {string}       - Adds a modifier to the component
+        noClose {boolean}   - Hides the close button (esc. key is still bound)
+#}
+
 {% macro modal(data) %}
 
     <div class="c-modal{% if data.size %} modal-size--{{ data.size }}{% endif %}"
         {%- if data.id %} id="{{ data.id }}"{% endif -%}
         js-hook-modal
         tabindex="-1">
-        
+
         <div class="modal__container">
-        
+
             <div class="modal__content" role="dialog">
 
                 {{ caller() }}
 
                 {% if not data.noClose %}
                 <button type="button" class="modal__button-close" js-hook-button-modal-close aria-title="Close modalbox">
-                    {% svg "icons/remove" %}
+                    &times;
                 </button>
                 {% endif %}
 
             </div>
 
         </div>
-        
+
         <div class="modal__background" js-hook-button-modal-close></div>
     </div>
 
