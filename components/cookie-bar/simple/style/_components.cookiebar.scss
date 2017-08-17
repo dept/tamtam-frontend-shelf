@@ -1,0 +1,30 @@
+// @shelf-version 1.0.0
+$cookiebar-transition-time: 400ms !default;
+$cookiebar-transition-ease: $ease-in-out-quad !default;
+
+.c-cookiebar {
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: $global-spacing*2 0;
+    background-color: rgba($color-black, 0.85);
+    color: $color-white;
+    transform: translateY(100%);
+    transition: $cookiebar-transition-time $cookiebar-transition-ease;
+    transition-property: transform;
+
+    &.cookiebar--showing {
+        transform: translateY(0);
+    }
+}
+
+.cookiebar__content {
+    display: flex;
+    align-items: center;
+}
+
+.cookiebar__button-close {
+    margin-left: auto;
+}
