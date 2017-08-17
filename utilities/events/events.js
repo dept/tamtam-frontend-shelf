@@ -76,9 +76,9 @@ function readAndBindEventsFromDOM() {
 
 /**
  * Bind events
- * @param targetEl
- * @param attrName  - data attribute name, eg. on:click.prevent
- * @param attrValue - value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
+ * @param {HTMLElement} targetEl
+ * @param {string} attrName data attribute name, eg. on:click.prevent
+ * @param {string} attrValue value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
  */
 function bindEvent(targetEl, attrName, attrValue) {
 
@@ -100,8 +100,8 @@ function bindEvent(targetEl, attrName, attrValue) {
 
 /**
  * Map over modifiers and modify event with prevent or stop.
- * @param modifiers
- * @param e
+ * @param {string} modifiers
+ * @param {Event} e
  */
 function runModifiers(modifiers, e) {
 
@@ -120,7 +120,7 @@ function runModifiers(modifiers, e) {
  * Event string is attrValue, which can be either only an event name, or an event name with params:
  * eventname or eventname(value).
  * Regex splits this string in an array with two params; the eventname and the value passed (if given).
- * @param eventString
+ * @param {string} eventString
  * @returns {[*,*]}
  */
 function parseEventString(eventString) {
@@ -134,8 +134,8 @@ function parseEventString(eventString) {
 /**
  * Event delegation. Bind clicks on parent, for live elements,
  * on event traverse up the DOM to find the clicked parent if present.
- * @param criteria - Criteria function which matches the requested target
- * @param callback - Callback to execute on event.
+ * @param {HTMLElement} criteria Criteria function which matches the requested target
+ * @param {Function} callback Callback to execute on event.
  * @returns {Function}
  */
 function _delegate(criteria, callback) {
@@ -157,8 +157,8 @@ function _delegate(criteria, callback) {
 
 /**
  * Treewalker to match elements based on a function
- * @param element   - Parent element (eg document) to bind event on.
- * @param predicate - Function expected to return a boolean if an element matches.
+ * @param {HTMLElement} element Parent element (eg document) to bind event on.
+ * @param {HTMLElement} predicate Function expected to return a boolean if an element matches.
  * @param results
  * @returns {Array}
  */
@@ -181,8 +181,8 @@ function _domFind(element, predicate, results = []) {
 
 /**
  * Extracts and returns specific properties from an given object
- * @param object   - Object to pick from
- * @param propName - Property name to return
+ * @param {Object} object Object to pick from
+ * @param {String} propName Property name to return
  * @returns {Object}
  */
 function extractPropFromObject(object, propName) {
