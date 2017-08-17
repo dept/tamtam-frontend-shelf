@@ -19,15 +19,6 @@ import './src/modules/util/in-view';
 ```
 
 ## How to use
-### Import utility
-```javascript
-
-import Events from './src/modules/util/events';
-
-// Manually trigger in-view update ie. after lazyloading new elements into the DOM
-Events.$trigger('in-view::update');
-
-```
 
 ### Bind inview on element
 
@@ -62,6 +53,17 @@ You can add the following options:
     Track me
 
 </div>
+
+```
+
+### Manually trigger element update
+You can manually trigger an in-view update ie. after lazyloading new elements into the DOM
+
+```javascript
+
+import Events from './src/modules/util/events';
+
+Events.$trigger('in-view::update');
 
 ```
 
