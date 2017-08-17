@@ -16,6 +16,7 @@
 
 ## Install
 ```javascript
+import './src/modules/util/focus-trap';
 import './src/modules/modal';
 ```
 
@@ -66,7 +67,8 @@ Events.$trigger('modal::bind', '#modal-custom');
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [Events component](/utilities/events/)
+* [Events library](/utilities/events/)
+* [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
