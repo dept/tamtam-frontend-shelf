@@ -49,7 +49,7 @@ Custom html element
 <div id="modal-custom">
     I am a custom modalbox
 
-    <button type="button" data-js-hook="button-modal-close" aria-title="Close modalbox">
+    <button type="button" js-hook-button-modal-close aria-title="Close modalbox">
         Close
     </button>
 </div>
