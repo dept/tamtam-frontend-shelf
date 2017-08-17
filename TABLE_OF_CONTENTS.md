@@ -4,3 +4,5 @@
 
 # Utilities
 * [Events](/utilities/events/README.md)
+* [Inview](/utilities/in-view/README.md)
+* [RAF throttle](/utilities/raf-throttle/README.md)
