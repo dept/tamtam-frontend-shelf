@@ -1,5 +1,4 @@
 // @shelf-version 1.0.0
-
 $modal-max-width: 1600px !default;
 $modal-gutter: $global-spacing * 2 !default;
 $modal-gutter-small: $global-spacing * 2 !default;
@@ -41,6 +40,12 @@ $modal-transition-ease: $ease-in-out-quad !default;
         opacity: 1;
         transition: $modal-transition-time $modal-transition-ease 100ms, $modal-transition-time $modal-transition-ease;
         transition-property: transform, opacity;
+    }
+
+    .modal__background {
+        left: 0;
+        transition: $modal-transition-time $modal-transition-ease, 0ms;
+        transition-property: opacity, left;
     }
 }
 
@@ -84,8 +89,6 @@ $modal-transition-ease: $ease-in-out-quad !default;
     background-color: rgba($color-black, 0.8);
     z-index: 0;
     cursor: pointer;
-
-    .modal--is-showing & {
-        left: 0;
-    }
+    transition: 0ms linear $modal-transition-time;
+    transition-property: left;
 }
