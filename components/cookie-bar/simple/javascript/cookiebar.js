@@ -1,7 +1,7 @@
 import cookies from 'js-cookie';
 import Events from './util/events';
 
-const COOKIEBAR_HOOK = '[js-cookiebar]'
+const COOKIEBAR_HOOK = '[js-hook-cookiebar]'
 const COOKIE_NAME = 'cookie';
 const SHOW_CLASS = 'cookie--showing';
 
