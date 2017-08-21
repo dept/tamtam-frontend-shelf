@@ -14,6 +14,12 @@
 * Automatically assumes users consent when being closed.
 
 ## Install
+
+Install npm package dependency
+```node
+npm i js-cookie --save
+```
+Import module
 ```javascript
 import './src/modules/cookiebar';
 ```
