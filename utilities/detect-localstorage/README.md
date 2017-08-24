@@ -1,5 +1,5 @@
 
-# Detect localstorage libary
+# Detect localStorage libary
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
