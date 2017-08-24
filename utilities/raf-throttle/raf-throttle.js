@@ -159,6 +159,11 @@ class RafThrottle {
 
 }
 
+/**
+* Merges the event and the namespace toghether
+* @param {string} eventName
+* @param {string} namespace
+*/
 function generateNamespace(eventName, namespace) {
 
     return `${eventName}.${namespace}`;
