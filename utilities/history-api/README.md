@@ -10,7 +10,7 @@
 
 
 ## What does it do
-* Listens for events to update the url on history with push state / replace state.
+* Listens for events to update the url and state object on [History](https://developer.mozilla.org/en-US/docs/Web/API/History) with pushState / replaceState.
 
 ## Install
 ```javascript
@@ -22,11 +22,17 @@ import './src/modules/util/history.js';
 ```javascript
 
 Events.$trigger('history::push', {
-    data: '/your-new-url'
+    data: {
+        url : '/your-new-url',
+        state: {}
+    }
 });
 
 Events.$trigger('history::replace', {
-    data: '/your-new-url'
+    data: {
+        url : '/your-new-url',
+        state: {}
+    }
 });
 
 ```
