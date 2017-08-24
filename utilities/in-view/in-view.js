@@ -75,7 +75,7 @@ class InView {
         }
 
         this.elementArray.push(config);
-        this.eventsToBeBound.push({ element: window, event: `scroll.ElementInView-${index}`, fn: () => this._elementInView(config) })
+        this.eventsToBeBound.push({ element: window, event: 'scroll', namespace: `ElementInView-${index}`, fn: () => this._elementInView(config) })
 
     }
 
@@ -102,7 +102,7 @@ class InView {
 
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
 
-            RafThrottle.remove([{ element: window, event: `scroll.ElementInView-${config.index}` }]);
+            RafThrottle.remove([{ element: window, event: 'scroll', namespace: `ElementInView-${config.index}` }]);
 
 
         } else {
