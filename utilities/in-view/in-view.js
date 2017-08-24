@@ -13,18 +13,20 @@ class InView {
 
         this.elements = getElements();
         this.elementArray = [];
-
         this.eventsToBeBound = [];
+        this.lastEventIndex = 0;
 
         this._bindEvent();
 
         Events.$trigger('in-view::update');
+
+        // Trigger scroll event to get elements that are in view on page load.
         window.dispatchEvent(new CustomEvent('scroll'));
 
     }
 
     /**
-     * Bind events
+     * Bind event
      */
     _bindEvent() {
 
@@ -49,7 +51,6 @@ class InView {
 
     /**
     * Sets new element config and adds them to element arrays
-    * @param {Number} index Index of the element
     * @param {HTMLElement} element Element to track
     * @param {Object[]} [element[].dataset]
     * @param {Number} [element[].dataset[].inviewOffsetTop] Offset in pixels
@@ -59,7 +60,12 @@ class InView {
     * @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
     * @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
     */
-    _setNewElement(index, element) {
+    _setNewElement(element) {
+
+        if ( element.elementInViewIdentifier ) { return; }
+
+        const index = ++this.lastEventIndex;
+        element.elementInViewIdentifier = index;
 
         const config = {
             index,
@@ -72,10 +78,16 @@ class InView {
             },
             threshold: element.dataset.inviewThreshold || 0,
             triggers: getTriggers(element.dataset.inviewTrigger)
-        }
+        };
 
         this.elementArray.push(config);
-        this.eventsToBeBound.push({ element: window, event: 'scroll', namespace: `ElementInView-${index}`, fn: () => this._elementInView(config) })
+
+        this.eventsToBeBound.push({
+            element: window,
+            event: 'scroll',
+            namespace: `ElementInView-${config.index}`,
+            fn: () => this._elementInView(config)
+        });
 
     }
 
@@ -102,8 +114,11 @@ class InView {
 
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
 
-            RafThrottle.remove([{ element: window, event: 'scroll', namespace: `ElementInView-${config.index}` }]);
-
+            RafThrottle.remove([{
+                element: window,
+                event: 'scroll',
+                namespace: `ElementInView-${config.index}`
+            }]);
 
         } else {
 
@@ -122,9 +137,9 @@ class InView {
     */
     _addElements() {
 
-        this.elements.forEach((element, index) => {
+        this.elements.forEach((element) => {
 
-            this._setNewElement(index, element);
+            this._setNewElement(element);
 
         });
 
@@ -192,19 +207,19 @@ function elementIsInViewport(element, options) {
         r: window.innerWidth - left,
         b: window.innerHeight - top,
         l: right
-    }
+    };
 
     const threshold = {
         x: options.threshold * width,
         y: options.threshold * height
-    }
+    };
 
     const inViewDirections = {
         top: intersection.t > (options.offset.top + threshold.y),
         right: intersection.r > (options.offset.right + threshold.x),
         bottom: intersection.b > (options.offset.bottom + threshold.y),
         left: intersection.l > (options.offset.left + threshold.x)
-    }
+    };
 
     inViewDirections.any = inViewDirections.top || inViewDirections.right || inViewDirections.bottom || inViewDirections.left;
     inViewDirections.all = inViewDirections.top && inViewDirections.right && inViewDirections.bottom && inViewDirections.left;
