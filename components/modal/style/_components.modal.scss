@@ -1,5 +1,4 @@
 // @shelf-version 1.0.0
-
 $modal-max-width: 1600px !default;
 $modal-gutter: $global-spacing * 2 !default;
 $modal-gutter-small: $global-spacing * 2 !default;
@@ -42,6 +41,12 @@ $modal-transition-ease: $ease-in-out-quad !default;
         transition: $modal-transition-time $modal-transition-ease 100ms, $modal-transition-time $modal-transition-ease;
         transition-property: transform, opacity;
     }
+
+    .modal__background {
+        left: 0;
+        transition: $modal-transition-time $modal-transition-ease, 0ms;
+        transition-property: opacity, left;
+    }
 }
 
 .modal__button-close {
@@ -62,17 +67,21 @@ $modal-transition-ease: $ease-in-out-quad !default;
 }
 
 .modal__content {
-    margin-top: 60px;
-    margin-bottom: 20px;
     position: relative;
     z-index: 1;
     max-width: $modal-max-width;
     width: 100%;
     height: auto;
     opacity: 0;
+    padding: $modal-gutter;
     background-color: $color-white;
     transition: $modal-transition-time $modal-transition-ease, $modal-transition-time $modal-transition-ease;
     transition-property: transform, opacity;
+
+    @include screen-mobile-plus-and-smaller {
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
 }
 
 .modal__background {
@@ -84,8 +93,6 @@ $modal-transition-ease: $ease-in-out-quad !default;
     background-color: rgba($color-black, 0.8);
     z-index: 0;
     cursor: pointer;
-
-    .modal--is-showing & {
-        left: 0;
-    }
+    transition: 0ms linear $modal-transition-time;
+    transition-property: left;
 }
