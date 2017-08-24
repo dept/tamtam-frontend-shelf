@@ -9,6 +9,7 @@ class RafThrottle {
     constructor() {
 
         this.timeoutList = {};
+        this.namespaces = {};
 
     }
 
@@ -59,7 +60,19 @@ class RafThrottle {
     */
     _addEvents(binds) {
 
-        binds.forEach(bind => this._on(bind.element, bind.event, generateNamespace(bind.event, bind.namespace), event => this._trigger(bind, event), { passive: true }));
+        binds.forEach(bind => {
+
+            const eventOptions = {
+                element: bind.element,
+                event: bind.event,
+                namespace: generateNamespace(bind.event, bind.namespace),
+                callback: event => this._trigger(bind, event),
+                eventOptions: {passive: true}
+            };
+
+            this._addThrottledEvent(eventOptions);
+
+        });
 
     }
 
@@ -73,7 +86,16 @@ class RafThrottle {
     */
     _removeEvents(binds) {
 
-        binds.forEach(bind => this._off(bind.element, bind.event, generateNamespace(bind.event, bind.namespace)));
+        binds.forEach(bind => {
+
+            const eventOptions = {
+                element: bind.element,
+                event: bind.event,
+                namespace: generateNamespace(bind.event, bind.namespace)
+            };
+
+            this._removeThrottledEvent(eventOptions);
+        });
 
     }
 
@@ -125,32 +147,35 @@ class RafThrottle {
 
     /**
     * Bind a namespaced eventlistener to given element
-    * @param {HTMLElement} element
-    * @param {string} event Event type we are binding ie. scroll
-    * @param {string} namespace Namepace of the event
-    * @callback {Function}
-    * @param {object} [options] Give options to your event
+    * @param {Object[]} options
+    * @param {HTMLElement} options[].element
+    * @param {string} options[].event Event type we are binding ie. scroll
+    * @param {string} options[].namespace Namepace of the event
+    * @callback {Function} options.[]callback
+    * @param {object} [options[].eventOptions] Give options to your event
     */
-    _on(element, event, namespace, callback, options) {
+    _addThrottledEvent(options) {
 
-        if (!this.namespaces) {
-            this.namespaces = {};
-        }
+        const {element, event, namespace, callback} = options;
+        let {eventOptions} = options;
 
         this.namespaces[namespace] = callback;
-        options = options || false;
+        eventOptions = eventOptions || false;
 
-        element.addEventListener(event, callback, options);
+        element.addEventListener(event, callback, eventOptions);
 
     }
 
     /**
     * Remove a namespaced eventlistener to given element
-    * @param {HTMLElement} element
-    * @param {string} event Event type we are removing ie. scroll
-    * @param {string} namespace Namepace of the event we are removing
+    * @param {object[]} options
+    * @param {HTMLElement} options[].element
+    * @param {string} options[].event Event type we are removing ie. scroll
+    * @param {string} options[].namespace Namepace of the event we are removing
     */
-    _off(element, event, namespace) {
+    _removeThrottledEvent(options) {
+
+        const {element, event, namespace} = options;
 
         element.removeEventListener(event, this.namespaces[namespace]);
         delete this.namespaces[namespace];
@@ -160,7 +185,7 @@ class RafThrottle {
 }
 
 /**
-* Merges the event and the namespace toghether
+* Merges the event and the namespace together
 * @param {string} eventName
 * @param {string} namespace
 */
