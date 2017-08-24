@@ -8,7 +8,6 @@ import Events from './events';
 const INVIEW_HOOK = '[js-hook-inview]';
 
 class InView {
-
     constructor() {
 
         this.elements = getElements();
@@ -16,127 +15,129 @@ class InView {
 
         this.eventsToBeBound = [];
 
-        bindEvent();
+        this._bindEvent();
+
+        Events.$trigger('in-view::update');
+        window.dispatchEvent(new CustomEvent('scroll'));
 
     }
 
-}
+    /**
+     * Bind events
+     */
+    _bindEvent() {
 
-const _InView = new InView();
+        Events.$on('in-view::update', () => {
 
-/**
- * Bind events
- */
-function bindEvent() {
+            this._updateElements();
+            this._addElements();
+            this._bindScrollEvent();
 
-    Events.$on('in-view::update', () => {
+        });
 
-        updateElements();
-        addElements();
-        bindScrollEvent();
-
-    });
-
-}
-
-/**
-* Bind all the events
-*/
-function bindScrollEvent() {
-
-    RafThrottle.set(_InView.eventsToBeBound);
-
-}
-
-/**
-* Sets new element config and adds them to element arrays
-* @param {Number} index Index of the element
-* @param {HTMLElement} element Element to track
-* @param {Object[]} [element[].dataset]
-* @param {Number} [element[].dataset[].inviewOffsetTop] Offset in pixels
-* @param {Number} [element[].dataset[].inviewOffsetBottom] Offset in pixels
-* @param {Number} [element[].dataset[].inviewOffsetLeft] Offset in pixels
-* @param {Number} [element[].dataset[].inviewOffsetRight] Offset in pixels
-* @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
-* @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
-*/
-function setNewElement(index, element) {
-
-    const config = {
-        index,
-        element,
-        offset: {
-            top: element.dataset.inviewOffsetTop || 0,
-            bottom: element.dataset.inviewOffsetBottom || 0,
-            left: element.dataset.inviewOffsetLeft || 0,
-            right: element.dataset.inviewOffsetRight || 0
-        },
-        threshold: element.dataset.inviewThreshold || 0,
-        triggers: getTriggers(element.dataset.inviewTrigger)
     }
 
-    _InView.elementArray.push(config);
-    _InView.eventsToBeBound.push({ element: window, event: `scroll.ElementInView-${index}`, fn: () => elementInView(config) })
+    /**
+    * Bind all the events
+    */
+    _bindScrollEvent() {
 
-}
+        RafThrottle.set(this.eventsToBeBound);
 
-/**
-* Checks if element is in viewport and adds appropriate classes
-* @param {Object[]} config
-* @param {Number} config[].index Index of the element
-* @param {HTMLElement} config[].element Element to track
-* @param {Object[]} [config[].offset]
-* @param {Number} [config[].offset[].top] Offset in pixels
-* @param {Number} [config[].offset[].bottom] Offset in pixels
-* @param {Number} [config[].offset[].left] Offset in pixels
-* @param {Number} [config[].offset[].right] Offset in pixels
-* @param {Number} [config[].threshold] Can be a value between 0 and 1
-* @param {string} [config[].triggers] Triggers you want to fire, can be comma seperated
-*/
-function elementInView(config) {
+    }
 
-    const element = config.element;
+    /**
+    * Sets new element config and adds them to element arrays
+    * @param {Number} index Index of the element
+    * @param {HTMLElement} element Element to track
+    * @param {Object[]} [element[].dataset]
+    * @param {Number} [element[].dataset[].inviewOffsetTop] Offset in pixels
+    * @param {Number} [element[].dataset[].inviewOffsetBottom] Offset in pixels
+    * @param {Number} [element[].dataset[].inviewOffsetLeft] Offset in pixels
+    * @param {Number} [element[].dataset[].inviewOffsetRight] Offset in pixels
+    * @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
+    * @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
+    */
+    _setNewElement(index, element) {
 
-    if (elementIsInViewport(element, config).bottom) {
-
-        element.classList.remove('is--out-view');
-
-        config.triggers.forEach((trigger) => setTriggers(trigger, element));
-
-        RafThrottle.remove([{ element: window, event: `scroll.ElementInView-${config.index}` }]);
-
-    } else {
-
-        if (element.classList.contains('is--out-view')) {
-            return;
+        const config = {
+            index,
+            element,
+            offset: {
+                top: element.dataset.inviewOffsetTop || 0,
+                bottom: element.dataset.inviewOffsetBottom || 0,
+                left: element.dataset.inviewOffsetLeft || 0,
+                right: element.dataset.inviewOffsetRight || 0
+            },
+            threshold: element.dataset.inviewThreshold || 0,
+            triggers: getTriggers(element.dataset.inviewTrigger)
         }
 
-        element.classList.add('is--out-view');
+        this.elementArray.push(config);
+        this.eventsToBeBound.push({ element: window, event: `scroll.ElementInView-${index}`, fn: () => this._elementInView(config) })
 
     }
 
-}
+    /**
+    * Checks if element is in viewport and adds appropriate classes
+    * @param {Object[]} config
+    * @param {Number} config[].index Index of the element
+    * @param {HTMLElement} config[].element Element to track
+    * @param {Object[]} [config[].offset]
+    * @param {Number} [config[].offset[].top] Offset in pixels
+    * @param {Number} [config[].offset[].bottom] Offset in pixels
+    * @param {Number} [config[].offset[].left] Offset in pixels
+    * @param {Number} [config[].offset[].right] Offset in pixels
+    * @param {Number} [config[].threshold] Can be a value between 0 and 1
+    * @param {string} [config[].triggers] Triggers you want to fire, can be comma seperated
+    */
+    _elementInView(config) {
 
-/**
-* Adds all elements to inview tracking
-*/
-function addElements() {
+        const element = config.element;
 
-    _InView.elements.forEach((element, index) => {
+        if (elementIsInViewport(element, config).bottom) {
 
-        setNewElement(index, element);
+            element.classList.remove('is--out-view');
 
-    });
+            config.triggers.forEach((trigger) => setTriggers(trigger, element));
 
-}
+            RafThrottle.remove([{ element: window, event: `scroll.ElementInView-${config.index}` }]);
 
-/**
-* Empties current events and gets new elements
-*/
-function updateElements() {
 
-    _InView.eventsToBeBound = [];
-    _InView.elements = getElements();
+        } else {
+
+            if (element.classList.contains('is--out-view')) {
+                return;
+            }
+
+            element.classList.add('is--out-view');
+
+        }
+
+    }
+
+    /**
+    * Adds all elements to inview tracking
+    */
+    _addElements() {
+
+        this.elements.forEach((element, index) => {
+
+            this._setNewElement(index, element);
+
+        });
+
+    }
+
+    /**
+    * Empties current events and gets new elements
+    */
+    _updateElements() {
+
+        this.eventsToBeBound = [];
+        this.elements = getElements();
+
+    }
 
 }
 
@@ -211,10 +212,4 @@ function elementIsInViewport(element, options) {
 
 }
 
-/**
-* Trigger the event once after init.
-* Needs to be at bottom, else function will crash.
-*/
-Events.$trigger('in-view::update');
-
-export default _InView;
+export default new InView();
