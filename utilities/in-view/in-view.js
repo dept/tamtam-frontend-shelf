@@ -8,6 +8,7 @@ import Events from './events';
 const INVIEW_HOOK = '[js-hook-inview]';
 
 class InView {
+
     constructor() {
 
         this.elements = getElements();
