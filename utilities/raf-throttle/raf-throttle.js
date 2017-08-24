@@ -17,12 +17,13 @@ class RafThrottle {
     * @param {Array[]} binds
     * @param {Object[]} bind
     * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-    * @param {string} bind[].event Event we are binding with given namespace ie. scroll.namespace
+    * @param {string} bind[].event Event type we are binding ie. scroll
+    * @param {string} bind[].namespace Namepace of the event
     * @param {Function} bind[].fn Function we want to execute
     */
     set(binds) {
 
-        addEvents(binds);
+        this._addEvents(binds);
 
     }
 
@@ -31,129 +32,137 @@ class RafThrottle {
     * @param {Array[]} binds
     * @param {Object[]} bind
     * @param {HTMLElement} bind[].element Element to unbind ie. document or window
-    * @param {string} bind[].event Event we want to remove with namespace ie. scroll.namespace
+    * @param {string} bind[].event Event type we are binding ie. scroll
+    * @param {string} bind[].namespace Namepace of the event
     */
     remove(binds) {
 
         if (binds) {
-            removeEvents(binds);
+            this._removeEvents(binds);
         }
+
+    }
+
+    /*
+    * Private methods
+    */
+
+    /**
+    * Loop over binds and bind them
+    * @param {Array[]} binds
+    * @param {Object[]} bind
+    * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
+    * @param {string} bind[].event Event type we are binding ie. scroll
+    * @param {string} bind[].namespace Namepace of the event
+    * @param {Function} bind[].fn Function we want to execute
+    * @param {Number} [bind[].delay] Amount of delay
+    */
+    _addEvents(binds) {
+
+        binds.forEach(bind => this._on(bind.element, bind.event, generateNamespace(bind.event, bind.namespace), event => this._trigger(bind, event), { passive: true }));
+
+    }
+
+    /**
+    * Loop over binds and remove them
+    * @param {Array[]} binds
+    * @param {Object[]} bind
+    * @param {HTMLElement} bind[].element Element to unbind ie. document or window
+    * @param {string} bind[].event Event type we are binding ie. scroll
+    * @param {string} bind[].namespace Namepace of the event
+    */
+    _removeEvents(binds) {
+
+        binds.forEach(bind => this._off(bind.element, bind.event, generateNamespace(bind.event, bind.namespace)));
+
+    }
+
+    /**
+    * Append requestAnimationFrame before firing event
+    * @param {Object[]} bind
+    * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
+    * @param {string} bind[].event Event type we are binding ie. scroll
+    * @param {string} bind[].namespace Namepace of the event
+    * @param {Function} bind[].fn Function we want to execute
+    * @param {Event} event Event object
+    * @param {Number} [bind[].delay] Amount of delay
+    */
+    _trigger(bind, event) {
+
+        const eventNamespace = generateNamespace(bind.event, bind.namespace);
+
+        if (bind.delay && bind.delay !== 0) {
+
+            if (!this.timeoutList[eventNamespace]) {
+                this.timeoutList[eventNamespace] = {};
+            }
+
+            if (this.timeoutList[eventNamespace].timeoutTimestamp + bind.delay > Date.now()) {
+
+                clearTimeout(this.timeoutList[eventNamespace].timeout);
+
+            }
+
+            this.timeoutList[eventNamespace].timeout = setTimeout(() => {
+
+                raf(() => {
+
+                    this.timeoutList[eventNamespace].timeoutTimestamp = Date.now();
+
+                    bind.fn(event);
+
+                });
+
+            }, bind.delay || 0);
+
+        } else {
+
+            raf(() => bind.fn(event));
+
+        }
+
+    }
+
+    /**
+    * Bind a namespaced eventlistener to given element
+    * @param {HTMLElement} element
+    * @param {string} event Event type we are binding ie. scroll
+    * @param {string} namespace Namepace of the event
+    * @callback {Function}
+    * @param {object} [options] Give options to your event
+    */
+    _on(element, event, namespace, callback, options) {
+
+        if (!this.namespaces) {
+            this.namespaces = {};
+        }
+
+        this.namespaces[namespace] = callback;
+        options = options || false;
+
+        element.addEventListener(event, callback, options);
+
+    }
+
+    /**
+    * Remove a namespaced eventlistener to given element
+    * @param {HTMLElement} element
+    * @param {string} event Event type we are removing ie. scroll
+    * @param {string} namespace Namepace of the event we are removing
+    */
+    _off(element, event, namespace) {
+
+        element.removeEventListener(event, this.namespaces[namespace]);
+        delete this.namespaces[namespace];
 
     }
 
 }
 
-const _RafThrottle = new RafThrottle();
+function generateNamespace(eventName, namespace) {
 
-
-/*
- * Private methods
- */
-
-
-/**
-* Loop over binds and bind them
-* @param {Array[]} binds
-* @param {Object[]} bind
-* @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-* @param {string} bind[].event Event we are binding with given namespace ie. scroll.namespace
-* @param {Function} bind[].fn Function we want to execute
-* @param {Number} [bind[].delay] Amount of delay
-*/
-function addEvents(binds) {
-
-    binds.forEach(bind => on(bind.element, bind.event, event => trigger(bind, event), { passive: true }));
+    return `${eventName}.${namespace}`;
 
 }
 
-/**
-* Loop over binds and remove them
-* @param {Array[]} binds
-* @param {Object[]} bind
-* @param {HTMLElement} bind[].element Element to unbind ie. document or window
-* @param {string} bind[].event Event we want to remove with namespace ie. scroll.namespace
-*/
-function removeEvents(binds) {
-
-    binds.forEach(bind => off(bind.element, bind.event));
-
-}
-
-/**
-* Append requestAnimationFrame before firing event
-* @param {Object[]} bind
-* @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-* @param {string} bind[].event Event we are binding with given namespace ie. scroll.namespace
-* @param {Function} bind[].fn Function we want to execute
-* @param {Event} event Event object
-* @param {Number} [bind[].delay] Amount of delay
-*/
-function trigger(bind, event) {
-
-    if (bind.delay && bind.delay !== 0) {
-
-        if (!_RafThrottle.timeoutList[bind.event]) {
-            _RafThrottle.timeoutList[bind.event] = {};
-        }
-
-        if (_RafThrottle.timeoutList[bind.event].timeoutTimestamp + bind.delay > Date.now()) {
-
-            clearTimeout(_RafThrottle.timeoutList[bind.event].timeout);
-
-        }
-
-        _RafThrottle.timeoutList[bind.event].timeout = setTimeout(() => {
-
-            raf(() => {
-
-                _RafThrottle.timeoutList[bind.event].timeoutTimestamp = Date.now();
-
-                bind.fn(event);
-
-            });
-
-        }, bind.delay || 0);
-
-    } else {
-
-        raf(() => bind.fn(event));
-
-    }
-
-}
-
-/**
-* Bind a namespaced eventlistener to given element
-* @param {HTMLElement} element
-* @param {Event} event Event we are binding with given namespace ie. scroll.namespace
-* @callback {Function}
-* @param {object} [options] Give options to your event
-*/
-function on(element, event, callback, options) {
-
-    if (!_RafThrottle.namespaces) {
-        _RafThrottle.namespaces = {};
-    }
-
-    _RafThrottle.namespaces[event] = callback;
-    options = options || false;
-
-    element.addEventListener(event.split('.')[0], callback, options);
-    return _RafThrottle;
-
-}
-
-/**
-* Remove a namespaced eventlistener to given element
-* @param {HTMLElement} element
-* @param {Event} event Event we are binding with given namespace ie. scroll.namespace
-*/
-function off(element, event) {
-
-    element.removeEventListener(event.split('.')[0], _RafThrottle.namespaces[event]);
-    delete _RafThrottle.namespaces[event];
-    return this;
-
-}
-
-export default _RafThrottle;
+export default new RafThrottle();
