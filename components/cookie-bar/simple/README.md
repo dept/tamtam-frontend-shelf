@@ -30,7 +30,7 @@ import './src/modules/cookiebar';
 Add cookiebar template to page
 
 ```htmlmixed
-{% include "modules/cookiebar.html" %}
+{% include "components/cookiebar.html" %}
 ```
 
 ## Dependencies

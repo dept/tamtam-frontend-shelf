@@ -1,9 +1,14 @@
+/**
+ * @shelf-version: 1.0.0
+ * Simple cookiebar
+ */
+
 import cookies from 'js-cookie';
 import Events from './util/events';
 
-const COOKIEBAR_HOOK = '[js-hook-cookiebar]'
+const COOKIEBAR_HOOK = '[js-hook-cookiebar]';
 const COOKIE_NAME = 'cookie';
-const SHOW_CLASS = 'cookie--showing';
+const SHOW_CLASS = 'cookiebar--is-visible';
 
 class Cookiebar {
 
@@ -17,7 +22,7 @@ class Cookiebar {
 
         if (!cookies.get(COOKIE_NAME)) {
             setCookie('0');
-        } 
+        }
 
         if (cookies.get(COOKIE_NAME) === '0') {
             this.show();
@@ -35,11 +40,11 @@ class Cookiebar {
 
         this.cookiebar.classList.remove(SHOW_CLASS);
         setCookie('1');
-        
+
     }
-    
+
     show() {
-        
+
         this.cookiebar.classList.add(SHOW_CLASS);
 
     }
