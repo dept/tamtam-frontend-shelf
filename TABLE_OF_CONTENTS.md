@@ -6,3 +6,4 @@
 # Utilities
 * [Events](/utilities/events/README.md)
 * [Focus Trap](/utilities/focus-trap/README.md)
+* [History](/utilities/history-api/README.md)
