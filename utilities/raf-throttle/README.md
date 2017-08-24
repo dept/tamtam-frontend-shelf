@@ -35,7 +35,8 @@ You can bind a new event on for instance window or document. Use a namespace to 
 RafThrottle.set([
     { 
         element: window, 
-        event: 'scroll.eventNamespace', 
+        event: 'scroll', 
+        namespace: 'eventNamespace',
         fn: () => exampleFunction(params) 
     }
 ]);
@@ -44,7 +45,8 @@ RafThrottle.set([
 RafThrottle.set([
     { 
         element: window, 
-        event: 'scroll.eventNamespace', 
+        event: 'scroll', 
+        namespace: 'eventNamespace',
         fn: () => exampleFunction(params), 
         delay: 1000 
     }
@@ -59,7 +61,8 @@ This will remove a previously bound event.
 RafThrottle.remove([
     { 
         element: window, 
-        event: 'scroll.eventNamespace'
+        event: 'scroll',
+        namespace: 'eventNamespace'
     }
 ]);
 
