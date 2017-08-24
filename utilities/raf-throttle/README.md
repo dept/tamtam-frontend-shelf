@@ -13,7 +13,9 @@
 * Create and remove events and throttle them by using requestAnimationFrame
 
 ## Install
-
+```node
+npm i raf --save
+```
 ```javascript
 import RafThrottle from './src/modules/util/raf-throttle';
 ```
