@@ -7,20 +7,53 @@ import Events from './events';
 class History {
 
     constructor() {
+
         this.bindEvents();
+
     }
 
+    /**
+    * Bind events
+    */
     bindEvents() {
-        Events.$on('history::push', (e, url) => this.pushHistory(url));
-        Events.$on('history::replace', (e, url) => this.replaceHistory(url));
+
+        Events.$on('history::push', (e, data) => this.pushHistory(data));
+        Events.$on('history::replace', (e, data) => this.replaceHistory(data));
+
     }
 
-    pushHistory(url) {
-        window.history.pushState({}, document.title, url);
+    /**
+    * Create a new URL entry in your History
+    * @param {Object} data
+    * @param {Object} data[].state State object
+    * @param {string} data[].url New url
+    */
+    pushHistory(data) {
+
+        const pushOptions = {
+            state: data.state || {},
+            url: data.url
+        };
+
+        window.history.pushState(pushOptions.state, document.title, pushOptions.url);
+
     }
 
-    replaceHistory(url) {
-        window.history.replaceState({}, document.title, url);
+    /**
+    * Overwrite current URL entry in your History
+    * @param {Object} data
+    * @param {Object} data[].state State object
+    * @param {string} data[].url New url
+    */
+    replaceHistory(data) {
+
+        const replaceOptions = {
+            state: data.state || {},
+            url: data.url
+        };
+
+        window.history.replaceState(replaceOptions.state, document.title, replaceOptions.url);
+
     }
 
 }
