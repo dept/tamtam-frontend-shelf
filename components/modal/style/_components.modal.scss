@@ -67,17 +67,21 @@ $modal-transition-ease: $ease-in-out-quad !default;
 }
 
 .modal__content {
-    margin-top: 60px;
-    margin-bottom: 20px;
     position: relative;
     z-index: 1;
     max-width: $modal-max-width;
     width: 100%;
     height: auto;
     opacity: 0;
+    padding: $modal-gutter;
     background-color: $color-white;
     transition: $modal-transition-time $modal-transition-ease, $modal-transition-time $modal-transition-ease;
     transition-property: transform, opacity;
+
+    @include screen-mobile-plus-and-smaller {
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
 }
 
 .modal__background {

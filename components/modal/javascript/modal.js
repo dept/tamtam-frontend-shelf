@@ -8,12 +8,10 @@ import Events from './util/events';
 
 const html = document.documentElement;
 
-const MODAL_HOOK = '[js-hook-modal]';
-
-const MODAL_VISIBLE_CLASS = 'modal--is-showing';
-const MODAL_HTML_CLASS = 'is--modal-open';
-
-const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]';
+const MODAL_HOOK            = '[js-hook-modal]';
+const MODAL_CLOSE_HOOK      = '[js-hook-button-modal-close]';
+const MODAL_VISIBLE_CLASS   = 'modal--is-showing';
+const MODAL_HTML_CLASS      = 'is--modal-open';
 
 
 class Modal {
@@ -93,9 +91,13 @@ class Modal {
      */
     bindModalEvents({ id, triggerBtn, closeBtn, noBodyClass }) {
 
-        Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => Events.$trigger('modal::open', { data: { id, noBodyClass } })));
+        Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => {
+            Events.$trigger('modal::open', {data: {id, noBodyClass}});
+        }));
 
-        Array.from(closeBtn).forEach(el => el.addEventListener('click', () => Events.$trigger('modal::close', { data: { id, noBodyClass } })));
+        Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
+            Events.$trigger('modal::close', { data: { id, noBodyClass } });
+        }));
 
         // Close on ESCAPE_KEY
         document.addEventListener('keyup', event => {
