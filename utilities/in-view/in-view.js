@@ -122,7 +122,7 @@ class InView {
 
         } else {
 
-            if (element.classList.contains('is--out-view')) {
+            if (element.className.indexOf('is--out-view') !== -1) {
                 return;
             }
 
