@@ -1,5 +1,5 @@
 
-# Modal component
+# API utility
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -32,6 +32,12 @@ You can override the default endpoints for each environment like so:
     API.setEndpointBase('local', 'http://www.testdomain.test.tamtam.nl/api/');
 ```
 
+You can set an anti forgery token if required by the API, which will be used during POST requests.
+```javascript
+    API.setAntiForgeryToken("tokenName", "tokenValue");
+```
+
+
 ### Default usage
 You can use GET, POST, PUT, DELETE methods.
 
@@ -41,8 +47,8 @@ You can use GET, POST, PUT, DELETE methods.
         props: 'with-data',
         passedAs: 'data-object'
     })
-        .then( (response) => successHandler(response) )
-        .catch( (response) => errorHandler(response) );
+        .then( response => successHandler(response) )
+        .catch( response => errorHandler(response) );
 
 ```
 
@@ -53,20 +59,6 @@ you are doing. So in the example underneath, it will look for `/assets/api-json/
 After that path, it appends a 'modifier' with the current method and than .json. E.g.: `/assets/api-json/your-path/foo-bar--delete.json`.
 this is done since locally you can not use a DELETE request on a JSON file.
 
-#### Configure your Browsersync
-Update your middleware in browser-sync.js task to:
-```javascript
- middleware: [
-    function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        next();
-    },
-    function (req, res, next) {
-        if ( req.method !== 'GET' ) req.method = 'GET';
-        next();
-    }
-]
-```
 
 #### Use it
 ```javascript
@@ -91,3 +83,4 @@ Update your middleware in browser-sync.js task to:
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
