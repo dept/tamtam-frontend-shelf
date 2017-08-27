@@ -8,6 +8,7 @@ class History {
 
     constructor() {
 
+        prepareHistoryEvents();
         this.bindEvents();
 
     }
@@ -59,3 +60,50 @@ class History {
 }
 
 export default new History();
+
+/**
+ * Define the events where we are adding a callback to
+ */
+function prepareHistoryEvents() {
+
+    const events = [
+        {
+            eventName: 'pushState',
+            callbackEventName: 'onpushstate'
+        },
+        {
+            eventName: 'replaceState',
+            callbackEventName: 'onreplacestate'
+        }
+    ];
+
+    events.forEach(obj => addHistoryCallbackEvent(obj));
+
+    // Add callback to all events
+    window.onpopstate = history.onreplacestate = history.onpushstate = (state) => Events.$trigger('history::update', { data: { state } });
+
+}
+
+/**
+ * Define the events that will get a callback
+ * @param {Object} obj
+ * @param {string} obj[].eventName Name of history event
+ * @param {string} obj[].callbackEventName Name of callback
+ */
+function addHistoryCallbackEvent(obj) {
+
+    const historyEvent = history[obj.eventName];
+
+    history[obj.eventName] = function (state) {
+
+        if (typeof history[obj.callbackEventName] == "function") {
+
+            history[obj.callbackEventName]({ state: state });
+
+        }
+
+        return historyEvent.apply(history, arguments);
+
+    };
+
+}

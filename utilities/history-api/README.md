@@ -11,6 +11,7 @@
 
 ## What does it do
 * Listens for events to update the url and state object on [History](https://developer.mozilla.org/en-US/docs/Web/API/History) with pushState / replaceState.
+*Truggers a callback with the new state object.
 
 ## Install
 ```javascript
@@ -33,6 +34,22 @@ Events.$trigger('history::replace', {
         url : '/your-new-url',
         state: {}
     }
+});
+
+```
+
+### Listen to the history callback
+This callback will be triggered on the following events:
+* pushState
+* replaceState
+* onpopstate
+```javascript
+
+Events.$on('history::update', (e, state) => {
+
+    console.log('new url', window.location.href);
+    console.log('new state', state);
+
 });
 
 ```
