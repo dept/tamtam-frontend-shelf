@@ -25,11 +25,7 @@ class History {
     /**
     * Create a new URL entry in your History
     * @param {Object} data
-<<<<<<< HEAD
-    * @param {Object} [data[].state] State object
-=======
     * @param {Object} data[].state State object
->>>>>>> 45f410ded0b2b9f7ad38c565b4742f7fbf599832
     * @param {string} data[].url New url
     */
     pushHistory(data) {
@@ -46,11 +42,7 @@ class History {
     /**
     * Overwrite current URL entry in your History
     * @param {Object} data
-<<<<<<< HEAD
-    * @param {Object} [data[].state] State object
-=======
     * @param {Object} data[].state State object
->>>>>>> 45f410ded0b2b9f7ad38c565b4742f7fbf599832
     * @param {string} data[].url New url
     */
     replaceHistory(data) {
