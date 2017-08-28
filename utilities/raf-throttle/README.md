@@ -1,5 +1,5 @@
 
-# Javascript In-view libary
+# Javascript RAF-Throttle libary
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
