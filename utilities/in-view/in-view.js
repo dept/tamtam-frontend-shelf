@@ -62,7 +62,7 @@ class InView {
     */
     _setNewElement(element) {
 
-        if ( element.elementInViewIdentifier ) { return; }
+        if (element.elementInViewIdentifier) { return; }
 
         const index = ++this.lastEventIndex;
         element.elementInViewIdentifier = index;
@@ -137,9 +137,9 @@ class InView {
     */
     _addElements() {
 
-        this.elements.forEach((element) => {
+        Object.keys(this.elements).forEach(index => {
 
-            this._setNewElement(element);
+            this._setNewElement(this.elements[index]);
 
         });
 
