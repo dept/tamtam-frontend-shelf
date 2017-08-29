@@ -1,0 +1,50 @@
+// @shelf-version 1.0.0
+$breadcrumb-spacing: $global-spacing * 2;
+$breadcrumb-transition-time: 400ms !default;
+$breadcrumb-transition-ease: $ease-in-out-quad !default;
+$breadcrumb-mobile-offset: map-get($container-config, gutter-small) !default;
+
+.c-breadcrumb {
+    overflow: auto;
+    @include screen-mobile-plus-and-smaller {
+        margin-left: - $breadcrumb-mobile-offset;
+        margin-right: - $breadcrumb-mobile-offset;
+        padding-left: $breadcrumb-mobile-offset;
+        padding-right: $breadcrumb-mobile-offset;
+    }
+}
+
+.breadcrumb__list {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    white-space: nowrap;
+}
+
+.breadcrumb__list-item {
+    position: relative;
+    padding-right: $breadcrumb-spacing;
+
+    &:not(:last-child) {
+        &:after {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: $breadcrumb-spacing;
+            text-align: center;
+            transform: translateY(-50%);
+            content: '\276D';
+        }
+    }
+}
+
+.breadcrumb__item {
+    display: block;
+
+    span {
+        display: block;
+    }
+}
+
+.breadcrumb__item--current {
+}

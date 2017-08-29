@@ -1,0 +1,48 @@
+{#
+    @shelf-version: 1.0.0
+    Breadcrumb component
+#}
+<div class="c-breadcrumb">
+
+    <span id="breadcrumb-label" class="u-sr-only">You are here:</span>
+    
+    <ol class="breadcrumb__list" id="breadcrumb" aria-labelledby="breadcrumb-label" itemscope itemtype="http://schema.org/BreadcrumbList">
+        
+        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="breadcrumb__item" itemprop="item" href="/">
+                <span itemprop="name">
+                    Home
+                </span>
+            </a>
+            <meta itemprop="position" content="1" />
+        </li>
+        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="breadcrumb__item" itemprop="item" href="/">
+                <span itemprop="name">
+                    Category 1
+                </span>
+            </a>
+            <meta itemprop="position" content="2" />
+        </li>
+
+        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a class="breadcrumb__item" itemprop="item" href="/">
+                <span itemprop="name">
+                    Category 2
+                </span>
+            </a>
+            <meta itemprop="position" content="3" />
+        </li>
+
+        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <span class="breadcrumb__item breadcrumb__item--current" itemprop="item">
+                <span itemprop="name">
+                    Current page with long name
+                </span>
+            </span>
+            <meta itemprop="position" content="4" />
+        </li>
+
+    </ol>
+    
+</div>
