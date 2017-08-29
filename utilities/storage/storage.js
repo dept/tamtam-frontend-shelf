@@ -1,44 +1,64 @@
 import Cookie from 'js-cookie';
 
-class StorageUtil {
+class Storage {
 
     constructor() {
 
         this.storagePrefix = '';
+        this.storageType = 'localStorage';
+        this.supported = storageTypeIsSupported(this.storageType);
 
     }
 
+    /**
+     * Set storage type
+     * @param {string('localStorage'|'sessionStorage')} storageType 
+     */
+    setStorageType(storageType) {
+
+        if(["localStorage", "sessionStorage"].indexOf(storageType) !== -1){
+
+            this.storageType = storageType;
+
+        }
+
+    }
+
+    /**
+     * Set storage prefix
+     * @param {string} prefix 
+     */
     setPrefix(prefix) {
 
         this.storagePrefix = prefix;
 
     }
 
+    /**
+     * Get storage prefix
+     * @returns {string}  
+     */
     getPrefix() {
 
         return this.storagePrefix;
 
     }
 
-    getStorageKey(key) {
+    /**
+     * Get the prefixed storage key
+     * @returns {string}  
+     */
+    getPrefixedStorageKey(key) {
 
         return `${this.storagePrefix}.${key}`;
 
     }
 
-}
-
-
-class LocalStorage extends StorageUtil {
-
-    constructor() {
-
-        super();
-
-        this.supported = localStorageSupported();
-
-    }
-
+    /**
+     * Set item
+     * @param {string} key Identifier of the data
+     * @param {string} value The data to be stored
+     */ 
     set(key, value) {
 
         if (typeof value !== "undefined" && value !== null) {
@@ -51,11 +71,11 @@ class LocalStorage extends StorageUtil {
 
             if (this.supported) {
 
-                localStorage.setItem(this.getStorageKey(key), value);
+                window[this.storageType].setItem(this.getPrefixedStorageKey(key), value);
 
             } else {
 
-                Cookie.set(this.getStorageKey(key), value, { expires: 30 });
+                Cookie.set(this.getPrefixedStorageKey(key), value, { expires: 30 });
 
             }
 
@@ -63,14 +83,19 @@ class LocalStorage extends StorageUtil {
 
     }
 
+    /**
+     * Get item
+     * @param {string} key Identifier of the data we are requesting
+     * @returns {string|Object}
+     */ 
     get(key) {
 
         let data = null;
-        const storageKey = this.getStorageKey(key);
+        const storageKey = this.getPrefixedStorageKey(key);
 
         if (this.supported) {
 
-            data = localStorage.getItem(storageKey);
+            data = window[this.storageType].getItem(storageKey);
 
         } else {
 
@@ -93,13 +118,17 @@ class LocalStorage extends StorageUtil {
 
     }
 
+    /**
+     * Remove item
+     * @param {string} key Identifier of the data we are removing
+     */ 
     remove(key) {
 
-        const storageKey = this.getStorageKey(key);
+        const storageKey = this.getPrefixedStorageKey(key);
 
         if (this.supported) {
 
-            localStorage.removeItem(storageKey);
+            window[this.storageType].removeItem(storageKey);
 
         } else {
 
@@ -111,96 +140,17 @@ class LocalStorage extends StorageUtil {
 
 }
 
-
-class SessionStorage extends StorageUtil {
-
-    constructor() {
-
-        super();
-
-        this.supported = sessionStorageSupported();
-
-    }
-
-    set(key, value) {
-
-        if (typeof value !== "undefined" && value !== null) {
-
-            if (typeof value === 'object') {
-
-                value = JSON.stringify(value);
-
-            }
-
-            if (this.supported) {
-
-                sessionStorage.setItem(this.getStorageKey(key), value);
-
-            } else {
-
-                Cookie.set(this.getStorageKey(key), value, { expires: 30 });
-
-            }
-
-        }
-
-    }
-
-    get(key) {
-
-        let data = null;
-        const storageKey = this.getStorageKey(key);
-
-        if (this.supported) {
-
-            data = sessionStorage.getItem(storageKey);
-
-        } else {
-
-            data = Cookie.get(storageKey);
-
-        }
-
-        try {
-
-            data = JSON.parse(data);
-
-        }
-        catch (e) {
-
-            data = data;
-
-        }
-
-        return data;
-
-    }
-
-    remove(key) {
-
-        const storageKey = this.getStorageKey(key);
-
-        if (this.supported) {
-
-            sessionStorage.removeItem(storageKey);
-
-        } else {
-
-            Cookie.remove(storageKey);
-
-        }
-
-    }
-
-}
-
-
-function localStorageSupported() {
+/**
+ * Check if given storage type is supported
+ * @param {string} storageType
+ * @returns {Boolean}
+ */ 
+function storageTypeIsSupported(storageType) {
 
     try {
 
-        localStorage.x = 1;
-        localStorage.removeItem('x');
+        window[storageType].x = 1;
+        window[storageType].removeItem('x');
         return true;
 
     } catch (e) {
@@ -211,26 +161,28 @@ function localStorageSupported() {
 
 }
 
-function sessionStorageSupported() {
+/**
+ * Check if localStorage is supported
+ * @returns {Boolean}
+ */
+function localStorageIsSupported() {
 
-    try {
+    return storageTypeIsSupported('localStorage');
 
-        sessionStorage.x = 1;
-        sessionStorage.removeItem('x');
-        return true;
+}
+/**
+ * Check if sessionStorage is supported
+ * @returns {Boolean}
+ */
+function sessionStorageIsSupported() {
 
-    } catch (e) {
-
-        return false;
-
-    }
+    return storageTypeIsSupported('sessionStorage');
 
 }
 
 
 export {
-    localStorageSupported,
-    sessionStorageSupported,
-    LocalStorage,
-    SessionStorage
+    localStorageIsSupported,
+    sessionStorageIsSupported,
+    Storage
 }
