@@ -29,25 +29,13 @@ class StorageUtil {
 }
 
 
-class LocalStorage {
+class LocalStorage extends StorageUtil {
 
     constructor() {
 
-        this.storage = new StorageUtil();
+        super();
 
         this.supported = localStorageSupported();
-
-    }
-
-    setPrefix(prefix) {
-
-        this.storage.setPrefix(prefix);
-
-    }
-
-    getPrefix() {
-
-        return this.storage.getPrefix();
 
     }
 
@@ -63,11 +51,11 @@ class LocalStorage {
 
             if (this.supported) {
 
-                localStorage.setItem(this.storage.getStorageKey(key), value);
+                localStorage.setItem(this.getStorageKey(key), value);
 
             } else {
 
-                Cookie.set(this.storage.getStorageKey(key), value, { expires: 30 });
+                Cookie.set(this.getStorageKey(key), value, { expires: 30 });
 
             }
 
@@ -78,7 +66,7 @@ class LocalStorage {
     get(key) {
 
         let data = null;
-        const storageKey = this.storage.getStorageKey(key);
+        const storageKey = this.getStorageKey(key);
 
         if (this.supported) {
 
@@ -107,7 +95,7 @@ class LocalStorage {
 
     remove(key) {
 
-        const storageKey = this.storage.getStorageKey(key);
+        const storageKey = this.getStorageKey(key);
 
         if (this.supported) {
 
@@ -124,25 +112,13 @@ class LocalStorage {
 }
 
 
-class SessionStorage {
+class SessionStorage extends StorageUtil {
 
     constructor() {
 
-        this.storage = new StorageUtil();
+        super();
 
         this.supported = sessionStorageSupported();
-
-    }
-
-    setPrefix(prefix) {
-
-        this.storage.setPrefix(prefix);
-
-    }
-
-    getPrefix() {
-
-        return this.storage.getPrefix();
 
     }
 
@@ -158,11 +134,11 @@ class SessionStorage {
 
             if (this.supported) {
 
-                sessionStorage.setItem(this.storage.getStorageKey(key), value);
+                sessionStorage.setItem(this.getStorageKey(key), value);
 
             } else {
 
-                Cookie.set(this.storage.getStorageKey(key), value, { expires: 30 });
+                Cookie.set(this.getStorageKey(key), value, { expires: 30 });
 
             }
 
@@ -173,7 +149,7 @@ class SessionStorage {
     get(key) {
 
         let data = null;
-        const storageKey = this.storage.getStorageKey(key);
+        const storageKey = this.getStorageKey(key);
 
         if (this.supported) {
 
@@ -202,7 +178,7 @@ class SessionStorage {
 
     remove(key) {
 
-        const storageKey = this.storage.getStorageKey(key);
+        const storageKey = this.getStorageKey(key);
 
         if (this.supported) {
 
