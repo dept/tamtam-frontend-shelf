@@ -11,7 +11,7 @@
 
 ## What does it do
 * Listens for events to update the url and state object on [History](https://developer.mozilla.org/en-US/docs/Web/API/History) with pushState / replaceState.
-*Truggers a callback with the new state object.
+* Triggers a callback with the new state object.
 
 ## Install
 ```javascript
