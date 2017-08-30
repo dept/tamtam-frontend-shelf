@@ -1,7 +1,8 @@
 # Components
+* [Breadcrumb](/components/breadcrumb/README.md)
+* [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 * [Modal](/components/modal/README.md)
 * [Social Share links - Simple](/utilities/social-share-links/simple/README.md)
-* [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 
 # Utilities
 * [DOM Elements](/utilities/dom-elements/README.md)
