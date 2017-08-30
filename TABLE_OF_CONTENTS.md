@@ -4,5 +4,6 @@
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 
 # Utilities
+* [API](/utilities/api/README.md)
 * [Events](/utilities/events/README.md)
 * [Focus Trap](/utilities/focus-trap/README.md)

@@ -34,7 +34,7 @@ You can override the default endpoints for each environment like so:
 
 You can set an anti forgery token if required by the API, which will be used during POST requests.
 ```javascript
-    API.setAntiForgeryToken("tokenName", "tokenValue");
+    API.setAntiForgeryToken('tokenName', 'tokenValue');
 ```
 
 
@@ -42,14 +42,12 @@ You can set an anti forgery token if required by the API, which will be used dur
 You can use GET, POST, PUT, DELETE methods.
 
 ```javascript
-    
-    API.get('whatever-you-want/', {
-        props: 'with-data',
-        passedAs: 'data-object'
-    })
-        .then( response => successHandler(response) )
-        .catch( response => errorHandler(response) );
-
+API.get('whatever-you-want/', {
+    props: 'with-data',
+    passedAs: 'data-object'
+})
+    .then( response => successHandler(response) )
+    .catch( response => errorHandler(response) );
 ```
 
 ### Use JSON fallback, locally or everywhere
@@ -62,20 +60,19 @@ this is done since locally you can not use a DELETE request on a JSON file.
 
 #### Use it
 ```javascript
+// Pass third property 'true' to use JSON everywhere.
+API.get('your-path/foo-bar', {
+    data: 'object'
+}, true)
+    .then()
+    .catch();
 
-    // Pass third property 'true' to use JSON everywhere.
-    API.get('your-path/foo-bar', {
-        data: 'object'
-    }, true)
-        .then()
-        .catch();
-    
-    // Pass as third property 'local' to use JSON local only. No other environments allowed.
-    API.get('your-path/foo-bar', {
-        data: 'object'
-    }, 'local')
-        .then()
-        .catch();
+// Pass as third property 'local' to use JSON local only. No other environments allowed.
+API.get('your-path/foo-bar', {
+    data: 'object'
+}, 'local')
+    .then()
+    .catch();
 ```
 
 ## Dependencies
