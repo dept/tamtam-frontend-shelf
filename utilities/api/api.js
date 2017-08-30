@@ -42,7 +42,7 @@ class API {
 
     get(path, data, json, params = {}) {
 
-        const endpoint = this._getEndoint(path, json, 'get');
+        const endpoint = getEndpoint(path, json, 'get');
         const options = {
             data,
             method: getMethod('GET', json)
@@ -56,7 +56,7 @@ class API {
 
     post(path, data, json, params = {}) {
 
-        const endpoint = this._getEndoint(path, json, 'post');
+        const endpoint = getEndpoint(path, json, 'post');
         const options = {
             data,
             method: getMethod('POST', json)
@@ -76,7 +76,7 @@ class API {
 
     put(path, data, json, params = {}) {
 
-        const endpoint = this._getEndoint(path, json, 'put');
+        const endpoint = getEndpoint(path, json, 'put');
         const options = {
             data,
             method: getMethod('PUT', json)
@@ -90,7 +90,7 @@ class API {
 
     delete(path, data, json, params = {}) {
 
-        const endpoint = this._getEndoint(path, json, 'delete');
+        const endpoint = getEndpoint(path, json, 'delete');
         const options = {
             data,
             method: getMethod('DELETE', json)
@@ -102,27 +102,28 @@ class API {
 
     }
 
-    /**
-     * Get the endpoint. If we require json we will return a json file.
-     * @param {string} path
-     * @param {string|boolean} json
-     * @param {string} method
-     */
-    _getEndoint(path, json, method) {
+}
 
-        if (path.substr(0, 2) === '//' && path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
-            return path;
-        }
+/**
+ * Get the endpoint. If we require json we will return a json file.
+ * @param {string} path
+ * @param {string|boolean} json
+ * @param {string} method
+ */
+function getEndpoint(path, json, method) {
 
-        if (json === true || (json === 'local' && Environment.isLocal())) {
-            return endpointBase.json + path + `--${method}.json`;
-        } else {
-            return endpointBase[Environment.get()] + path;
-        }
+    if (path.substr(0, 2) === '//' && path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
+        return path;
+    }
 
+    if (json === true || (json === 'local' && Environment.isLocal())) {
+        return endpointBase.json + path + `--${method}.json`;
+    } else {
+        return endpointBase[Environment.get()] + path;
     }
 
 }
+
 
 /**
  * Will transform the method to GET if we require static json file
