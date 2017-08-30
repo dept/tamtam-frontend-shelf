@@ -14,12 +14,31 @@
 * Meets structured data standard
 
 ## Install
-This module has no installation.
+```htmlmixed
+{% from 'components/breadcrumb.html' import breadcrumb %}
+```
 
 ## How to use
-Include component in your template.
+Call the macro with an array of breadcrumb objects.
 ```htmlmixed
-{% include 'components/breadcrumb.html' %}
+{{ breadcrumb([
+    {
+        url: '/home.html',
+        label: 'Home'
+    },
+    {
+        url: '/category-1.html',
+        label: 'Category 1'
+    },
+    {
+        url: '/category-2.html',
+        label: 'Category 2'
+    },
+    {
+        url: '/current-item.html',
+        label: 'Current item'
+    }
+]) }}
 ```
 
 ## Dependencies

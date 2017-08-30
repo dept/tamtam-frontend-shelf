@@ -2,47 +2,41 @@
     @shelf-version: 1.0.0
     Breadcrumb component
 #}
-<div class="c-breadcrumb">
+{% macro breadcrumb(data) %}
 
-    <span id="breadcrumb-label" class="u-sr-only">You are here:</span>
-    
-    <ol class="breadcrumb__list" id="breadcrumb" aria-labelledby="breadcrumb-label" itemscope itemtype="http://schema.org/BreadcrumbList">
+    <div class="c-breadcrumb">
+
+        <span id="breadcrumb-label" class="u-sr-only">You are here:</span>
         
-        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a class="breadcrumb__item" itemprop="item" href="/">
-                <span itemprop="name">
-                    Home
-                </span>
-            </a>
-            <meta itemprop="position" content="1" />
-        </li>
-        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a class="breadcrumb__item" itemprop="item" href="/">
-                <span itemprop="name">
-                    Category 1
-                </span>
-            </a>
-            <meta itemprop="position" content="2" />
-        </li>
+        <ol class="breadcrumb__list" id="breadcrumb" aria-labelledby="breadcrumb-label" itemscope itemtype="http://schema.org/BreadcrumbList">
+            
+            {% for item in data %}
+            <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                
+                {%- if not loop.last %}
 
-        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <a class="breadcrumb__item" itemprop="item" href="/">
-                <span itemprop="name">
-                    Category 2
-                </span>
-            </a>
-            <meta itemprop="position" content="3" />
-        </li>
+                <a class="breadcrumb__item" itemprop="item" href="{{ item.url }}">
+                    <span itemprop="name">
+                        {{ item.label }}
+                    </span>
+                </a>
 
-        <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            <span class="breadcrumb__item breadcrumb__item--current" itemprop="item">
-                <span itemprop="name">
-                    Current page with long name
-                </span>
-            </span>
-            <meta itemprop="position" content="4" />
-        </li>
+                {% else %}
 
-    </ol>
-    
-</div>
+                <span class="breadcrumb__item breadcrumb__item--current" itemprop="item">
+                    <span itemprop="name">
+                        Current page with long name
+                    </span>
+                </span>
+                
+                {% endif -%}
+                
+                <meta itemprop="position" content="{{ loop.index }}" />
+            </li>
+            {% endfor %}
+
+        </ol>
+        
+    </div>
+
+{% endmacro %}
