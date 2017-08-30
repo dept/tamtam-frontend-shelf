@@ -2,25 +2,11 @@ import Cookie from 'js-cookie';
 
 class Storage {
 
-    constructor() {
+    constructor(storageType) {
 
         this.storagePrefix = '';
-        this.storageType = 'localStorage';
+        this.storageType = setStorageType(storageType);
         this.supported = storageTypeIsSupported(this.storageType);
-
-    }
-
-    /**
-     * Set storage type
-     * @param {string('localStorage'|'sessionStorage')} storageType 
-     */
-    setStorageType(storageType) {
-
-        if(["localStorage", "sessionStorage"].indexOf(storageType) !== -1){
-
-            this.storageType = storageType;
-
-        }
 
     }
 
@@ -30,7 +16,7 @@ class Storage {
      */
     setPrefix(prefix) {
 
-        this.storagePrefix = prefix;
+        this.storagePrefix = `${prefix}.`;
 
     }
 
@@ -50,7 +36,7 @@ class Storage {
      */
     getPrefixedStorageKey(key) {
 
-        return `${this.storagePrefix}.${key}`;
+        return `${this.storagePrefix}${key}`;
 
     }
 
@@ -58,7 +44,7 @@ class Storage {
      * Set item
      * @param {string} key Identifier of the data
      * @param {string} value The data to be stored
-     */ 
+     */
     set(key, value) {
 
         if (typeof value !== "undefined" && value !== null) {
@@ -87,7 +73,7 @@ class Storage {
      * Get item
      * @param {string} key Identifier of the data we are requesting
      * @returns {string|Object}
-     */ 
+     */
     get(key) {
 
         let data = null;
@@ -121,7 +107,7 @@ class Storage {
     /**
      * Remove item
      * @param {string} key Identifier of the data we are removing
-     */ 
+     */
     remove(key) {
 
         const storageKey = this.getPrefixedStorageKey(key);
@@ -141,10 +127,29 @@ class Storage {
 }
 
 /**
+ * Set storage type
+ * @param {string('localStorage'|'sessionStorage')} storageType 
+ * @returns {string('localStorage'|'sessionStorage')} 
+ */
+function setStorageType(storageType) {
+
+    if (["localStorage", "sessionStorage"].indexOf(storageType) !== -1) {
+
+        return storageType;
+
+    } else {
+
+        return 'localStorage';
+
+    }
+
+}
+
+/**
  * Check if given storage type is supported
  * @param {string} storageType
  * @returns {Boolean}
- */ 
+ */
 function storageTypeIsSupported(storageType) {
 
     try {
@@ -180,9 +185,12 @@ function sessionStorageIsSupported() {
 
 }
 
+const LocalStorage = new Storage();
+const SessionStorage = new Storage('sessionStorage');
 
 export {
     localStorageIsSupported,
     sessionStorageIsSupported,
-    Storage
+    LocalStorage,
+    SessionStorage
 }

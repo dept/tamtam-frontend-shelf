@@ -14,36 +14,55 @@
 
 ## Install
 ```javascript
-import { Storage } from './src/modules/util/storage';
+// Import all exports
+import * as Storage from './src/modules/util/storage';
 
+// Import specific module
+import { LocalStorage } from './src/modules/util/storage';
+import { SessionStorage } from './src/modules/util/storage';
+import { localStorageIsSupported } from './src/modules/util/storage';
+import { sessionStorageIsSupported } from './src/modules/util/storage';
 ```
 
 ## How to use
-### Configure storage class
+
+### Detection
 ```javascript
+// Detect localStorage
+import { localStorageIsSupported } from './src/modules/util/storage';
 
-const storage = new Storage();
+// Detect sessionStorage
+import { sessionStorageIsSupported } from './src/modules/util/storage';
+```
 
-// Set storage type
-storage.setStorageType('localStorage');
+### Storage types
+You can use either localStorage or sessionStorage
+```javascript
+// Use localStorage
+import { LocalStorage } from './src/modules/util/storage';
 
-// Set an optional prefix to your storage objects
-storage.setPrefix('projectX');
+// Use sessionStorage
+import { SessionStorage } from './src/modules/util/storage';
 
+// Use both
+import { LocalStoragem, SessionStorage } from './src/modules/util/storage';
+```
 
+### Set prefix
+It can be handy to prefix your storage objects for easier backtracing later on. This is completely optional.
+```javascript
+LocalStorage.setPrefix('projectX');
 ```
 
 ### Set data
-
 You can set any kind of data
 ```javascript
-storage.set('data', { foo : "bar" });
+LocalStorage.set('data', { foo : "bar" });
 ```
 
 ### Get data
-
 ```javascript
-storage.get('data');
+LocalStorage.get('data');
 ```
 
 ## Dependencies
