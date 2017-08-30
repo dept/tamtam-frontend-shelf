@@ -6,6 +6,7 @@ $breadcrumb-mobile-offset: map-get($container-config, gutter-small) !default;
 
 .c-breadcrumb {
     overflow: auto;
+
     @include screen-mobile-plus-and-smaller {
         margin-left: - $breadcrumb-mobile-offset;
         margin-right: - $breadcrumb-mobile-offset;
@@ -47,4 +48,5 @@ $breadcrumb-mobile-offset: map-get($container-config, gutter-small) !default;
 }
 
 .breadcrumb__item--current {
+    color: $color-grey;
 }
