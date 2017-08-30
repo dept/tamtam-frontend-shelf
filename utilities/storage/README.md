@@ -45,7 +45,7 @@ import { LocalStorage } from './src/modules/util/storage';
 import { SessionStorage } from './src/modules/util/storage';
 
 // Use both
-import { LocalStoragem, SessionStorage } from './src/modules/util/storage';
+import { LocalStorage, SessionStorage } from './src/modules/util/storage';
 ```
 
 ### Set prefix
