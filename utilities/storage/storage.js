@@ -47,7 +47,7 @@ class Storage {
      */
     set(key, value) {
 
-        if (typeof value !== "undefined" && value !== null) {
+        if (typeof value !== 'undefined' && value !== null) {
 
             if (typeof value === 'object') {
 
@@ -133,7 +133,7 @@ class Storage {
  */
 function setStorageType(storageType) {
 
-    if (["localStorage", "sessionStorage"].indexOf(storageType) !== -1) {
+    if (['localStorage', 'sessionStorage'].indexOf(storageType) !== -1) {
 
         return storageType;
 
