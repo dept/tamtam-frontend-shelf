@@ -39,19 +39,15 @@ class Video {
         Object.keys(this.videos).forEach(index => {
 
             const element = this.videos[index];
-            const data = element.dataset;
+            const {videoType, videoId, videoTime} = element.dataset;
 
-            const type = data.videoType;
-            const id = data.videoId;
-            const time = data.videoTime;
-
-            if (!type || !id) { return; }
+            if (!videoType || !videoId) { return; }
 
             const playerOptions = {
                 element,
-                type,
-                id,
-                time
+                videoType,
+                videoId,
+                videoTime
             }
 
             if (type === 'vimeo') {
