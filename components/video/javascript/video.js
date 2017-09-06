@@ -1,6 +1,6 @@
 import YouTubePlayer from 'youtube-player';
 import VimeoPlayer from '@vimeo/player';
-import Events from './events';
+import Events from './util/events';
 
 
 const PLAYER_HOOK = '[js-hook-video]';
