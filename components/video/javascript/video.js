@@ -80,7 +80,7 @@ class Video {
  *  3: 'buffering'
  *  5: 'video cued'
  */
-initYoutubeVideo(options) {
+function initYoutubeVideo(options) {
 
     const player = YouTubePlayer(options.element, {
         videoId: options.id,
@@ -120,7 +120,7 @@ initYoutubeVideo(options) {
 
 }
 
-initVimeoVideo(options) {
+function initVimeoVideo(options) {
 
     const player = new VimeoPlayer(options.element, {
         id: options.id
