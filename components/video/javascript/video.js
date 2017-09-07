@@ -1,3 +1,6 @@
+import 'core-js/fn/array/reduce';
+import 'core-js/fn/array/from';
+
 import YouTubePlayer from 'youtube-player';
 import VimeoPlayer from '@vimeo/player';
 import Events from './util/events';
@@ -5,16 +8,14 @@ import Events from './util/events';
 
 const PLAYER_HOOK = '[js-hook-video]';
 
+class VideoInit {
 
-class Video {
+    constructor(options) {
 
-    constructor() {
-
-        this.videos = getVideos();
+        this.options = options;
+        this.videos = getVideos([].concat(this.options.platforms));
 
         this._bindEvent();
-
-        Events.$trigger('video::update');
 
     }
 
@@ -25,46 +26,89 @@ class Video {
 
         Events.$on('video::update', () => {
 
-            this._initVideos();
+            this._iteratePlatforms();
 
         });
 
     }
 
     /**
+     * Iterate over platform types
+     */
+    _iteratePlatforms() {
+
+        Object.keys(this.videos).forEach(platform => this._initVideos(this.videos[platform]));
+
+    }
+
+    /**
      * Init all videos
      */
-    _initVideos() {
+    _initVideos(videos) {
 
-        Object.keys(this.videos).forEach(index => {
+        videos.forEach(video => {
 
-            const element = this.videos[index];
-            const {videoType, videoId, videoTime} = element.dataset;
+            const options = _constructVideoOptions(video);
 
-            if (!videoType || !videoId) { return; }
+            switch (options.videoPlatform) {
 
-            const playerOptions = {
-                element,
-                videoType,
-                videoId,
-                videoTime
-            }
+                case 'vimeo':
+                    initVimeoVideo(options);
+                    break;
 
-            if (type === 'vimeo') {
+                case 'youtube':
+                    initYoutubeVideo(options);
+                    break;
 
-                initVimeoVideo(playerOptions);
-
-            } else {
-
-                initYoutubeVideo(playerOptions);
+                default:
+                    console.warn('No valid video platform found');
+                    break;
 
             }
+
 
         });
+
 
     }
 
 }
+
+function getVideos(platforms) {
+
+    return filterPlatforms(platforms, document.querySelectorAll(PLAYER_HOOK));
+
+}
+
+function filterPlatforms(platforms, videos) {
+
+    let filteredByPlatform = {};
+
+    platforms.map(platform => {
+        filteredByPlatform[platform] = [];
+        Array.from(videos).filter(video => (video.dataset.videoPlatform === platform) ? filteredByPlatform[platform].push(video) : false).reduce((a, b) => b, [])
+    });
+
+    return filteredByPlatform;
+
+}
+
+function _constructVideoOptions(element) {
+
+    const { videoPlatform, videoId, videoTime } = element.dataset;
+    if (!videoPlatform || !videoId || element._initialised) { return false; }
+
+    element._initialised = true;
+
+    return {
+        element,
+        videoPlatform,
+        videoId,
+        videoTime
+    }
+
+}
+
 
 /**
  * 
@@ -79,9 +123,9 @@ class Video {
 function initYoutubeVideo(options) {
 
     const player = YouTubePlayer(options.element, {
-        videoId: options.id,
+        videoId: options.videoId,
         playerVars: {
-            start: options.time
+            start: options.videoTime
         }
     });
 
@@ -119,13 +163,13 @@ function initYoutubeVideo(options) {
 function initVimeoVideo(options) {
 
     const player = new VimeoPlayer(options.element, {
-        id: options.id
+        id: options.videoId
     });
 
     player.ready().then(() => {
 
-        if (options.time) {
-            player.setCurrentTime(options.time)
+        if (options.videoTime) {
+            player.setCurrentTime(options.videoTime)
                 .then(() => player.pause());
         }
 
@@ -139,12 +183,4 @@ function initVimeoVideo(options) {
 
 }
 
-
-function getVideos() {
-
-    return document.querySelectorAll(PLAYER_HOOK);
-
-}
-
-
-export default new Video();
+export default VideoInit;

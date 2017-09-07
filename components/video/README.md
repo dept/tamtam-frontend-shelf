@@ -19,24 +19,34 @@ npm i youtube-player --save
 npm i @vimeo/player --save
 ```
 ```javascript
-import './src/modules/video';
+import Video from './src/modules/video';
 ```
 
 ## How to use
 
+### Initialise player
+Create player in HTML.
+```javascript
+new Video({ platforms: ['youtube', 'vimeo'] });
+
+Events.$trigger('video::update');
+```
+
 ### Create new player
-Create modalbox in HTML.
+Create player in HTML.
 ```htmlmixed
 {% from 'components/video.html' import video  %}
 
-<div class="c-video" 
-    id="video-GrDHJK9UYpU"
-    data-video-type="youtube"
-    data-video-id="GrDHJK9UYpU"
-    data-video-time="10"
-    js-hook-video >
-</div>
-
+{{ video({
+    id: 'GrDHJK9UYpU',
+    platform: 'youtube',
+    title: 'title here',
+    description: 'description here',
+    thumbnail: '/assets/images/thumbs/thumb.jpg',
+    embed_url: 'https://www.youtube.com/watch?v=GrDHJK9UYpU',
+    total_time: 'T1M33S',
+    start_time: '10'
+}) }}
 ```
 
 ## Dependencies
