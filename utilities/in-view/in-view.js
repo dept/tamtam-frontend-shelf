@@ -21,7 +21,7 @@ class InView {
         Events.$trigger('in-view::update');
 
         // Trigger scroll event to get elements that are in view on page load.
-        window.dispatchEvent(new CustomEvent('scroll'));
+        Events.$trigger('scroll');
 
     }
 
