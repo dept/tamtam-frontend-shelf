@@ -1,0 +1,172 @@
+$video-background-color: $color-off-white;
+$video-loader-size: 50px;
+$video-loader-thickness: 4px;
+$video-loader-color: $color-primary;
+
+.c-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    margin-bottom: 20px;
+    background-color: $video-background-color;
+
+    .video__player,
+    iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.video__player {
+    z-index: 1;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 250ms $ease-in-quad;
+    transition-property: opacity, transform;
+
+    .video--is-initialised & {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.video__loader {
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: $video-loader-size;
+    height: $video-loader-size;
+    box-shadow: inset 0 0 0 $video-loader-thickness $video-loader-color;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    backface-visibility: hidden;
+    z-index: 0;
+
+    &::before,
+    &::after {
+        position: absolute;
+        content: '';
+    }
+
+    &::before {
+        width: ($video-loader-size+2) / 2;
+        height: $video-loader-size + 2;
+        background: $video-background-color;
+        border-radius: ($video-loader-size + 2) 0 0 ($video-loader-size + 2);
+        top: -1px;
+        left: -1px;
+        transform-origin: ($video-loader-size+2) / 2 ($video-loader-size+2) / 2;
+        animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1) 900ms;
+    }
+
+    &::after {
+        width: ($video-loader-size+2) / 2;
+        height: $video-loader-size + 2;
+        background: $video-background-color;
+        border-radius: 0 ($video-loader-size + 1) ($video-loader-size + 1) 0;
+        top: -1px;
+        left: $video-loader-size / 2;
+        transform-origin: 0 ($video-loader-size+2) / 2;
+        animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .video--is-initialised & {
+        &::before,
+        &::after {
+            animation: none;
+        }
+    }
+}
+
+@keyframes video-loader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+$video-button-size: 60px;
+$video-button-color: $color-white;
+$video-button-icon-color: $color-primary;
+$video-button-transition-time: 250ms;
+$video-button-transition-ease: $ease-in-quad;
+
+.video__button {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: $video-button-size;
+    height: $video-button-size;
+    border-radius: $video-button-size;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: $video-button-color;
+    box-shadow: 0 2px 10px 0 rgba($color-black, 0.3);
+    transition: $video-button-transition-time $video-button-transition-ease;
+    transition-property: box-shadow, opacity;
+
+    &:hover {
+        box-shadow: 0 0 0 0 rgba($color-black, 0);
+
+        .video__button-icon {
+            color: darken($video-button-icon-color, 20%);
+        }
+    }
+}
+
+.video__button-icon {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 1px);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    font-size: 3rem;
+    color: $video-button-icon-color;
+    transition: $video-button-transition-time $video-button-transition-ease;
+    transition-property: color;
+}
+
+.video__button--play {
+    .video__button-icon {
+        width: 18px;
+        height: 18px;
+        border-top: 9px solid transparent;
+        border-left: 18px solid $video-button-icon-color;
+        border-right: 0px solid transparent;
+        border-bottom: 9px solid transparent;
+    }
+
+    .video--is-paused &{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.video__button--pause {
+    .video__button-icon {
+        letter-spacing: 2px;
+    }
+
+    .video--is-playing:hover &{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.video__button--replay {
+    .video__button-icon {
+        font-weight: $font-weight-bold;
+    }
+
+    .video--is-ended &{
+        opacity: 1;
+        pointer-events: all;
+    }
+}
