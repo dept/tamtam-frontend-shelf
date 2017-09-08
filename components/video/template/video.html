@@ -2,11 +2,11 @@
 
     <div class="c-video" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
 
-        <meta itemprop="name" content="{{ data.title }}" />
-        <meta itemprop="description">{{ data.description }}</span>
-        <meta itemprop="duration" content="{{ data.totalTime }}" />
-        <meta itemprop="thumbnailUrl" content="{{ data.thumbnail }}" />
-        <meta itemprop="embedURL" content="{{ data.embedUrl }}" />
+        {% if data.title %}<meta itemprop="name" content="{{ data.title }}" />{% endif %}
+        {% if data.description %}<meta itemprop="description">{{ data.description }}</span>{% endif %}
+        {% if data.totalTime %}<meta itemprop="duration" content="{{ data.totalTime }}" />{% endif %}
+        {% if data.thumbnail %}<meta itemprop="thumbnailUrl" content="{{ data.thumbnail }}" />{% endif %}
+        {% if data.embedUrl %}<meta itemprop="embedURL" content="{{ data.embedUrl }}" />{% endif %}
 
         <div id="video-{{ data.id }}"
             data-video-platform="{{ data.platform }}"
