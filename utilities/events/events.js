@@ -2,7 +2,7 @@
  * @shelf-version: 1.0.0
  * Events utility
  */
-const eventEl = document.querySelector('html');
+const eventEl = window;
 
 class Events {
 
