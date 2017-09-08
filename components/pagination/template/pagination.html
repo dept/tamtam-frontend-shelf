@@ -1,0 +1,49 @@
+{% macro pagination(data) %}
+
+    <div class="c-pagination {% if data.classes %} {{ data.classes }}{% endif %}">
+
+        <ol class="pagination__list">
+
+            <li class="pagination__item pagination__item--arrow">
+                <a class="pagination__arrow pagination__arrow--prev" href="#" rel="prev">
+                    Previous <span class="u-sr-only">page</span>
+                </a>
+            </li>
+
+            <li class="pagination__item">
+                <a href="#" class="pagination__link">1</a>
+            </li>
+
+            <li class="pagination__item pagination__item--active">
+                <a href="#" class="pagination__link">2</a>
+            </li>
+
+            <li class="pagination__item">
+                <a href="#" class="pagination__link">3</a>
+            </li>
+
+            <li class="pagination__item">
+                <a href="#" class="pagination__link">4</a>
+            </li>
+
+            <li class="pagination__item">
+                <a href="#" class="pagination__link">5</a>
+            </li>
+
+            <li class="pagination__item">...</li>
+
+            <li class="pagination__item">
+                <a href="#" class="pagination__link">25</a>
+            </li>
+
+            <li class="pagination__item  pagination__item--arrow">
+                <a class="pagination__arrow pagination__arrow--next" href="#" rel="next">
+                    Next <span class="u-sr-only">page</span>
+                </a>
+            </li>
+
+        </ol>
+
+    </div>
+
+{% endmacro %}
