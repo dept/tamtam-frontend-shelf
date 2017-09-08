@@ -4,9 +4,10 @@
         action:     'string',
         submitText: 'string',
         id:         'string',
+        label:      'string',    Also used as placeholder
         autocomplete: boolean   (optional, default false)
         classes:    'string',   (optional)
-        label:      'string',   (optional) - Also used as placeholder
+        attr:       'string'    (optional)
         inputAttrs: 'string'    (optional)
     }
  #}
@@ -14,20 +15,19 @@
 
     <form method="post"
           class="c-search-field{%- if data.classes %} {{ data.classes }}{% endif -%}"
+          {% if data.attr %} {{ data.attr | safe }}{% endif %}
           action="{{ data.action }}">
 
         <div class="search-field__wrapper">
-            {% if data.label %}
-                <label class="u-sr-only" for="{{ options.id }}">{{ data.label | safe }}</label>
-            {% endif %}
+            <label class="u-sr-only" for="{{ options.id }}">{{ data.label | safe }}</label>
 
             <input id="{{ data.id }}"
-                   class="search-field__input"
-                {% if data.label %} placeholder="{{ data.label }}"{% endif %}
+                class="search-field__input"
+                placeholder="{{ data.label }}"
                 {% if data.inputAttrs %} {{ data.inputAttrs | safe }}{% endif %}
                 {% if not data.autocomplete %}autocomplete="off"{% endif %}
-                   type="text"
-                   required>
+                type="text"
+                required>
 
             <button type="submit" class="search-field__submit">
                 <span class="u-sr-only">{{ data.submitText }}</span>
