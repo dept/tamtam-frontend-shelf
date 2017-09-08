@@ -7,6 +7,8 @@
 # Utilities
 * [DOM Elements](/utilities/dom-elements/README.md)
 * [Events](/utilities/events/README.md)
+* [Inview](/utilities/in-view/README.md)
+* [RAF throttle](/utilities/raf-throttle/README.md)
 * [Focus Trap](/utilities/focus-trap/README.md)
 * [History](/utilities/history-api/README.md)
 * [Storage](/utilities/storage/README.md)
