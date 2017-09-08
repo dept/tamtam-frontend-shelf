@@ -5,6 +5,7 @@
 * [Social Share links - Simple](/utilities/social-share-links/simple/README.md)
 
 # Utilities
+* [API](/utilities/api/README.md)
 * [DOM Elements](/utilities/dom-elements/README.md)
 * [Events](/utilities/events/README.md)
 * [Inview](/utilities/in-view/README.md)
