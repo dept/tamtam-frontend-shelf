@@ -89,8 +89,6 @@ $video-loader-color: $color-primary;
         transform: rotate(360deg);
     }
 }
-
-
 $video-button-size: 60px;
 $video-button-color: $color-white;
 $video-button-icon-color: $color-primary;
@@ -113,7 +111,7 @@ $video-button-transition-ease: $ease-in-quad;
     transition: $video-button-transition-time $video-button-transition-ease;
     transition-property: box-shadow, opacity;
 
-    &:hover {
+    @include hover-focus {
         box-shadow: 0 0 0 0 rgba($color-black, 0);
 
         .video__button-icon {
@@ -132,7 +130,7 @@ $video-button-transition-ease: $ease-in-quad;
     font-size: 3rem;
     color: $video-button-icon-color;
     transition: $video-button-transition-time $video-button-transition-ease;
-    transition-property: color;
+    transition-property: color, border;
 }
 
 .video__button--play {
@@ -144,10 +142,16 @@ $video-button-transition-ease: $ease-in-quad;
         border-right: 0 solid transparent;
         border-bottom: 9px solid transparent;
     }
-
+    
     .video--is-paused & {
         opacity: 1;
         pointer-events: all;
+    }
+    
+    @include hover-focus {
+        .video__button-icon {
+            border-left-color: darken($video-button-icon-color, 20%);
+        }
     }
 }
 
