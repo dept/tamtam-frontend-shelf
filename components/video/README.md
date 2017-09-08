@@ -38,18 +38,22 @@ Create player in HTML.
 {% from 'components/video.html' import video  %}
 
 {{ video({
+    instance_id: 1,
     id: 'GrDHJK9UYpU',
     platform: 'youtube',
     title: 'title here',
     description: 'description here',
     thumbnail: '/assets/images/thumbs/thumb.jpg',
-    embed_url: 'https://www.youtube.com/watch?v=GrDHJK9UYpU',
     total_time: 'T1M33S',
-    start_time: '10'
+    start_time: '10',
+    classes: 'additional-class',
+    controls: 1
 }) }}
 ```
 
 ## Dependencies
+* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
+* [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
 * [Events library](/utilities/events/)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
