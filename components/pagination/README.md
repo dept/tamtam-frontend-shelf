@@ -20,7 +20,7 @@
 ## How to use
 Call the macro with optional `classes` object.
 ```htmlmixed
-{{ breadcrumb() }}
+{{ pagination() }}
 ```
 
 ## Dependencies
