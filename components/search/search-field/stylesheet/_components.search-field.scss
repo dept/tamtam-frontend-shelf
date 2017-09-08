@@ -1,0 +1,39 @@
+$search-height: 50px;
+$search-padding: $global-spacing-xs;
+$search-border-size: 1px;
+$search-button-size: $search-height;
+$search-transition: .4s $ease-in-out-cubic;
+
+.search-field__wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.search-field__input {
+    width: 100%;
+    height: $search-height;
+    padding: $search-padding $search-button-size * 1.5 $search-padding $search-padding;
+    border: $search-border-size solid $color-grey;
+    background-color: $color-white;
+    transition: background-color $search-transition;
+
+    &:focus {
+        background-color: lighten($color-grey, 18);
+        box-shadow: none;
+    }
+}
+
+.search-field__submit {
+    width: $search-button-size;
+    height: $search-button-size;
+    background-color: $color-primary;
+    transition: background-color $search-transition;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    &:hover,
+    &:focus {
+        background-color: darken($color-primary, 10);
+    }
+}
