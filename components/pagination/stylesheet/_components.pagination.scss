@@ -38,6 +38,7 @@ $pagination-item-margin-right: $pagination-item-margin-left;
     margin-right: $pagination-item-margin-right;
 }
 
+.pagination__link,
 .pagination__item--active,
 .pagination__item--seperator {
     @include pagination-link-base;
@@ -62,7 +63,6 @@ $pagination-item-margin-right: $pagination-item-margin-left;
 .pagination__link {
     display: block;
     text-decoration: none;
-    @include pagination-link-base;
 
     @include hover-focus {
         color: $color-black;
