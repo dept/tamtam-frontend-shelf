@@ -52,6 +52,8 @@ Create player in HTML.
 ```
 
 ## Dependencies
+* [core-js/fn/symbol](https://www.npmjs.com/package/core-js) for IE11 support
+* [core-js/fn/symbol/iterator](https://www.npmjs.com/package/core-js) for IE11 support
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
 * [Events library](/utilities/events/)
