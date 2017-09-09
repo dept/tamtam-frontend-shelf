@@ -32,6 +32,7 @@ class VimeoVideo {
             }
 
             Events.$trigger('video::ready', { data: this.options });
+            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
 
         });
 
@@ -41,22 +42,40 @@ class VimeoVideo {
 
     }
 
-    play(){
+    play() {
 
         this.player.play();
 
     }
 
-    pause(){
+    pause() {
 
         this.player.pause();
 
     }
 
-    replay(){
+    replay() {
 
         this.player.unload();
         this.player.play();
+
+    }
+
+    mute() {
+
+        this.player.setVolume(0);
+
+    }
+
+    unMute() {
+
+        this.player.setVolume(1);
+
+    }
+
+    setVolume(value) {
+
+        this.player.setVolume(value);
 
     }
 

@@ -189,6 +189,18 @@ function bindPlayerEvents(options) {
         options.element.playerInstance.replay();
     });
 
+    Events.$on(`video::mute(${options.instanceId})`, () => {
+        options.element.playerInstance.mute();
+    });
+
+    Events.$on(`video::unmute(${options.instanceId})`, () => {
+        options.element.playerInstance.unMute();
+    });
+
+    Events.$on(`video::volume(${options.instanceId})`, (event, data) => {
+        options.element.playerInstance.setVolume(data.data);
+    });
+
 
     options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
         Events.$trigger(`video::play(${options.instanceId})`);

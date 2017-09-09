@@ -40,7 +40,12 @@ class YoutubeVideo {
 
     _bindEvents() {
 
-        this.player.on('ready', () => Events.$trigger('video::ready', { data: this.options }));
+        this.player.on('ready', () => {
+
+            Events.$trigger('video::ready', { data: this.options });
+            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+
+        });
 
         this.player.on('stateChange', event => {
 
@@ -86,6 +91,24 @@ class YoutubeVideo {
 
         this.player.stopVideo();
         this.player.playVideo();
+
+    }
+
+    mute() {
+
+        this.player.mute();
+
+    }
+
+    unMute() {
+
+        this.player.unMute();
+
+    }
+
+    setVolume(value) {
+
+        this.player.setVolume(value);
 
     }
 
