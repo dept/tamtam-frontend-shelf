@@ -17,7 +17,7 @@ const VIDEO_PLAYING_CLASS = 'video--is-playing';
 const VIDEO_PAUSED_CLASS = 'video--is-paused';
 const VIDEO_REPLAY_CLASS = 'video--is-ended';
 
-class VideoInit {
+class Video {
 
     constructor(options) {
 
@@ -216,4 +216,4 @@ function bindPlayerEvents(options) {
 
 }
 
-export default VideoInit;
+export default Video;
