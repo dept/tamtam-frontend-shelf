@@ -7,16 +7,6 @@ import 'core-js/fn/symbol/iterator';
 import Events from '../../util/events';
 import YouTubePlayer from 'youtube-player';
 
-/**
- *
- * States
- * -1: 'unstarted'
- *  0: 'ended'
- *  1: 'playing'
- *  2: 'paused'
- *  3: 'buffering'
- *  5: 'video cued'
- */
 class YoutubeVideo {
 
     constructor(options) {
@@ -51,6 +41,16 @@ class YoutubeVideo {
 
         });
 
+        /**
+         *
+         * States
+         * -1: 'unstarted'
+         *  0: 'ended'
+         *  1: 'playing'
+         *  2: 'paused'
+         *  3: 'buffering'
+         *  5: 'video cued'
+         */
         this.player.on('stateChange', event => {
 
             switch (event.data) {
