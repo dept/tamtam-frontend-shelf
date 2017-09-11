@@ -16,6 +16,9 @@ class VimeoVideo {
 
     }
 
+    /**
+     * Init the player instance
+     */
     _initPlayer() {
 
         this.player = new VimeoPlayer(this.options.player, {
@@ -26,6 +29,9 @@ class VimeoVideo {
 
     }
 
+    /**
+     * Bind events
+     */
     _bindEvents() {
 
         this.player.ready().then(() => {
@@ -46,18 +52,27 @@ class VimeoVideo {
 
     }
 
+    /**
+     * Bind generic play event
+     */
     play() {
 
         this.player.play();
 
     }
 
+    /**
+     * Bind generic pause event
+     */
     pause() {
 
         this.player.pause();
 
     }
 
+    /**
+     * Bind generic replay event
+     */
     replay() {
 
         this.player.unload();
@@ -65,18 +80,27 @@ class VimeoVideo {
 
     }
 
+    /**
+     * Bind generic mute event
+     */
     mute() {
 
         this.player.setVolume(0);
 
     }
 
+    /**
+     * Bind generic unmute event
+     */
     unMute() {
 
         this.player.setVolume(1);
 
     }
 
+    /**
+     * Bind generic setVolume event
+     */
     setVolume(value) {
 
         this.player.setVolume(value);

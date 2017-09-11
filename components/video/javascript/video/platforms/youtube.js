@@ -7,16 +7,6 @@ import 'core-js/fn/symbol/iterator';
 import Events from '../../util/events';
 import YouTubePlayer from 'youtube-player';
 
-/**
- *
- * States
- * -1: 'unstarted'
- *  0: 'ended'
- *  1: 'playing'
- *  2: 'paused'
- *  3: 'buffering'
- *  5: 'video cued'
- */
 class YoutubeVideo {
 
     constructor(options) {
@@ -28,6 +18,9 @@ class YoutubeVideo {
 
     }
 
+    /**
+     * Init the player instance
+     */
     _initPlayer() {
 
         this.player = YouTubePlayer(this.options.player, {
@@ -42,6 +35,9 @@ class YoutubeVideo {
 
     }
 
+    /**
+     * Bind events
+     */
     _bindEvents() {
 
         this.player.on('ready', () => {
@@ -51,6 +47,16 @@ class YoutubeVideo {
 
         });
 
+        /**
+         *
+         * States
+         * -1: 'unstarted'
+         *  0: 'ended'
+         *  1: 'playing'
+         *  2: 'paused'
+         *  3: 'buffering'
+         *  5: 'video cued'
+         */
         this.player.on('stateChange', event => {
 
             switch (event.data) {
@@ -79,18 +85,27 @@ class YoutubeVideo {
         });
     }
 
+    /**
+     * Bind generic play event
+     */
     play() {
 
         this.player.playVideo();
 
     }
 
+    /**
+     * Bind generic pause event
+     */
     pause() {
 
         this.player.pauseVideo();
 
     }
 
+    /**
+     * Bind generic replay event
+     */
     replay() {
 
         this.player.stopVideo();
@@ -98,18 +113,27 @@ class YoutubeVideo {
 
     }
 
+    /**
+     * Bind generic mute event
+     */
     mute() {
 
         this.player.mute();
 
     }
 
+    /**
+     * Bind generic unmute event
+     */
     unMute() {
 
         this.player.unMute();
 
     }
 
+    /**
+     * Bind generic setVolume event
+     */
     setVolume(value) {
 
         this.player.setVolume(value);
