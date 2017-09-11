@@ -1,3 +1,7 @@
+/**
+ *  @shelf-version: 1.0.0
+ */
+
 import 'core-js/fn/array/reduce';
 import 'core-js/fn/array/from';
 
@@ -151,7 +155,7 @@ function filterPlatforms(platforms, videos) {
  */
 function _constructVideoOptions(element) {
 
-    const { videoPlatform, videoId, videoTime, videoControls } = element.dataset;
+    const { videoPlatform, videoId, videoTime, videoInfo, videoControls } = element.dataset;
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
@@ -166,6 +170,7 @@ function _constructVideoOptions(element) {
         videoPlatform,
         videoId,
         videoTime,
+        videoInfo,
         videoControls
     }
 

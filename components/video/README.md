@@ -47,7 +47,8 @@ Create player in HTML.
     total_time: 'T1M33S',
     start_time: '10',
     classes: 'additional-class',
-    controls: 1
+    controls: 1,
+    info: 1
 }) }}
 ```
 

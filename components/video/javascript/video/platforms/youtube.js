@@ -1,3 +1,7 @@
+/**
+ *  @shelf-version: 1.0.0
+ */
+
 import 'core-js/fn/symbol';
 import 'core-js/fn/symbol/iterator';
 import Events from '../../util/events';
@@ -31,7 +35,7 @@ class YoutubeVideo {
             playerVars: {
                 start: this.options.videoTime,
                 modestbranding: 0,
-                showinfo: 0,
+                showinfo: this.options.videoInfo || false,
                 controls: parseInt(this.options.videoControls) || 0
             }
         });

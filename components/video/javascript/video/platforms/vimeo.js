@@ -1,3 +1,7 @@
+/**
+ *  @shelf-version: 1.0.0
+ */
+
 import Events from '../../util/events';
 import VimeoPlayer from '@vimeo/player';
 
@@ -16,8 +20,8 @@ class VimeoVideo {
 
         this.player = new VimeoPlayer(this.options.player, {
             id: this.options.videoId,
-            title: false,
-            portrait: false
+            title: this.options.videoInfo || false,
+            portrait: this.options.videoInfo|| false
         });
 
     }

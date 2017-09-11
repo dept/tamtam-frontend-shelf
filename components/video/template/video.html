@@ -1,3 +1,23 @@
+{#
+    @shelf-version: 1.0.0
+    Video macro
+
+    data {
+        instance_id: boolean,
+        id: 'strimg',
+        platform: 'string', (youtube or vimeo)
+        title: 'string',
+        description: 'string',
+        thumbnail: 'string', (optional)
+        total_time: 'string', (optional)
+        start_time: 'string', (optional)
+        classes: 'string', (optional)
+        controls: boolean, (optional, default 0)
+        info: boolean (optional, default 0)
+    }
+ #}
+
+
 {% macro video(data) %}
 
     <div class="c-video
@@ -8,6 +28,7 @@
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
         {% if data.controls >= 0 %}data-video-controls="{{ data.controls }}"{% endif %}
+        {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         js-hook-video>
 
         {% if data.platform === 'youtube' %}
