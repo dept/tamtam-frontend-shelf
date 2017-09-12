@@ -80,7 +80,6 @@ Create sticky component in HTML.
 ```
 
 ## Dependencies
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [In-view libary](/utilities/in-view/)
 * [Events libary](/utilities/events/)
 

@@ -4,6 +4,7 @@
 * [Modal](/components/modal/README.md)
 * [Pagination](/components/pagination/README.md)
 * [Social Share links - Simple](/utilities/social-share-links/simple/README.md)
+* [Sticky](/components/sticky/README.md)
 
 # Utilities
 * [API](/utilities/api/README.md)
