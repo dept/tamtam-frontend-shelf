@@ -14,9 +14,48 @@
 * Throttled scroll event to updated the fixed position of a sticky component
 * Additional option to constrain sticky component to the height of its parent element
 
+---------------------------------------------
+|                                           |
+| ----------------------------------------- |
+| |                                        ||
+| |                                        ||   ▲
+| |                                        ||   |
+| |                                        ||   |
+| |          Sticky scrolling box          ||   |
+| |   ( [js-hook-sticky-scroll-element] )  ||   |
+| |                                        ||   |
+| |                                        ||   |
+| |                                        ||   |
+| |                                        ||   |
+| |                                        ||   |
+| |                                        ||   ▼
+| |                                        ||
+| ----------------------------------------- |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|          Sticky lane constraints          |
+|           ( [js-hook-sticky] )            |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+|                                           |
+---------------------------------------------
+
 ## Install
 ```javascript
-import './src/modules/util/raf-throttle';
+import './src/modules/util/in-view';
 import './src/modules/sticky';
 ```
 
@@ -39,7 +78,9 @@ Create sticky component in HTML.
 ```
 
 ## Dependencies
-* [RAF-Throttle libary](/utilities/focus-trap/)
+* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
+* [In-view libary](/utilities/in-view/)
+* [Events libary](/utilities/events/)
 
 ## Developers
 * [Kees van Lierop](mailto:kees@tamtam.nl)
