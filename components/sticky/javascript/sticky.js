@@ -2,31 +2,13 @@
  *  @shelf-version: 1.0.0
  */
 
-import 'core-js/fn/array/from';
 import Events from './util/events';
 
-const STICKY_HOOK                     = '[js-hook-sticky]';
 const STICKY_SCROLL_ELEMENT_HOOK      = '[js-hook-sticky-scroll-element]';
 
 class Sticky {
 
-    constructor() {
-
-        this.registeredStickyComponents = {};
-
-        const stickyComponents = document.querySelectorAll(STICKY_HOOK);
-
-        Array.from(stickyComponents).forEach(stickyComponent => this.setupStickyComponentRegistry(stickyComponent));
-
-        this.bindEvents();
-
-    }
-
-    /**
-     * Setup an object per found sticky component
-     * @param {HTMLElement} el Single sticky component
-     */
-    setupStickyComponentRegistry(el) {
+    constructor(el) {
 
         const id = el.getAttribute('id');
 
@@ -35,12 +17,12 @@ class Sticky {
         const stickyComponent = {
             el,
             id,
-            scrollElement
+            scrollElement,
+            threshold: parseInt(el.dataset.stickyThreshold) || 0
         };
 
-        this.registeredStickyComponents[`sticky-${id}`] = stickyComponent;
-
         this.bindStickyComponentEvents(stickyComponent);
+
     }
 
     /**
@@ -48,12 +30,13 @@ class Sticky {
      * @param {HTMLElement} el Sticky component HTML element lane
      * @param {string} id Sticky component id
      * @param {HTMLElement} scrollElement Child element that scrolls through the sticky component lane
+     * @param {number} threshold amount of offset before starting the animation
      */
-    bindStickyComponentEvents({ el, id, scrollElement }) {
+    bindStickyComponentEvents({ el, id, scrollElement, threshold }) {
 
-        Events.$on(`sticky::update(#{ id })`, () => {
+        Events.$on(`sticky::update(${ id })`, () => {
 
-            setScrollElementPosition( scrollElement, getUpdatedTransformValue( el, scrollElement ) );
+            setScrollElementPosition( scrollElement, getUpdatedTransformValue( el, scrollElement, threshold ) );
 
         });
 
@@ -84,11 +67,12 @@ function setScrollElementPosition( scrollElement, position ) {
  * Resets the position of the sticky scroll element to the default state (0)
  * @param {HTMLElement} el sticky component lane element
  * @param {HTMLElement} scrollElement Element that is updated
+ * @param {number} threshold amount of offset before starting the animation
  */
-function getUpdatedTransformValue( el, scrollElement) {
+function getUpdatedTransformValue( el, scrollElement, threshold ) {
     const { pageYOffset: windowScrollPosition } = window;
 
-    const startScroll = getStartScroll( el );
+    const startScroll = getStartScroll( el, threshold );
     const endScroll   = getEndScroll( el, scrollElement );
 
     // If scrolled passed the start Y position, enable sticky position
@@ -106,10 +90,11 @@ function getUpdatedTransformValue( el, scrollElement) {
 /**
  * Returns the offset top value of the sticky component
  * @param {HTMLElement} el sticky component lane element
+ * @param {number} threshold amount of offset before starting the animation
  */
-function getStartScroll( el ) {
+function getStartScroll( el, threshold ) {
 
-    return getOffsetTopRelativeToDocumentTop( el );
+    return getOffsetTopRelativeToDocumentTop( el ) - threshold;
 
 }
 
@@ -138,4 +123,4 @@ function getOffsetTopRelativeToDocumentTop( element ) {
     return elementOffsetTopRelativeToWindow + windowScrollPosition;
 }
 
-export default new Sticky();
+export default Sticky;

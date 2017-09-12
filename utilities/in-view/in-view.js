@@ -59,6 +59,7 @@ class InView {
     * @param {Number} [element[].dataset[].inviewOffsetRight] Offset in pixels
     * @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
     * @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
+    * @param {boolean} [config[].isPersistent] Boolean for continuous functionality
     */
     _setNewElement(element) {
 
@@ -77,7 +78,8 @@ class InView {
                 right: element.dataset.inviewOffsetRight || 0
             },
             threshold: element.dataset.inviewThreshold || 0,
-            triggers: getTriggers(element.dataset.inviewTrigger)
+            triggers: getTriggers(element.dataset.inviewTrigger),
+            isPersistent: element.dataset.inviewPersistent || false
         };
 
         this.elementArray.push(config);
@@ -103,6 +105,7 @@ class InView {
     * @param {Number} [config[].offset[].right] Offset in pixels
     * @param {Number} [config[].threshold] Can be a value between 0 and 1
     * @param {string} [config[].triggers] Triggers you want to fire, can be comma seperated
+    * @param {boolean} [config[].isPersistent] Boolean for continuous functionality
     */
     _elementInView(config) {
 
@@ -114,11 +117,15 @@ class InView {
 
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
 
-            RafThrottle.remove([{
-                element: window,
-                event: 'scroll',
-                namespace: `ElementInView-${config.index}`
-            }]);
+            if ( !config.isPersistent ) {
+
+                RafThrottle.remove([{
+                    element: window,
+                    event: 'scroll',
+                    namespace: `ElementInView-${config.index}`
+                }]);
+
+            }
 
         } else {
 

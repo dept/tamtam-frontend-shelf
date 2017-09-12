@@ -68,7 +68,9 @@ Create sticky component in HTML.
 {% from 'components/sticky.html' import sticky  %}
 
 {% call sticky({
-    constrain: true
+    id: 'my-awesome-sticky-component',
+    class: 'c-wrapped-around-another-component',
+    threshold: 120
 }) %}
 
     Your content here.
