@@ -1,0 +1,19 @@
+{#
+    @shelf-version: 1.0.0
+    Sticky macro
+    Usage as a call, inject the sticky content there.
+
+    Options:
+        Optional
+        constrain {boolean}   - If true, sticky component will not scroll past the bottom of its parent element
+#}
+
+{% macro sticky(data) %}
+
+    <div class="c-sticky" js-hook-sticky>
+        <div class="c-sticky__scroll-element">
+            {{ caller() }}
+        </div>
+    </div>
+
+{% endmacro %}

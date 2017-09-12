@@ -1,5 +1,5 @@
 
-# Modal component
+# Sticky component
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -10,66 +10,36 @@
 
 
 ## What does it do
-* Create modalboxes with an easy to use macro.
-* Open and close modalboxes.
-* Bind custom events to DOM elements that should have modalbox behavior. (ie. Open and Close)
+* Implements Nunjucks macros to easily create sticky content
+* Throttled scroll event to updated the fixed position of a sticky component
+* Additional option to constrain sticky component to the height of its parent element
 
 ## Install
 ```javascript
-import './src/modules/util/focus-trap';
-import './src/modules/modal';
+import './src/modules/util/raf-throttle';
+import './src/modules/sticky';
 ```
 
 ## How to use
 
 ### Default
 
-Create modalbox in HTML.
+Create sticky component in HTML.
 ```htmlmixed
-{% from 'components/modal.html' import modal  %}
+{% from 'components/sticky.html' import sticky  %}
 
-{% call modal({
-    id : 'modal-example'
+{% call sticky({
+    constrain: true
 }) %}
 
     Your content here.
 
 {% endcall %}
 
-<button type="button" aria-controls="modal-example" aria-title="Open modalbox">
-    Open example modalbox
-</button>
-
-```
-
-### Custom
-
-Custom html element
-```htmlmixed
-<div id="modal-custom">
-    I am a custom modalbox
-
-    <button type="button" js-hook-button-modal-close aria-title="Close modalbox">
-        Close
-    </button>
-</div>
-
-<button type="button" aria-controls="modal-custom" aria-title="Open modalbox">
-    Open example modalbox
-</button>
-
-```
-
-Bind custom html element to modal.
-```javascript
-Events.$trigger('modal::bind', '#modal-custom');
 ```
 
 ## Dependencies
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [Events library](/utilities/events/)
-* [Focus trap utility](/utilities/focus-trap/)
+* [RAF-Throttle libary](/utilities/focus-trap/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
-* [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)
+* [Kees van Lierop](mailto:kees@tamtam.nl)
