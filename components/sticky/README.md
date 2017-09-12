@@ -14,6 +14,7 @@
 * Throttled scroll event to updated the fixed position of a sticky component
 * Additional option to constrain sticky component to the height of its parent element
 
+```
 ---------------------------------------------
 |                                           |
 | ----------------------------------------- |
@@ -52,6 +53,7 @@
 |                                           |
 |                                           |
 ---------------------------------------------
+```
 
 ## Install
 ```javascript
