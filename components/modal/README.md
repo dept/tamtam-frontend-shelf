@@ -62,7 +62,7 @@ Custom html element
 
 Bind custom html element to modal.
 ```javascript
-Events.$trigger('modal::bind', { data: { hook: '#custom-modal' } });
+Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ```
 
 ## Dependencies
