@@ -161,6 +161,7 @@ class Modal {
 
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
+        // Remove modal open class off html element if noBodyClass is false
         if ( !noBodyClass ) {
             html.classList.remove(MODAL_HTML_CLASS);
         }
