@@ -71,8 +71,10 @@ class FocusTrap {
      * Finds and focuses the first focusable element inside the trap
      */
     focusClosestFocusTarget() {
+
         const focusTarget = findClosestFocusTarget(this.focusTrapElement);
         focusTarget.focus();
+        
     }
 
     /**
