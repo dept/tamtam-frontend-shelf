@@ -53,8 +53,8 @@ class FocusTrap {
 
     /**
      * Public method to change the trap
-     * @param element - Target to set as trap element
-     * @param preventAutoFocus - boolean if true, there will be no auto focus on activation
+     * @param {HTMLElement} element Target to set as trap element
+     * @param {Boolean} preventAutoFocus If true, there will be no auto focus on activation
      */
     activate({ element, preventAutoFocus = false }) {
 
