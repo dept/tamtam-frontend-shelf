@@ -1,7 +1,3 @@
-/**
- *  @shelf-version: 1.0.0
- */
-
 import 'core-js/fn/array/reduce';
 import 'core-js/fn/array/from';
 
@@ -38,6 +34,14 @@ class Video {
     _bindEvent() {
 
         Events.$on('video::inview', (event, element) => {
+
+            if (!element._inViewport.bottom && !element._inViewport.top && !element.dataset.videoLoop) {
+                Events.$trigger(`video::pause(${element.id})`);
+            }
+
+            if (element._initialised) {
+                return;
+            }
 
             this._initVideos([element]);
 
@@ -214,32 +218,25 @@ function bindPlayerEvents(options) {
         options.element.playerInstance.setVolume(data.data);
     });
 
-
     const playButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (playButton) {
-
         options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
             Events.$trigger(`video::play(${options.instanceId})`);
         });
-
     }
 
     const pauseButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (pauseButton) {
-
         options.element.querySelector(VIDEO_PAUSE_HOOK).addEventListener('click', () => {
             Events.$trigger(`video::pause(${options.instanceId})`);
         });
-
     }
 
     const replayButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (replayButton) {
-
         options.element.querySelector(VIDEO_REPLAY_HOOK).addEventListener('click', () => {
             Events.$trigger(`video::replay(${options.instanceId})`);
         });
-
     }
 
 }
