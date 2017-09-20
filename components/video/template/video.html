@@ -12,8 +12,10 @@
         total_time: 'string', (optional)
         start_time: 'string', (optional)
         classes: 'string', (optional)
+        autopause: boolean, (optional, default 1)
         controls: boolean, (optional, default 0)
-        info: boolean (optional, default 0)
+        info: boolean (optional, default 0),
+        inview: boolean (optional, default true)
     }
  #}
 
@@ -27,9 +29,14 @@
         {% if data.platform %}data-video-platform="{{ data.platform }}"{% endif %}
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
+        {% if data.autopause >= 0 %}data-video-autopause="{{ data.autopause }}"{% endif %}
         {% if data.controls >= 0 %}data-video-controls="{{ data.controls }}"{% endif %}
         {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
+        {% if not data.inview or data.inview === true %}
+            js-hook-inview
+            data-inview-trigger="video::inview"
+        {% endif %}
         js-hook-video>
 
         {% if data.platform === 'youtube' %}
@@ -39,10 +46,11 @@
         {% endif %}
 
         {% if data.title %}<meta itemprop="name" content="{{ data.title }}" />{% endif %}
-        {% if data.description %}<meta itemprop="{{ data.description }}" />{% endif %}
+        {% if data.description %}<meta itemprop="description" content="{{ data.description }}" />{% endif %}
         {% if data.totalTime %}<meta itemprop="duration" content="{{ data.totalTime }}" />{% endif %}
         {% if data.thumbnail %}<meta itemprop="thumbnailUrl" content="{{ data.thumbnail }}" />{% endif %}
         {% if data.embedUrl %}<meta itemprop="embedURL" content="{{ platformUrl }}{{ data.id }}" />{% endif %}
+        {% if data.uploadDate %}<meta itemprop="uploadDate" content="{{ data.uploadDate }}" />{% endif %}
 
         <div class="video__player" js-hook-video-player></div>
 

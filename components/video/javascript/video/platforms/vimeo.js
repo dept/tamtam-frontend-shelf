@@ -25,7 +25,8 @@ class VimeoVideo {
             id: this.options.videoId,
             title: this.options.videoInfo || false,
             portrait: this.options.videoInfo|| false,
-            loop: this.options.videoLoop || 0
+            loop: this.options.videoLoop || 0,
+            autopause: this.options.videoAutopause || 1
         });
 
     }

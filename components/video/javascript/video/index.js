@@ -37,6 +37,12 @@ class Video {
      */
     _bindEvent() {
 
+        Events.$on('video::inview', (event, element) => {
+
+            this._initVideos([element]);
+
+        });
+
         Events.$on('video::update', () => {
 
             this._iteratePlatforms();
@@ -155,7 +161,7 @@ function filterPlatforms(platforms, videos) {
  */
 function _constructVideoOptions(element) {
 
-    const { videoPlatform, videoId, videoTime, videoInfo, videoControls, videoLoop } = element.dataset;
+    const { videoPlatform, videoId, videoTime, videoInfo, videoControls, videoAutopause, videoLoop } = element.dataset;
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
@@ -172,6 +178,7 @@ function _constructVideoOptions(element) {
         videoTime,
         videoInfo,
         videoControls,
+        videoAutopause,
         videoLoop
     }
 
