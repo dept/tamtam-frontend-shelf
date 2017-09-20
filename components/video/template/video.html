@@ -35,6 +35,7 @@
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         {% if not data.inview or data.inview === true %}
             js-hook-inview
+            data-inview-persistent="true"
             data-inview-trigger="video::inview"
         {% endif %}
         js-hook-video>
