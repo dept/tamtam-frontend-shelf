@@ -48,6 +48,7 @@ You can add the following options:
     data-inview-offset-left="100"
     data-inview-offset-right="100"
     data-inview-threshold="0.5"
+    data-inview-persistent="true"
     data-inview-trigger="event::example, event2::example">
 
     Track me

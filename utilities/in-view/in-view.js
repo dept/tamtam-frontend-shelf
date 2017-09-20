@@ -19,9 +19,8 @@ class InView {
         this._bindEvent();
 
         Events.$trigger('in-view::update');
-
-        // Trigger scroll event to get elements that are in view on page load.
-        window.dispatchEvent(new CustomEvent('scroll'));
+        
+        Events.$trigger('scroll');
 
     }
 
@@ -70,24 +69,34 @@ class InView {
         const config = {
             index,
             element,
+            persistent: element.dataset.inviewPersistent || 0,
             offset: {
-                top: element.dataset.inviewOffsetTop || 0,
-                bottom: element.dataset.inviewOffsetBottom || 0,
-                left: element.dataset.inviewOffsetLeft || 0,
-                right: element.dataset.inviewOffsetRight || 0
+                top: parseInt(element.dataset.inviewOffsetTop) || 0,
+                bottom: parseInt(element.dataset.inviewOffsetBottom) || 0,
+                left: parseInt(element.dataset.inviewOffsetLeft) || 0,
+                right: parseInt(element.dataset.inviewOffsetRight) || 0
             },
-            threshold: element.dataset.inviewThreshold || 0,
+            position: getElementPositions(element),
+            threshold: parseFloat(element.dataset.inviewThreshold) || 0,
             triggers: getTriggers(element.dataset.inviewTrigger)
         };
 
         this.elementArray.push(config);
 
-        this.eventsToBeBound.push({
-            element: window,
-            event: 'scroll',
-            namespace: `ElementInView-${config.index}`,
-            fn: () => this._elementInView(config)
-        });
+        this.eventsToBeBound.push(
+            {
+                element: window,
+                event: 'scroll',
+                namespace: `ElementInView-${config.index}`,
+                fn: () => this._elementInView(config)
+            },
+            {
+                element: window,
+                event: 'resize',
+                namespace: `ElementRecalculatePositions-${config.index}`,
+                fn: () => this._reCalculateElementPositions(config)
+            }
+        );
 
     }
 
@@ -107,18 +116,29 @@ class InView {
     _elementInView(config) {
 
         const element = config.element;
+        element._inViewport = elementIsInViewport(element, config);
 
-        if (elementIsInViewport(element, config).bottom) {
+        if (config.persistent) {
+            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+        }
+
+        if (element._inViewport.top && !element._hasBeenInViewport) {
 
             element.classList.remove('is--out-view');
 
-            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+            if (!config.persistent) {
 
-            RafThrottle.remove([{
-                element: window,
-                event: 'scroll',
-                namespace: `ElementInView-${config.index}`
-            }]);
+                config.triggers.forEach((trigger) => setTriggers(trigger, element));
+
+                RafThrottle.remove([{
+                    element: window,
+                    event: 'scroll',
+                    namespace: `ElementInView-${config.index}`
+                }]);
+
+                element._hasBeenInViewport = true;
+
+            }
 
         } else {
 
@@ -143,6 +163,7 @@ class InView {
 
         });
 
+
     }
 
     /**
@@ -152,6 +173,12 @@ class InView {
 
         this.eventsToBeBound = [];
         this.elements = getElements();
+
+    }
+
+    _reCalculateElementPositions(config) {
+
+        config.position = getElementPositions(config.element);
 
     }
 
@@ -200,25 +227,29 @@ function setTriggers(trigger, element) {
 */
 function elementIsInViewport(element, options) {
 
-    const { top, right, bottom, left, width, height } = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+    const windowHeight = window.innerHeight;
+    const windowWidth = document.body.clientWidth;
 
     const intersection = {
-        t: bottom,
-        r: window.innerWidth - left,
-        b: window.innerHeight - top,
-        l: right
-    };
+        t: options.position.top - scrollTop,
+        r: options.position.right.toFixed(0) + scrollLeft - windowWidth,
+        b: options.position.bottom - scrollTop - windowHeight,
+        l: options.position.left.toFixed(0) + scrollLeft
+    }
 
     const threshold = {
-        x: options.threshold * width,
-        y: options.threshold * height
+        x: options.threshold * options.position.width,
+        y: options.threshold * options.position.height
     };
 
     const inViewDirections = {
-        top: intersection.t > (options.offset.top + threshold.y),
-        right: intersection.r > (options.offset.right + threshold.x),
-        bottom: intersection.b > (options.offset.bottom + threshold.y),
-        left: intersection.l > (options.offset.left + threshold.x)
+        top: (options.offset.top + threshold.y) - intersection.t >= -windowHeight && (options.offset.top + threshold.y - intersection.t) < 0,
+        right: intersection.r >= (options.offset.right + threshold.x),
+        bottom: (options.offset.bottom + threshold.y) - intersection.b < windowHeight && (options.offset.bottom + threshold.y - intersection.b) >= 0,
+        left: intersection.l >= (options.offset.left + threshold.x)
     };
 
     inViewDirections.any = inViewDirections.top || inViewDirections.right || inViewDirections.bottom || inViewDirections.left;
@@ -226,6 +257,50 @@ function elementIsInViewport(element, options) {
 
     return inViewDirections;
 
+}
+
+/**
+* Returns the offsets and measurements of given element
+* @param {HTMLElement} element
+* @returns {Object} Object with all element measurements and offsets
+*/
+function getElementPositions(element) {
+
+    const { width, height } = element.getBoundingClientRect();
+
+    const { top, left } = getElementOffset(element);
+
+    return {
+        top: top,
+        left: left,
+        right: left + width,
+        bottom: top + height,
+        width,
+        height
+    };
+
+}
+
+/**
+* Returns the offsetTop and offsetLeft of given element
+* @param {HTMLElement} element
+* @returns {Object} Object of top and left position
+*/
+function getElementOffset(element) {
+
+    let top = 0;
+    let left = 0;
+
+    do {
+        top += element.offsetTop || 0;
+        left += element.offsetLeft || 0;
+        element = element.offsetParent;
+    } while (element);
+
+    return {
+        top: top,
+        left: left
+    };
 }
 
 export default new InView();
