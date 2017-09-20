@@ -29,7 +29,8 @@ class YoutubeVideo {
                 start: this.options.videoTime,
                 modestbranding: 0,
                 showinfo: this.options.videoInfo || false,
-                controls: parseInt(this.options.videoControls) || 0
+                controls: parseInt(this.options.videoControls) || 0,
+                loop: this.options.videoLoop || 0
             }
         });
 

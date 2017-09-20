@@ -24,7 +24,8 @@ class VimeoVideo {
         this.player = new VimeoPlayer(this.options.player, {
             id: this.options.videoId,
             title: this.options.videoInfo || false,
-            portrait: this.options.videoInfo|| false
+            portrait: this.options.videoInfo|| false,
+            loop: this.options.videoLoop || 0
         });
 
     }

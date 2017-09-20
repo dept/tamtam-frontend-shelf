@@ -28,6 +28,7 @@
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
         {% if data.controls >= 0 %}data-video-controls="{{ data.controls }}"{% endif %}
+        {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         js-hook-video>
 
@@ -47,20 +48,22 @@
 
         <div class="video__loader"></div>
 
-        <button class="video__button video__button--play" js-hook-video-play>
-            <span class="video__button-icon"></span>
-            <span class="u-sr-only">Play</span>
-        </button>
+        {% if data.buttons !== false %}
+            <button class="video__button video__button--play" js-hook-video-play>
+                <span class="video__button-icon"></span>
+                <span class="u-sr-only">Play</span>
+            </button>
 
-        <button class="video__button video__button--pause" js-hook-video-pause>
-            <span class="video__button-icon">&#10073;&#10073;</span>
-            <span class="u-sr-only">Pause</span>
-        </button>
+            <button class="video__button video__button--pause" js-hook-video-pause>
+                <span class="video__button-icon">&#10073;&#10073;</span>
+                <span class="u-sr-only">Pause</span>
+            </button>
 
-        <button class="video__button video__button--replay" js-hook-video-replay>
-            <span class="video__button-icon">&#8635;</span>
-            <span class="u-sr-only">Replay</span>
-        </button>
+            <button class="video__button video__button--replay" js-hook-video-replay>
+                <span class="video__button-icon">&#8635;</span>
+                <span class="u-sr-only">Replay</span>
+            </button>
+        {% endif %}
 
     </div>
 

@@ -155,7 +155,7 @@ function filterPlatforms(platforms, videos) {
  */
 function _constructVideoOptions(element) {
 
-    const { videoPlatform, videoId, videoTime, videoInfo, videoControls } = element.dataset;
+    const { videoPlatform, videoId, videoTime, videoInfo, videoControls, videoLoop } = element.dataset;
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
@@ -171,7 +171,8 @@ function _constructVideoOptions(element) {
         videoId,
         videoTime,
         videoInfo,
-        videoControls
+        videoControls,
+        videoLoop
     }
 
 }
@@ -207,17 +208,32 @@ function bindPlayerEvents(options) {
     });
 
 
-    options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
-        Events.$trigger(`video::play(${options.instanceId})`);
-    });
+    const playButton = options.element.querySelector(VIDEO_PLAY_HOOK);
+    if (playButton) {
 
-    options.element.querySelector(VIDEO_PAUSE_HOOK).addEventListener('click', () => {
-        Events.$trigger(`video::pause(${options.instanceId})`);
-    });
+        options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
+            Events.$trigger(`video::play(${options.instanceId})`);
+        });
 
-    options.element.querySelector(VIDEO_REPLAY_HOOK).addEventListener('click', () => {
-        Events.$trigger(`video::replay(${options.instanceId})`);
-    });
+    }
+
+    const pauseButton = options.element.querySelector(VIDEO_PLAY_HOOK);
+    if (pauseButton) {
+
+        options.element.querySelector(VIDEO_PAUSE_HOOK).addEventListener('click', () => {
+            Events.$trigger(`video::pause(${options.instanceId})`);
+        });
+
+    }
+
+    const replayButton = options.element.querySelector(VIDEO_PLAY_HOOK);
+    if (replayButton) {
+
+        options.element.querySelector(VIDEO_REPLAY_HOOK).addEventListener('click', () => {
+            Events.$trigger(`video::replay(${options.instanceId})`);
+        });
+
+    }
 
 }
 
