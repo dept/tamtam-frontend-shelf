@@ -54,15 +54,18 @@ class FocusTrap {
     /**
      * Public method to change the trap
      * @param element - Target to set as trap element
+     * @param preventAutoFocus - boolean if true, there will be no auto focus on activation
      */
-    activate(element) {
+    activate({ element, preventAutoFocus = false }) {
 
         this.activated = true;
         this.focusTrapElement = element;
         this.originalFocus = document.activeElement;
 
-        const focusTarget = findClosestFocusTarget(this.focusTrapElement);
-        focusTarget.focus();
+        if ( !preventAutoFocus ) {
+            const focusTarget = findClosestFocusTarget(this.focusTrapElement);
+            focusTarget.focus();
+        }
 
     }
 

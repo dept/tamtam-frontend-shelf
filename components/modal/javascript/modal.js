@@ -128,7 +128,11 @@ class Modal {
         modal.el.setAttribute('tabindex', 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
 
-        Events.$trigger('focustrap::activate', { data: modal.el });
+        Events.$trigger('focustrap::activate', {
+            data: {
+                element: modal.el
+            }
+        });
 
     }
 
