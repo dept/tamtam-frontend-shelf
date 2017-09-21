@@ -69,7 +69,7 @@ class InView {
         const config = {
             index,
             element,
-            persistent: (element.dataset.inviewPersistent === 'true') || false,
+            persistent: element.dataset.inviewPersistent === 'true',
             offset: {
                 top: parseInt(element.dataset.inviewOffsetTop) || 0,
                 bottom: parseInt(element.dataset.inviewOffsetBottom) || 0,
