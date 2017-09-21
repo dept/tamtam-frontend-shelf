@@ -76,9 +76,6 @@ console.log( isValidIBAN( 'NL39 RABO 0300 0652 64' ) );
 console.log( isValidIBAN( 'NL39RABO0300065264' ) );
 // true
 
-console.log( isValidIBAN( 'NL39RABO0300065264' ) );
-// true
-
 console.log( isValidIBAN( 'NL39 RABO 0300 0652 6' ) );
 // false
 ```
