@@ -24,10 +24,6 @@ $modal-transition-ease: $ease-in-out-quad !default;
     transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
     transition-property: opacity, left;
     -webkit-overflow-scrolling: touch;
-
-    @include screen-tablet-portrait-and-bigger {
-        align-items: center;
-    }
 }
 
 .modal--is-showing {
@@ -58,8 +54,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
 
 .modal__container {
     z-index: 1;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     padding: 0 $modal-gutter-small;
     @include screen-tablet-portrait-and-bigger {
         padding: $modal-gutter;

@@ -1,0 +1,42 @@
+{#
+    @shelf-version: 1.0.0
+    Breadcrumb component
+#}
+{% macro breadcrumb(data) %}
+
+    <div class="c-breadcrumb">
+
+        <span id="breadcrumb-label" class="u-sr-only">You are here:</span>
+        
+        <ol class="breadcrumb__list" id="breadcrumb" aria-labelledby="breadcrumb-label" itemscope itemtype="http://schema.org/BreadcrumbList">
+            
+            {% for item in data %}
+            <li class="breadcrumb__list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                
+                {%- if not loop.last %}
+
+                <a class="breadcrumb__item" itemprop="item" href="{{ item.url }}">
+                    <span itemprop="name">
+                        {{ item.label }}
+                    </span>
+                </a>
+
+                {% else %}
+
+                <span class="breadcrumb__item breadcrumb__item--current" itemprop="item">
+                    <span itemprop="name">
+                        Current page with long name
+                    </span>
+                </span>
+                
+                {% endif -%}
+                
+                <meta itemprop="position" content="{{ loop.index }}" />
+            </li>
+            {% endfor %}
+
+        </ol>
+        
+    </div>
+
+{% endmacro %}
