@@ -246,9 +246,9 @@ function elementIsInViewport(element, options) {
     };
 
     const inViewDirections = {
-        top: (options.offset.top + threshold.y) - intersection.t >= -windowHeight && (options.offset.top + threshold.y - intersection.t) < 0,
+        top: (options.offset.top + threshold.y) - intersection.t >= -windowHeight && (options.offset.top + threshold.y - intersection.t) <= 0,
         right: intersection.r >= (options.offset.right + threshold.x),
-        bottom: (options.offset.bottom + threshold.y) - intersection.b < windowHeight && (options.offset.bottom + threshold.y - intersection.b) >= 0,
+        bottom: (options.offset.bottom + threshold.y) - intersection.b <= windowHeight && (options.offset.bottom + threshold.y - intersection.b) >= 0,
         left: intersection.l >= (options.offset.left + threshold.x)
     };
 
