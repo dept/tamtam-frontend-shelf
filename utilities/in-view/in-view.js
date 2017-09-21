@@ -66,19 +66,29 @@ class InView {
         const index = ++this.lastEventIndex;
         element.elementInViewIdentifier = index;
 
+        const {
+            inviewPersistent,
+            inviewOffsetTop,
+            inviewOffsetBottom,
+            inviewOffsetLeft,
+            inviewOffsetRight,
+            inviewThreshold,
+            inviewTrigger
+        } = element.dataset;
+
         const config = {
             index,
             element,
-            persistent: element.dataset.inviewPersistent === 'true',
+            persistent: (inviewPersistent === 'true') || false,
             offset: {
-                top: parseInt(element.dataset.inviewOffsetTop) || 0,
-                bottom: parseInt(element.dataset.inviewOffsetBottom) || 0,
-                left: parseInt(element.dataset.inviewOffsetLeft) || 0,
-                right: parseInt(element.dataset.inviewOffsetRight) || 0
+                top: parseInt(inviewOffsetTop) || 0,
+                bottom: parseInt(inviewOffsetBottom) || 0,
+                left: parseInt(inviewOffsetLeft) || 0,
+                right: parseInt(inviewOffsetRight) || 0
             },
             position: getElementPositions(element),
-            threshold: parseFloat(element.dataset.inviewThreshold) || 0,
-            triggers: getTriggers(element.dataset.inviewTrigger)
+            threshold: parseFloat(inviewThreshold) || 0,
+            triggers: getTriggers(inviewTrigger)
         };
 
         this.elementArray.push(config);
