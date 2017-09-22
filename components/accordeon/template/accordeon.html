@@ -1,0 +1,57 @@
+{#
+    @shelf-version: 1.0.0
+    Accordeon macro
+    Usage as a call, inject the accordeon items there.
+
+    Options:
+        autoclose {boolean}     - Disable autoclose (optional)
+
+    Item Options:
+        id {string}             - Adds id for a11y reference
+        open {boolean}          - Defaults open or closed
+        title.default {string}  - Label for default state
+        title.open {string}     - Label for open state
+#}
+
+{% macro default(data) %}
+
+    <div class="c-accordeon"
+        {% if not data.autoclose %}data-autoclose="{{ data.autoclose }}"{% endif %}
+        js-hook-accordeon>
+
+        {{ caller() }}
+
+    </div>
+
+{% endmacro %}
+
+{% macro item(data) %}
+
+    <div class="accordeon__item {% if data.open %} accordeon__item--is-active{% endif %}"
+        js-hook-accordeon-item>
+
+        <button type="button" class="accordeon__item-header"
+            on:click.prevent="accordeon::toggle({{ data.id }})"
+            aria-expanded="{% if data.open %}true{% else %}false{% endif %}"
+            aria-controls="{{ data.id }}"
+            js-hook-accordeon-button>
+
+            <span class="accordeon__item-header--open">{{ data.title.default }}</span>
+            <span class="accordeon__item-header--close">{{ data.title.close }}</span>
+
+        </button>
+
+        <div class="accordeon__item-content-holder"
+            aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
+            id="{{ data.id }}"
+            js-hook-accordeon-content>
+
+            <div class="accordeon__item-content">
+                {{ caller() }}
+            </div>
+
+        </div>
+
+    </div>
+
+{% endmacro %}
