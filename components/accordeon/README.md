@@ -68,10 +68,10 @@ Create an accordeon in html and add items.
 Each accordeon item will trigger a generic `accordeon::opened` and `accordeon::closed` event. Containing the accordeon item and id
 ```javascript
 // Accordeon has been opened
-Events.$on('accordeon::opened', doSomething());
+Events.$on('accordeon::opened', doSomething);
 
 // Accordeon has been closed
-Events.$on('accordeon::closed', doSomething());
+Events.$on('accordeon::closed', doSomething);
 ```
 
 ## Dependencies
