@@ -12,6 +12,7 @@
 ## What does it do
 * Creates an accordeon with multiple items
 * Auto closes accordeon items when opening another one
+* Triggers `opened` and `closed` event
 
 ## Install
 ```javascript
@@ -61,6 +62,16 @@ Create an accordeon in html and add items.
 
 {% endcall %}
 
+```
+
+### Listen to events
+Each accordeon item will trigger a generic `accordeon::opened` and `accordeon::closed` event. Containing the accordeon item and id
+```javascript
+// Accordeon has been opened
+Events.$on('accordeon::opened', doSomething());
+
+// Accordeon has been closed
+Events.$on('accordeon::closed', doSomething());
 ```
 
 ## Dependencies

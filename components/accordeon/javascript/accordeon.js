@@ -79,7 +79,7 @@ class Accordeon {
      */
     _closeAllChildren(skipId) {
 
-        if(!this._autoclose) { return; }
+        if (!this._autoclose) { return; }
 
         Object.keys(this.itemObject).forEach(id => {
             if (skipId === id) { return; }
@@ -196,6 +196,13 @@ class AccordeonItem {
             this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
             this._triggerAnimatingEvent(false);
 
+            Events.$trigger(`accordeon::${(this._openState) ? 'opened' : 'closed'}`, {
+                data: {
+                    element: this.item,
+                    id: this.id
+                }
+            });
+
         }
 
     }
@@ -207,7 +214,12 @@ class AccordeonItem {
     _triggerAnimatingEvent(bool) {
 
         this._isAnimating = bool;
-        Events.$trigger('accordeon::animating', { data: { id: this.id, animating: this._isAnimating } });
+        Events.$trigger('accordeon::animating', {
+            data: {
+                id: this.id,
+                animating: this._isAnimating
+            }
+        });
 
     }
 
