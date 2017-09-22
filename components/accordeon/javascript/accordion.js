@@ -6,17 +6,17 @@ import 'core-js/fn/array/from';
 
 import Events from './util/events';
 
-const ACCORDEON_ITEM_HOOK = '[js-hook-accordeon-item]';
+const ACCORDION_ITEM_HOOK = '[js-hook-accordion-item]';
 
-const ACCORDEON_OPEN_CLASS = 'accordeon__item--is-active';
+const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
 
-class Accordeon {
+class Accordion {
 
     constructor(element) {
 
         this.element = element;
         this._autoclose = this.element.dataset.autoclose === 'false' ? false : true;
-        this.items = this.element.querySelectorAll(ACCORDEON_ITEM_HOOK);
+        this.items = this.element.querySelectorAll(ACCORDION_ITEM_HOOK);
 
         if (!this.items) { return; }
 
@@ -31,27 +31,27 @@ class Accordeon {
      */
     _bindEvents() {
 
-        Events.$on(`accordeon::animating`, (event, data) => {
+        Events.$on(`accordion::animating`, (event, data) => {
             if (this.itemObject[data.id]) {
                 this._isAnimating = data.animating;
             }
         });
 
-        Events.$on(`accordeon::toggle`, (event, id) => {
+        Events.$on(`accordion::toggle`, (event, id) => {
             if (id && this.itemObject[id] && !this._isAnimating) {
                 this._closeAllChildren(id);
                 this.itemObject[id].toggle();
             }
         });
 
-        Events.$on(`accordeon::open`, (event, id) => {
+        Events.$on(`accordion::open`, (event, id) => {
             if (id && this.itemObject[id] && !this._isAnimating) {
                 this._closeAllChildren(id);
                 this.itemObject[id].open();
             }
         });
 
-        Events.$on(`accordeon::close`, (event, id) => {
+        Events.$on(`accordion::close`, (event, id) => {
             if (id && this.itemObject[id] && !this._isAnimating) {
                 this.itemObject[id].close();
             }
@@ -60,13 +60,13 @@ class Accordeon {
     }
 
     /**
-     * Iterate over each item inside the accordeon
+     * Iterate over each item inside the accordion
      */
     _initItems() {
 
         Array.from(this.items).forEach(el => {
 
-            const item = new AccordeonItem(el);
+            const item = new AccordionItem(el);
             this.itemObject[item.id] = item;
 
         });
@@ -91,26 +91,26 @@ class Accordeon {
 }
 
 /**
- * Accordeon item class
- * Will be created for each item inside an accordeon
+ * Accordion item class
+ * Will be created for each item inside an accordion
  */
-class AccordeonItem {
+class AccordionItem {
 
     constructor(element) {
 
         this.item = element;
-        this._openState = this.item.className.indexOf(ACCORDEON_OPEN_CLASS) !== -1;
+        this._openState = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
         this._isAnimating = false;
 
-        this.button = this.item.querySelector('[js-hook-accordeon-button]')
-        this.content = this.item.querySelector('[js-hook-accordeon-content]');
+        this.button = this.item.querySelector('[js-hook-accordion-button]')
+        this.content = this.item.querySelector('[js-hook-accordion-content]');
 
         this.id = this.content.id;
 
     }
 
     /**
-     * Toggles the accordeon item
+     * Toggles the accordion item
      */
     toggle() {
 
@@ -123,7 +123,7 @@ class AccordeonItem {
     }
 
     /**
-     * Opens the accordeon item
+     * Opens the accordion item
      */
     open() {
 
@@ -131,7 +131,7 @@ class AccordeonItem {
         this._openState = true;
         this._triggerAnimatingEvent(true);
 
-        this.item.classList.add(ACCORDEON_OPEN_CLASS);
+        this.item.classList.add(ACCORDION_OPEN_CLASS);
 
         this._setHeight();
         this._setAriaState();
@@ -139,7 +139,7 @@ class AccordeonItem {
     }
 
     /**
-     * Closes the accordeon item
+     * Closes the accordion item
      */
     close() {
 
@@ -147,7 +147,7 @@ class AccordeonItem {
         this._openState = false;
         this._triggerAnimatingEvent(true);
 
-        this.item.classList.remove(ACCORDEON_OPEN_CLASS);
+        this.item.classList.remove(ACCORDION_OPEN_CLASS);
 
         this._setHeight();
         this._setAriaState();
@@ -196,7 +196,7 @@ class AccordeonItem {
             this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
             this._triggerAnimatingEvent(false);
 
-            Events.$trigger(`accordeon::${(this._openState) ? 'opened' : 'closed'}`, {
+            Events.$trigger(`accordion::${(this._openState) ? 'opened' : 'closed'}`, {
                 data: {
                     element: this.item,
                     id: this.id
@@ -208,13 +208,13 @@ class AccordeonItem {
     }
 
     /**
-     * Triggers the animating event for the accordeon holder
+     * Triggers the animating event for the accordion holder
      * @param {Boolean} bool
      */
     _triggerAnimatingEvent(bool) {
 
         this._isAnimating = bool;
-        Events.$trigger('accordeon::animating', {
+        Events.$trigger('accordion::animating', {
             data: {
                 id: this.id,
                 animating: this._isAnimating
@@ -250,5 +250,5 @@ function getElementHeight(element) {
 
 
 // export the constructor function
-export default Accordeon;
+export default Accordion;
 

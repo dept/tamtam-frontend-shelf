@@ -1,7 +1,7 @@
 {#
     @shelf-version: 1.0.0
-    Accordeon macro
-    Usage as a call, inject the accordeon items there.
+    Accordion macro
+    Usage as a call, inject the accordion items there.
 
     Options:
         autoclose {boolean}     - Disable autoclose (optional)
@@ -15,9 +15,9 @@
 
 {% macro default(data) %}
 
-    <div class="c-accordeon"
+    <div class="c-accordion"
         {% if not data.autoclose %}data-autoclose="{{ data.autoclose }}"{% endif %}
-        js-hook-accordeon>
+        js-hook-accordion>
 
         {{ caller() }}
 
@@ -27,26 +27,26 @@
 
 {% macro item(data) %}
 
-    <div class="accordeon__item {% if data.open %} accordeon__item--is-active{% endif %}"
-        js-hook-accordeon-item>
+    <div class="accordion__item {% if data.open %} accordion__item--is-active{% endif %}"
+        js-hook-accordion-item>
 
-        <button type="button" class="accordeon__item-header"
-            on:click.prevent="accordeon::toggle({{ data.id }})"
+        <button type="button" class="accordion__item-header"
+            on:click.prevent="accordion::toggle({{ data.id }})"
             aria-expanded="{% if data.open %}true{% else %}false{% endif %}"
             aria-controls="{{ data.id }}"
-            js-hook-accordeon-button>
+            js-hook-accordion-button>
 
-            <span class="accordeon__item-header--open">{{ data.title.default }}</span>
-            <span class="accordeon__item-header--close">{{ data.title.close }}</span>
+            <span class="accordion__item-header--open">{{ data.title.default }}</span>
+            <span class="accordion__item-header--close">{{ data.title.close }}</span>
 
         </button>
 
-        <div class="accordeon__item-content-holder"
+        <div class="accordion__item-content-holder"
             aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
             id="{{ data.id }}"
-            js-hook-accordeon-content>
+            js-hook-accordion-content>
 
-            <div class="accordeon__item-content">
+            <div class="accordion__item-content">
                 {{ caller() }}
             </div>
 

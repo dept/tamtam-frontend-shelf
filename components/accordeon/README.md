@@ -1,5 +1,5 @@
 
-# Accordeon component
+# Accordion component
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -10,32 +10,32 @@
 
 
 ## What does it do
-* Creates an accordeon with multiple items
-* Auto closes accordeon items when opening another one
+* Creates an accordion with multiple items
+* Auto closes accordion items when opening another one
 * Triggers `opened` and `closed` event
 
 ## Install
 ```javascript
 import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/events';
-import './src/modules/accordeon';
+import './src/modules/accordion';
 
-moduleInit('[js-hook-accordeon]', Accordeon);
+moduleInit('[js-hook-accordion]', Accordion);
 ```
 
 ## How to use
 
 ### Default
 
-Create an accordeon in html and add items.
+Create an accordion in html and add items.
 ```htmlmixed
-{% import 'components/accordeon.html' as accordeon %}
+{% import 'components/accordion.html' as accordion %}
 
-{% call accordeon.default({
+{% call accordion.default({
     autoclose: false // optional
 }) %}
 
-    {% call accordeon.item({
+    {% call accordion.item({
         "id" : "1",
         "title" : {
             "default" : "Open 1",
@@ -48,7 +48,7 @@ Create an accordeon in html and add items.
 
     {% endcall %}
 
-    {% call accordeon.item({
+    {% call accordion.item({
         "id" : "2",
         "title" : {
             "default" : "Open 2",
@@ -65,13 +65,13 @@ Create an accordeon in html and add items.
 ```
 
 ### Listen to events
-Each accordeon item will trigger a generic `accordeon::opened` and `accordeon::closed` event. Containing the accordeon item and id
+Each accordion item will trigger a generic `accordion::opened` and `accordion::closed` event. Containing the accordion item and id
 ```javascript
-// Accordeon has been opened
-Events.$on('accordeon::opened', doSomething);
+// accordion has been opened
+Events.$on('accordion::opened', doSomething);
 
-// Accordeon has been closed
-Events.$on('accordeon::closed', doSomething);
+// accordion has been closed
+Events.$on('accordion::closed', doSomething);
 ```
 
 ## Dependencies
