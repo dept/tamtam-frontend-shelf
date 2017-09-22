@@ -1,4 +1,5 @@
 # Components
+* [Accordeon](/components/accordeon/README.md)
 * [Breadcrumb](/components/breadcrumb/README.md)
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 * [Modal](/components/modal/README.md)
