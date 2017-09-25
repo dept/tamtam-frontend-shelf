@@ -5,7 +5,7 @@
 import 'core-js/fn/array/from';
 
 import Events from '../util/events';
-import AccordionItem from './accordion-item';
+import AccordionItem from './_accordion-item';
 
 const ACCORDION_ITEM_HOOK = '[js-hook-accordion-item]';
 
