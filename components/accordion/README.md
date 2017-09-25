@@ -18,7 +18,7 @@
 ```javascript
 import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/events';
-import './src/modules/accordion';
+import Accordion from './src/modules/accordion';
 
 moduleInit('[js-hook-accordion]', Accordion);
 ```
