@@ -65,13 +65,15 @@ Create an accordion in html and add items.
 ```
 
 ### Listen to events
-Each accordion item will trigger a generic `accordion::opened` and `accordion::closed` event. Containing the accordion item and id
+Each accordion item will trigger a generic and specific `accordion::opened` and `accordion::closed` event.
 ```javascript
 // accordion has been opened
 Events.$on('accordion::opened', doSomething);
+Events.$on('accordion::opened({id})', doSomethingSpecific);
 
 // accordion has been closed
 Events.$on('accordion::closed', doSomething);
+Events.$on('accordion::closed({id})', doSomethingSpecific);
 ```
 
 ## Dependencies
