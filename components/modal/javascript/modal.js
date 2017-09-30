@@ -33,24 +33,21 @@ class Modal {
      * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
-     * @param {Number} [data[].noBodyClass]
      */
     customBind(event, data) {
 
         const modals = document.querySelectorAll(data.hook);
-        const noBodyClass = data.noBodyClass || false;
 
         // Loop trough all found modals based on hook
-        Array.from(modals).forEach(modal => this.setupModalRegistry(modal, noBodyClass));
+        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
 
     }
 
     /**
      * Setup an object per found modal
      * @param {HTMLElement} el Single modalbox
-     * @param {Boolean} noBodyClass If set doesn't add class to body when modal is active
      */
-    setupModalRegistry(el, noBodyClass) {
+    setupModalRegistry(el) {
 
         const id = el.getAttribute('id');
 
@@ -61,8 +58,7 @@ class Modal {
             el,
             id,
             triggerBtn,
-            closeBtn,
-            noBodyClass
+            closeBtn
         };
 
         this.registeredModals[`modal-${id}`] = modal;
@@ -87,23 +83,22 @@ class Modal {
      * @param {string} id Modal id
      * @param {HTMLElement} triggerBtn Button to open modal
      * @param {HTMLElement} closeBtn Button to close modal
-     * @param {Boolean} noBodyClass If set doesn't add class to body when modal is active
      */
-    bindModalEvents({ id, triggerBtn, closeBtn, noBodyClass }) {
+    bindModalEvents({ id, triggerBtn, closeBtn }) {
 
         Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => {
-            Events.$trigger('modal::open', {data: {id, noBodyClass}});
-            Events.$trigger(`modal::open(${ id })`, {data: {id, noBodyClass}});
+            Events.$trigger('modal::open', {data: { id }});
+            Events.$trigger(`modal::open(${ id })`, {data: { id }});
         }));
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
-            Events.$trigger('modal::close', { data: { id, noBodyClass } });
-            Events.$trigger(`modal::close(${ id })`, {data: {id, noBodyClass}});
+            Events.$trigger('modal::close', { data: { id } });
+            Events.$trigger(`modal::close(${ id })`, {data: { id }});
         }));
 
         // Close on ESCAPE_KEY
         document.addEventListener('keyup', event => {
-            if (event.keyCode == 27) { this.closeModal(); }
+            if (event.keyCode === 27) { this.closeModal(); }
         });
 
     }
@@ -113,7 +108,6 @@ class Modal {
      * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
-     * @param {Number} [data[].noBodyClass]
      */
     openModal(event, data) {
 
@@ -121,8 +115,11 @@ class Modal {
 
         if (!modal) { return; }
 
+        const autoFocus   = modal.el.dataset.modalAutoFocus === 'true';
+        const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
+
         // Add modal open class to html element if noBodyClass is false
-        if (!data.noBodyClass) {
+        if ( !noBodyClass ) {
             html.classList.add(MODAL_HTML_CLASS);
         }
 
@@ -130,7 +127,12 @@ class Modal {
         modal.el.setAttribute('tabindex', 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
 
-        Events.$trigger('focustrap::activate', { data: modal.el });
+        Events.$trigger('focustrap::activate', {
+            data: {
+                element: modal.el,
+                autoFocus
+            }
+        });
 
     }
 
@@ -139,7 +141,6 @@ class Modal {
      * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
-     * @param {Number} [data[].noBodyClass]
      */
     closeModal(event, data) {
 
@@ -158,8 +159,10 @@ class Modal {
         // If there is no modal do nothing
         if (!modal) { return; }
 
+        const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
+
         // Remove modal open class off html element if noBodyClass is false
-        if (!data.noBodyClass) {
+        if ( !noBodyClass ) {
             html.classList.remove(MODAL_HTML_CLASS);
         }
 
