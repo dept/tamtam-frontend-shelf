@@ -4,6 +4,7 @@ import 'core-js/fn/array/from';
 import Events from '../util/events';
 import YoutubeVideo from './platforms/youtube';
 import VimeoVideo from './platforms/vimeo';
+import NativeVideo from './platforms/native';
 
 const VIDEO_HOOK = '[js-hook-video]';
 const PLAYER_HOOK = '[js-hook-video-player]';
@@ -115,6 +116,11 @@ class Video {
                     bindPlayerEvents(options);
                     break;
 
+                case 'native':
+                    options.element.playerInstance = new NativeVideo(options);
+                    bindPlayerEvents(options);
+                    break;
+
                 default:
                     console.warn('No valid video platform found');
                     break;
@@ -165,7 +171,19 @@ function filterPlatforms(platforms, videos) {
  */
 function _constructVideoOptions(element) {
 
-    const { videoPlatform, videoId, videoTime, videoInfo, videoControls, videoAutopause, videoLoop } = element.dataset;
+    const {
+        videoPlatform,
+        videoId,
+        videoTime,
+        videoInfo,
+        videoControls,
+        videoMuted,
+        videoAutopause,
+        videoAutoplay,
+        videoLoop,
+        videoSources
+    } = element.dataset;
+
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
@@ -182,8 +200,11 @@ function _constructVideoOptions(element) {
         videoTime,
         videoInfo,
         videoControls,
+        videoMuted,
         videoAutopause,
-        videoLoop
+        videoAutoplay,
+        videoLoop,
+        videoSources
     }
 
 }

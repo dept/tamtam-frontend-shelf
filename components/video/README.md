@@ -10,7 +10,7 @@
 
 
 ## What does it do
-* Plays Youtube & Vimeo video
+* Plays Youtube, Vimeo and native video
 * Fires generic video ready, play & pause events.
 
 ## Install
@@ -28,7 +28,7 @@ import Video from './src/modules/video';
 ### Default
 
 ```javascript
-new Video({ platforms: ['youtube', 'vimeo'] });
+new Video({ platforms: ['youtube', 'vimeo', 'native'] });
 ```
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
@@ -75,6 +75,56 @@ Create the player the same as in the previous demo. But now add a `inview: false
     controls: 1,
     info: 1,
     inview: false
+}) }}
+```
+
+### Native video
+You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
+```javascript
+new Video({ platforms: ['native'] });
+```
+
+```htmlmixed
+{% from 'components/video.html' import video  %}
+
+{{ video({
+    instance_id: 1,
+    id: '1',
+    platform: 'native',
+    title: 'title here',
+    description: 'description here',
+    thumbnail: '/assets/images/thumbs/thumb.jpg',
+    total_time: 'T1M33S',
+    start_time: '10',
+    classes: 'additional-class',
+    controls: 1,
+    sources: [
+        {
+            size : 1920,
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
+            poster : 'https://i.vimeocdn.com/video/638715666_1920x1080.jpg'
+        },
+        {
+            size : 1280,
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+            poster : 'https://i.vimeocdn.com/video/638715666_1280x720.jpg'
+        },
+        {
+            size : 1024,
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+            poster : 'https://i.vimeocdn.com/video/638715666_1024x576.jpg'
+        },
+        {
+            size : 960,
+            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
+            poster : 'https://i.vimeocdn.com/video/638715666_960x540.jpg'
+        },
+        {
+            size : 640,
+            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
+            poster : 'https://i.vimeocdn.com/video/638715666_640x360.jpg'
+        }
+    ]
 }) }}
 ```
 

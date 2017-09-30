@@ -24,7 +24,7 @@ class VimeoVideo {
         this.player = new VimeoPlayer(this.options.player, {
             id: this.options.videoId,
             title: this.options.videoInfo || false,
-            portrait: this.options.videoInfo|| false,
+            portrait: this.options.videoInfo || false,
             loop: this.options.videoLoop || 0,
             autopause: this.options.videoAutopause || 1
         });
@@ -45,6 +45,10 @@ class VimeoVideo {
 
             Events.$trigger('video::ready', { data: this.options });
             Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+
+            if (this.options.videoAutoplay) {
+                this.player.play();
+            }
 
         });
 
