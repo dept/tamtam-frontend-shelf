@@ -28,7 +28,6 @@ class NativeVideo {
         this.player = document.createElement('video');
 
         this.player.src = this.sourceData.url;
-        this.player.poster = this.sourceData.poster;
 
         if (parseInt(this.options.videoLoop)) {
             this.player.setAttribute('loop', 'loop');
