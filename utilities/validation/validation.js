@@ -48,7 +48,6 @@ function isValidLuhnNumber(number) {
     return luhn.validate(number);
 }
 
-
 export {
     isValidEmail,
     isValidPhoneNumber,

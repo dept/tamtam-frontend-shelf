@@ -14,3 +14,4 @@
 * [Focus Trap](/utilities/focus-trap/README.md)
 * [History](/utilities/history-api/README.md)
 * [Storage](/utilities/storage/README.md)
+* [Validation](/utilities/validation/README.md)
