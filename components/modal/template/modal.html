@@ -16,6 +16,8 @@
 
     <div class="c-modal{% if data.size %} modal-size--{{ data.size }}{% endif %}"
         {%- if data.id %} id="{{ data.id }}"{% endif -%}
+        {%- if data.autoFocus %} data-modal-auto-focus="{{ data.autoFocus }}"{% endif -%}
+        {%- if data.noBodyClass %} data-modal-no-body-class="{{ data.noBodyClass }}"{% endif -%}
         js-hook-modal
         tabindex="-1">
 

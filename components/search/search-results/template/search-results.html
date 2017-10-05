@@ -1,0 +1,50 @@
+{#
+    @shelf-version: 1.0.0
+    Search results list
+
+    data {
+        viewResultsLabel: 'string'
+        results: [
+            {
+                title:          'string',
+                description:    'string',
+                url:            'string'
+            }
+        ]
+    }
+#}
+{% macro searchResults(data) %}
+
+    <div class="c-search-results">
+        <ul class="search-results__list">
+            {% for result in data.results %}
+
+                <li class="search-results__item">
+                    <a href="{{ result.url }}" class="search-results__link">
+
+                        {% if result.image %}
+                            <img
+                                src="{{ result.image }}"
+                                alt="{{ result.title }}"
+                                class="search-results__image"
+                            >
+                        {% endif %}
+
+                        <div class="search-results__content">
+                            <h2>{{ result.title }}</h2>
+                            <p>
+                                {{ result.description }}
+                            </p>
+
+                            <span class="search-results__button">
+                                {{ data.viewResultsLabel }}
+                            </span>
+                        </div>
+                    </a>
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endmacro %}
