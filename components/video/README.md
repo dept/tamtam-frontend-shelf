@@ -101,29 +101,23 @@ new Video({ platforms: ['native'] });
     sources: [
         {
             size : 1920,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
-            poster : 'https://i.vimeocdn.com/video/638715666_1920x1080.jpg'
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119'
         },
         {
             size : 1280,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
-            poster : 'https://i.vimeocdn.com/video/638715666_1280x720.jpg'
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174'
         },
         {
             size : 1024,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
-            poster : 'https://i.vimeocdn.com/video/638715666_1024x576.jpg'
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174'
         },
         {
             size : 960,
-            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
-            poster : 'https://i.vimeocdn.com/video/638715666_960x540.jpg'
+            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165'
         },
         {
             size : 640,
-            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
-            poster : 'https://i.vimeocdn.com/video/638715666_640x360.jpg'
-        }
+            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164'        }
     ]
 }) }}
 ```
