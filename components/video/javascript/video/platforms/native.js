@@ -33,6 +33,10 @@ class NativeVideo {
             this.player.setAttribute('loop', 'loop');
         }
 
+        if (parseInt(this.options.videoPlaysinline)) {
+            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
+        }
+
         if (parseInt(this.options.videoAutoplay)) {
             this.player.setAttribute('autoplay', 'autoplay');
             this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay

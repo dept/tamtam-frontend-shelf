@@ -180,6 +180,7 @@ function _constructVideoOptions(element) {
         videoMuted,
         videoAutopause,
         videoAutoplay,
+        videoPlaysinline,
         videoLoop,
         videoSources
     } = element.dataset;
@@ -203,6 +204,7 @@ function _constructVideoOptions(element) {
         videoMuted,
         videoAutopause,
         videoAutoplay,
+        videoPlaysinline,
         videoLoop,
         videoSources
     }

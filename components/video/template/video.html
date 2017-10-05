@@ -15,6 +15,7 @@
         autopause: integer, (optional, default 1) for Vimeo video only
         muted: integer, (optional, default 1)
         autoplay: integer, (optional, default 1)
+        playsinline: integer, (optional, default 1)
         controls: integer, (optional, default 0)
         info: integer (optional, default 0),
         sources: object (optional) for native video only
@@ -34,6 +35,7 @@
         {% if data.autopause >= 0 %}data-video-autopause="{{ data.autopause }}"{% endif %}
         {% if data.muted >= 0 %}data-video-muted="{{ data.muted }}"{% endif %}
         {% if data.autoplay >= 0 %}data-video-autoplay="{{ data.autoplay }}"{% endif %}
+        {% if data.playsinline >= 0 %}data-video-playsinline="{{ data.playsinline }}"{% endif %}
         {% if data.controls >= 0 %}data-video-controls="{{ data.controls }}"{% endif %}
         {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
