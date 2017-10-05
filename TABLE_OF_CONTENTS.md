@@ -3,7 +3,9 @@
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 * [Modal](/components/modal/README.md)
 * [Pagination](/components/pagination/README.md)
-* [Social Share links - Simple](/utilities/social-share-links/simple/README.md)
+* [Search field](/components/search/search-field/README.md)
+* [Search results](/components/search/search-results/README.md)
+* [Social Share links - Simple](/components/social-share-links/simple/README.md)
 
 # Utilities
 * [API](/utilities/api/README.md)
