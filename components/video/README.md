@@ -117,7 +117,8 @@ new Video({ platforms: ['native'] });
         },
         {
             size : 640,
-            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164'        }
+            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164'
+        }
     ]
 }) }}
 ```

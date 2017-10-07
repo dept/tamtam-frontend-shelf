@@ -28,8 +28,14 @@ Create modalbox in HTML.
 ```htmlmixed
 {% from 'components/modal.html' import modal  %}
 
+You can add the following options:
+* `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.
+* `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal
+
 {% call modal({
-    id : 'modal-example'
+    id : 'modal-example',
+    autoFocus   : 'true',
+    noBodyClass : 'false'
 }) %}
 
     Your content here.
@@ -46,7 +52,9 @@ Create modalbox in HTML.
 
 Custom html element
 ```htmlmixed
-<div id="modal-custom">
+<div id="modal-custom"
+    data-modal-auto-focus="true"
+    data-modal-no-body-class="false">
     I am a custom modalbox
 
     <button type="button" js-hook-button-modal-close aria-title="Close modalbox">

@@ -3,6 +3,7 @@
  * Events utility
  */
 const eventEl = window;
+const crawlEl = document.querySelector('html');
 
 class Events {
 
@@ -59,7 +60,7 @@ const _Events = new Events();
 function readAndBindEventsFromDOM() {
 
     // Elements that have attributes starting with on:
-    const elements = _domFind(eventEl, element => {
+    const elements = _domFind(crawlEl, element => {
         return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
     });
 

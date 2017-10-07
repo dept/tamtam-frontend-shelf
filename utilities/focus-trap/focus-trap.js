@@ -43,8 +43,7 @@ class FocusTrap {
         Events.$on('focustrap::trap', (event, data) => {
 
             if (!this.focusTrapElement.contains(data)) {
-                const focusTarget = findClosestFocusTarget(this.focusTrapElement);
-                focusTarget.focus();
+                this.focusClosestFocusTarget();
             }
 
         });
@@ -53,17 +52,29 @@ class FocusTrap {
 
     /**
      * Public method to change the trap
-     * @param element - Target to set as trap element
+     * @param {HTMLElement} element Target to set as trap element
+     * @param {Boolean} autoFocus If true, on activation the element finds and auto focuses the first focusable element
      */
-    activate(element) {
+    activate({ element, autoFocus = true }) {
 
         this.activated = true;
         this.focusTrapElement = element;
         this.originalFocus = document.activeElement;
 
+        if ( autoFocus ) {
+            this.focusClosestFocusTarget();
+        }
+
+    }
+
+    /**
+     * Finds and focuses the first focusable element inside the trap
+     */
+    focusClosestFocusTarget() {
+
         const focusTarget = findClosestFocusTarget(this.focusTrapElement);
         focusTarget.focus();
-
+        
     }
 
     /**

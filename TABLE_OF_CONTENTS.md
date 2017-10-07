@@ -3,7 +3,9 @@
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 * [Modal](/components/modal/README.md)
 * [Pagination](/components/pagination/README.md)
-* [Social Share links - Simple](/utilities/social-share-links/simple/README.md)
+* [Search field](/components/search/search-field/README.md)
+* [Search results](/components/search/search-results/README.md)
+* [Social Share links - Simple](/components/social-share-links/simple/README.md)
 * [Video](/components/video/README.md)
 
 # Utilities
@@ -15,3 +17,4 @@
 * [Focus Trap](/utilities/focus-trap/README.md)
 * [History](/utilities/history-api/README.md)
 * [Storage](/utilities/storage/README.md)
+* [Validation](/utilities/validation/README.md)
