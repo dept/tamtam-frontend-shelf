@@ -59,7 +59,7 @@ class VimeoVideo {
 
         this.player.on('pause', () => {
             Events.$trigger('video::paused', { data: this.options });
-            Events.$trigger(`video::paused((${this.options.instanceId}))`, { data: this.options });
+            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
         });
 
         this.player.on('ended', () => {

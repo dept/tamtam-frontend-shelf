@@ -73,7 +73,7 @@ class NativeVideo {
 
         this.player.addEventListener('pause', () => {
             Events.$trigger('video::paused', { data: this.options })
-            Events.$trigger(`video::paused((${this.options.instanceId}))`, { data: this.options })
+            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options })
         });
 
         this.player.addEventListener('ended', () => {

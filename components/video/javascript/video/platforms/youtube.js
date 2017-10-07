@@ -81,7 +81,7 @@ class YoutubeVideo {
                 // paused
                 case 2:
                     Events.$trigger('video::paused', { data: this.options });
-                    Events.$trigger(`video::paused((${this.options.instanceId}))`, { data: this.options });
+                    Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
                     break;
 
                 // do nothing
