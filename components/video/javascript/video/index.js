@@ -54,35 +54,6 @@ class Video {
 
         });
 
-        Events.$on('video::ready', (event, data) => {
-
-            data.element.classList.add(VIDEO_READY_CLASS);
-            data.element.classList.add(VIDEO_PAUSED_CLASS);
-
-        });
-
-        Events.$on('video::playing', (event, data) => {
-
-            data.element.classList.remove(VIDEO_REPLAY_CLASS);
-            data.element.classList.remove(VIDEO_PAUSED_CLASS);
-            data.element.classList.add(VIDEO_PLAYING_CLASS);
-
-        });
-
-        Events.$on('video::paused', (event, data) => {
-
-            data.element.classList.remove(VIDEO_PLAYING_CLASS);
-            data.element.classList.add(VIDEO_PAUSED_CLASS);
-
-        });
-
-        Events.$on('video::ended', (event, data) => {
-
-            data.element.classList.remove(VIDEO_PLAYING_CLASS);
-            data.element.classList.add(VIDEO_REPLAY_CLASS);
-
-        });
-
     }
 
     /**
@@ -216,6 +187,27 @@ function _constructVideoOptions(element) {
  * @param {NodeList} options
  */
 function bindPlayerEvents(options) {
+
+    Events.$on(`video::ready(${options.instanceId})`, (event, data) => {
+        data.element.classList.add(VIDEO_READY_CLASS);
+        data.element.classList.add(VIDEO_PAUSED_CLASS);
+    });
+
+    Events.$on(`video::playing(${options.instanceId})`, (event, data) => {
+        data.element.classList.remove(VIDEO_REPLAY_CLASS);
+        data.element.classList.remove(VIDEO_PAUSED_CLASS);
+        data.element.classList.add(VIDEO_PLAYING_CLASS);
+    });
+
+    Events.$on(`video::paused(${options.instanceId})`, (event, data) => {
+        data.element.classList.remove(VIDEO_PLAYING_CLASS);
+        data.element.classList.add(VIDEO_PAUSED_CLASS);
+    });
+
+    Events.$on(`video::ended(${options.instanceId})`, (event, data) => {
+        data.element.classList.remove(VIDEO_PLAYING_CLASS);
+        data.element.classList.add(VIDEO_REPLAY_CLASS);
+    });
 
     Events.$on(`video::play(${options.instanceId})`, () => {
         options.element.playerInstance.play();

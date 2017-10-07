@@ -66,9 +66,20 @@ class NativeVideo {
 
         });
 
-        this.player.addEventListener('playing', () => Events.$trigger('video::playing', { data: this.options }));
-        this.player.addEventListener('pause', () => Events.$trigger('video::paused', { data: this.options }));
-        this.player.addEventListener('ended', () => Events.$trigger('video::ended', { data: this.options }));
+        this.player.addEventListener('playing', () => {
+            Events.$trigger('video::playing', { data: this.options })
+            Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options })
+        });
+
+        this.player.addEventListener('pause', () => {
+            Events.$trigger('video::paused', { data: this.options })
+            Events.$trigger(`video::paused((${this.options.instanceId}))`, { data: this.options })
+        });
+
+        this.player.addEventListener('ended', () => {
+            Events.$trigger('video::ended', { data: this.options })
+            Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options })
+        });
 
     }
 
