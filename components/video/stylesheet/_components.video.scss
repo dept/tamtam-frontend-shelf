@@ -148,7 +148,7 @@ $video-button-transition-ease: $ease-in-quad;
 
     .video--is-paused & {
         opacity: 1;
-        pointer-events: initial;
+        pointer-events: all;
     }
 
     @include hover-focus {
@@ -165,7 +165,7 @@ $video-button-transition-ease: $ease-in-quad;
 
     .video--is-playing:hover & {
         opacity: 1;
-        pointer-events: initial;
+        pointer-events: all;
     }
 }
 
@@ -176,6 +176,6 @@ $video-button-transition-ease: $ease-in-quad;
 
     .video--is-ended & {
         opacity: 1;
-        pointer-events: initial;
+        pointer-events: all;
     }
 }
