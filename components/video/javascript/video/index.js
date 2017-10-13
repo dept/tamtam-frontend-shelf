@@ -98,7 +98,7 @@ class Video {
      */
     _iterateVideos() {
 
-        this.videos = getVideos(this.registeredPlatforms);
+        this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
             this._initVideo(video)
@@ -130,7 +130,7 @@ class Video {
 function getVideos(platforms) {
 
     if (!VIDEOS) { return false; }
-    return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) ? video : false);
+    return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) && !video._initialised ? video : false);
 
 }
 
