@@ -31,7 +31,10 @@ class NativeVideo {
 
         if (parseInt(this.options.videoLoop)) {
             this.player.setAttribute('loop', 'loop');
-            this.player.loop = true;
+        }
+
+        if (parseInt(this.options.videoPlaysinline)) {
+            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
         }
 
         if (parseInt(this.options.videoAutoplay)) {
@@ -40,7 +43,7 @@ class NativeVideo {
         }
 
         if (parseInt(this.options.videoMuted)) {
-            this.player.setAttribute('muted', 'true');
+            this.player.setAttribute('muted', 'muted');
             this.player.muted = true;
         }
 
@@ -64,9 +67,20 @@ class NativeVideo {
 
         });
 
-        this.player.addEventListener('playing', () => Events.$trigger('video::playing', { data: this.options }));
-        this.player.addEventListener('pause', () => Events.$trigger('video::paused', { data: this.options }));
-        this.player.addEventListener('ended', () => Events.$trigger('video::ended', { data: this.options }));
+        this.player.addEventListener('playing', () => {
+            Events.$trigger('video::playing', { data: this.options })
+            Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options })
+        });
+
+        this.player.addEventListener('pause', () => {
+            Events.$trigger('video::paused', { data: this.options })
+            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options })
+        });
+
+        this.player.addEventListener('ended', () => {
+            Events.$trigger('video::ended', { data: this.options })
+            Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options })
+        });
 
     }
 
@@ -111,8 +125,8 @@ class NativeVideo {
      */
     mute() {
 
-        this.player.muted = true;
         this.player.setAttribute('muted', 'muted');
+        this.player.muted = true;
 
     }
 
