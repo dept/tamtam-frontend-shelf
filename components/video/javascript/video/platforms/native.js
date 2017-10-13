@@ -31,6 +31,7 @@ class NativeVideo {
 
         if (parseInt(this.options.videoLoop)) {
             this.player.setAttribute('loop', 'loop');
+            this.player.loop = true;
         }
 
         if (parseInt(this.options.videoAutoplay)) {
@@ -40,6 +41,7 @@ class NativeVideo {
 
         if (parseInt(this.options.videoMuted)) {
             this.player.setAttribute('muted', 'true');
+            this.player.muted = true;
         }
 
         if (parseInt(this.options.videoTime)) {
@@ -109,6 +111,7 @@ class NativeVideo {
      */
     mute() {
 
+        this.player.muted = true;
         this.player.setAttribute('muted', 'muted');
 
     }
@@ -118,6 +121,7 @@ class NativeVideo {
      */
     unMute() {
 
+        this.player.muted = false;
         this.player.removeAttribute('muted');
 
     }
