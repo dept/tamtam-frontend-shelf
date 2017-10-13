@@ -1,7 +1,3 @@
-/**
- * @shelf-version: 1.0.0
- */
-
 import Environment from '../../system/environment';
 import $ from 'jquery';
 

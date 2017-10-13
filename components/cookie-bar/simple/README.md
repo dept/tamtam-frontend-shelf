@@ -21,7 +21,9 @@ npm i js-cookie --save
 ```
 Import module
 ```javascript
-import './src/modules/cookiebar';
+import moduleInit from './src/modules/util/module-init';
+import Cookiebar from './src/modules/cookiebar';
+moduleInit('[js-hook-cookiebar]', Cookiebar);
 ```
 
 ## How to use

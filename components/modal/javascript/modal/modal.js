@@ -1,17 +1,13 @@
-/**
- *  @shelf-version: 1.0.0
- */
-
 import 'core-js/fn/array/from';
 
 import Events from './util/events';
 
 const html = document.documentElement;
 
-const MODAL_HOOK            = '[js-hook-modal]';
-const MODAL_CLOSE_HOOK      = '[js-hook-button-modal-close]';
-const MODAL_VISIBLE_CLASS   = 'modal--is-showing';
-const MODAL_HTML_CLASS      = 'is--modal-open';
+const MODAL_HOOK = '[js-hook-modal]';
+const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]';
+const MODAL_VISIBLE_CLASS = 'modal--is-showing';
+const MODAL_HTML_CLASS = 'is--modal-open';
 
 
 class Modal {
@@ -87,13 +83,13 @@ class Modal {
     bindModalEvents({ id, triggerBtn, closeBtn }) {
 
         Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => {
-            Events.$trigger('modal::open', {data: { id }});
-            Events.$trigger(`modal::open(${ id })`, {data: { id }});
+            Events.$trigger('modal::open', { data: { id } });
+            Events.$trigger(`modal::open(${ id })`, { data: { id } });
         }));
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
-            Events.$trigger(`modal::close(${ id })`, {data: { id }});
+            Events.$trigger(`modal::close(${ id })`, { data: { id } });
         }));
 
         // Close on ESCAPE_KEY
@@ -115,11 +111,11 @@ class Modal {
 
         if (!modal) { return; }
 
-        const autoFocus   = modal.el.dataset.modalAutoFocus === 'true';
+        const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
         // Add modal open class to html element if noBodyClass is false
-        if ( !noBodyClass ) {
+        if (!noBodyClass) {
             html.classList.add(MODAL_HTML_CLASS);
         }
 
@@ -162,7 +158,7 @@ class Modal {
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
         // Remove modal open class off html element if noBodyClass is false
-        if ( !noBodyClass ) {
+        if (!noBodyClass) {
             html.classList.remove(MODAL_HTML_CLASS);
         }
 

@@ -1,20 +1,14 @@
-/**
- * @shelf-version: 1.0.0
- * Simple cookiebar
- */
-
 import cookies from 'js-cookie';
 import Events from './util/events';
 
-const COOKIEBAR_HOOK = '[js-hook-cookiebar]';
 const COOKIE_NAME = 'cookie';
 const SHOW_CLASS = 'cookiebar--is-visible';
 
 class Cookiebar {
 
-    constructor() {
+    constructor(element) {
 
-        this.cookiebar = document.querySelector(COOKIEBAR_HOOK);
+        this.cookiebar = element;
 
         if (!this.cookiebar) { return; }
 
@@ -61,4 +55,4 @@ function setCookie(value) {
 
 }
 
-export default new Cookiebar();
+export default Cookiebar;
