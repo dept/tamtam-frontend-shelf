@@ -29,7 +29,15 @@ import Video from './src/modules/video';
 ### Default
 
 ```javascript
-new Video({ platforms: ['youtube', 'vimeo', 'native'] });
+import './src/modules/in-view';
+import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
+const video = new Video();
+
+video.registerPlatforms({
+    'native': Native,
+    'youtube': Youtube,
+    'vimeo': Vimeo
+});
 ```
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
@@ -54,6 +62,7 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 ### Without in-view
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
+import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 const video = new Video();
 
 video.registerPlatforms({
@@ -88,6 +97,8 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
+import './src/modules/in-view';
+import { Native } from './src/modules/video/platforms';
 const video = new Video();
 
 video.registerPlatforms({
