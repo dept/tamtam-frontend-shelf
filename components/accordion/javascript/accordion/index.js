@@ -19,7 +19,7 @@ class Accordion {
         if (!this.items) { return; }
 
         this.autoClose = this.element.dataset.autoclose === 'false' ? false : true;
-        this.itemObject = {};
+        this.accordionItems = {};
         this._initItems();
         this._bindEvents();
 
@@ -31,28 +31,36 @@ class Accordion {
     _bindEvents() {
 
         Events.$on(`accordion::animating`, (event, data) => {
-            if (this.itemObject[data.id]) {
+            if (this.accordionItems[data.id]) {
                 this.isAnimating = data.animating;
             }
         });
 
         Events.$on(`accordion::toggle`, (event, id) => {
-            if (id && this.itemObject[id] && !this.isAnimating) {
+            if (id && this.accordionItems[id] && !this.isAnimating) {
                 this._closeAllChildren(id);
-                this.itemObject[id].toggle();
+                this.accordionItems[id].toggle();
             }
         });
 
         Events.$on(`accordion::open`, (event, id) => {
-            if (id && this.itemObject[id] && !this.isAnimating) {
+            if (id && this.accordionItems[id] && !this.isAnimating) {
                 this._closeAllChildren(id);
-                this.itemObject[id].open();
+                this.accordionItems[id].open();
             }
         });
 
         Events.$on(`accordion::close`, (event, id) => {
-            if (id && this.itemObject[id] && !this.isAnimating) {
-                this.itemObject[id].close();
+            if (id) {
+                if (this.accordionItems[id] && !this.isAnimating) {
+                    this.accordionItems[id].close();
+                }
+            } else {
+                if (!this.isAnimating) {
+                    Object.keys(this.accordionItems).forEach(id => {
+                        this.accordionItems[id].close();
+                    });
+                }
             }
         });
 
@@ -66,7 +74,7 @@ class Accordion {
         Array.from(this.items).forEach(el => {
 
             const item = new AccordionItem(el);
-            this.itemObject[item.id] = item;
+            this.accordionItems[item.id] = item;
 
         });
 
@@ -80,9 +88,9 @@ class Accordion {
 
         if (!this.autoClose) { return; }
 
-        Object.keys(this.itemObject).forEach(id => {
+        Object.keys(this.accordionItems).forEach(id => {
             if (skipId === id) { return; }
-            this.itemObject[id].close();
+            this.accordionItems[id].close();
         });
 
     }
@@ -91,4 +99,3 @@ class Accordion {
 
 // export the constructor function
 export default Accordion;
-
