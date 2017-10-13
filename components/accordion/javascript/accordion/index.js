@@ -17,8 +17,8 @@ class Accordion {
         this.items = this.element.querySelectorAll(ACCORDION_ITEM_HOOK);
 
         if (!this.items) { return; }
-        
-        this._autoclose = this.element.dataset.autoclose === 'false' ? false : true;
+
+        this.autoClose = this.element.dataset.autoclose === 'false' ? false : true;
         this.itemObject = {};
         this._initItems();
         this._bindEvents();
@@ -32,26 +32,26 @@ class Accordion {
 
         Events.$on(`accordion::animating`, (event, data) => {
             if (this.itemObject[data.id]) {
-                this._isAnimating = data.animating;
+                this.isAnimating = data.animating;
             }
         });
 
         Events.$on(`accordion::toggle`, (event, id) => {
-            if (id && this.itemObject[id] && !this._isAnimating) {
+            if (id && this.itemObject[id] && !this.isAnimating) {
                 this._closeAllChildren(id);
                 this.itemObject[id].toggle();
             }
         });
 
         Events.$on(`accordion::open`, (event, id) => {
-            if (id && this.itemObject[id] && !this._isAnimating) {
+            if (id && this.itemObject[id] && !this.isAnimating) {
                 this._closeAllChildren(id);
                 this.itemObject[id].open();
             }
         });
 
         Events.$on(`accordion::close`, (event, id) => {
-            if (id && this.itemObject[id] && !this._isAnimating) {
+            if (id && this.itemObject[id] && !this.isAnimating) {
                 this.itemObject[id].close();
             }
         });
@@ -78,7 +78,7 @@ class Accordion {
      */
     _closeAllChildren(skipId) {
 
-        if (!this._autoclose) { return; }
+        if (!this.autoClose) { return; }
 
         Object.keys(this.itemObject).forEach(id => {
             if (skipId === id) { return; }

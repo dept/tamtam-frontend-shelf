@@ -11,10 +11,10 @@ class AccordionItem {
     constructor(element) {
 
         this.item = element;
-        this._openState = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
-        this._isAnimating = false;
+        this.isOpen = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
+        this.isAnimating = false;
 
-        this.button = this.item.querySelector('[js-hook-accordion-button]')
+        this.button = this.item.querySelector('[js-hook-accordion-button]');
         this.content = this.item.querySelector('[js-hook-accordion-content]');
 
         this.id = this.content.id;
@@ -26,7 +26,7 @@ class AccordionItem {
      */
     toggle() {
 
-        if (this._openState) {
+        if (this.isOpen) {
             this.close();
         } else {
             this.open();
@@ -39,8 +39,8 @@ class AccordionItem {
      */
     open() {
 
-        if (this._openState || this._isAnimating) { return; }
-        this._openState = true;
+        if (this.isOpen || this.isAnimating) { return; }
+        this.isOpen = true;
         this._triggerAnimatingEvent(true);
 
         this.item.classList.add(ACCORDION_OPEN_CLASS);
@@ -55,8 +55,8 @@ class AccordionItem {
      */
     close() {
 
-        if (!this._openState || this._isAnimating) { return; }
-        this._openState = false;
+        if (!this.isOpen || this.isAnimating) { return; }
+        this.isOpen = false;
         this._triggerAnimatingEvent(true);
 
         this.item.classList.remove(ACCORDION_OPEN_CLASS);
@@ -71,13 +71,13 @@ class AccordionItem {
      */
     _setAriaState() {
 
-        this.button.setAttribute('aria-expanded', (this._openState) ? true : false);
-        this.content.setAttribute('aria-hidden', (this._openState) ? false : true);
+        this.button.setAttribute('aria-expanded', (this.isOpen) ? true : false);
+        this.content.setAttribute('aria-hidden', (this.isOpen) ? false : true);
 
     }
 
     /**
-     * Sets the height based on the this._openState
+     * Sets the height based on the this.isOpen
      */
     _setHeight() {
 
@@ -85,9 +85,9 @@ class AccordionItem {
 
         this.heightTransitionEvent = e => this._heightTransitionEnd(e);
 
-        this.content.style.height = (this._openState) ? '0' : height;
+        this.content.style.height = (this.isOpen) ? '0' : height;
         this.content.offsetHeight;
-        this.content.style.height = (this._openState) ? height : '0';
+        this.content.style.height = (this.isOpen) ? height : '0';
 
         this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
 
@@ -101,21 +101,21 @@ class AccordionItem {
 
         if (event.propertyName == 'height') {
 
-            if (this._openState) {
+            if (this.isOpen) {
                 this.content.style.height = 'auto';
             }
 
             this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
             this._triggerAnimatingEvent(false);
 
-            Events.$trigger(`accordion::${(this._openState) ? 'opened' : 'closed'}`, {
+            Events.$trigger(`accordion::${(this.isOpen) ? 'opened' : 'closed'}`, {
                 data: {
                     element: this.item,
                     id: this.id
                 }
             });
 
-            Events.$trigger(`accordion::${(this._openState) ? `opened(${this.id})` : `closed(${this.id})`}`);
+            Events.$trigger(`accordion::${(this.isOpen) ? `opened(${this.id})` : `closed(${this.id})`}`);
 
         }
 
@@ -127,11 +127,11 @@ class AccordionItem {
      */
     _triggerAnimatingEvent(bool) {
 
-        this._isAnimating = bool;
+        this.isAnimating = bool;
         Events.$trigger('accordion::animating', {
             data: {
                 id: this.id,
-                animating: this._isAnimating
+                animating: this.isAnimating
             }
         });
 
