@@ -1,7 +1,3 @@
-/**
- *  @shelf-version: 1.0.0
- */
-
 import Events from '../../util/events';
 import VimeoPlayer from '@vimeo/player';
 
@@ -16,24 +12,16 @@ class VimeoVideo {
 
     }
 
-    /**
-     * Init the player instance
-     */
     _initPlayer() {
 
         this.player = new VimeoPlayer(this.options.player, {
             id: this.options.videoId,
-            title: this.options.videoInfo || false,
-            portrait: this.options.videoInfo || false,
-            loop: this.options.videoLoop || 0,
-            autopause: this.options.videoAutopause || 1
+            title: false,
+            portrait: false
         });
 
     }
 
-    /**
-     * Bind events
-     */
     _bindEvents() {
 
         this.player.ready().then(() => {
@@ -46,50 +34,26 @@ class VimeoVideo {
             Events.$trigger('video::ready', { data: this.options });
             Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
 
-            if (this.options.videoAutoplay) {
-                this.player.play();
-            }
-
         });
 
-        this.player.on('play', () => {
-            Events.$trigger('video::playing', { data: this.options });
-            Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options });
-        });
-
-        this.player.on('pause', () => {
-            Events.$trigger('video::paused', { data: this.options });
-            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
-        });
-
-        this.player.on('ended', () => {
-            Events.$trigger('video::ended', { data: this.options });
-            Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
-        });
+        this.player.on('play', () => Events.$trigger('video::playing', { data: this.options }));
+        this.player.on('pause', () => Events.$trigger('video::paused', { data: this.options }));
+        this.player.on('ended', () => Events.$trigger('video::ended', { data: this.options }));
 
     }
 
-    /**
-     * Bind generic play event
-     */
     play() {
 
         this.player.play();
 
     }
 
-    /**
-     * Bind generic pause event
-     */
     pause() {
 
         this.player.pause();
 
     }
 
-    /**
-     * Bind generic replay event
-     */
     replay() {
 
         this.player.unload();
@@ -97,27 +61,18 @@ class VimeoVideo {
 
     }
 
-    /**
-     * Bind generic mute event
-     */
     mute() {
 
         this.player.setVolume(0);
 
     }
 
-    /**
-     * Bind generic unmute event
-     */
     unMute() {
 
         this.player.setVolume(1);
 
     }
 
-    /**
-     * Bind generic setVolume event
-     */
     setVolume(value) {
 
         this.player.setVolume(value);

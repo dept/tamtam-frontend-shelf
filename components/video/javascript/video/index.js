@@ -2,9 +2,6 @@ import 'core-js/fn/array/reduce';
 import 'core-js/fn/array/from';
 
 import Events from '../util/events';
-import YoutubeVideo from './platforms/youtube';
-import VimeoVideo from './platforms/vimeo';
-import NativeVideo from './platforms/native';
 
 const VIDEO_HOOK = '[js-hook-video]';
 const PLAYER_HOOK = '[js-hook-video-player]';
@@ -18,14 +15,25 @@ const VIDEO_PLAYING_CLASS = 'video--is-playing';
 const VIDEO_PAUSED_CLASS = 'video--is-paused';
 const VIDEO_REPLAY_CLASS = 'video--is-ended';
 
+const VIDEOS = document.querySelectorAll(VIDEO_HOOK);
+
 class Video {
 
-    constructor(options) {
+    constructor() {
 
-        this.options = options;
-        this.videos = getVideos([].concat(this.options.platforms));
+        this.videos = [];
 
         this._bindEvent();
+
+        this.registeredPlatforms = {};
+
+    }
+
+    registerPlatforms(platforms) {
+
+        if (typeof platforms !== 'object') { return; }
+        this.registeredPlatforms = platforms;
+        this._iterateVideos();
 
     }
 
@@ -44,13 +52,42 @@ class Video {
                 return;
             }
 
-            this._initVideos([element]);
+            this._initVideo([element]);
 
         });
 
         Events.$on('video::update', () => {
 
-            this._iteratePlatforms();
+            this._iterateVideos();
+
+        });
+
+        Events.$on('video::ready', (event, data) => {
+
+            data.element.classList.add(VIDEO_READY_CLASS);
+            data.element.classList.add(VIDEO_PAUSED_CLASS);
+
+        });
+
+        Events.$on('video::playing', (event, data) => {
+
+            data.element.classList.remove(VIDEO_REPLAY_CLASS);
+            data.element.classList.remove(VIDEO_PAUSED_CLASS);
+            data.element.classList.add(VIDEO_PLAYING_CLASS);
+
+        });
+
+        Events.$on('video::paused', (event, data) => {
+
+            data.element.classList.remove(VIDEO_PLAYING_CLASS);
+            data.element.classList.add(VIDEO_PAUSED_CLASS);
+
+        });
+
+        Events.$on('video::ended', (event, data) => {
+
+            data.element.classList.remove(VIDEO_PLAYING_CLASS);
+            data.element.classList.add(VIDEO_REPLAY_CLASS);
 
         });
 
@@ -59,9 +96,13 @@ class Video {
     /**
      * Iterate over platform types
      */
-    _iteratePlatforms() {
+    _iterateVideos() {
 
-        Object.keys(this.videos).forEach(platform => this._initVideos(this.videos[platform]));
+        this.videos = getVideos(this.registeredPlatforms);
+
+        this.videos.forEach(video => {
+            this._initVideo(video)
+        });
 
     }
 
@@ -69,37 +110,13 @@ class Video {
      * Init all videos
      * @param {Array} videos
      */
-    _initVideos(videos) {
+    _initVideo(video) {
 
-        videos.forEach(video => {
+        const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
+        const options = _constructVideoOptions(video);
 
-            const options = _constructVideoOptions(video);
-
-            switch (options.videoPlatform) {
-
-                case 'vimeo':
-                    options.element.playerInstance = new VimeoVideo(options);
-                    bindPlayerEvents(options);
-                    break;
-
-                case 'youtube':
-                    options.element.playerInstance = new YoutubeVideo(options);
-                    bindPlayerEvents(options);
-                    break;
-
-                case 'native':
-                    options.element.playerInstance = new NativeVideo(options);
-                    bindPlayerEvents(options);
-                    break;
-
-                default:
-                    console.warn('No valid video platform found');
-                    break;
-
-            }
-
-        });
-
+        options.element.playerInstance = new platformClass(options);
+        bindPlayerEvents(options);
 
     }
 
@@ -112,26 +129,8 @@ class Video {
  */
 function getVideos(platforms) {
 
-    return filterPlatforms(platforms, document.querySelectorAll(VIDEO_HOOK));
-
-}
-
-/**
- * Filter videos by platform
- * @param {Array} platforms
- * @param {NodeList} videos
- * @returns {Object}
- */
-function filterPlatforms(platforms, videos) {
-
-    let filteredByPlatform = {};
-
-    platforms.map(platform => {
-        filteredByPlatform[platform] = [];
-        Array.from(videos).filter(video => (video.dataset.videoPlatform === platform) ? filteredByPlatform[platform].push(video) : false).reduce((a, b) => b, [])
-    });
-
-    return filteredByPlatform;
+    if (!VIDEOS) { return false; }
+    return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) ? video : false);
 
 }
 
@@ -151,7 +150,6 @@ function _constructVideoOptions(element) {
         videoMuted,
         videoAutopause,
         videoAutoplay,
-        videoPlaysinline,
         videoLoop,
         videoSources
     } = element.dataset;
@@ -175,7 +173,6 @@ function _constructVideoOptions(element) {
         videoMuted,
         videoAutopause,
         videoAutoplay,
-        videoPlaysinline,
         videoLoop,
         videoSources
     }
@@ -187,27 +184,6 @@ function _constructVideoOptions(element) {
  * @param {NodeList} options
  */
 function bindPlayerEvents(options) {
-
-    Events.$on(`video::ready(${options.instanceId})`, (event, data) => {
-        data.element.classList.add(VIDEO_READY_CLASS);
-        data.element.classList.add(VIDEO_PAUSED_CLASS);
-    });
-
-    Events.$on(`video::playing(${options.instanceId})`, (event, data) => {
-        data.element.classList.remove(VIDEO_REPLAY_CLASS);
-        data.element.classList.remove(VIDEO_PAUSED_CLASS);
-        data.element.classList.add(VIDEO_PLAYING_CLASS);
-    });
-
-    Events.$on(`video::paused(${options.instanceId})`, (event, data) => {
-        data.element.classList.remove(VIDEO_PLAYING_CLASS);
-        data.element.classList.add(VIDEO_PAUSED_CLASS);
-    });
-
-    Events.$on(`video::ended(${options.instanceId})`, (event, data) => {
-        data.element.classList.remove(VIDEO_PLAYING_CLASS);
-        data.element.classList.add(VIDEO_REPLAY_CLASS);
-    });
 
     Events.$on(`video::play(${options.instanceId})`, () => {
         options.element.playerInstance.play();
