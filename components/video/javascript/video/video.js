@@ -51,7 +51,7 @@ class Video {
                 return;
             }
 
-            this._initVideo([element]);
+            this._initVideo(element);
 
         });
 
