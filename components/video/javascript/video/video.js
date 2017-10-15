@@ -33,7 +33,6 @@ class Video {
 
         if (typeof platforms !== 'object') { return; }
         this.registeredPlatforms = platforms;
-        this._iterateVideos();
 
     }
 
@@ -56,9 +55,13 @@ class Video {
 
         });
 
-        Events.$on('video::update', () => {
+        Events.$on('video::update', (event, element) => {
 
-            this._iterateVideos();
+            if (!element) {
+                this._iterateVideos();
+            } else {
+                this._initVideo(element);
+            }
 
         });
 
