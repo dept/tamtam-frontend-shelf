@@ -1,5 +1,5 @@
 import cookies from 'js-cookie';
-import Events from './util/events';
+import Events from '../util/events';
 
 const COOKIE_NAME = 'cookie';
 const SHOW_CLASS = 'cookiebar--is-visible';

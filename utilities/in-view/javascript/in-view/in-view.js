@@ -1,5 +1,5 @@
-import RafThrottle from './raf-throttle';
-import Events from './events';
+import RafThrottle from '../raf-throttle';
+import Events from '../events';
 
 const INVIEW_HOOK = '[js-hook-inview]';
 

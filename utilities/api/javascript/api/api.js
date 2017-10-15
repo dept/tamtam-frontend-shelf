@@ -1,4 +1,4 @@
-import Environment from '../../system/environment';
+import Environment from '../../../system/environment';
 import $ from 'jquery';
 
 const endpointBase = {

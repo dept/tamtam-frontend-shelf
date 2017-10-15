@@ -1,6 +1,6 @@
 import 'core-js/fn/array/from';
 
-import Events from './util/events';
+import Events from '../util/events';
 
 const html = document.documentElement;
 
