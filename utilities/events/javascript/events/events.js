@@ -1,7 +1,3 @@
-/**
- * @shelf-version: 1.0.0
- * Events utility
- */
 const eventEl = window;
 const crawlEl = document.querySelector('html');
 
@@ -38,7 +34,7 @@ class Events {
 
         if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
 
-        let _data = currentTarget ? {currentTarget, data} : data;
+        let _data = currentTarget ? { currentTarget, data } : data;
         const _event = new CustomEvent(event, { detail: _data });
 
         eventEl.dispatchEvent(_event);
@@ -141,7 +137,7 @@ function parseEventString(eventString) {
  */
 function _delegate(criteria, callback) {
 
-    return function (e) {
+    return function(e) {
         let el = e.target;
         if (criteria(el)) {
             callback.apply(this, arguments);
@@ -195,12 +191,12 @@ function extractPropFromObject(object, propName) {
  */
 function polyfillCustomEvent() {
 
-    if ( typeof window.CustomEvent === "function" ) return false;
+    if (typeof window.CustomEvent === "function") return false;
 
-    function CustomEvent ( event, params ) {
+    function CustomEvent(event, params) {
         params = params || { bubbles: false, cancelable: false, detail: undefined };
-        var evt = document.createEvent( 'CustomEvent' );
-        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return evt;
     }
 

@@ -1,9 +1,5 @@
-/**
- * @shelf-version: 1.0.0
- */
-
-import RafThrottle from './raf-throttle';
-import Events from './events';
+import RafThrottle from '../raf-throttle';
+import Events from '../events';
 
 const INVIEW_HOOK = '[js-hook-inview]';
 
@@ -40,8 +36,8 @@ class InView {
     }
 
     /**
-    * Bind all the events
-    */
+     * Bind all the events
+     */
     _bindScrollEvent() {
 
         RafThrottle.set(this.eventsToBeBound);
@@ -49,16 +45,16 @@ class InView {
     }
 
     /**
-    * Sets new element config and adds them to element arrays
-    * @param {HTMLElement} element Element to track
-    * @param {Object[]} [element[].dataset]
-    * @param {Number} [element[].dataset[].inviewOffsetTop] Offset in pixels
-    * @param {Number} [element[].dataset[].inviewOffsetBottom] Offset in pixels
-    * @param {Number} [element[].dataset[].inviewOffsetLeft] Offset in pixels
-    * @param {Number} [element[].dataset[].inviewOffsetRight] Offset in pixels
-    * @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
-    * @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
-    */
+     * Sets new element config and adds them to element arrays
+     * @param {HTMLElement} element Element to track
+     * @param {Object[]} [element[].dataset]
+     * @param {Number} [element[].dataset[].inviewOffsetTop] Offset in pixels
+     * @param {Number} [element[].dataset[].inviewOffsetBottom] Offset in pixels
+     * @param {Number} [element[].dataset[].inviewOffsetLeft] Offset in pixels
+     * @param {Number} [element[].dataset[].inviewOffsetRight] Offset in pixels
+     * @param {Number} [element[].dataset[].inviewThreshold] Can be a value between 0 and 1
+     * @param {string} [element[].dataset[].inviewTrigger] Triggers you want to fire, can be comma seperated
+     */
     _setNewElement(element) {
 
         if (element.elementInViewIdentifier) { return; }
@@ -93,36 +89,33 @@ class InView {
 
         this.elementArray.push(config);
 
-        this.eventsToBeBound.push(
-            {
-                element: window,
-                event: 'scroll',
-                namespace: `ElementInView-${config.index}`,
-                fn: () => this._elementInView(config)
-            },
-            {
-                element: window,
-                event: 'resize',
-                namespace: `ElementRecalculatePositions-${config.index}`,
-                fn: () => this._reCalculateElementPositions(config)
-            }
-        );
+        this.eventsToBeBound.push({
+            element: window,
+            event: 'scroll',
+            namespace: `ElementInView-${config.index}`,
+            fn: () => this._elementInView(config)
+        }, {
+            element: window,
+            event: 'resize',
+            namespace: `ElementRecalculatePositions-${config.index}`,
+            fn: () => this._reCalculateElementPositions(config)
+        });
 
     }
 
     /**
-    * Checks if element is in viewport and adds appropriate classes
-    * @param {Object[]} config
-    * @param {Number} config[].index Index of the element
-    * @param {HTMLElement} config[].element Element to track
-    * @param {Object[]} [config[].offset]
-    * @param {Number} [config[].offset[].top] Offset in pixels
-    * @param {Number} [config[].offset[].bottom] Offset in pixels
-    * @param {Number} [config[].offset[].left] Offset in pixels
-    * @param {Number} [config[].offset[].right] Offset in pixels
-    * @param {Number} [config[].threshold] Can be a value between 0 and 1
-    * @param {string} [config[].triggers] Triggers you want to fire, can be comma seperated
-    */
+     * Checks if element is in viewport and adds appropriate classes
+     * @param {Object[]} config
+     * @param {Number} config[].index Index of the element
+     * @param {HTMLElement} config[].element Element to track
+     * @param {Object[]} [config[].offset]
+     * @param {Number} [config[].offset[].top] Offset in pixels
+     * @param {Number} [config[].offset[].bottom] Offset in pixels
+     * @param {Number} [config[].offset[].left] Offset in pixels
+     * @param {Number} [config[].offset[].right] Offset in pixels
+     * @param {Number} [config[].threshold] Can be a value between 0 and 1
+     * @param {string} [config[].triggers] Triggers you want to fire, can be comma seperated
+     */
     _elementInView(config) {
 
         const element = config.element;
@@ -163,8 +156,8 @@ class InView {
     }
 
     /**
-    * Adds all elements to inview tracking
-    */
+     * Adds all elements to inview tracking
+     */
     _addElements() {
 
         Object.keys(this.elements).forEach(index => {
@@ -177,8 +170,8 @@ class InView {
     }
 
     /**
-    * Empties current events and gets new elements
-    */
+     * Empties current events and gets new elements
+     */
     _updateElements() {
 
         this.eventsToBeBound = [];
@@ -195,9 +188,9 @@ class InView {
 }
 
 /**
-* Gets all elements matching the INVIEW_HOOK
-* @returns {NodeList} All matching HTMLElements
-*/
+ * Gets all elements matching the INVIEW_HOOK
+ * @returns {NodeList} All matching HTMLElements
+ */
 function getElements() {
 
     return document.querySelectorAll(INVIEW_HOOK);
@@ -205,9 +198,9 @@ function getElements() {
 }
 
 /**
-* Returns all the triggers in an array
-* @returns {Array} Array of all the triggers
-*/
+ * Returns all the triggers in an array
+ * @returns {Array} Array of all the triggers
+ */
 function getTriggers(triggers) {
 
     return (triggers) ? triggers.split(',') : [];
@@ -215,10 +208,10 @@ function getTriggers(triggers) {
 }
 
 /**
-* Returns all the triggers in an array
-* @param {string} trigger Event to be triggered
-* @param {HTMLElement} element Element which fired the trigger
-*/
+ * Returns all the triggers in an array
+ * @param {string} trigger Event to be triggered
+ * @param {HTMLElement} element Element which fired the trigger
+ */
 function setTriggers(trigger, element) {
 
     Events.$trigger(trigger, { data: element });
@@ -226,15 +219,15 @@ function setTriggers(trigger, element) {
 }
 
 /**
-* Checks if given element is in viewport
-* @param {HTMLElement} element Element to check if it's in viewport
-* @param {Object[]} [options[].offset]
-* @param {Number} [options[].offset[].top] Offset in pixels
-* @param {Number} [options[].offset[].bottom] Offset in pixels
-* @param {Number} [options[].offset[].left] Offset in pixels
-* @param {Number} [options[].offset[].right] Offset in pixels
-* @param {Number} [options[].threshold] Can be a value between 0 and 1
-*/
+ * Checks if given element is in viewport
+ * @param {HTMLElement} element Element to check if it's in viewport
+ * @param {Object[]} [options[].offset]
+ * @param {Number} [options[].offset[].top] Offset in pixels
+ * @param {Number} [options[].offset[].bottom] Offset in pixels
+ * @param {Number} [options[].offset[].left] Offset in pixels
+ * @param {Number} [options[].offset[].right] Offset in pixels
+ * @param {Number} [options[].threshold] Can be a value between 0 and 1
+ */
 function elementIsInViewport(element, options) {
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -270,10 +263,10 @@ function elementIsInViewport(element, options) {
 }
 
 /**
-* Returns the offsets and measurements of given element
-* @param {HTMLElement} element
-* @returns {Object} Object with all element measurements and offsets
-*/
+ * Returns the offsets and measurements of given element
+ * @param {HTMLElement} element
+ * @returns {Object} Object with all element measurements and offsets
+ */
 function getElementPositions(element) {
 
     const { width, height } = element.getBoundingClientRect();
@@ -292,10 +285,10 @@ function getElementPositions(element) {
 }
 
 /**
-* Returns the offsetTop and offsetLeft of given element
-* @param {HTMLElement} element
-* @returns {Object} Object of top and left position
-*/
+ * Returns the offsetTop and offsetLeft of given element
+ * @param {HTMLElement} element
+ * @returns {Object} Object of top and left position
+ */
 function getElementOffset(element) {
 
     let top = 0;

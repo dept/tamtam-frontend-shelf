@@ -1,8 +1,4 @@
-/**
- *  @shelf-version: 1.0.0
- */
-
-import Events from './events';
+import Events from '../events';
 
 class FocusTrap {
 
@@ -61,7 +57,7 @@ class FocusTrap {
         this.focusTrapElement = element;
         this.originalFocus = document.activeElement;
 
-        if ( autoFocus ) {
+        if (autoFocus) {
             this.focusClosestFocusTarget();
         }
 
@@ -74,7 +70,7 @@ class FocusTrap {
 
         const focusTarget = findClosestFocusTarget(this.focusTrapElement);
         focusTarget.focus();
-        
+
     }
 
     /**

@@ -1,8 +1,4 @@
-/**
- *  @shelf-version: 1.0.0
- */
-
-import Events from './events';
+import Events from '../events';
 
 class History {
 
@@ -14,8 +10,8 @@ class History {
     }
 
     /**
-    * Bind events
-    */
+     * Bind events
+     */
     bindEvents() {
 
         Events.$on('history::push', (e, data) => this.pushHistory(data));
@@ -24,11 +20,11 @@ class History {
     }
 
     /**
-    * Create a new URL entry in your History
-    * @param {Object} data
-    * @param {Object} data[].state State object
-    * @param {string} data[].url New url
-    */
+     * Create a new URL entry in your History
+     * @param {Object} data
+     * @param {Object} data[].state State object
+     * @param {string} data[].url New url
+     */
     pushHistory(data) {
 
         const pushOptions = {
@@ -41,11 +37,11 @@ class History {
     }
 
     /**
-    * Overwrite current URL entry in your History
-    * @param {Object} data
-    * @param {Object} data[].state State object
-    * @param {string} data[].url New url
-    */
+     * Overwrite current URL entry in your History
+     * @param {Object} data
+     * @param {Object} data[].state State object
+     * @param {string} data[].url New url
+     */
     replaceHistory(data) {
 
         const replaceOptions = {
@@ -59,15 +55,12 @@ class History {
 
 }
 
-export default new History();
-
 /**
  * Define the events where we are adding a callback to
  */
 function prepareHistoryEvents() {
 
-    const events = [
-        {
+    const events = [{
             eventName: 'pushState',
             callbackEventName: 'onpushstate'
         },
@@ -94,7 +87,7 @@ function addHistoryCallbackEvent(obj) {
 
     const historyEvent = history[obj.eventName];
 
-    history[obj.eventName] = function (state) {
+    history[obj.eventName] = function(state) {
 
         if (typeof history[obj.callbackEventName] == "function") {
 
@@ -107,3 +100,5 @@ function addHistoryCallbackEvent(obj) {
     };
 
 }
+
+export default new History();
