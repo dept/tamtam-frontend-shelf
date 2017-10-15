@@ -54,16 +54,19 @@ class YoutubeVideo {
                 // finished
                 case 0:
                     Events.$trigger('video::ended', { data: this.options });
+                    Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
                     break;
-
-                // playing
-                case 1:
+                    
+                    // playing
+                    case 1:
                     Events.$trigger('video::playing', { data: this.options });
+                    Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options });
                     break;
-
-                // paused
-                case 2:
+                    
+                    // paused
+                    case 2:
                     Events.$trigger('video::paused', { data: this.options });
+                    Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
                     break;
 
                 // do nothing
