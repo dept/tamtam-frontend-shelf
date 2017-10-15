@@ -51,7 +51,7 @@ class FocusTrap {
      * @param {HTMLElement} element Target to set as trap element
      * @param {Boolean} autoFocus If true, on activation the element finds and auto focuses the first focusable element
      */
-    activate({ element, autoFocus = true }) {
+    activate(element, autoFocus = true) {
 
         this.activated = true;
         this.focusTrapElement = element;
