@@ -7,7 +7,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Alt Text](./_demo/accordion.gif)
+![Accordion Demo](./_demo/accordion.gif)
 
 ## What does it do
 * Creates an accordion with multiple items
