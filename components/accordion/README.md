@@ -1,5 +1,8 @@
 
 # Accordion component
+![Alt Text](./_demo/accordion.gif)
+
+
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
