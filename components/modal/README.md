@@ -8,6 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
+![Modal Demo](./_demo/modal.gif)
 
 ## What does it do
 * Create modalboxes with an easy to use macro.
