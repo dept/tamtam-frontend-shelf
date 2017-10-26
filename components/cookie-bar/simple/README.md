@@ -8,6 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
+![Cookiebar Demo](./_demo/cookiebar-simple.gif)
 
 ## What does it do
 * Simple cookiebar that closes when close is pressed.
