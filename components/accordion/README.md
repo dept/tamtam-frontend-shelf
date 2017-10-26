@@ -1,9 +1,5 @@
 
 # Accordion component
-![Alt Text](./_demo/accordion.gif)
-
-
-
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
@@ -11,6 +7,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
+![Alt Text](./_demo/accordion.gif)
 
 ## What does it do
 * Creates an accordion with multiple items
