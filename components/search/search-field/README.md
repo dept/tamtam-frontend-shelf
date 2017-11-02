@@ -8,6 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
+![Search field Demo](./_demo/search-field.png)
 
 ## What does it do
 * Show a search field
@@ -20,11 +21,11 @@
 ## How to use
 
 ```htmlmixed
-{{ searchField{
+{{ searchField{(
      action:        'string',
      submitText:    'string',
      id:            'string',
-     autocomplete:  boolean     (optional, default false)
+     autocomplete:  boolean     (optional, default false) - This is the browser autocomplete
      classes:       'string',   (optional)
      label:         'string',   (optional) - Also used as placeholder
      inputAttrs:    'string'    (optional)

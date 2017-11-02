@@ -8,6 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
+![Search results Demo](./_demo/search-results.png)
 
 ## What does it do
 * Show a list of search results
