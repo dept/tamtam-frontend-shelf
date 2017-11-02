@@ -32,7 +32,8 @@ class YoutubeVideo {
                 start: this.options.videoTime,
                 modestbranding: 0,
                 showinfo: 0,
-                controls: parseInt(this.options.videoControls) || 0
+                controls: parseInt(this.options.videoControls) || 0,
+                rel: 0
             }
         });
 
@@ -56,13 +57,13 @@ class YoutubeVideo {
                     Events.$trigger('video::ended', { data: this.options });
                     Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
                     break;
-                    
+
                     // playing
                     case 1:
                     Events.$trigger('video::playing', { data: this.options });
                     Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options });
                     break;
-                    
+
                     // paused
                     case 2:
                     Events.$trigger('video::paused', { data: this.options });
