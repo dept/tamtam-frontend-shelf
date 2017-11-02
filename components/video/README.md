@@ -8,7 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Video Demo](https://media.giphy.com/media/26gwLjhIpMw6z666Q/giphy.gif)
+![Video Demo](./_demo/video.gif)
 
 ## What does it do
 * Plays Youtube, Vimeo and native video
