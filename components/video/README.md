@@ -31,6 +31,7 @@ import Video from './src/modules/video';
 ```javascript
 import './src/modules/in-view';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
+import Video from './src/modules/video';
 const video = new Video();
 
 video.registerPlatforms({
@@ -63,6 +64,7 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
+import Video from './src/modules/video';
 const video = new Video();
 
 video.registerPlatforms({
@@ -99,6 +101,7 @@ You can initialise native video elements with srcset detect, it will pick the cl
 ```javascript
 import './src/modules/in-view';
 import { Native } from './src/modules/video/platforms';
+import Video from './src/modules/video';
 const video = new Video();
 
 video.registerPlatforms({
