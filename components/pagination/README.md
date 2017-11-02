@@ -8,6 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
+![Pagination Demo](./_demo/modal.gif)
 
 ## What does it do
 * Render pagination
