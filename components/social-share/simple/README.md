@@ -8,6 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
+![Simple sharing Demo](./_demo/sharing.png)
 
 ## What does it do
 * Render share component with social media buttons
@@ -15,7 +16,6 @@
 
 ## Install
 ```javascript
-// Without enabling logging
 import './src/modules/social-share';
 ```
 
