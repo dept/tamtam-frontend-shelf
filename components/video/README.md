@@ -8,7 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Video Demo](./_demo/video.gif)
+![Video Demo](https://media.giphy.com/media/26gwLjhIpMw6z666Q/giphy.gif)
 
 ## What does it do
 * Plays Youtube, Vimeo and native video
@@ -16,8 +16,8 @@
 
 ## Install
 ```node
-npm i youtube-player --save
-npm i @vimeo/player --save
+npm i youtube-player@5.4.0 --save
+npm i @vimeo/player@2.2.0 --save
 ```
 ```javascript
 import './src/modules/in-view';

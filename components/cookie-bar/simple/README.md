@@ -18,7 +18,7 @@
 
 Install npm package dependency
 ```node
-npm i js-cookie --save
+npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
