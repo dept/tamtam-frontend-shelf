@@ -20,8 +20,11 @@
         info: integer (optional, default 0),
         sources: object (optional) for native video only
         inview: boolean (optional, default true)
+        image: object (optional)
     }
- #}
+#}
+
+{% from 'components/image.html' import image %}
 
 {% macro video(data) %}
 
@@ -55,7 +58,7 @@
         {% if data.uploadDate %}<meta itemprop="uploadDate" content="{{ data.uploadDate }}" />{% endif %}
 
         <div class="video__player" js-hook-video-player></div>
-        
+
 
         <div class="video__loader"></div>
 
@@ -74,6 +77,16 @@
                 <span class="video__button-icon">&#8635;</span>
                 <span class="u-sr-only">Replay</span>
             </button>
+        {% endif %}
+
+        {% if data.image %}
+            {{ image({
+                classes: 'video__image',
+                preload: data.image.preload,
+                image: data.image.image,
+                srcset: data.image.srcset,
+                objectFit: true
+            }) }}
         {% endif %}
 
     </div>
