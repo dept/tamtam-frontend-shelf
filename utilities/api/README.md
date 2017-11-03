@@ -15,7 +15,7 @@
 
 ## Install
 ```node
-npm i jquery --save
+npm i jquery@3.2.1 --save
 ```
 
 ```javascript

@@ -14,7 +14,7 @@
 
 ## Install
 ```node
-npm i raf --save
+npm i raf@3.4.0 --save
 ```
 ```javascript
 import RafThrottle from './src/modules/util/raf-throttle';

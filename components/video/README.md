@@ -16,8 +16,8 @@
 
 ## Install
 ```node
-npm i youtube-player --save
-npm i @vimeo/player --save
+npm i youtube-player@5.4.0 --save
+npm i @vimeo/player@2.2.0 --save
 ```
 ```javascript
 import './src/modules/in-view';
