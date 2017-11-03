@@ -12,6 +12,7 @@
 
 ## What does it do
 * Image component with HTML content next to it.
+* Can be nested inside itself.
 
 ## Install
 ```htmlmixed
