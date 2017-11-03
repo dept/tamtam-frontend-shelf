@@ -1,0 +1,37 @@
+{#
+    @shelf-version: 1.0.0
+    Media comopnent
+
+    data {
+        image: soon
+        title:      'string',
+        align:      'top' (optional) - aligns content to the top
+    }
+
+    caller - for content.
+#}
+
+{% macro media(data) %}
+
+    <article class="u-margin-top--md c-media {% if data.align %}media--align-{{data.align}}{% endif %}">
+        <div class="o-grid media__wrapper">
+
+            <aside class="o-col-3 media__aside">
+                <figure class="media__figure">
+                    <img src="http://via.placeholder.com/200x200"
+                         class="media__image"
+                         alt="">
+                </figure>
+            </aside>
+
+            <div class="o-col-9 media__content">
+                <h3>{{ data.title }}</h3>
+                {% if caller %}
+                    {{ caller() }}
+                {%endif %}
+            </div>
+        </div>
+
+    </article>
+
+{% endmacro %}

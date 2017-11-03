@@ -1,5 +1,5 @@
 {#
-    @shelf-version: 1.0.0
+    @shelf-version: 1.1.0
     Search results list
 
     data {
@@ -13,6 +13,9 @@
         ]
     }
 #}
+
+{% from 'components/media.html' import media %}
+
 {% macro searchResults(data) %}
 
     <div class="c-search-results">
@@ -22,24 +25,18 @@
                 <li class="search-results__item">
                     <a href="{{ result.url }}" class="search-results__link">
 
-                        {% if result.image %}
-                            <img
-                                src="{{ result.image }}"
-                                alt="{{ result.title }}"
-                                class="search-results__image"
-                            >
-                        {% endif %}
+                    {% call media({
+                        title: result.title,
+                        image: {
+                            url: result.image
+                        }
+                    }) %}
+                        <p>{{ result.description }}</p>
 
-                        <div class="search-results__content">
-                            <h2>{{ result.title }}</h2>
-                            <p>
-                                {{ result.description }}
-                            </p>
-
-                            <span class="search-results__button">
-                                {{ data.viewResultsLabel }}
-                            </span>
-                        </div>
+                        <span class="search-results__button">
+                            {{ data.viewResultsLabel }}
+                        </span>
+                    {% endcall %}
                     </a>
                 </li>
 
