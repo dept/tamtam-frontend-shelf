@@ -23,7 +23,8 @@
 
 ```htmlmixed
  {% call media({
-    title: 'string',
+    title:      'string',
+    align:      'top' (optional) - aligns content to the top
     image: {
         url: 'string'
     }
