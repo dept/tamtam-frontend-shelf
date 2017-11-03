@@ -12,7 +12,7 @@ class Storage {
 
     /**
      * Set storage prefix
-     * @param {string} prefix 
+     * @param {string} prefix
      */
     setPrefix(prefix) {
 
@@ -22,7 +22,7 @@ class Storage {
 
     /**
      * Get storage prefix
-     * @returns {string}  
+     * @returns {string}
      */
     getPrefix() {
 
@@ -32,7 +32,7 @@ class Storage {
 
     /**
      * Get the prefixed storage key
-     * @returns {string}  
+     * @returns {string}
      */
     getPrefixedStorageKey(key) {
 
@@ -93,14 +93,16 @@ class Storage {
 
             data = JSON.parse(data);
 
+            if (data && typeof data === "object") {
+                return data;
+            }
+
         }
         catch (e) {
 
-            data = data;
+            return data;
 
         }
-
-        return data;
 
     }
 
@@ -128,8 +130,8 @@ class Storage {
 
 /**
  * Set storage type
- * @param {string('localStorage'|'sessionStorage')} storageType 
- * @returns {string('localStorage'|'sessionStorage')} 
+ * @param {string('localStorage'|'sessionStorage')} storageType
+ * @returns {string('localStorage'|'sessionStorage')}
  */
 function setStorageType(storageType) {
 
