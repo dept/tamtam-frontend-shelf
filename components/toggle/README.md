@@ -28,7 +28,8 @@ Add the js-hook-toggle attribute to any HTML you like:
 ```htmlmixed
 <button class="c-toggle-button"
     id="this-specific-toggle-button"
-    js-hook-toggle>
+    js-hook-toggle
+    data-toggle-active-class="is--custom-active-class-state">
     ...
 </button>
 ```
