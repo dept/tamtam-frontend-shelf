@@ -2,8 +2,7 @@ import 'core-js/fn/array/from';
 
 import Events from '../util/events';
 
-const TOGGLE_LINK_HOOK = 'js-hook-toggle-link';
-const TOGGLE_ACTIVE_CLASS = 'is--active';
+const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';
 
 class Toggle {
 
@@ -25,8 +24,16 @@ class Toggle {
      */
     _getToggleLinks() {
 
-        const LINK_SELECTOR = `[${ TOGGLE_LINK_HOOK }="${ this.element.id }"]`;
-        return Array.from(document.querySelectorAll(LINK_SELECTOR));
+        const ariaControls = this.element.getAttribute('aria-controls');
+        if ( !ariaControls) {
+            return [];
+        }
+
+        const LINKS_SELECTOR = ariaControls.split(/[ ,]+/)
+            .map(id => `#${ id }`)
+            .join(', ');
+
+        return Array.from(document.querySelectorAll(LINKS_SELECTOR));
 
     }
 

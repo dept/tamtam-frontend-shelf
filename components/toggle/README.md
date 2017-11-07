@@ -27,7 +27,6 @@ moduleInit('[js-hook-toggle]', Toggle);
 Add the js-hook-toggle attribute to any HTML you like:
 ```htmlmixed
 <button class="c-toggle-button"
-    id="this-specific-toggle-button"
     js-hook-toggle
     data-toggle-default-active="true"
     data-toggle-active-class="is--custom-active-class-state">
@@ -40,18 +39,16 @@ on this particular element.
 
 ### Toggle links
 Additionally, on any place in the DOM, you can have elements listen to the active state of this toggle component.
-All there is to do is add `js-hook-toggle-link` with the id of the toggle as parameter:
+All there is to do is add `aria-controls` with the id(s) (comma separated) of the toggle as parameter:
 ```htmlmixed
 <button class="c-toggle-button"
-    id="this-specific-toggle-button"
     js-hook-toggle
     aria-controls="totally-different-component-id">
     ...
 </button>
 
 <div class="c-totally-different-component"
-    id="totally-different-component-id"
-    js-hook-toggle-link="this-specific-toggle-button">
+    id="totally-different-component-id">
     ...
 </div>
 ```
