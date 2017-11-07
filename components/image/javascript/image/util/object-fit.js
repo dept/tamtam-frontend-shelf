@@ -34,7 +34,7 @@ function objectFitPolyfill(element) {
 
         const img = image;
         const $img = $(img);
-        const srcSet = parseSrcSet(img.getAttribute('data-srcset'));
+        const srcSet = parseSrcSet(img.getAttribute('data-srcset') || img.getAttribute('srcset'));
 
         const src = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
 
