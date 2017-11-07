@@ -29,6 +29,7 @@ Add the js-hook-toggle attribute to any HTML you like:
 <button class="c-toggle-button"
     id="this-specific-toggle-button"
     js-hook-toggle
+    data-toggle-default-active="true"
     data-toggle-active-class="is--custom-active-class-state">
     ...
 </button>

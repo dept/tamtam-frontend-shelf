@@ -55,6 +55,7 @@ class Toggle {
      * Toggles the entire UI state of the toggle component
      */
     _toggleState() {
+
         if ( this.element.dataset.toggleLive === 'true' ) {
             this.links = this._getToggleLinks();
         }
@@ -62,6 +63,7 @@ class Toggle {
         this._toggleActiveClassNames();
         this._setARIAAttributeValues();
         this._triggerExternalEvents();
+
     }
 
     /**
