@@ -75,11 +75,18 @@ Events.$on('toggle::toggled({id})', (event, isActive) => doSomethingAfterToggleT
 
 ### Trigger event
 Vice versa, the toggle component can be triggered externally as well:
-**NOTE:** This only works after [#PR43](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/43/proposal-to-control-whether-parenthesis/diff)
 ```javascript
 // trigger specific toggle component
 Events.$trigger('toggle::toggle({id})');
 ```
+
+Or with the HTML on:click attributes (**NOTE:** This only works after [#PR43](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/43/proposal-to-control-whether-parenthesis/diff))
+```htmlmixed
+<button class="c-i-am-a-button" on:click.id-specific="toggle:toggle(this-specific-toggle-button)">
+    ...
+</button>
+```
+
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
