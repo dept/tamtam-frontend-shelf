@@ -14,8 +14,10 @@ class Toggle {
         this.id = element.id;
         this.links = this._getToggleLinks();
         this.activeClass = element.dataset.toggleActiveClass || TOGGLE_ACTIVE_CLASS;
+        this.isActive = false;
 
         this._bindEvents();
+        this._setDefaultState();
 
     }
 
@@ -43,9 +45,35 @@ class Toggle {
         });
 
         Events.$on(`toggle::toggle(${ this.element.id })`, (event) => {
-            this._toggleActiveClassNames();
-            this._triggerExternalEvents();
+            this._toggleState();
+            event.preventDefault();
         });
+
+    }
+
+    /**
+     * Toggles the entire UI state of the toggle component
+     */
+    _toggleState() {
+        if ( this.element.dataset.toggleLive === 'true' ) {
+            this.links = this._getToggleLinks();
+        }
+
+        this._toggleActiveClassNames();
+        this._setARIAAttributeValues();
+        this._triggerExternalEvents();
+    }
+
+    /**
+     * Sets default ARIA and classname roles based on config
+     */
+    _setDefaultState() {
+
+        if ( this.element.dataset.toggleDefaultActive === 'true' ) {
+            this._toggleState();
+        }
+
+        this._setARIAAttributeValues();
 
     }
 
@@ -54,17 +82,18 @@ class Toggle {
      */
     _toggleActiveClassNames() {
 
-        this._toggleToggleElementClassName();
+        this._toggleToggleElementActiveState();
         this._toggleLinksClassNames();
 
     }
 
     /**
-     * Toggles the active classname of the toggle component
+     * Toggles the active classname of the toggle component and toggles aria attribute
      */
-    _toggleToggleElementClassName() {
+    _toggleToggleElementActiveState() {
 
         this.element.classList.toggle(this.activeClass);
+        this.isActive = this.element.classList.contains(this.activeClass);
 
     }
 
@@ -73,12 +102,18 @@ class Toggle {
      */
     _toggleLinksClassNames() {
 
-        if ( this.element.dataset.toggleLive === 'true' ) {
-            this.links = this._getToggleLinks();
-        }
-
-        const toggleAction = this.element.classList.contains(this.activeClass) ? 'add' : 'remove';
+        const toggleAction = this.isActive ? 'add' : 'remove';
         this.links.forEach((link) => link.classList[toggleAction](this.activeClass));
+
+    }
+
+    /**
+     * Toggles the ARIA attributes
+     */
+    _setARIAAttributeValues() {
+
+        this.element.setAttribute('aria-expanded', this.isActive.toString());
+        this.links.forEach((link) => link.setAttribute('aria-hidden', (!this.isActive).toString()));
 
     }
 
@@ -87,9 +122,9 @@ class Toggle {
      */
     _triggerExternalEvents() {
 
-        const newState = this.element.classList.contains(this.activeClass) ? 'opened' : 'closed';
+        const newState = this.isActive ? 'opened' : 'closed';
         Events.$trigger(`toggle::${ newState }(${ this.element.id })`);
-        Events.$trigger(`toggle::toggled(${ this.element.id })`, newState === 'opened');
+        Events.$trigger(`toggle::toggled(${ this.element.id })`, this.isActive);
 
     }
 

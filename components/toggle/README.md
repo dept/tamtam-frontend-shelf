@@ -41,7 +41,15 @@ on this particular element.
 Additionally, on any place in the DOM, you can have elements listen to the active state of this toggle component.
 All there is to do is add `js-hook-toggle-link` with the id of the toggle as parameter:
 ```htmlmixed
+<button class="c-toggle-button"
+    id="this-specific-toggle-button"
+    js-hook-toggle
+    aria-controls="totally-different-component-id">
+    ...
+</button>
+
 <div class="c-totally-different-component"
+    id="totally-different-component-id"
     js-hook-toggle-link="this-specific-toggle-button">
     ...
 </div>
