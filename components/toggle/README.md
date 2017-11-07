@@ -34,7 +34,8 @@ Add the js-hook-toggle attribute to any HTML you like:
 </button>
 ```
 
-On click, this will toggle the `is--active` class on this particular element.
+On click, this will toggle the classname specified in the `data-toggle-active-class` attribute (defaults to `is--active`) 
+on this particular element.
 
 ### Toggle links
 Additionally, on any place in the DOM, you can have elements listen to the active state of this toggle component.
@@ -74,7 +75,7 @@ Events.$on('toggle::toggled({id})', (event, isActive) => doSomethingAfterToggleT
 
 ### Trigger event
 Vice versa, the toggle component can be triggered externally as well:
-**NOTE:** This only works after [#PR42](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/42/feature-toggle/diff)
+**NOTE:** This only works after [#PR43](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/43/proposal-to-control-whether-parenthesis/diff)
 ```javascript
 // trigger specific toggle component
 Events.$trigger('toggle::toggle({id})');
