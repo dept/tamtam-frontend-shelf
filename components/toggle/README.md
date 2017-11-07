@@ -74,6 +74,7 @@ Events.$on('toggle::toggled({id})', (event, isActive) => doSomethingAfterToggleT
 
 ### Trigger event
 Vice versa, the toggle component can be triggered externally as well:
+**NOTE:** This only works after [#PR42](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/42/feature-toggle/diff)
 ```javascript
 // trigger specific toggle component
 Events.$trigger('toggle::toggle({id})');
