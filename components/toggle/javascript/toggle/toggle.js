@@ -1,8 +1,10 @@
 import 'core-js/fn/array/from';
 
 import Events from '../util/events';
+Events.logging = true;
 
 const TOGGLE_LINK_HOOK = 'js-hook-toggle-link';
+const TOGGLE_ACTIVE_CLASS = 'is--active';
 
 class Toggle {
 
@@ -11,6 +13,7 @@ class Toggle {
         this.element = element;
         this.id = element.id;
         this.links = this._getToggleLinks();
+        this.activeClass = element.dataset.toggleActiveClass || TOGGLE_ACTIVE_CLASS;
 
         this._bindEvents();
 
@@ -21,8 +24,8 @@ class Toggle {
      */
     _getToggleLinks() {
 
-        const LINK_SELECTOR = `[${ TOGGLE_LINK_HOOK }="${ element.id }"]`;
-        this.links = Array.from(document.querySelectorAll(LINK_SELECTOR));
+        const LINK_SELECTOR = `[${ TOGGLE_LINK_HOOK }="${ this.element.id }"]`;
+        return Array.from(document.querySelectorAll(LINK_SELECTOR));
 
     }
 
@@ -32,14 +35,14 @@ class Toggle {
     _bindEvents() {
 
         this.element.addEventListener('click', (event) => {
-            Events.$trigger(`toggle::toggle(${ element.id })`);
+            Events.$trigger(`toggle::toggle(${ this.element.id })`);
 
             if ( this.element.dataset.togglePreventDefault ) {
                 event.preventDefault();
             }
         });
 
-        Events.$on(`toggle::toggle(${ element.id })`, (event) => {
+        Events.$on(`toggle::toggle(${ this.element.id })`, (event) => {
             this._toggleActiveClassNames();
             this._triggerExternalEvents();
         });
@@ -61,7 +64,7 @@ class Toggle {
      */
     _toggleToggleElementClassName() {
 
-        this.element.classList.toggle('is--active');
+        this.element.classList.toggle(this.activeClass);
 
     }
 
@@ -70,11 +73,12 @@ class Toggle {
      */
     _toggleLinksClassNames() {
 
-        if ( this.element.dataset.toggleLive === "true" ) {
+        if ( this.element.dataset.toggleLive === 'true' ) {
             this.links = this._getToggleLinks();
         }
 
-        this.links.forEach((link) => link.classList.toggle('is--active'));
+        const toggleAction = this.element.classList.contains(this.activeClass) ? 'add' : 'remove';
+        this.links.forEach((link) => link.classList[toggleAction](this.activeClass));
 
     }
 
@@ -83,9 +87,9 @@ class Toggle {
      */
     _triggerExternalEvents() {
 
-        const newState = this.element.classList.contains('is--active') ? 'opened' : 'closed';
-        Events.$trigger(`toggle::${ nextState }(${ element.id })`);
-        Events.$trigger(`toggle::toggled(${ element.id })`, nextState === 'opened');
+        const newState = this.element.classList.contains(this.activeClass) ? 'opened' : 'closed';
+        Events.$trigger(`toggle::${ newState }(${ this.element.id })`);
+        Events.$trigger(`toggle::toggled(${ this.element.id })`, newState === 'opened');
 
     }
 
