@@ -1,7 +1,6 @@
 import 'core-js/fn/array/from';
 
 import Events from '../util/events';
-Events.logging = true;
 
 const TOGGLE_LINK_HOOK = 'js-hook-toggle-link';
 const TOGGLE_ACTIVE_CLASS = 'is--active';
