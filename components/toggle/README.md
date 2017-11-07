@@ -61,7 +61,7 @@ to "live" listen to its links. By default, for performance reasons, this feature
 
 ### Listen to events
 If some other JS component is depending on the active state event of the toggle component, there is an option 
-to exeternally listen to that event:
+to externally listen to that event:
 ```javascript
 // toggle has been opened
 Events.$on('toggle::opened({id})', doSomethingAfterToggleOpened);
