@@ -34,7 +34,7 @@ Add the js-hook-toggle attribute to any HTML you like:
 </button>
 ```
 
-On click, this will toggle the classname specified in the `data-toggle-active-class` attribute (defaults to `is--active`) 
+On click, this will toggle the classname specified in the `data-toggle-active-class` attribute (defaults to `toggle--is-active`) 
 on this particular element.
 
 ### Toggle links
