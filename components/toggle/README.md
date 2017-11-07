@@ -9,6 +9,7 @@
 
 ## What does it do
 * Basic generic toggle functionality that is used solely for triggering active classes
+* Use cases: simple dropdown, toggle switch, hamburger switch
 
 ## Install
 ```javascript
