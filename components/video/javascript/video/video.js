@@ -132,7 +132,7 @@ class Video {
  */
 function getVideos(platforms) {
 
-    if (!VIDEOS) { return false; }
+    if (!VIDEOS) { return []; }
     return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) && !video._initialised ? video : false);
 
 }
