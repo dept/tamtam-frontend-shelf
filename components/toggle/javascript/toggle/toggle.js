@@ -132,7 +132,7 @@ class Toggle {
 
         const newState = this.isActive ? 'opened' : 'closed';
         Events.$trigger(`toggle::${ newState }(${ this.element.id })`);
-        Events.$trigger(`toggle::toggled(${ this.element.id })`, this.isActive);
+        Events.$trigger(`toggle::toggled(${ this.element.id })`, { data: this.isActive });
 
     }
 
