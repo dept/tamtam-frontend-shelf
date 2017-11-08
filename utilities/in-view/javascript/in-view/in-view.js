@@ -76,10 +76,10 @@ class InView {
             element,
             persistent: (inviewPersistent === 'true') || false,
             offset: {
-                top: parseInt(inviewOffsetTop) || 0,
-                bottom: parseInt(inviewOffsetBottom) || 0,
-                left: parseInt(inviewOffsetLeft) || 0,
-                right: parseInt(inviewOffsetRight) || 0
+                top: parseInt(inviewOffsetTop, 10) || 0,
+                bottom: parseInt(inviewOffsetBottom, 10) || 0,
+                left: parseInt(inviewOffsetLeft, 10) || 0,
+                right: parseInt(inviewOffsetRight, 10) || 0
             },
             position: getElementPositions(element),
             threshold: parseFloat(inviewThreshold) || 0,

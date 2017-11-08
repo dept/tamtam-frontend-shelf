@@ -29,25 +29,25 @@ class NativeVideo {
 
         this.player.src = this.sourceData.url;
 
-        if (parseInt(this.options.videoLoop)) {
+        if (parseInt(this.options.videoLoop, 10)) {
             this.player.setAttribute('loop', 'loop');
         }
 
-        if (parseInt(this.options.videoPlaysinline)) {
+        if (parseInt(this.options.videoPlaysinline, 10)) {
             this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
         }
 
-        if (parseInt(this.options.videoAutoplay)) {
+        if (parseInt(this.options.videoAutoplay, 10)) {
             this.player.setAttribute('autoplay', 'autoplay');
             this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
         }
 
-        if (parseInt(this.options.videoMuted)) {
+        if (parseInt(this.options.videoMuted, 10)) {
             this.player.setAttribute('muted', 'muted');
             this.player.muted = true;
         }
 
-        if (parseInt(this.options.videoTime)) {
+        if (parseInt(this.options.videoTime, 10)) {
             this.player.currentTime = this.options.videoTime;
         }
 
@@ -87,7 +87,7 @@ class NativeVideo {
      */
     play() {
 
-        if (parseInt(this.options.videoControls)) {
+        if (parseInt(this.options.videoControls, 10)) {
             this.player.controls = 1;
         }
 
@@ -100,7 +100,7 @@ class NativeVideo {
      */
     pause() {
 
-        if (parseInt(this.options.videoControls)) {
+        if (parseInt(this.options.videoControls, 10)) {
             this.player.controls = 0;
         }
 
