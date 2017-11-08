@@ -34,7 +34,7 @@ class Events {
 
         if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
 
-        let _data = currentTarget ? { currentTarget, data } : data;
+        const _data = currentTarget ? { currentTarget, data } : data;
         const _event = new CustomEvent(event, { detail: _data });
 
         eventEl.dispatchEvent(_event);
