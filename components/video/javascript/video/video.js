@@ -118,8 +118,10 @@ class Video {
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = _constructVideoOptions(video);
 
-        options.element.playerInstance = new platformClass(options);
-        bindPlayerEvents(options);
+        if (Object.keys(options).length) {
+            options.element.playerInstance = new platformClass(options);
+            bindPlayerEvents(options);
+        }
 
     }
 
