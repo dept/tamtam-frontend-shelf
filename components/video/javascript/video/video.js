@@ -182,7 +182,7 @@ function _constructVideoOptions(element) {
         videoPlaysinline,
         videoLoop,
         videoSources
-    }
+    };
 
 }
 
