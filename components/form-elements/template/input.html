@@ -1,0 +1,131 @@
+{#
+    @shelf-version: 1.0.0
+    Form elements
+
+#}
+
+{#
+    Checkbox
+
+    Options:
+        id {string|int}     - Adds an id to the checkbox (needed for label to be clickable)
+        name {string|int}     - Adds a name to the checkbox
+        label {string|int}     - Adds a label to the checkbox
+        checked {boolean}     - Add checked property to the checkbox
+
+#}
+
+{% macro checkbox(data) %}
+
+    <div class="c-checkbox
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form-disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <div class="checkbox__wrapper">
+            <input
+                class="checkbox__field u-sr-only"
+                type="checkbox"
+                name="{{ data.name }}"
+                value="{{ data.value }}"
+                id="{{ data.id }}"
+                {%- if(data.checked) %} checked{% endif -%}
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+            <label class="checkbox__label" for="{{ data.id }}" role="button">
+
+                {{ data.label|safe }}
+
+            </label>
+        </div>
+
+    </div>
+
+{% endmacro %}
+
+
+{#
+    Select
+
+    Options:
+        id {string|int}     - Adds an id to the checkbox (needed for label to be clickable)
+        name {string|int}     - Adds a name to the checkbox
+        label {string|int}     - Adds a label to the checkbox
+        checked {boolean}     - Add checked property to the checkbox
+
+#}
+{% macro select(data) %}
+
+    <div class="c-select
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form-disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <label for="{{ data.id }}">{{ data.title }}</label>
+        <div class="select__wrapper">
+            <select
+                class="select__field"
+                name="{{ data.name }}"
+                id="{{ data.id }}"
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+
+                {% for option in data.options %}
+                    <option
+                        {%- if option.default %}disabled selected{% endif -%}
+                        value="{{ option.value }}">
+                        {{ option.label }}
+                    </option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <span class="select__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
+
+
+{#
+    Input
+
+    Options:
+        id {string|int}     - Adds an id to the checkbox (needed for label to be clickable)
+        name {string|int}     - Adds a name to the checkbox
+        label {string|int}     - Adds a label to the checkbox
+        checked {boolean}     - Add checked property to the checkbox
+
+#}
+{% macro select(data) %}
+
+    <div class="c-input
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.type %} input--{{ data.type }}{% endif -%}
+        {%- if data.disabled %} form-disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <label for="{{ data.id }}">{{ data.title }}</label>
+        <div class="select__wrapper">
+            <select
+                class="select__field"
+                name="{{ data.name }}"
+                id="{{ data.id }}"
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+
+                {% for option in data.options %}
+                    <option
+                        {%- if option.default %}disabled selected{% endif -%}
+                        value="{{ option.value }}">
+                        {{ option.label }}
+                    </option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <span class="select__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
