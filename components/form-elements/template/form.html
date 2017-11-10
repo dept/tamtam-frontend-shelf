@@ -1,0 +1,197 @@
+{#
+    @shelf-version: 1.0.0
+    Form elements
+
+#}
+
+{#
+    Checkbox
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        label {string}                      - Adds a label to the checkbox
+        id {string|int}                     - Adds an id to the checkbox (needed for label to be clickable)
+        value {string                       - Adds a value to the checkbox
+        name {string}                       - Adds a name to the checkbox
+        hook {string}            (optional) - Adds a hook to the checkbox
+        attr {string}                       - Adds attributes to the checkbox
+        disabled {boolean}       (optional) - Add disabled property to the checkbox
+        error {object}           (optional) - Add error state
+        error.message {string}              - Add error message
+
+#}
+
+{% macro checkbox(data) %}
+
+    <div class="c-checkbox
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form-item--disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <div class="checkbox__wrapper">
+            <input
+                class="checkbox__field u-sr-only"
+                type="checkbox"
+                name="{{ data.name }}"
+                value="{{ data.value }}"
+                id="{{ data.id }}"
+                {%- if data.checked %} checked{% endif -%}
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+            <label class="checkbox__label" for="{{ data.id }}" role="button">
+
+                {{ data.label|safe }}
+
+            </label>
+        </div>
+        <span class="form-item__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
+
+
+{#
+    Radio
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        label {string}                      - Adds a label to the radio
+        id {string|int}                     - Adds an id to the radio (needed for label to be clickable)
+        value {string                       - Adds a value to the radio
+        name {string}                       - Adds a name to the radio
+        hook {string}            (optional) - Adds a hook to the radio
+        attr {string}                       - Adds attributes to the radio
+        disabled {boolean}       (optional) - Add disabled property to the radio
+        error {object}           (optional) - Add error state
+        error.message {string}              - Add error message
+
+#}
+
+{% macro radio(data) %}
+
+    <div class="c-radio
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form-item--disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <div class="radio__wrapper">
+            <input
+                class="radio__field u-sr-only"
+                type="radio"
+                name="{{ data.name }}"
+                value="{{ data.value }}"
+                id="{{ data.id }}"
+                {%- if data.checked %} checked{% endif -%}
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+            <label class="radio__label" for="{{ data.id }}" role="button">
+
+                {{ data.label|safe }}
+
+            </label>
+        </div>
+        <span class="form-item__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
+
+
+{#
+    Select
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        type {string}            (optional) - Adds a label to the select
+        label {string}                      - Adds a label to the select
+        id {string|int}                     - Adds an id to the select (needed for label to be clickable)
+        value {string                       - Adds a value to the select
+        name {string}                       - Adds a name to the select
+        hook {string}            (optional) - Adds a hook to the select
+        attr {string}                       - Adds attributes to the select
+        disabled {boolean}       (optional) - Add disabled property to the select
+        options {object}                    - Adds options
+        options.default {string} (optional) - Adds option default state
+        options.label {string}              - Adds option label
+        options.value {string}              - Adds option value
+        error {object}           (optional) - Add error state
+        error.message {string}              - Add error message
+
+#}
+{% macro select(data) %}
+
+    <div class="c-select
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form-item--disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <div class="select__wrapper">
+            <label for="{{ data.id }}">{{ data.title }}</label>
+            <select
+                class="select__field"
+                name="{{ data.name }}"
+                id="{{ data.id }}"
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+
+                {% for option in data.options %}
+                    <option
+                        {% if option.default %}disabled selected{% endif -%}
+                        value="{{ option.value }}">
+                        {{ option.label }}
+                    </option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <span class="form-item__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
+
+
+{#
+    Input
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        type {string}            (optional) - Adds a label to the input
+        label {string}                      - Adds a label to the input
+        id {string|int}                     - Adds an id to the input (needed for label to be clickable)
+        value {string                       - Adds a value to the input
+        name {string}                       - Adds a name to the input
+        hook {string}            (optional) - Adds a hook to the input
+        attr {string}                       - Adds attributes to the input
+        regex {string}           (optional) - Adds attributes to the input
+        disabled {boolean}       (optional) - Add disabled property to the input
+        error {object}           (optional) - Add error state
+        error.message {string}              - Add error message
+
+#}
+{% macro input(data) %}
+
+    <div class="c-input
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.type %} input--{{ data.type }}{% endif -%}
+        {%- if data.disabled %} form-item--disabled{% endif -%}
+        {%- if data.error %} form-item--error{% endif -%}">
+
+        <div class="input__wrapper">
+            <label for="{{ data.id }}">{{ data.title }}</label>
+            <input
+                class="input__field u-sr-only"
+                type="{%- if data.type %}{{ data.type }}{% else %}text{% endif -%}"
+                name="{{ data.name }}"
+                value="{{ data.value }}"
+                id="{{ data.id }}"
+                {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+        </div>
+        <span class="form-item__error">{{ data.error.message }}</span>
+
+    </div>
+
+{% endmacro %}
