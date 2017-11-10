@@ -1,0 +1,20 @@
+{#
+    @shelf-version: 1.0.0
+    Checkbox
+
+    Options:
+        id {string|int}     - Adds an id to the checkbox (needed for label to be clickable)
+        name {string|int}     - Adds a name to the checkbox
+        label {string|int}     - Adds a label to the checkbox
+        checked {boolean}     - Add checked property to the checkbox
+
+#}
+
+{% macro checkbox( data ) %}
+
+    <div class="c-checkbox">
+        <input type="checkbox" class="checkbox__input" id="{{ data.id }}" name="{{ data.name }}" value="{{ data.value }}" {% if data.checked %} checked {% endif %}>
+        <label class="checkbox__label" for="{{ data.id }}">{{ data.label }}</label>
+    </div>
+
+{% endmacro %}

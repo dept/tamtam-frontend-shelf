@@ -1,0 +1,56 @@
+$checkbox-size: 16px;
+$checkbox-border-width: 2px;
+$checkbox-border-radius: 25%;
+$checkbox-color: $color-black;
+
+.c-checkbox {
+
+    position: relative;
+
+}
+.checkbox__input {
+
+    opacity: 0;
+
+}
+
+.checkbox__label {
+
+    cursor: pointer;
+    padding-left: 5px;
+
+    &::before {
+        position: absolute;
+        content: '';
+        border-radius: $checkbox-border-radius;
+        border: $checkbox-border-width solid $checkbox-color;
+        top: 4px;
+        left: 0;
+        width: $checkbox-size;
+        height: $checkbox-size;
+        cursor: pointer;
+        transition: $button-transition-time $button-transition-ease;
+        transition-property: border, background;
+    }
+
+    &::after {
+        position: absolute;
+        content: '\2713';
+        top: 0;
+        left: 2px;
+        width: $checkbox-size;
+        height: $checkbox-size;
+        transition: $button-transition-time $button-transition-ease;
+        transition-property: opacity;
+        opacity: 0;
+    }
+
+}
+
+.checkbox__input:checked + label {
+
+    &::after {
+        opacity: 1;
+    }
+
+}
