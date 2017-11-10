@@ -47,4 +47,5 @@ import './src/modules/image';
 * [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Jeroen Reumkens](mailto:jeroen-reumkens@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
