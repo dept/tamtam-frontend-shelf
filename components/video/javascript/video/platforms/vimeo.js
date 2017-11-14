@@ -32,23 +32,23 @@ class VimeoVideo {
             }
 
             Events.$trigger('video::ready', { data: this.options });
-            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::ready`, { data: this.options });
 
         });
 
         this.player.on('play', () => {
             Events.$trigger('video::playing', { data: this.options });
-            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options });
         });
 
         this.player.on('pause', () => {
             Events.$trigger('video::paused', { data: this.options });
-            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::paused`, { data: this.options });
         });
 
         this.player.on('ended', () => {
             Events.$trigger('video::ended', { data: this.options });
-            Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::ended`, { data: this.options });
         });
 
     }

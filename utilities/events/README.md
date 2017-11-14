@@ -44,15 +44,17 @@ Modules gives you the option to bind on events without the need to write Javascr
 You also have the option to automatically execute preventDefault of stopPropagation by adding `.prevent` or `.stop`.
 
 You also have the option to pass a (string only!) parameter to the event as data:
-`<button type="button" on:click.prevent="playVideo(12)">Play Video</button>`
- The above code will pass 12 as a stirng parameter to the playVideo event.
+`<button type="button" on:click.prevent="eventname(parameter)">Click me</button>`
+
+The next code snippet will look for the video instance with '12' set as instance id and trigger its play event.
+`<button type="button" on:click.prevent="video[12]::play">Play Video</button>`
 
 
 ```html
 
 <button type="button" on:click="eventname">Click me</button>
-<button type="button" on:click.prevent="eventname">Click me</button>
-<button type="button" on:click.prevent="playVideo(12)">Play Video</button>
+<button type="button" on:click.prevent="eventname(parameter)">Click me</button>
+<button type="button" on:click.prevent="video[12]::play">Play Video</button>
 
 <input type="text" on:focus="focusEvent">
 

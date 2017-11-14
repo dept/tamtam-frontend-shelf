@@ -115,7 +115,7 @@ class AccordionItem {
                 }
             });
 
-            Events.$trigger(`accordion::${(this.isOpen) ? `opened(${this.id})` : `closed(${this.id})`}`);
+            Events.$trigger(`accordion[${this.id}]::${(this.isOpen) ? `opened` : `closed`}`);
 
         }
 

@@ -84,12 +84,12 @@ class Modal {
 
         Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::open', { data: { id } });
-            Events.$trigger(`modal::open(${ id })`, { data: { id } });
+            Events.$trigger(`modal[${id}]::open`, { data: { id } });
         }));
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
-            Events.$trigger(`modal::close(${ id })`, { data: { id } });
+            Events.$trigger(`modal[${id}]::close`, { data: { id } });
         }));
 
         // Close on ESCAPE_KEY
