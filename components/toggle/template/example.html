@@ -1,0 +1,18 @@
+{#
+    @shelf-version: 1.0.0
+    Breadcrumb component
+#}
+{% macro exampleToggle() %}
+
+    <button class="c-toggle-button"
+        js-hook-toggle
+        aria-controls="totally-different-component-id">
+        Toggle button
+    </button>
+
+    <div class="c-totally-different-component"
+        id="totally-different-component-id">
+        Toggled content
+    </div>
+
+{% endmacro %}
