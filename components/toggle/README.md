@@ -70,25 +70,26 @@ If some other JS component is depending on the active state event of the toggle 
 to externally listen to that event:
 ```javascript
 // toggle has been opened
-Events.$on('toggle::opened({id})', doSomethingAfterToggleOpened);
+Events.$on('toggle[{id}]::opened', doSomethingAfterToggleOpened);
 
 // toggle has been closed
-Events.$on('toggle::closed({id})', doSomethingAfterToggleClosed);
+Events.$on('toggle[{id}]::closed', doSomethingAfterToggleClosed);
 
 // toggle has been toggled
-Events.$on('toggle::toggled({id})', (event, isActive) => doSomethingAfterToggleToggled(isActive));
+Events.$on('toggle[{id}]::toggled', (event, isActive) => doSomethingAfterToggleToggled(isActive));
 ```
 
 ### Trigger event
 Vice versa, the toggle component can be triggered externally as well:
 ```javascript
 // trigger specific toggle component
-Events.$trigger('toggle::toggle({id})');
+Events.$trigger('toggle[{id}]::toggle');
 ```
 
-Or with the HTML on:click attributes (**NOTE:** This only works after [#PR43](https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf/pull-requests/43/proposal-to-control-whether-parenthesis/diff))
+or inline with HTML attributes
+
 ```htmlmixed
-<button class="c-i-am-a-button" on:click.id-specific="toggle:toggle(this-specific-toggle-button)">
+<button class="c-i-am-a-button" on:click.id-specific="toggle[this-specific-toggle-button]::toggle">
     ...
 </button>
 ```

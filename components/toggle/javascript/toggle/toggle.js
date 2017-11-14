@@ -43,14 +43,14 @@ class Toggle {
     _bindEvents() {
 
         this.element.addEventListener('click', (event) => {
-            Events.$trigger(`toggle::toggle(${ this.element.id })`);
+            Events.$trigger(`toggle[${ this.element.id }]::toggle`);
 
             if ( this.element.dataset.togglePreventDefault ) {
                 event.preventDefault();
             }
         });
 
-        Events.$on(`toggle::toggle(${ this.element.id })`, (event) => {
+        Events.$on(`toggle[${ this.element.id }]::toggle`, (event) => {
             this._toggleState();
             event.preventDefault();
         });
@@ -131,8 +131,8 @@ class Toggle {
     _triggerExternalEvents() {
 
         const newState = this.isActive ? 'opened' : 'closed';
-        Events.$trigger(`toggle::${ newState }(${ this.element.id })`);
-        Events.$trigger(`toggle::toggled(${ this.element.id })`, { data: this.isActive });
+        Events.$trigger(`toggle[${ this.element.id }]::${ newState }`);
+        Events.$trigger(`toggle[${ this.element.id }]::toggled`, { data: this.isActive });
 
     }
 
