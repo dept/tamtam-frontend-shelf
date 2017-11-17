@@ -17,11 +17,11 @@ $media-margin           : $global-spacing-md;
 
     .media__figure {
         padding-right: $media-content-spacing;
-    }
 
-    .media__image {
-        width: 100%;
-        height: auto;
+        img {
+            width: 100%;
+            height: auto;
+        }
     }
 
     .media__content {

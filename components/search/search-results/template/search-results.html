@@ -29,7 +29,9 @@
                         classes: 'search-results__media',
                         title: result.title,
                         image: {
-                            url: result.image
+                            preload: 'http://via.placeholder.com/10x10',
+                            image: 'http://via.placeholder.com/200x200',
+                            srcset: 'http://via.placeholder.com/200x200 320w, http://via.placeholder.com/400x400 780w'
                         }
                     }) %}
                         <p>{{ result.description }}</p>
