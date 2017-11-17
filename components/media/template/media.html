@@ -3,6 +3,7 @@
     Media comopnent
 
     data {
+        url:        'string', (optional)
         classes:    'string', (optional)
         image: {
             image:   'string', (desktop fallback image)
@@ -23,7 +24,7 @@
     <article class="u-margin-top--md c-media
      {% if data.classes %}{{data.classes}}{% endif %}
      {% if data.align %}media--align-{{data.align}}{% endif %}">
-        <a href="#" class="o-grid media__wrapper">
+        <a href="{{ data.url or '#' }}" class="o-grid media__wrapper">
 
             {% if data.image %}
                 <div class="o-col-3 media__aside">

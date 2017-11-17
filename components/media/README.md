@@ -24,6 +24,7 @@
 
 ```htmlmixed
  {% call media({
+    url:        'string', (optional)
     classes:    'string', (optional)
     title:      'string',
     align:      'top' (optional) - aligns content to the top
