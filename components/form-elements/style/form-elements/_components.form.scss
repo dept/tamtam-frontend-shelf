@@ -14,16 +14,3 @@ $form-item-error-padding-right: $global-spacing;
 .form__item {
     margin-bottom: $form-item-margin;
 }
-
-.form__item-error {
-    display: inline-block;
-    margin-top: $global-spacing / 2;
-    border: $form-item-error-border-width solid $form-item-error-border-color;
-    background-color: $form-item-error-fill-color;
-    border-radius: $form-item-error-border-radius;
-    padding-top: $form-item-error-padding-top;
-    padding-bottom: $form-item-error-padding-bottom;
-    padding-left: $form-item-error-padding-left;
-    padding-right: $form-item-error-padding-right;
-}
-
