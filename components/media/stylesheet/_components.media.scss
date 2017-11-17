@@ -10,9 +10,17 @@ $media-margin           : $global-spacing-md;
         display: flex;
         align-items: center;
 
+        // Reset link styles.
+        text-decoration: inherit;
+        color: inherit;
+
         .media--align-top & {
             align-items: flex-start;
         }
+    }
+
+    .media__aside {
+        height: 100%;
     }
 
     .media__figure {
