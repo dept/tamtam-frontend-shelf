@@ -19,6 +19,6 @@ $error-padding-right: $global-spacing * 2;
     padding-right: $error-padding-right;
 
     .form__item--error & {
-        display: block;
+        display: inline-block;
     }
 }
