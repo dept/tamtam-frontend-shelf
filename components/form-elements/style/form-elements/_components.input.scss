@@ -1,0 +1,58 @@
+$input-border-width: 1px;
+$input-border-radius: 0;
+$input-border-color: $color-black;
+$input-error-color: $form-item-error-border-color;
+$input-fill-color: $color-white;
+$input-padding-top: $global-spacing;
+$input-padding-bottom: $global-spacing;
+$input-padding-left: $global-spacing * 2;
+$input-padding-right: $global-spacing * 4;
+$input-transition-time: 200ms;
+$input-transition-ease: $ease-in-out-quad;
+
+.c-input {
+    position: relative;
+}
+
+.input__label {
+    display: block;
+}
+
+.input__input {
+    display: block;
+    appearance: none;
+    width: 100%;
+    padding-top: $input-padding-top;
+    padding-bottom: $input-padding-bottom;
+    padding-left: $input-padding-left;
+    padding-right: $input-padding-right;
+    border-radius: $input-border-radius;
+    border: $input-border-width solid $input-border-color;
+    background-color: $input-fill-color;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    .form__item--error & {
+        border-color: $input-error-color;
+    }
+}
+
+/**
+ * File
+ */
+.input--file {
+    .input__input {
+        cursor: pointer;
+        padding-left: $input-padding-right;
+
+        &::before {
+            position: absolute;
+            text-align: center;
+            width: $input-padding-right;
+            left: 0;
+            content: '\21EA';
+        }
+    }
+}

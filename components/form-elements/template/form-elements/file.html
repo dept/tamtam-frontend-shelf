@@ -1,0 +1,49 @@
+{#
+    File
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        label {string}                      - Adds a label to the input
+        id {string|int}                     - Adds an id to the input (needed for label to be clickable)
+        name {string}                       - Adds a name to the input
+        hook {string}            (optional) - Adds a hook to the input
+        attr {string}                       - Adds attributes to the input
+        multiple                 (optional) - Adds multiple option and translation label when multiple files
+        accept                   (optional) - Limit file extension selection
+        disabled {boolean}       (optional) - Add disabled property to the input
+        error {string}           (optional) - Add error state and message
+
+#}
+{% macro file(data) %}
+
+    <div class="c-input form__item input--file
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form__item--disabled{% endif -%}
+        {%- if data.error %} form__item--error{% endif -%}">
+
+        <div class="input__wrapper">
+            <span class="input__label{%- if data.noLabel %} u-sr-only{% endif -%}">
+                {{ data.label|safe }}
+            </span>
+            <div class="input__file-wrapper">
+                <label class="input__input" for="{{ data.id }}" js-hook-file-label>
+                    Choose file(s)
+                </label>
+                <input class="u-sr-only"
+                    type="file"
+                    name="{{ data.name }}"
+                    id="{{ data.id }}"
+                    {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                    js-hook-input-file
+                    {%- if data.accept %} accept="{{ data.accept }}"{% endif -%}
+                    {%- if data.multiple %} multiple data-multiple-label="{count} files selected"{% endif -%}
+                    {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+            </div>
+        </div>
+        {%- if data.error %}
+            <div class="form__item-error">{{ data.error }}</div>
+        {% endif -%}
+
+    </div>
+
+{% endmacro %}

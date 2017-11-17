@@ -1,0 +1,19 @@
+$error-border-width: 1px;
+$error-border-radius: 0;
+$error-border-color: $form-item-error-border-color;
+$error-fill-color: rgba($error-border-color, 0.2);
+$error-padding-top: $global-spacing;
+$error-padding-bottom: $global-spacing;
+$error-padding-left: $global-spacing * 2;
+$error-padding-right: $global-spacing * 2;
+
+.form-item__error {
+    margin-top: $global-spacing / 2;
+    border: $error-border-width solid $error-border-color;
+    background-color: $error-fill-color;
+    border-radius: $error-border-radius;
+    padding-top: $error-padding-top;
+    padding-bottom: $error-padding-bottom;
+    padding-left: $error-padding-left;
+    padding-right: $error-padding-right;
+}
