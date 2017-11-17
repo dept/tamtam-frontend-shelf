@@ -1,0 +1,47 @@
+{#
+    @shelf-version: 1.0.0
+    Media comopnent
+
+    data {
+        classes:    'string', (optional)
+        image: {
+            image:   'string', (desktop fallback image)
+            preload: 'string', (10xratio preload image)
+            srcset:  'string'  (image srcset)
+        },
+        title:      'string',
+        align:      'top' (optional) - aligns content to the top
+    }
+
+    caller - for content.
+#}
+
+{% from 'components/image.html' import image  %}
+
+{% macro media(data) %}
+
+    <article class="u-margin-top--md c-media
+     {% if data.classes %}{{data.classes}}{% endif %}
+     {% if data.align %}media--align-{{data.align}}{% endif %}">
+        <div class="o-grid media__wrapper">
+
+            <div class="o-col-3 media__aside">
+                {{ image({
+                    classes: 'media__figure',
+                    preload: data.image.preload,
+                    image: data.image.image,
+                    srcset: data.image.srcset
+                }) }}
+            </div>
+
+            <div class="o-col-9 media__content">
+                <h3>{{ data.title }}</h3>
+                {% if caller %}
+                    {{ caller() }}
+                {%endif %}
+            </div>
+        </div>
+
+    </article>
+
+{% endmacro %}

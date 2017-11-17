@@ -1,0 +1,33 @@
+$media-content-spacing  : $global-spacing-sm;
+$media-margin           : $global-spacing-md;
+
+.c-media {
+    margin-bottom: $media-margin;
+    background-color: #f3f3f3;
+}
+
+    .media__wrapper {
+        display: flex;
+        align-items: center;
+
+        .media--align-top & {
+            align-items: flex-start;
+        }
+    }
+
+    .media__figure {
+        padding-right: $media-content-spacing;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .media__content {
+        padding-right: $media-content-spacing;
+
+        .media--align-top & {
+            padding-top: $media-content-spacing;
+        }
+    }

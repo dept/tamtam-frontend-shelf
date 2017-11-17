@@ -40,7 +40,7 @@
 ```
 
 ## Dependencies
-This package doesn't have any dependencies.
+* [Media component](/components/media/)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
