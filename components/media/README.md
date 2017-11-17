@@ -8,11 +8,12 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
-![Search results Demo](./_demo/media.png)
+![Media Demo](./_demo/media.png)
 
 ## What does it do
 * Image component with HTML content next to it.
 * Can be nested inside itself.
+* Uses image component to render (lazy loaded) image.
 
 ## Install
 ```htmlmixed
@@ -23,18 +24,21 @@
 
 ```htmlmixed
  {% call media({
+    classes:    'string', (optional)
     title:      'string',
     align:      'top' (optional) - aligns content to the top
     image: {
-        url: 'string'
-    }
+        image:   'string', (desktop fallback image)
+        preload: 'string', (10xratio preload image)
+        srcset:  'string'  (image srcset)
+    },
 }) %}
     <p>HMTL content can be injected via caller.</p>
 {% endcall %}
 ```
 
 ## Dependencies
-* This component has no dependencies
+* [Image component](/components/media/README.md)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
