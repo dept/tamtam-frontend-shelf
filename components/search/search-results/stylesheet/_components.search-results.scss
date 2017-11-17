@@ -7,17 +7,17 @@ $search-result-spacing: $global-spacing-md;
     margin-bottom: $search-result-spacing;
 }
 
+.search-results__media {
+    transition: background-color .4s ease-in-out;
+}
+
 .search-results__link {
     color: inherit;
     text-decoration: none;
     display: block;
 
-    .c-media {
-        transition: background-color .4s ease-in-out;
-    }
-
-    &:hover, &:focus {
-        .c-media {
+    @include hover-focus {
+        .search-results__media {
             background-color: #ddd;
         }
     }

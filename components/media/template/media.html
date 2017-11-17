@@ -3,6 +3,7 @@
     Media comopnent
 
     data {
+        classes:    'string', (optional)
         image: soon
         title:      'string',
         align:      'top' (optional) - aligns content to the top
@@ -13,7 +14,9 @@
 
 {% macro media(data) %}
 
-    <article class="u-margin-top--md c-media {% if data.align %}media--align-{{data.align}}{% endif %}">
+    <article class="u-margin-top--md c-media
+     {% if data.classes %}{{data.classes}}{% endif %}
+     {% if data.align %}media--align-{{data.align}}{% endif %}">
         <div class="o-grid media__wrapper">
 
             <aside class="o-col-3 media__aside">
