@@ -16,8 +16,6 @@ $media-margin           : $global-spacing-md;
     }
 
     .media__figure {
-        padding-right: $media-content-spacing;
-
         img {
             width: 100%;
             height: auto;
@@ -25,7 +23,8 @@ $media-margin           : $global-spacing-md;
     }
 
     .media__content {
-        padding-right: $media-content-spacing;
+        padding: $media-content-spacing $media-content-spacing $media-content-spacing 0;
+        margin-left: $media-content-spacing;
 
         .media--align-top & {
             padding-top: $media-content-spacing;

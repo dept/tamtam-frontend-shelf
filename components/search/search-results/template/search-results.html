@@ -8,7 +8,12 @@
             {
                 title:          'string',
                 description:    'string',
-                url:            'string'
+                url:            'string',
+                image: {        (optional)
+                    image:   'string', (desktop fallback image)
+                    preload: 'string', (10xratio preload image)
+                    srcset:  'string'  (image srcset)
+                },
             }
         ]
     }
@@ -28,11 +33,7 @@
                     {% call media({
                         classes: 'search-results__media',
                         title: result.title,
-                        image: {
-                            preload: 'http://via.placeholder.com/10x10',
-                            image: 'http://via.placeholder.com/200x200',
-                            srcset: 'http://via.placeholder.com/200x200 320w, http://via.placeholder.com/400x400 780w'
-                        }
+                        image: result.image
                     }) %}
                         <p>{{ result.description }}</p>
 

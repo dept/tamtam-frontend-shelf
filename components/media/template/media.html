@@ -25,16 +25,24 @@
      {% if data.align %}media--align-{{data.align}}{% endif %}">
         <div class="o-grid media__wrapper">
 
-            <div class="o-col-3 media__aside">
-                {{ image({
-                    classes: 'media__figure',
-                    preload: data.image.preload,
-                    image: data.image.image,
-                    srcset: data.image.srcset
-                }) }}
-            </div>
+            {% if data.image %}
+                <div class="o-col-3 media__aside">
+                    {{ image({
+                        classes: 'media__figure',
+                        preload: data.image.preload,
+                        image: data.image.image,
+                        srcset: data.image.srcset
+                    }) }}
+                </div>
+            {% endif %}
 
-            <div class="o-col-9 media__content">
+            {% if data.image %}
+                {% set contentWidthClass = "o-col-9" %}
+            {% else %}
+                {% set contentWidthClass = "o-col-12" %}
+            {% endif %}
+
+            <div class="{{ contentWidthClass }} media__content">
                 <h3>{{ data.title }}</h3>
                 {% if caller %}
                     {{ caller() }}
