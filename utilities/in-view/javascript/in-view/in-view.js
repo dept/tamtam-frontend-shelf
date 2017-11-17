@@ -15,7 +15,6 @@ class InView {
         this._bindEvent();
 
         Events.$trigger('in-view::update');
-
         Events.$trigger('scroll');
 
     }
@@ -77,10 +76,10 @@ class InView {
             element,
             persistent: (inviewPersistent === 'true') || false,
             offset: {
-                top: parseInt(inviewOffsetTop) || 0,
-                bottom: parseInt(inviewOffsetBottom) || 0,
-                left: parseInt(inviewOffsetLeft) || 0,
-                right: parseInt(inviewOffsetRight) || 0
+                top: parseInt(inviewOffsetTop, 10) || 0,
+                bottom: parseInt(inviewOffsetBottom, 10) || 0,
+                left: parseInt(inviewOffsetLeft, 10) || 0,
+                right: parseInt(inviewOffsetRight, 10) || 0
             },
             position: getElementPositions(element),
             threshold: parseFloat(inviewThreshold) || 0,
@@ -95,11 +94,11 @@ class InView {
             namespace: `ElementInView-${config.index}`,
             fn: () => this._elementInView(config)
         }, {
-            element: window,
-            event: 'resize',
-            namespace: `ElementRecalculatePositions-${config.index}`,
-            fn: () => this._reCalculateElementPositions(config)
-        });
+                element: window,
+                event: 'resize',
+                namespace: `ElementRecalculatePositions-${config.index}`,
+                fn: () => this._reCalculateElementPositions(config)
+            });
 
     }
 
@@ -119,7 +118,7 @@ class InView {
     _elementInView(config) {
 
         const element = config.element;
-        element._inViewport = elementIsInViewport(element, config);
+        element._inViewport = elementIsInViewport(config);
 
         if (config.persistent) {
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
@@ -220,7 +219,12 @@ function setTriggers(trigger, element) {
 
 /**
  * Checks if given element is in viewport
- * @param {HTMLElement} element Element to check if it's in viewport
+ * @param {HTMLElement} options[].element Element to check if it's in viewport
+ * @param {Object[]} [options[].position]
+ * @param {Number} [options[].position[].top] Position in pixels
+ * @param {Number} [options[].position[].bottom] Position in pixels
+ * @param {Number} [options[].position[].left] Position in pixels
+ * @param {Number} [options[].position[].right] Position in pixels
  * @param {Object[]} [options[].offset]
  * @param {Number} [options[].offset[].top] Offset in pixels
  * @param {Number} [options[].offset[].bottom] Offset in pixels
@@ -228,7 +232,7 @@ function setTriggers(trigger, element) {
  * @param {Number} [options[].offset[].right] Offset in pixels
  * @param {Number} [options[].threshold] Can be a value between 0 and 1
  */
-function elementIsInViewport(element, options) {
+function elementIsInViewport(options) {
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -236,27 +240,16 @@ function elementIsInViewport(element, options) {
     const windowHeight = window.innerHeight;
     const windowWidth = document.body.clientWidth;
 
-    const intersection = {
-        t: options.position.top - scrollTop,
-        r: options.position.right.toFixed(0) + scrollLeft - windowWidth,
-        b: options.position.bottom - scrollTop - windowHeight,
-        l: options.position.left.toFixed(0) + scrollLeft
-    }
+    const { position, threshold, offset } = options;
 
-    const threshold = {
-        x: options.threshold * options.position.width,
-        y: options.threshold * options.position.height
-    };
+    const intersection = getIntersections({ position, windowHeight, windowWidth, scrollLeft, scrollTop });
 
-    const inViewDirections = {
-        top: (options.offset.top + threshold.y) - intersection.t >= -windowHeight && (options.offset.top + threshold.y - intersection.t) <= 0,
-        right: intersection.r >= (options.offset.right + threshold.x),
-        bottom: (options.offset.bottom + threshold.y) - intersection.b <= windowHeight && (options.offset.bottom + threshold.y - intersection.b) >= 0,
-        left: intersection.l >= (options.offset.left + threshold.x)
-    };
+    const calculatedThreshold = getThreshold({ threshold, position });
 
-    inViewDirections.any = inViewDirections.top || inViewDirections.right || inViewDirections.bottom || inViewDirections.left;
-    inViewDirections.all = inViewDirections.top && inViewDirections.right && inViewDirections.bottom && inViewDirections.left;
+    const inViewDirections = getInViewDirections({ position, intersection, offset, windowHeight, scrollLeft, scrollTop, calculatedThreshold });
+
+    inViewDirections.any = getAnyInViewDirection(inViewDirections);
+    inViewDirections.all = getAllInViewDirection(inViewDirections);
 
     return inViewDirections;
 
@@ -304,6 +297,64 @@ function getElementOffset(element) {
         top: top,
         left: left
     };
+}
+
+/**
+ * Check if any direction is in view
+ * @param {Object} directions
+ * @returns {Boolean} match
+ */
+function getAnyInViewDirection(directions) {
+    return directions.top || directions.right || directions.bottom || directions.left;
+}
+
+/**
+ * Check if all directions are in view
+ * @param {Object} directions
+ * @returns {Boolean} match
+ */
+function getAllInViewDirection(directions) {
+    return directions.top && directions.right && directions.bottom && directions.left;
+}
+
+/**
+ * Get matching in view directions
+ * @param {Object} options
+ * @returns {Object} matches
+ */
+function getInViewDirections(options) {
+    return {
+        top: (options.offset.top + options.calculatedThreshold.y) - options.intersection.t >= - options.windowHeight && (options.offset.top + options.calculatedThreshold.y - options.intersection.t) <= 0,
+        right: options.intersection.r >= (options.offset.right + options.calculatedThreshold.x),
+        bottom: (options.offset.bottom + options.calculatedThreshold.y) - options.intersection.b <= options.windowHeight && (options.offset.bottom + options.calculatedThreshold.y - options.intersection.b) >= 0,
+        left: options.intersection.l >= (options.offset.left + options.calculatedThreshold.x)
+    }
+}
+
+/**
+ * Get in view intersections
+ * @param {Object} options
+ * @returns {Object} matches
+ */
+function getIntersections(options) {
+    return {
+        t: options.position.top - options.scrollTop,
+        r: options.position.right.toFixed(0) + options.scrollLeft - options.windowWidth,
+        b: options.position.bottom - options.scrollTop - options.windowHeight,
+        l: options.position.left.toFixed(0) + options.scrollLeft
+    }
+}
+
+/**
+ * Get the element threshold in pixels
+ * @param {Object} options
+ * @returns {Object} treshold
+ */
+function getThreshold(options) {
+    return {
+        x: options.threshold * options.position.width,
+        y: options.threshold * options.position.height
+    }
 }
 
 export default new InView();

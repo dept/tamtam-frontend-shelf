@@ -118,8 +118,10 @@ class Video {
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = _constructVideoOptions(video);
 
-        options.element.playerInstance = new platformClass(options);
-        bindPlayerEvents(options);
+        if (Object.keys(options).length) {
+            options.element.playerInstance = new platformClass(options);
+            bindPlayerEvents(options);
+        }
 
     }
 
@@ -132,7 +134,7 @@ class Video {
  */
 function getVideos(platforms) {
 
-    if (!VIDEOS) { return false; }
+    if (!VIDEOS) { return []; }
     return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) && !video._initialised ? video : false);
 
 }
@@ -180,7 +182,7 @@ function _constructVideoOptions(element) {
         videoPlaysinline,
         videoLoop,
         videoSources
-    }
+    };
 
 }
 

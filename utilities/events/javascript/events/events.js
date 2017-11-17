@@ -34,7 +34,7 @@ class Events {
 
         if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
 
-        let _data = currentTarget ? { currentTarget, data } : data;
+        const _data = currentTarget ? { currentTarget, data } : data;
         const _event = new CustomEvent(event, { detail: _data });
 
         eventEl.dispatchEvent(_event);
@@ -195,7 +195,7 @@ function polyfillCustomEvent() {
 
     function CustomEvent(event, params) {
         params = params || { bubbles: false, cancelable: false, detail: undefined };
-        var evt = document.createEvent('CustomEvent');
+        const evt = document.createEvent('CustomEvent');
         evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return evt;
     }

@@ -1,8 +1,13 @@
-// @shelf-version 1.0.0
+// @shelf-version 1.0.1
 $video-background-color: $color-off-white;
 $video-loader-size: 50px;
 $video-loader-thickness: 4px;
 $video-loader-color: $color-primary;
+$video-button-size: 75px;
+$video-button-color: $color-white;
+$video-button-icon-color: $color-primary;
+$video-button-transition-time: 250ms;
+$video-button-transition-ease: $ease-in-quad;
 
 .c-video {
     position: relative;
@@ -91,12 +96,6 @@ $video-loader-color: $color-primary;
         transform: rotate(360deg);
     }
 }
-
-$video-button-size: 75px;
-$video-button-color: $color-white;
-$video-button-icon-color: $color-primary;
-$video-button-transition-time: 250ms;
-$video-button-transition-ease: $ease-in-quad;
 
 .video__button {
     opacity: 0;

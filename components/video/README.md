@@ -1,4 +1,3 @@
-
 # Video component
 
 ## Table of contents
@@ -18,8 +17,11 @@
 ```node
 npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
+npm i layzr.js@2.2.2 --save
+npm i number-is-nan@1.0.1 --save
 ```
 ```javascript
+import './src/modules/image';
 import './src/modules/in-view';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
@@ -30,6 +32,7 @@ import Video from './src/modules/video';
 ### Default
 
 ```javascript
+import './src/modules/image';
 import './src/modules/in-view';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
@@ -57,13 +60,19 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
     start_time: '10',
     classes: 'additional-class',
     controls: 1,
-    info: 1
+    info: 1,
+    image: {
+        preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
+        image: 'https://i.vimeocdn.com/video/301621689_1024.jpg',
+        srcset: 'https://i.vimeocdn.com/video/301621689_320.jpg 320w, https://i.vimeocdn.com/video/301621689_480.jpg 480w, https://i.vimeocdn.com/video/301621689_768.jpg 768w, https://i.vimeocdn.com/video/301621689_1024.jpg 1024w, https://i.vimeocdn.com/video/301621689_1280.jpg 1280w, https://i.vimeocdn.com/video/301621689_1440.jpg 1440w'
+    }
 }) }}
 ```
 
 ### Without in-view
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
+import './src/modules/image';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
 const video = new Video();
@@ -93,13 +102,19 @@ Create the player the same as in the previous demo. But now add a `inview: false
     classes: 'additional-class',
     controls: 1,
     info: 1,
-    inview: false
+    inview: false,
+    image: {
+        preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
+        image: 'https://i.vimeocdn.com/video/301621689_1024.jpg',
+        srcset: 'https://i.vimeocdn.com/video/301621689_320.jpg 320w, https://i.vimeocdn.com/video/301621689_480.jpg 480w, https://i.vimeocdn.com/video/301621689_768.jpg 768w, https://i.vimeocdn.com/video/301621689_1024.jpg 1024w, https://i.vimeocdn.com/video/301621689_1280.jpg 1280w, https://i.vimeocdn.com/video/301621689_1440.jpg 1440w'
+    }
 }) }}
 ```
 
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
+import './src/modules/image';
 import './src/modules/in-view';
 import { Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
@@ -155,8 +170,11 @@ video.registerPlatforms({
 * [core-js/fn/symbol/iterator](https://www.npmjs.com/package/core-js) for IE11 support
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
+* [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
+* [Image component](/components/image/)
 * [Events library](/utilities/events/)
 * [In-view library](/utilities/in-view/)
+* [layzr](https://github.com/callmecavs/layzr.js)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
