@@ -33,7 +33,7 @@ class LazyImage {
     _loadImages() {
 
         if (!SUPPORTS_SRCSET) {
-            this.setTabletImage();
+            this._setTabletImage();
             return;
         }
 
@@ -65,7 +65,7 @@ class LazyImage {
     _updateImages() {
 
         if (!SUPPORTS_SRCSET) {
-            this.setTabletImage();
+            this._setTabletImage();
             return;
         }
 
