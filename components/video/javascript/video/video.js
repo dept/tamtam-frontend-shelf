@@ -94,6 +94,12 @@ class Video {
 
         });
 
+        Events.$on('video::bind-player-events', (event, data) => {
+            if (data) {
+                bindPlayerEvents(data);
+            }
+        });
+
     }
 
     /**
@@ -116,11 +122,10 @@ class Video {
     _initVideo(video) {
 
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
-        const options = _constructVideoOptions(video);
+        const options = constructVideoOptions(video);
 
         if (Object.keys(options).length) {
             options.element.playerInstance = new platformClass(options);
-            bindPlayerEvents(options);
         }
 
     }
@@ -144,7 +149,7 @@ function getVideos(platforms) {
  * @param {NodeList} element
  * @returns {Object}
  */
-function _constructVideoOptions(element) {
+function constructVideoOptions(element) {
 
     const {
         videoPlatform,
