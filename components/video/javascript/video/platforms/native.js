@@ -60,6 +60,8 @@ class NativeVideo {
      */
     _bindEvents() {
 
+        Events.$trigger('video::bind-player-events', { data: this.options });
+
         this.player.addEventListener('loadedmetadata', () => {
             Events.$trigger('video::ready', { data: this.options });
             Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });

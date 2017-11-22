@@ -24,6 +24,8 @@ class VimeoVideo {
 
     _bindEvents() {
 
+        Events.$trigger('video::bind-player-events', { data: this.options });
+
         this.player.ready().then(() => {
 
             if (this.options.videoTime) {

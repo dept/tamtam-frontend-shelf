@@ -41,6 +41,8 @@ class YoutubeVideo {
 
     _bindEvents() {
 
+        Events.$trigger('video::bind-player-events', { data: this.options });
+
         this.player.on('ready', () => {
 
             Events.$trigger('video::ready', { data: this.options });
@@ -58,14 +60,14 @@ class YoutubeVideo {
                     Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
                     break;
 
-                    // playing
-                    case 1:
+                // playing
+                case 1:
                     Events.$trigger('video::playing', { data: this.options });
                     Events.$trigger(`video::playing(${this.options.instanceId})`, { data: this.options });
                     break;
 
-                    // paused
-                    case 2:
+                // paused
+                case 2:
                     Events.$trigger('video::paused', { data: this.options });
                     Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
                     break;
