@@ -43,19 +43,12 @@ class LazyImage {
             threshold: 20
         });
 
-        // Get all image data.
-        this.instance.update();
-
-        // Bind event listeners.
-        this.instance.handlers(true);
-
-        // Lazy load images that are already in view (before user starts scrolling).
-        this.instance.check();
-
         // Retrigger objectfit polyfill after image is loaded.
         this.instance.on('src:after', element => {
             Events.$trigger('image::object-fit', element);
         });
+
+        this._triggerUpdate();
 
     }
 
@@ -68,6 +61,15 @@ class LazyImage {
             this._setTabletImage();
             return;
         }
+
+        this._triggerUpdate();
+
+    }
+
+    /**
+     * Update new images
+     */
+    _triggerUpdate() {
 
         // Get all image data.
         this.instance.update();
