@@ -124,7 +124,7 @@ class InView {
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
         }
 
-        if (element._inViewport.top && !element._hasBeenInViewport) {
+        if (element._inViewport.scrolledPastTop && !element._hasBeenInViewport) {
 
             element.classList.remove('is--out-view');
 
@@ -246,7 +246,7 @@ function elementIsInViewport(options) {
 
     const calculatedThreshold = getThreshold({ threshold, position });
 
-    const inViewDirections = getInViewDirections({ position, intersection, offset, windowHeight, scrollLeft, scrollTop, calculatedThreshold });
+    const inViewDirections = getInViewDirections({ position, intersection, offset, windowHeight, windowWidth, scrollLeft, scrollTop, calculatedThreshold });
 
     inViewDirections.any = getAnyInViewDirection(inViewDirections);
     inViewDirections.all = getAllInViewDirection(inViewDirections);
@@ -323,11 +323,36 @@ function getAllInViewDirection(directions) {
  * @returns {Object} matches
  */
 function getInViewDirections(options) {
+
+    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t + options.windowHeight;
+    const top = {};
+    top.scrolledPastViewport = topPosition >= - options.windowHeight;
+    top.elementInView = topPosition >= 0 && topPosition <= options.windowHeight;
+
+    const rightPosition = options.offset.right + options.calculatedThreshold.y - options.intersection.r;
+    const right = {};
+    right.scrolledPastViewport = rightPosition >= 0;
+    right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
+
+    const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
+    const bottom = {};
+    bottom.scrolledPastViewport = bottomPosition >= 0;
+    bottom.elementInView = bottomPosition >= 0 && bottomPosition <= options.windowHeight;
+
+    const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r + options.windowWidth;
+    const left = {};
+    left.scrolledPastViewport = leftPosition >= 0;
+    left.elementInView = leftPosition >= 0 && leftPosition <= options.windowWidth;
+
     return {
-        top: (options.offset.top + options.calculatedThreshold.y) - options.intersection.t >= - options.windowHeight && (options.offset.top + options.calculatedThreshold.y - options.intersection.t) <= 0,
-        right: options.intersection.r >= (options.offset.right + options.calculatedThreshold.x),
-        bottom: (options.offset.bottom + options.calculatedThreshold.y) - options.intersection.b <= options.windowHeight && (options.offset.bottom + options.calculatedThreshold.y - options.intersection.b) >= 0,
-        left: options.intersection.l >= (options.offset.left + options.calculatedThreshold.x)
+        scrolledPastTop: top.scrolledPastViewport,
+        scrolledPastRight: right.scrolledPastViewport,
+        scrolledPastBottom: bottom.scrolledPastViewport,
+        scrolledPastLeft: left.scrolledPastViewport,
+        top: top.scrolledPastViewport && top.elementInView,
+        right: right.scrolledPastViewport && right.elementInView,
+        bottom: bottom.scrolledPastViewport && bottom.elementInView,
+        left: left.scrolledPastViewport && left.elementInView
     }
 }
 
@@ -337,11 +362,12 @@ function getInViewDirections(options) {
  * @returns {Object} matches
  */
 function getIntersections(options) {
+
     return {
         t: options.position.top - options.scrollTop,
-        r: options.position.right.toFixed(0) + options.scrollLeft - options.windowWidth,
+        r: parseInt(options.position.left.toFixed(0)) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
-        l: options.position.left.toFixed(0) + options.scrollLeft
+        l: parseInt(options.position.right.toFixed(0)) - options.scrollLeft - options.windowWidth
     }
 }
 
