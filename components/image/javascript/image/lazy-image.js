@@ -89,11 +89,11 @@ class LazyImage {
 
         const images = document.querySelectorAll('img');
 
-        Array.from(images).forEach(function (image) {
+        Array.from(images).forEach((image) => {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
-            if (!srcSet) { return; }
+            if (!srcSet.length) { return; }
 
             const tablet = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
 
