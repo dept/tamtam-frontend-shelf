@@ -324,9 +324,9 @@ function getAllInViewDirection(directions) {
  */
 function getInViewDirections(options) {
 
-    const topPosition = options.position.top + options.offset.top + options.calculatedThreshold.y + options.intersection.t;
+    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t;
     const top = {};
-    top.scrolledPastViewport = topPosition < 0;
+    top.scrolledPastViewport = topPosition > 0;
     top.elementInView = topPosition <= 0 && topPosition >= -options.windowHeight;
 
     const rightPosition = options.offset.right + options.calculatedThreshold.y - options.intersection.r;
@@ -334,9 +334,9 @@ function getInViewDirections(options) {
     right.scrolledPastViewport = rightPosition > -options.windowWidth;
     right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
 
-    const bottomPosition = options.position.bottom + options.offset.bottom + options.calculatedThreshold.y + options.intersection.b;
+    const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
     const bottom = {};
-    bottom.scrolledPastViewport = bottomPosition < 0;
+    bottom.scrolledPastViewport = bottomPosition > 0;
     bottom.elementInView = bottomPosition <= 0 && bottomPosition >= -options.windowHeight;
 
     const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r;
@@ -356,7 +356,8 @@ function getInViewDirections(options) {
         top: top.scrolledPastViewport && top.elementInView,
         right: right.scrolledPastViewport && right.elementInView,
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
-        left: left.scrolledPastViewport && left.elementInView
+        left: left.scrolledPastViewport && left.elementInView,
+        windowHeight: options.windowHeight
     }
 }
 
