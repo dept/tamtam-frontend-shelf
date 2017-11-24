@@ -324,24 +324,24 @@ function getAllInViewDirection(directions) {
  */
 function getInViewDirections(options) {
 
-    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t + options.windowHeight;
+    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t;
     const top = {};
-    top.scrolledPastViewport = topPosition >= - options.windowHeight;
+    top.scrolledPastViewport = topPosition > - options.windowHeight;
     top.elementInView = topPosition >= 0 && topPosition <= options.windowHeight;
 
     const rightPosition = options.offset.right + options.calculatedThreshold.y - options.intersection.r;
     const right = {};
-    right.scrolledPastViewport = rightPosition >= 0;
+    right.scrolledPastViewport = rightPosition > 0;
     right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
 
     const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
     const bottom = {};
-    bottom.scrolledPastViewport = bottomPosition >= 0;
+    bottom.scrolledPastViewport = bottomPosition > 0;
     bottom.elementInView = bottomPosition >= 0 && bottomPosition <= options.windowHeight;
 
     const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r + options.windowWidth;
     const left = {};
-    left.scrolledPastViewport = leftPosition >= 0;
+    left.scrolledPastViewport = leftPosition > 0;
     left.elementInView = leftPosition >= 0 && leftPosition <= options.windowWidth;
 
     return {
