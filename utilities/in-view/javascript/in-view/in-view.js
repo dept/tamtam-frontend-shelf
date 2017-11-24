@@ -324,7 +324,7 @@ function getAllInViewDirection(directions) {
  */
 function getInViewDirections(options) {
 
-    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t + options.windowHeight;
+    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t - options.windowHeight;
     const top = {};
     top.scrolledPastViewport = topPosition >= - options.windowHeight;
     top.elementInView = topPosition >= 0 && topPosition <= options.windowHeight;
