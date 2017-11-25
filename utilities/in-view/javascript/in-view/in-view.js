@@ -29,6 +29,8 @@ class InView {
             this._updateElements();
             this._addElements();
             this._bindScrollEvent();
+            Events.$trigger('resize');
+            Events.$trigger('scroll');
 
         });
 
@@ -88,17 +90,19 @@ class InView {
 
         this.elementArray.push(config);
 
-        this.eventsToBeBound.push({
-            element: window,
-            event: 'scroll',
-            namespace: `ElementInView-${config.index}`,
-            fn: () => this._elementInView(config)
-        }, {
+        this.eventsToBeBound.push(
+            {
+                element: window,
+                event: 'scroll',
+                namespace: `ElementInView-${config.index}`,
+                fn: () => this._elementInView(config)
+            }, {
                 element: window,
                 event: 'resize',
                 namespace: `ElementRecalculatePositions-${config.index}`,
                 fn: () => this._reCalculateElementPositions(config)
-            });
+            }
+        );
 
     }
 
@@ -160,11 +164,10 @@ class InView {
     _addElements() {
 
         Object.keys(this.elements).forEach(index => {
-
-            this._setNewElement(this.elements[index]);
-
+            if (typeof this.elements[index] === 'object') {
+                this._setNewElement(this.elements[index]);
+            }
         });
-
 
     }
 
@@ -284,8 +287,17 @@ function getElementPositions(element) {
  */
 function getElementOffset(element) {
 
-    let top = 0;
-    let left = 0;
+    const elementStyles = window.getComputedStyle(element);
+
+    const margin = {};
+    margin.top = parseInt(elementStyles.marginTop / 2) || 0;
+    margin.right = parseInt(elementStyles.marginRight / 2) || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom / 2) || 0;
+    margin.left = parseInt(elementStyles.marginLeft / 2) || 0;
+
+    let top = 0 + margin.top + margin.bottom;
+    let left = 0 + margin.left + margin.right;
+
 
     do {
         top += element.offsetTop || 0;
