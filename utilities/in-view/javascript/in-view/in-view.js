@@ -2,6 +2,7 @@ import RafThrottle from '../raf-throttle';
 import Events from '../events';
 
 const INVIEW_HOOK = '[js-hook-inview]';
+const SCROLL_ELEMENT = window;
 
 class InView {
 
@@ -92,12 +93,12 @@ class InView {
 
         this.eventsToBeBound.push(
             {
-                element: window,
+                element: SCROLL_ELEMENT,
                 event: 'scroll',
                 namespace: `ElementInView-${config.index}`,
                 fn: () => this._elementInView(config)
             }, {
-                element: window,
+                element: SCROLL_ELEMENT,
                 event: 'resize',
                 namespace: `ElementRecalculatePositions-${config.index}`,
                 fn: () => this._reCalculateElementPositions(config)
@@ -137,7 +138,7 @@ class InView {
                 config.triggers.forEach((trigger) => setTriggers(trigger, element));
 
                 RafThrottle.remove([{
-                    element: window,
+                    element: SCROLL_ELEMENT,
                     event: 'scroll',
                     namespace: `ElementInView-${config.index}`
                 }]);
@@ -237,8 +238,8 @@ function setTriggers(trigger, element) {
  */
 function elementIsInViewport(options) {
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop;
+    const scrollLeft = SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft;
 
     const windowHeight = window.innerHeight;
     const windowWidth = document.body.clientWidth;
@@ -298,7 +299,6 @@ function getElementOffset(element) {
     let top = 0 + margin.top + margin.bottom;
     let left = 0 + margin.left + margin.right;
 
-
     do {
         top += element.offsetTop || 0;
         left += element.offsetLeft || 0;
@@ -348,8 +348,8 @@ function getInViewDirections(options) {
 
     const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
     const bottom = {};
-    bottom.scrolledPastViewport = bottomPosition > -options.windowHeight;
-    bottom.elementInView = bottomPosition <= 0 && bottomPosition >= -options.windowHeight;
+    bottom.scrolledPastViewport = bottomPosition <= options.windowHeight;
+    bottom.elementInView = bottomPosition >= 0 && bottomPosition >= -options.windowHeight;
 
     const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r;
     const left = {};
@@ -357,14 +357,16 @@ function getInViewDirections(options) {
     left.elementInView = leftPosition <= 0 && leftPosition >= -options.windowWidth;
 
     return {
+        position: {
+            top: topPosition,
+            right: rightPosition,
+            bottom: bottomPosition,
+            left: leftPosition,
+        },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
         scrolledPastBottom: bottom.scrolledPastViewport,
         scrolledPastLeft: left.scrolledPastViewport,
-        topPosition,
-        rightPosition,
-        bottomPosition,
-        leftPosition,
         top: top.scrolledPastViewport && top.elementInView,
         right: right.scrolledPastViewport && right.elementInView,
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
