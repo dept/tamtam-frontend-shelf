@@ -6,6 +6,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Breadcrumb](/components/breadcrumb/README.md)
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
 * [Form elements](/components/form-elements/README.md)
+* [Media](/components/media/README.md)
 * [Modal](/components/modal/README.md)
 * [Pagination](/components/pagination/README.md)
 * [Search field](/components/search/search-field/README.md)
