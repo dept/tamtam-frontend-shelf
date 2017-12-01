@@ -93,7 +93,7 @@ class LazyImage {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
-            if (!srcSet.length) { return; }
+            if (!srcSet[0].url) { return; }
 
             const tablet = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
 
