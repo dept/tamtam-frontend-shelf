@@ -43,7 +43,7 @@ You can add the following options:
 
 {% endcall %}
 
-<button type="button" aria-controls="modal-example" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-example" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
@@ -58,12 +58,12 @@ Custom html element
     data-modal-no-body-class="false">
     I am a custom modalbox
 
-    <button type="button" js-hook-button-modal-close aria-title="Close modalbox">
+    <button type="button" js-hook-button-modal-close aria-label="Close modalbox">
         Close
     </button>
 </div>
 
-<button type="button" aria-controls="modal-custom" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-custom" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
