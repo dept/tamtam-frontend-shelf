@@ -51,7 +51,7 @@ class Cookiebar {
  */
 function setCookie(value) {
 
-    cookies.set(COOKIE_NAME, value);
+    cookies.set(COOKIE_NAME, value, { expires: 365 });
 
 }
 
