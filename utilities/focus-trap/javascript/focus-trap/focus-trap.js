@@ -16,7 +16,7 @@ class FocusTrap {
         /**
          *  Bind event listeners so other function can invoke the trap.
          */
-        Events.$on('focustrap::activate', (event, data) => this.activate(data));
+        Events.$on('focustrap::activate', (event, data) => this.activate(data.element));
         Events.$on('focustrap::deactivate', () => this.deactivate());
 
         /**
