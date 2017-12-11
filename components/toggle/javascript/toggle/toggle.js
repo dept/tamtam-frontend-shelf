@@ -9,7 +9,8 @@ class Toggle {
     constructor(element) {
 
         this.element = element;
-        this.id = element.id;
+        this.controls = element.getAttribute('aria-controls');
+        this.id = element.id || this.controls;
         this.links = this._getToggleLinks();
         this.activeClass = element.dataset.toggleActiveClass || TOGGLE_ACTIVE_CLASS;
         this.isActive = false;
@@ -24,7 +25,7 @@ class Toggle {
      */
     _getToggleLinks() {
 
-        const ariaControls = this.element.getAttribute('aria-controls');
+        const ariaControls = this.controls;
         if ( !ariaControls) {
             return [];
         }
