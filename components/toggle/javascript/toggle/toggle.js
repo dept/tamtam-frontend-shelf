@@ -44,7 +44,7 @@ class Toggle {
     _bindEvents() {
 
         this.element.addEventListener('click', (event) => {
-            Events.$trigger(`toggle[${ this.element.id }]::toggle`);
+            this._toggleState();
 
             if ( this.element.dataset.togglePreventDefault ) {
                 event.preventDefault();
