@@ -21,9 +21,10 @@ $modal-transition-ease: $ease-in-out-quad !default;
     z-index: 9999;
     display: flex;
     overflow: auto;
-    transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
+    transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time, 0ms linear $modal-transition-time;
     transition-property: opacity, left;
     -webkit-overflow-scrolling: touch;
+    visibility: hidden;
 }
 
 .modal--is-showing {
@@ -31,6 +32,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
     opacity: 1;
     transition: $modal-transition-time $modal-transition-ease, 0ms;
     transition-property: opacity, left;
+    visibility: visible;
 
     .modal__content {
         opacity: 1;
