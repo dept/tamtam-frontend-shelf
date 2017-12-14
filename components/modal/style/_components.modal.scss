@@ -22,7 +22,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
     display: flex;
     overflow: auto;
     transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time, 0ms linear $modal-transition-time;
-    transition-property: opacity, left;
+    transition-property: opacity, left, visibility;
     -webkit-overflow-scrolling: touch;
     visibility: hidden;
 }
