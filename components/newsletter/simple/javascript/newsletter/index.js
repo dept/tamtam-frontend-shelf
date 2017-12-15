@@ -2,6 +2,6 @@
  * @shelf-version: 1.0.0
  */
 
-import Cookiebar from './cookiebar';
+import Newsletter from './newsletter';
 
-export default Cookiebar;
+export default Newsletter;

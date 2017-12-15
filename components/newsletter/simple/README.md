@@ -1,5 +1,5 @@
 
-# Simple newsl component
+# Simple newsletter component
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -31,7 +31,6 @@ Add newsletter template to page
 ```
 
 ## Dependencies
-* [Events utility](/utilities/events/)
 * [API utility](/utilities/api/)
 * [Validation utility](/utilities/validation/)
 

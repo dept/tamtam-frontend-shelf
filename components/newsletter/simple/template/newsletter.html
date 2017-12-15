@@ -1,20 +1,116 @@
 {#
     @shelf-version: 1.0.0
-    Cookiebar template
+    Newsletter - Simple template
 #}
 
-<div class="c-cookiebar" js-hook-cookiebar>
+{% import 'components/form-elements.html' as form %}
+{% from 'components/button.html' import button %}
 
-    <div class="cookiebar__content o-container">
+<div class="c-newsletter" js-hook-newsletter>
+    <div class="o-container">
 
-        <div class="cookiebar__text">
-            Cookie content here
-        </div>
+        {% call form.form({
+            class: 'newsletter__form',
+            hook: 'newsletter-form'
+        }) %}
+            {% call form.fieldset({
+                legend: 'Newsletter signup',
+                noLegend: true,
+                class: 'newsletter__form-fieldset'
+            }) %}
+                <div class="o-grid">
+                    <div class="newsletter__form-wrappero-col-12 o-col-6--md u-flex-first">
+                        <div class="newsletter__form-wrapper">
 
-        <button type="button" class="cookiebar__button-close" on:click="cookie::dismiss">
-            &#10005;
-        </button>
+                            <h3 class="u-h2 newsletter__form-title">
+                                Niks willen missen van onze nieuwtjes en acties?
+                            </h3>
+
+                            <div class="newsletter__form-inputs-wrapper">
+                                <div class="newsletter__form-inputs">
+                                    <div class="o-grid">
+                                        <div class="o-col-12 o-col-4--md">
+                                            {{ form.input({
+                                                type: 'email',
+                                                name: 'newsletter-email',
+                                                id: 'newsletter-email',
+                                                label: 'emailaddress',
+                                                noLabel: true,
+                                                placeholder: 'Emailaddress',
+                                                required: true,
+                                                hook: 'newsletter-input'
+                                            }) }}
+                                        </div>
+                                        <div class="o-col-12 o-col-4--md">
+                                            {{ form.input({
+                                                type: 'text',
+                                                name: 'newsletter-firstname',
+                                                id: 'newsletter-firstname',
+                                                label: 'Firstname',
+                                                noLabel: true,
+                                                placeholder: 'First name',
+                                                hook: 'newsletter-input'
+                                            }) }}
+                                        </div>
+                                        <div class="o-col-12 o-col-4--md u-text--right">
+                                            {{ form.input({
+                                                type: 'text',
+                                                name: 'newsletter-lastname',
+                                                id: 'newsletter-lastname',
+                                                label: 'Lastname',
+                                                noLabel: true,
+                                                placeholder: 'Last name',
+                                                hook: 'newsletter-input'
+                                            }) }}
+
+                                            {{ button({
+                                                element: 'button',
+                                                type: 'submit',
+                                                label: 'Submit',
+                                                variant: 'ghost',
+                                                icon: 'chevron-right',
+                                                attr: 'disabled',
+                                                hook: 'newsletter-submit'
+                                            })  }}
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="newsletter__form-message newsletter__form-message--success" js-hook-newsletter-message-success>
+                                    Bedankt voor uw aanmelding
+
+                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close message">
+                                        &times;
+                                    </button>
+                                </div>
+                                <div class="newsletter__form-message newsletter__form-message--error" js-hook-newsletter-message-error>
+                                    Oeps er is iets fout gegaan
+
+                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close message">
+                                        &times;
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close aria-title="Close newsletter">
+                                &times;
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="o-col-12 o-col-6--md">
+                        <div class="newsletter__side">
+
+                            <h3>
+                                You can place great side content here.
+                            </h3>
+
+                        </div>
+                    </div>
+                </div>
+            {% endcall %}
+        {% endcall %}
 
     </div>
-
 </div>
