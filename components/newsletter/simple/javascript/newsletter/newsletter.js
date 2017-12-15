@@ -9,8 +9,6 @@ const INPUT_HOOK = '[js-hook-newsletter-input]';
 const SUCCESS_MESSAGE_HOOK = '[js-hook-newsletter-message-success]';
 const ERROR_MESSAGE_HOOK = '[js-hook-newsletter-message-error]';
 
-
-const AGREE_CHECKBOX_HOOK = '[js-hook-newsletter-agree]';
 const SUBMIT_BUTTON_HOOK = '[js-hook-newsletter-submit]';
 const CLOSE_BUTTON_HOOK = '[js-hook-newsletter-button-close]';
 const CLOSE_MESSAGE_BUTTON_HOOK = '[js-hook-newsletter-button-close-message]';
@@ -122,10 +120,6 @@ class Newsletter {
 
 }
 
-/**
- * Validates validity of given element
- * @param {any} value
- */
 function validateElements(elements) {
 
     let errors = 0;
@@ -138,7 +132,7 @@ function validateElements(elements) {
             errors++;
         }
 
-        if (type === 'email' && !isValidEmail(element.value) && element.required) {
+        if (type === 'email' && !isValidEmail(element.value)) {
             errors++;
         }
 
