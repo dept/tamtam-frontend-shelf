@@ -10,9 +10,6 @@ $select-padding-right: $global-spacing * 4;
 $select-transition-time: 200ms;
 $select-transition-ease: $ease-in-out-quad;
 
-// .c-select {
-// }
-
 .select__wrapper {
     position: relative;
 
@@ -43,14 +40,16 @@ $select-transition-ease: $ease-in-out-quad;
     padding-left: $select-padding-left;
     padding-right: $select-padding-right;
     border-radius: $select-border-radius;
-    border: $select-border-width solid $select-border-color;
+    border: 0;
+    box-shadow: 0 0 0 $select-border-width $select-border-color inset;
     background-color: $select-fill-color;
+    line-height: $font-line-height-body;
 
     &::-ms-expand {
         display: none;
     }
 
     .form__item--error & {
-        border-color: $select-error-color;
+        box-shadow: 0 0 0 $select-border-width $select-error-color inset;
     }
 }

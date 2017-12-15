@@ -27,15 +27,17 @@ $input-transition-ease: $ease-in-out-quad;
     padding-left: $input-padding-left;
     padding-right: $input-padding-right;
     border-radius: $input-border-radius;
-    border: $input-border-width solid $input-border-color;
+    border: 0;
+    box-shadow: 0 0 0 $input-border-width $input-border-color inset;
     background-color: $input-fill-color;
+    line-height: $font-line-height-body;
 
     &::-ms-expand {
         display: none;
     }
 
     .form__item--error & {
-        border-color: $input-error-color;
+        box-shadow: 0 0 0 $input-border-width $input-error-color inset;
     }
 }
 
