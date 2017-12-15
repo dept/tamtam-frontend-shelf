@@ -10,7 +10,7 @@ $error-padding-right: $global-spacing * 2;
 .form__item-error {
     display: none;
     margin-top: $global-spacing / 2;
-    border: $error-border-width solid $error-border-color;
+    box-shadow: 0 0 0 $error-border-width $error-border-color inset;
     background-color: $error-fill-color;
     border-radius: $error-border-radius;
     padding-top: $error-padding-top;

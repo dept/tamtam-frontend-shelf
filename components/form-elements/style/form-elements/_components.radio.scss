@@ -7,9 +7,6 @@ $radio-margin-right: $global-spacing * 2;
 $radio-transition-time: 200ms;
 $radio-transition-ease: $ease-in-out-quad;
 
-// .c-radio {
-// }
-
 .radio__input {
     @include sr-only;
 
