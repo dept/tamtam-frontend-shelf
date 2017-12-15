@@ -1,6 +1,6 @@
 {#
     @shelf-version: 1.0.0
-    Media comopnent
+    Media Text Component
 
     data {
         url:        'string', (optional)
@@ -19,17 +19,21 @@
 
 {% from 'components/image.html' import image  %}
 
-{% macro media(data) %}
+{% macro mediaText(data) %}
 
-    <article class="u-margin-top--md c-media
+    <article class="u-margin-top--md c-media-text
      {% if data.classes %}{{data.classes}}{% endif %}
-     {% if data.align %}media--align-{{data.align}}{% endif %}">
-        <a href="{{ data.url or '#' }}" class="o-grid media__wrapper">
+     {% if data.align %}media-text--align-{{data.align}}{% endif %}">
+        {% if data.url %}
+        <a href="{{ data.url }}" class="o-grid media-text__wrapper">
+        {% else %}
+        <span class="o-grid media-text__wrapper">
+        {% endif %}
 
             {% if data.image %}
-                <div class="o-col-3 media__aside">
+                <div class="o-col-3 media-text__aside">
                     {{ image({
-                        classes: 'media__figure',
+                        classes: 'media-text__figure',
                         preload: data.image.preload,
                         image: data.image.image,
                         srcset: data.image.srcset
@@ -43,13 +47,18 @@
                 {% set contentWidthClass = "o-col-12" %}
             {% endif %}
 
-            <div class="{{ contentWidthClass }} media__content">
+            <div class="{{ contentWidthClass }} media-text__content">
                 <h3>{{ data.title }}</h3>
                 {% if caller %}
                     {{ caller() }}
                 {%endif %}
             </div>
+
+        {% if data.url %}
         </a>
+        {% else %}
+        </span>
+        {% endif %}
 
     </article>
 

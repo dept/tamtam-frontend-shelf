@@ -17,13 +17,13 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/media.html' import media %}
+{% from 'components/media-text.html' import media %}
 ```
 
 ## How to use
 
 ```htmlmixed
- {% call media({
+ {% call mediaText({
     url:        'string', (optional)
     classes:    'string', (optional)
     title:      'string',
@@ -39,7 +39,7 @@
 ```
 
 ## Dependencies
-* [Image component](/components/media/README.md)
+* [Image component](/components/image/README.md)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
