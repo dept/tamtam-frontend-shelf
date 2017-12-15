@@ -40,7 +40,7 @@
 ```
 
 ## Dependencies
-* [Media component](/components/media/)
+* [Teaser component](/components/teaser/)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)

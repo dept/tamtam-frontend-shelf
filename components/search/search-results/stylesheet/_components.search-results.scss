@@ -7,7 +7,7 @@ $search-result-spacing: $global-spacing-md;
     margin-bottom: $search-result-spacing;
 }
 
-.search-results__media {
+.search-results__teaser {
     transition: background-color .4s ease-in-out;
 }
 
@@ -17,7 +17,7 @@ $search-result-spacing: $global-spacing-md;
     display: block;
 
     @include hover-focus {
-        .search-results__media {
+        .search-results__teaser {
             background-color: #ddd;
         }
     }
