@@ -19,7 +19,7 @@
     }
 #}
 
-{% from 'components/media.html' import media %}
+{% from 'components/media-text.html' import mediaText %}
 
 {% macro searchResults(data) %}
 
@@ -30,7 +30,7 @@
                 <li class="search-results__item">
                     <a href="{{ result.url }}" class="search-results__link">
 
-                    {% call media({
+                    {% call mediaText({
                         classes: 'search-results__media',
                         title: result.title,
                         image: result.image
