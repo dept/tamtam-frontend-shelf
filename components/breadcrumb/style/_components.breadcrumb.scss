@@ -2,7 +2,7 @@
 $breadcrumb-spacing: $global-spacing * 2;
 $breadcrumb-transition-time: 400ms !default;
 $breadcrumb-transition-ease: $ease-in-out-quad !default;
-$breadcrumb-mobile-offset: map-get($container-config, gutter-small) !default;
+$breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !default;
 
 .c-breadcrumb {
     overflow: auto;
