@@ -1,0 +1,40 @@
+$teaser-content-spacing  : $global-spacing-sm;
+$teaser-margin           : $global-spacing-md;
+
+.c-teaser {
+    margin-bottom: $teaser-margin;
+    background-color: #f3f3f3;
+}
+
+    .teaser__wrapper {
+        display: flex;
+        align-items: center;
+
+        // Reset link styles.
+        text-decoration: inherit;
+        color: inherit;
+
+        .teaser--align-top & {
+            align-items: flex-start;
+        }
+    }
+
+    .teaser__aside {
+        height: 100%;
+    }
+
+    .teaser__figure {
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .teaser__content {
+        padding: $teaser-content-spacing $teaser-content-spacing $teaser-content-spacing 0;
+        margin-left: $teaser-content-spacing;
+
+        .teaser--align-top & {
+            padding-top: $teaser-content-spacing;
+        }
+    }

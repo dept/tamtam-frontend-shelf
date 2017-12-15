@@ -1,5 +1,5 @@
 
-# Media
+# Teaser
 
 ## Table of contents
 1. [What does it do](#what-does-it-do)
@@ -8,7 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
-![Media Demo](./_demo/media.png)
+![Teaser Demo](./_demo/teaser.png)
 
 ## What does it do
 * Image component with HTML content next to it.
@@ -17,13 +17,13 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/media-text.html' import media %}
+{% from 'components/teaser.html' import teaser %}
 ```
 
 ## How to use
 
 ```htmlmixed
- {% call mediaText({
+ {% call teaser({
     url:        'string', (optional)
     classes:    'string', (optional)
     title:      'string',
