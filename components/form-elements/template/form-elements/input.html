@@ -27,7 +27,7 @@
             <label class="input__label {%- if data.noLabel %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
-            <input class="input__input {%- if data.noLabel %} u-sr-only{% endif -%}"
+            <input class="input__input"
                 type="{%- if data.type %}{{ data.type }}{% else %}text{% endif -%}"
                 name="{{ data.name }}"
                 value="{{ data.value }}"
