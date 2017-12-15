@@ -12,6 +12,7 @@
 * Use cases: simple dropdown, toggle switch, hamburger switch
 
 ## Install
+Import module
 ```javascript
 import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/events';
@@ -98,7 +99,7 @@ or inline with HTML attributes
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/f72e7190b6827d8c14bdce8ff0c1c79658b0bbf7/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Kees van Lierop](mailto:kees@tamtam.nl)

@@ -15,6 +15,7 @@
 * Listen to click events and open a native window popup with share dialogue. Always shares the current page url.
 
 ## Install
+Import module
 ```javascript
 import './src/modules/social-share';
 ```

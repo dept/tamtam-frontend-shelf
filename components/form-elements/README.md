@@ -13,7 +13,9 @@
 * Render form elements
 
 ## Install
-This is currently only needed if you use file input fields
+This is currently only needed if you use file input fields.
+
+Import module
 ```javascript
 import { CustomFile } from './src/modules/form';
 

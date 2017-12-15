@@ -14,10 +14,11 @@
 * Provides JSON fallback for local testing
 
 ## Install
+Install npm package dependency
 ```node
 npm i jquery@3.2.1 --save
 ```
-
+Import module
 ```javascript
 import API from './util/api';
 ```
