@@ -14,10 +14,12 @@
 * Adds `object-fit` polyfill
 
 ## Install
+Install npm package dependency
 ```node
 npm i layzr.js@2.2.2 --save
 npm i number-is-nan@1.0.1 --save
 ```
+Import module
 ```javascript
 import './src/modules/image';
 ```

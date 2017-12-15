@@ -14,12 +14,14 @@
 * Fires generic video ready, play & pause events.
 
 ## Install
+Install npm package dependency
 ```node
 npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
 npm i layzr.js@2.2.2 --save
 npm i number-is-nan@1.0.1 --save
 ```
+Import module
 ```javascript
 import './src/modules/image';
 import './src/modules/in-view';
@@ -172,8 +174,8 @@ video.registerPlatforms({
 * [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
 * [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 * [Image component](/components/image/)
-* [Events library](/utilities/events/)
-* [In-view library](/utilities/in-view/)
+* [Events utility](/utilities/events/)
+* [In-view utility](/utilities/in-view/)
 * [layzr](https://github.com/callmecavs/layzr.js)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)

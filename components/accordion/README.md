@@ -15,6 +15,7 @@
 * Triggers `opened` and `closed` event
 
 ## Install
+Import module
 ```javascript
 import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/events';
@@ -79,7 +80,7 @@ Events.$on('accordion::closed({id})', doSomethingSpecific);
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
