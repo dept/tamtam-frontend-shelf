@@ -27,7 +27,6 @@ class Newsletter {
         this.inputs = this.newsletter.querySelectorAll(INPUT_HOOK);
 
         this.message = {};
-        this.message.state = '';
         this.message.success = this.newsletter.querySelector(SUCCESS_MESSAGE_HOOK);
         this.message.error = this.newsletter.querySelector(ERROR_MESSAGE_HOOK);
 
@@ -42,6 +41,9 @@ class Newsletter {
 
     }
 
+    /**
+     * Bind events
+     */
     bindEvents() {
 
         Array.from(this.inputs).forEach(input => {
@@ -59,28 +61,41 @@ class Newsletter {
 
     }
 
+    /**
+     * Set open state
+     */
     _open() {
 
         this.newsletter.classList.add(OPEN_CLASS);
 
     }
 
+    /**
+     * Set close state
+     */
     _close() {
 
         this.newsletter.classList.remove(OPEN_CLASS);
 
     }
 
+    /**
+     * Closes the message according to current message state.
+     */
     _closeMessage() {
 
-        if (this.message[this.message.state]){
+        if (this.message.state && this.message[this.message.state]){
             this.message[this.message.state].classList.remove(MESSAGE_CLASS);
             this.message[this.message.state].setAttribute('aria-hidden', true);
             Events.$triggger('focustrap::deactivate');        
+            delete this.message.state;
         }
 
     }
 
+    /**
+     * Runs form validation and sets button state accordingly
+     */
     _testForm() {
 
         if (validateElements(this.inputs)) {
@@ -91,6 +106,9 @@ class Newsletter {
 
     }
 
+    /**
+     * Runs form validation and submits form
+     */
     _submitForm(event) {
 
         event.preventDefault();
@@ -100,10 +118,12 @@ class Newsletter {
 
     }
 
+    /**
+     * Sends ajax request to given API_URL
+     */
     _sendForm() {
 
-        this.message.success.classList.remove(MESSAGE_CLASS);
-        this.message.error.classList.remove(MESSAGE_CLASS);
+        this._closeMessage();
 
         Api.post(API_URL, {
             data: generateFormDataJson(this.form)
@@ -112,9 +132,12 @@ class Newsletter {
 
     }
 
+    /**
+     * Shows the correct message.
+     * @param {String} state State to set the message to. Either success or error.
+     */
     _setMessageState(state){
 
-        
         if (this.message[state]){
             this.message.state = state;
             this.message[state].classList.add(MESSAGE_CLASS);
@@ -126,6 +149,12 @@ class Newsletter {
 
 }
 
+
+/**
+ * Validate form elements.
+ * @param {NodeList} elements All form elements that should be validated
+ * @returns {Number} Number of errors
+ */
 function validateElements(elements) {
 
     let errors = 0;
@@ -148,6 +177,11 @@ function validateElements(elements) {
 
 }
 
+/**
+ * Convert the form fields to JSON.
+ * @param {HTMLElement} form The form element
+ * @returns {Object}
+ */
 function generateFormDataJson(form) {
     return [].reduce.call(form.elements, (data, element) => {
         return (element.name) ? (data[element.name] = element.value, data) : data;
