@@ -81,7 +81,9 @@ class FocusTrap {
 
         this.activated = false;
         this.focusTrapElement = false;
-        this.originalFocus.focus();
+        if (this.originalFocus) {
+            this.originalFocus.focus();
+        }
 
     }
 
