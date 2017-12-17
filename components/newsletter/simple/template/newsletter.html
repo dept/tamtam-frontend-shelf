@@ -19,7 +19,7 @@
                 class: 'newsletter__form-fieldset'
             }) %}
                 <div class="o-grid">
-                    <div class="newsletter__form-wrappero-col-12 o-col-6--md u-flex-first">
+                    <div class="newsletter__form-wrapper o-col-12 o-col-6--md u-flex-first">
                         <div class="newsletter__form-wrapper">
 
                             <h3 class="u-h2 newsletter__form-title">
@@ -77,23 +77,23 @@
                                     </div>
                                 </div>
 
-                                <div class="newsletter__form-message newsletter__form-message--success" js-hook-newsletter-message-success>
+                                <div class="newsletter__form-message newsletter__form-message--success" role="alert" aria-hidden="true" js-hook-newsletter-message-success>
                                     Bedankt voor uw aanmelding
 
-                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close message">
+                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close success message">
                                         &times;
                                     </button>
                                 </div>
-                                <div class="newsletter__form-message newsletter__form-message--error" js-hook-newsletter-message-error>
+                                <div class="newsletter__form-message newsletter__form-message--error" role="alert" aria-hidden="true" js-hook-newsletter-message-error>
                                     Oeps er is iets fout gegaan
 
-                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close message">
+                                    <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close-message aria-title="Close error message">
                                         &times;
                                     </button>
                                 </div>
                             </div>
 
-                            <button type="button" class="newsletter__button-close" js-hook-newsletter-button-close aria-title="Close newsletter">
+                            <button type="button" class="newsletter__button-close" aria-title="Close newsletter form" js-hook-newsletter-button-close>
                                 &times;
                             </button>
 

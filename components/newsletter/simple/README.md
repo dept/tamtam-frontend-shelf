@@ -31,6 +31,7 @@ Add newsletter template to page
 ```
 
 ## Dependencies
+* [Events utility](/utilities/events/)
 * [API utility](/utilities/api/)
 * [Validation utility](/utilities/validation/)
 

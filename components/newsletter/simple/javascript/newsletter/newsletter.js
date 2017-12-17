@@ -1,4 +1,5 @@
 import { isValidEmail } from '../util/validation';
+import Events from '../util/events';
 import Api from '../util/api';
 
 const API_URL = '/api/test/'
@@ -26,6 +27,7 @@ class Newsletter {
         this.inputs = this.newsletter.querySelectorAll(INPUT_HOOK);
 
         this.message = {};
+        this.message.state = '';
         this.message.success = this.newsletter.querySelector(SUCCESS_MESSAGE_HOOK);
         this.message.error = this.newsletter.querySelector(ERROR_MESSAGE_HOOK);
 
@@ -71,8 +73,11 @@ class Newsletter {
 
     _closeMessage() {
 
-        this.message.success.classList.remove(MESSAGE_CLASS);
-        this.message.error.classList.remove(MESSAGE_CLASS);
+        if (this.message[this.message.state]){
+            this.message[this.message.state].classList.remove(MESSAGE_CLASS);
+            this.message[this.message.state].setAttribute('aria-hidden', true);
+            Events.$triggger('focustrap::deactivate');        
+        }
 
     }
 
@@ -103,18 +108,19 @@ class Newsletter {
         Api.post(API_URL, {
             data: generateFormDataJson(this.form)
         })
-            .then(() => this._sendSuccess(), () => this._sendFail())
+            .then(() => this._setMessageState('success'), () => this._setMessageState('error'))
 
     }
 
-    _sendSuccess() {
+    _setMessageState(state){
 
-        this.message.success.classList.add(MESSAGE_CLASS);
-    }
-
-    _sendFail() {
-
-        this.message.error.classList.add(MESSAGE_CLASS);
+        
+        if (this.message[state]){
+            this.message.state = state;
+            this.message[state].classList.add(MESSAGE_CLASS);
+            this.message[state].setAttribute('aria-hidden', false);
+            Events.$triggger('focustrap::activate', { data: { element: this.message[state] } });
+        }
 
     }
 
