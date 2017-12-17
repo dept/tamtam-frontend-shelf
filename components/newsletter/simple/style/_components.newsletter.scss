@@ -136,12 +136,12 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     z-index: 2;
     transition: $newsletter-transition-time / 2 $newsletter-transition-ease, 0ms linear $newsletter-transition-time / 2;
     transition-property: opacity, visibility;
+}
 
-    &.newsletter__form-message--is-open {
-        opacity: 1;
-        pointer-events: all;
-        visibility: visible;
-        transition: $newsletter-transition-time / 2 $newsletter-transition-ease;
-        transition-property: opacity;
-    }
+.newsletter__form-message--is-open {
+    opacity: 1;
+    pointer-events: all;
+    visibility: visible;
+    transition: $newsletter-transition-time / 2 $newsletter-transition-ease;
+    transition-property: opacity;
 }
