@@ -15,7 +15,7 @@ const CLOSE_BUTTON_HOOK = '[js-hook-newsletter-button-close]';
 const CLOSE_MESSAGE_BUTTON_HOOK = '[js-hook-newsletter-button-close-message]';
 
 const OPEN_CLASS = 'newsletter--is-open';
-const MESSAGE_CLASS = 'newsletter__form-message--is-open';
+const MESSAGE_CLASS = 'newsletter__message--is-open';
 
 class Newsletter {
 

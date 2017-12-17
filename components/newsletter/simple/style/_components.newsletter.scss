@@ -11,7 +11,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     position: relative;
 }
 
-.newsletter__form-fieldset {
+.newsletter__fieldset {
     position: relative;
 }
 
@@ -47,7 +47,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     }
 }
 
-.newsletter__form-inputs-wrapper {
+.newsletter__inputs-wrapper {
     overflow: hidden;
     transition: $newsletter-transition-time $newsletter-transition-ease;
     transition-property: width;
@@ -62,7 +62,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     }
 }
 
-.newsletter__form-inputs {
+.newsletter__inputs {
     display: flex;
     transition: $newsletter-transition-time $newsletter-transition-ease;
     transition-property: width, max-height;
@@ -83,7 +83,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     }
 }
 
-.newsletter__form-title {
+.newsletter__title {
     margin-bottom: $global-spacing*4;
 }
 
@@ -118,7 +118,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     }
 }
 
-.newsletter__form-message {
+.newsletter__message {
     position: relative;
     position: absolute;
     top: 0;
@@ -138,7 +138,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     transition-property: opacity, visibility;
 }
 
-.newsletter__form-message--is-open {
+.newsletter__message--is-open {
     opacity: 1;
     pointer-events: all;
     visibility: visible;
