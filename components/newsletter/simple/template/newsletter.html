@@ -15,7 +15,7 @@
         }) %}
             {% call form.fieldset({
                 legend: 'Newsletter signup',
-                noLegend: true,
+                sronly: true,
                 class: 'newsletter__fieldset'
             }) %}
                 <div class="o-grid">
@@ -35,7 +35,7 @@
                                                 name: 'newsletter-email',
                                                 id: 'newsletter-email',
                                                 label: 'emailaddress',
-                                                noLabel: true,
+                                                sronly: true,
                                                 placeholder: 'Emailaddress',
                                                 required: true,
                                                 hook: 'newsletter-input'
@@ -47,7 +47,7 @@
                                                 name: 'newsletter-firstname',
                                                 id: 'newsletter-firstname',
                                                 label: 'Firstname',
-                                                noLabel: true,
+                                                sronly: true,
                                                 placeholder: 'First name',
                                                 hook: 'newsletter-input'
                                             }) }}
@@ -58,7 +58,7 @@
                                                 name: 'newsletter-lastname',
                                                 id: 'newsletter-lastname',
                                                 label: 'Lastname',
-                                                noLabel: true,
+                                                sronly: true,
                                                 placeholder: 'Last name',
                                                 hook: 'newsletter-input'
                                             }) }}

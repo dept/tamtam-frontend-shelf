@@ -22,7 +22,7 @@
         {%- if data.error %} form__item--error{% endif -%}">
 
         <div class="input__wrapper">
-            <span class="input__label{%- if data.noLabel %} u-sr-only{% endif -%}">
+            <span class="input__label{%- if data.sronly %} u-sr-only{% endif -%}">
                 {{ data.label|safe }}
             </span>
             <div class="input__file-wrapper">

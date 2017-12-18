@@ -26,7 +26,7 @@
         {%- if data.error %} form__item--error{% endif -%}">
 
         <div class="select__wrapper">
-            <label class="select__label {%- if data.noLabel %} u-sr-only{% endif -%}" for="{{ data.id }}">
+            <label class="select__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
             <select class="select__input"
