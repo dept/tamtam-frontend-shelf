@@ -24,7 +24,7 @@
         {%- if data.error %} form__item--error{% endif -%}">
 
         <div class="input__wrapper">
-            <label class="input__label {%- if data.noLabel %} u-sr-only{% endif -%}" for="{{ data.id }}">
+            <label class="input__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
             <input class="input__input"

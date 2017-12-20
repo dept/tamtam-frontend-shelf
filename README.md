@@ -8,6 +8,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Form elements](/components/form-elements/README.md)
 * [Teaser](/components/teaser/README.md)
 * [Modal](/components/modal/README.md)
+* [Newsletter](/components/newsletter/README.md)
 * [Pagination](/components/pagination/README.md)
 * [Search field](/components/search/search-field/README.md)
 * [Search results](/components/search/search-results/README.md)
