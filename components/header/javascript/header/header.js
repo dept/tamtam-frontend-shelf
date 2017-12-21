@@ -1,0 +1,189 @@
+import RafThrottle from './util/raf-throttle';
+
+class Header {
+
+    constructor(element) {
+
+        this.element = element;
+        
+        if (!this.element) { return; }
+
+        this.height = 0;
+        this.scrollValue = 0;
+        this.prevScrollValue = 0;
+        this.translateValue = 0;
+
+        this.bindEvents();
+
+    }
+
+    get fixed() {
+        
+        return this.element.hasAttribute('fixed');
+
+    }
+
+    get condenses() {
+        
+        return this.element.hasAttribute('condenses');
+
+    }
+
+    get reveals() {
+
+        return this.element.hasAttribute('reveals');
+
+    }
+
+    set shadow(val) {
+
+        if (val) {
+            
+            this.element.setAttribute('shadow', '');
+
+        } else {
+
+            this.element.removeAttribute('shadow');
+
+        }
+
+    }
+
+    get _maxHeaderHeight() {
+
+        return this.fixed ? this.dHeight : this.height + 5;
+
+    }
+    
+    /**
+     * Gets element with [sticky] attribute
+     * Takes the first direct child when [sticky] attribute is not set
+     */
+    get stickyElement() {
+
+        const elements = this.element.querySelectorAll('div');
+
+        let stickyElement;
+
+        for ( let i = 0, len = elements.length; i < len; i++ ) {
+
+            if ( elements[i].nodeType === Node.ELEMENT_NODE ) {
+
+                const element = elements[i];
+
+                if ( element.hasAttribute('sticky') ) {
+
+                    stickyElement = element;
+
+                } else if ( !stickyElement ) {
+
+                    stickyElement = element;
+
+                }
+
+            }
+
+        }
+
+        return stickyElement;
+
+    }
+
+    bindEvents() {
+
+        RafThrottle.set([
+            {
+                element: window,
+                event: 'scroll',
+                namespace: 'HeaderScroll',
+                fn: () => this._scrollHandler()
+            }
+        ]);
+
+    }
+
+    _scrollHandler() {
+
+        this.height = this.element.offsetHeight;
+        this.dHeight = this.stickyElement ? this.height - this.stickyElement.offsetHeight : 0;
+        this.stickyElementTop = this.stickyElement ? this.stickyElement.offsetTop : 0;
+
+        this.scrollValue = window.pageYOffset;
+
+        this._calculateHeaderTranslateValue();
+
+    }
+
+    /**
+     * Calculates the header translate value based on the options that are set
+     */
+    
+    _calculateHeaderTranslateValue() {
+
+        const scrollDiff = this.scrollValue - this.prevScrollValue;
+
+        if ( this.condenses || !this.fixed ) {
+
+            if ( this.reveals ) {
+
+                this.translateValue = Math.min( this._maxHeaderHeight, Math.max(0, this.translateValue + scrollDiff) );
+
+            } else {
+
+                this.translateValue = Math.min( this._maxHeaderHeight, Math.max(0, this.scrollValue) );
+
+            }
+
+        }
+
+        if ( this.scrollValue >= this.dHeight ) {
+
+            this.translateValue = this.condenses && !this.fixed ? Math.max(this.dHeight, this.translateValue) : this.translateValue;
+    
+        }
+        
+        this.prevScrollValue = this.scrollValue;
+
+        // When 
+        if( this.scrollValue <= 0 ) {
+
+            this._transformHeader( 0 );
+
+        } else {
+
+            this._transformHeader( this.translateValue );
+
+        }
+
+    }
+
+    /**
+     * Applies the calculated value from _calculateHeaderTranslateValue to the header
+     * and applies it to the sticky element when a sticky element is available 
+     */
+
+    _transformHeader( value ) {
+
+        this.element.style.transform = `translate3d(0, -${value}px, 0)`;
+        
+        if ( this.stickyElement ) {
+
+            this.stickyElement.style.transform = `translate3d(0, ${ (Math.min(value, this.dHeight) - this.stickyElementTop) }px, 0)`;
+
+            if ( this.condenses && value >= this.stickyElementTop ) {
+
+                this.stickyElement.style.transform = `translate3d(0 ,${ (Math.min(value, this.dHeight) - this.stickyElementTop) }px, 0)`;
+
+            } else {
+
+                this.stickyElement.style.transform = `translate3d(0, 0, 0)`;
+
+            }
+
+        }
+
+    }
+
+}
+
+export default Header;
