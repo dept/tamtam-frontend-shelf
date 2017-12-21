@@ -89,17 +89,20 @@ class LazyImage {
 
         const images = document.querySelectorAll('img');
 
-        Array.from(images).forEach((image) => {
+        Array.from(images).forEach(image => {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
             if (!srcSet[0].url) { return; }
 
-            const tablet = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
+            // Pick tablet image.
+            const tablet = Array.from(srcSet).find(a => a.width === 1024);
 
             const src = tablet ? tablet.url : srcSet[0].url;
 
-            image.src = null; // Setting to null first prevents weird bugs of not updating src in IE.
+            // Setting to null first prevents weird bugs of not updating src in IE.
+            image.src = null;
+
             image.src = src;
 
             image.removeAttribute('data-srcset');
