@@ -2,7 +2,7 @@ import { isValidEmail } from '../util/validation';
 import Events from '../util/events';
 import Api from '../util/api';
 
-const API_URL = '/api/test/'
+const API_URL = '/api/test/';
 
 const FORM_HOOK = '[js-hook-newsletter-form]';
 const INPUT_HOOK = '[js-hook-newsletter-input]';
@@ -53,10 +53,10 @@ class Newsletter {
         });
 
         Array.from(this.button.closeMessage).forEach(button => {
-            button.addEventListener('click', () => this._closeMessage())
+            button.addEventListener('click', () => this._closeMessage());
         });
 
-        this.button.close.addEventListener('click', () => this._close())
+        this.button.close.addEventListener('click', () => this._close());
         this.form.addEventListener('submit', event => this._submitForm(event));
 
     }
@@ -84,10 +84,10 @@ class Newsletter {
      */
     _closeMessage() {
 
-        if (this.message.state && this.message[this.message.state]){
+        if (this.message.state && this.message[this.message.state]) {
             this.message[this.message.state].classList.remove(MESSAGE_CLASS);
             this.message[this.message.state].setAttribute('aria-hidden', true);
-            Events.$triggger('focustrap::deactivate');        
+            Events.$triggger('focustrap::deactivate');
             delete this.message.state;
         }
 
@@ -128,7 +128,7 @@ class Newsletter {
         Api.post(API_URL, {
             data: generateFormDataJson(this.form)
         })
-            .then(() => this._setMessageState('success'), () => this._setMessageState('error'))
+            .then(() => this._setMessageState('success'), () => this._setMessageState('error'));
 
     }
 
@@ -136,9 +136,9 @@ class Newsletter {
      * Shows the correct message.
      * @param {String} state State to set the message to. Either success or error.
      */
-    _setMessageState(state){
+    _setMessageState(state) {
 
-        if (this.message[state]){
+        if (this.message[state]) {
             this.message.state = state;
             this.message[state].classList.add(MESSAGE_CLASS);
             this.message[state].setAttribute('aria-hidden', false);
@@ -163,7 +163,7 @@ function validateElements(elements) {
 
         const type = element.getAttribute('type');
 
-        if (element.required && element.value == "") {
+        if (element.required && element.value === "") {
             errors++;
         }
 
@@ -183,9 +183,9 @@ function validateElements(elements) {
  * @returns {Object}
  */
 function generateFormDataJson(form) {
-    return [].reduce.call(form.elements, (data, element) => {
-        return (element.name) ? (data[element.name] = element.value, data) : data;
-    }, {});
+    return [].reduce.call(form.elements, (data, element) =>
+        (element.name) ? (data[element.name] = element.value, data) : data
+    , {});
 }
 
 export default Newsletter;

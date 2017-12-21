@@ -291,10 +291,10 @@ function getElementOffset(element) {
     const elementStyles = window.getComputedStyle(element);
 
     const margin = {};
-    margin.top = parseInt(elementStyles.marginTop / 2) || 0;
-    margin.right = parseInt(elementStyles.marginRight / 2) || 0;
-    margin.bottom = parseInt(elementStyles.marginBottom / 2) || 0;
-    margin.left = parseInt(elementStyles.marginLeft / 2) || 0;
+    margin.top = parseInt(elementStyles.marginTop / 2, 10) || 0;
+    margin.right = parseInt(elementStyles.marginRight / 2, 10) || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom / 2, 10) || 0;
+    margin.left = parseInt(elementStyles.marginLeft / 2, 10) || 0;
 
     let top = 0 + margin.top + margin.bottom;
     let left = 0 + margin.left + margin.right;
@@ -384,9 +384,9 @@ function getIntersections(options) {
 
     return {
         t: options.position.top - options.scrollTop,
-        r: parseInt(options.position.left.toFixed(0)) - options.scrollLeft,
+        r: parseInt(options.position.left.toFixed(0), 10) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
-        l: parseInt(options.position.right.toFixed(0)) - options.scrollLeft - options.windowWidth
+        l: parseInt(options.position.right.toFixed(0), 10) - options.scrollLeft - options.windowWidth
     }
 }
 
