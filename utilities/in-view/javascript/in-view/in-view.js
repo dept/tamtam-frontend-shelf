@@ -363,7 +363,7 @@ function getInViewDirections(options) {
             top: topPosition,
             right: rightPosition,
             bottom: bottomPosition,
-            left: leftPosition,
+            left: leftPosition
         },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
@@ -374,7 +374,7 @@ function getInViewDirections(options) {
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
         left: left.scrolledPastViewport && left.elementInView,
         windowHeight: options.windowHeight
-    }
+    };
 }
 
 /**
@@ -383,13 +383,12 @@ function getInViewDirections(options) {
  * @returns {Object} matches
  */
 function getIntersections(options) {
-
     return {
         t: options.position.top - options.scrollTop,
         r: parseInt(options.position.left.toFixed(0), 10) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
         l: parseInt(options.position.right.toFixed(0), 10) - options.scrollLeft - options.windowWidth
-    }
+    };
 }
 
 /**
@@ -401,7 +400,7 @@ function getThreshold(options) {
     return {
         x: options.threshold * options.position.width,
         y: options.threshold * options.position.height
-    }
+    };
 }
 
 export default new InView();
