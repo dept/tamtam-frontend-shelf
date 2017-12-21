@@ -14,6 +14,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Social Share links - Simple](/components/social-share-links/simple/README.md)
 * [Toggle](/components/toggle/README.md)
 * [Video](/components/video/README.md)
+* [Header](/components/header/README.md)
 
 # Utilities
 * [API](/utilities/api/README.md)
