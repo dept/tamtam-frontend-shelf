@@ -11,6 +11,8 @@
 ## What does it do
 * The header components is a element container for navigation, search, toolbars etc..
 * The default state of the header is that it moves away when scrolling.
+* Side node :)! The gifs are a total of 100mb (Did not know a better way to show the header effects).
+* TODO: remove gifs or make a demo page 
 
 ## Install
 
