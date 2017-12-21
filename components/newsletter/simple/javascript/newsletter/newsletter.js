@@ -163,7 +163,7 @@ function validateElements(elements) {
 
         const type = element.getAttribute('type');
 
-        if (element.required && element.value === "") {
+        if (element.required && element.value === '') {
             errors++;
         }
 
@@ -183,9 +183,7 @@ function validateElements(elements) {
  * @returns {Object}
  */
 function generateFormDataJson(form) {
-    return [].reduce.call(form.elements, (data, element) =>
-        (element.name) ? (data[element.name] = element.value, data) : data
-    , {});
+    return [].reduce.call(form.elements, (data, element) => (element.name) ? (data[element.name] = element.value, data) : data, {});
 }
 
 export default Newsletter;

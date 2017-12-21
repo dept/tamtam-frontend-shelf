@@ -272,10 +272,10 @@ function getElementPositions(element) {
     return {
         top,
         left,
-        right: left + width,
-        bottom: top + height,
         width,
-        height
+        height,
+        right: left + width,
+        bottom: top + height
     };
 
 }
