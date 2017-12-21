@@ -16,7 +16,6 @@ class InView {
         this._bindEvent();
 
         Events.$trigger('in-view::update');
-        Events.$trigger('scroll');
 
     }
 
@@ -291,10 +290,10 @@ function getElementOffset(element) {
     const elementStyles = window.getComputedStyle(targetElement);
 
     const margin = {};
-    margin.top = parseInt(elementStyles.marginTop / 2, 10) || 0;
-    margin.right = parseInt(elementStyles.marginRight / 2, 10) || 0;
-    margin.bottom = parseInt(elementStyles.marginBottom / 2, 10) || 0;
-    margin.left = parseInt(elementStyles.marginLeft / 2, 10) || 0;
+    margin.top = parseInt(elementStyles.marginTop, 10) / 2 || 0;
+    margin.right = parseInt(elementStyles.marginRight, 10) / 2 || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom, 10) / 2 || 0;
+    margin.left = parseInt(elementStyles.marginLeft, 10) / 2 || 0;
 
     let top = 0 + margin.top + margin.bottom;
     let left = 0 + margin.left + margin.right;
@@ -341,17 +340,17 @@ function getInViewDirections(options) {
     top.scrolledPastViewport = topPosition > -options.windowHeight;
     top.elementInView = topPosition <= 0 && topPosition >= -options.windowHeight;
 
-    const rightPosition = options.offset.right + options.calculatedThreshold.y - options.intersection.r;
+    const rightPosition = options.offset.right + options.calculatedThreshold.x - options.intersection.r;
     const right = {};
     right.scrolledPastViewport = rightPosition >= -options.windowWidth;
     right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
 
     const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
     const bottom = {};
-    bottom.scrolledPastViewport = bottomPosition <= options.windowHeight;
-    bottom.elementInView = bottomPosition >= 0 && bottomPosition >= -options.windowHeight;
+    bottom.scrolledPastViewport = bottomPosition >= 0;
+    bottom.elementInView = bottomPosition >= 0 && bottomPosition <= options.windowHeight;
 
-    const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r;
+    const leftPosition = options.offset.left + options.calculatedThreshold.x - options.intersection.r;
     const left = {};
     left.scrolledPastViewport = leftPosition >= - options.windowWidth;
     left.elementInView = leftPosition <= 0 && leftPosition >= -options.windowWidth;
