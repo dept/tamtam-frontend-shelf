@@ -61,7 +61,8 @@ class InView {
 
         if (element.elementInViewIdentifier) { return; }
 
-        const index = ++this.lastEventIndex;
+        ++this.lastEventIndex;
+        const index = this.lastEventIndex;
         element.elementInViewIdentifier = index;
 
         const {
