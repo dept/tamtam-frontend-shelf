@@ -47,21 +47,23 @@ class Storage {
      */
     set(key, value) {
 
-        if (typeof value !== 'undefined' && value !== null) {
+        let convertedValue = value;
 
-            if (typeof value === 'object') {
+        if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
 
-                value = JSON.stringify(value);
+            if (typeof convertedValue === 'object') {
+
+                convertedValue = JSON.stringify(convertedValue);
 
             }
 
             if (this.supported) {
 
-                window[this.storageType].setItem(this.getPrefixedStorageKey(key), value);
+                window[this.storageType].setItem(this.getPrefixedStorageKey(key), convertedValue);
 
             } else {
 
-                Cookie.set(this.getPrefixedStorageKey(key), value, { expires: 30 });
+                Cookie.set(this.getPrefixedStorageKey(key), convertedValue, { expires: 30 });
 
             }
 
@@ -93,7 +95,7 @@ class Storage {
 
             data = JSON.parse(data);
 
-            if (data && typeof data === "object") {
+            if (data && typeof data === 'object') {
                 return data;
             }
 
@@ -195,4 +197,4 @@ export {
     sessionStorageIsSupported,
     LocalStorage,
     SessionStorage
-}
+};

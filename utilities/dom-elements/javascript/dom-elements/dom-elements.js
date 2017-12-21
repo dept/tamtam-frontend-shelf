@@ -5,7 +5,9 @@ const $document = $(document);
 const $html     = $('html');
 const $body     = $('body');
 const $htmlBody = $('html, body');
-const $eventEl  = $html; // Variable that points to the element that emits and receives all events.
+
+// Variable that points to the element that emits and receives all events.
+const $eventEl  = $html;
 
 export {
     $window,
@@ -14,4 +16,4 @@ export {
     $body,
     $htmlBody,
     $eventEl
-}
+};

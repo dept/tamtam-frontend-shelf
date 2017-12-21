@@ -61,7 +61,8 @@ class InView {
 
         if (element.elementInViewIdentifier) { return; }
 
-        const index = ++this.lastEventIndex;
+        ++this.lastEventIndex;
+        const index = this.lastEventIndex;
         element.elementInViewIdentifier = index;
 
         const {
@@ -126,7 +127,7 @@ class InView {
         element._inViewport = elementIsInViewport(config);
 
         if (config.persistent) {
-            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+            config.triggers.forEach(trigger => setTriggers(trigger, element));
         }
 
         if (element._inViewport.scrolledPastTop) {
@@ -135,7 +136,7 @@ class InView {
 
             if (!config.persistent) {
 
-                config.triggers.forEach((trigger) => setTriggers(trigger, element));
+                config.triggers.forEach(trigger => setTriggers(trigger, element));
 
                 RafThrottle.remove([{
                     element: SCROLL_ELEMENT,
@@ -269,8 +270,8 @@ function getElementPositions(element) {
     const { top, left } = getElementOffset(element);
 
     return {
-        top: top,
-        left: left,
+        top,
+        left,
         right: left + width,
         bottom: top + height,
         width,
@@ -286,26 +287,27 @@ function getElementPositions(element) {
  */
 function getElementOffset(element) {
 
-    const elementStyles = window.getComputedStyle(element);
+    let targetElement = element;
+    const elementStyles = window.getComputedStyle(targetElement);
 
     const margin = {};
-    margin.top = parseInt(elementStyles.marginTop / 2) || 0;
-    margin.right = parseInt(elementStyles.marginRight / 2) || 0;
-    margin.bottom = parseInt(elementStyles.marginBottom / 2) || 0;
-    margin.left = parseInt(elementStyles.marginLeft / 2) || 0;
+    margin.top = parseInt(elementStyles.marginTop / 2, 10) || 0;
+    margin.right = parseInt(elementStyles.marginRight / 2, 10) || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom / 2, 10) || 0;
+    margin.left = parseInt(elementStyles.marginLeft / 2, 10) || 0;
 
     let top = 0 + margin.top + margin.bottom;
     let left = 0 + margin.left + margin.right;
 
     do {
-        top += element.offsetTop || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += targetElement.offsetTop || 0;
+        left += targetElement.offsetLeft || 0;
+        targetElement = targetElement.offsetParent;
+    } while (targetElement);
 
     return {
-        top: top,
-        left: left
+        top,
+        left
     };
 }
 
@@ -359,7 +361,7 @@ function getInViewDirections(options) {
             top: topPosition,
             right: rightPosition,
             bottom: bottomPosition,
-            left: leftPosition,
+            left: leftPosition
         },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
@@ -370,7 +372,7 @@ function getInViewDirections(options) {
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
         left: left.scrolledPastViewport && left.elementInView,
         windowHeight: options.windowHeight
-    }
+    };
 }
 
 /**
@@ -379,13 +381,12 @@ function getInViewDirections(options) {
  * @returns {Object} matches
  */
 function getIntersections(options) {
-
     return {
         t: options.position.top - options.scrollTop,
-        r: parseInt(options.position.left.toFixed(0)) - options.scrollLeft,
+        r: parseInt(options.position.left.toFixed(0), 10) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
-        l: parseInt(options.position.right.toFixed(0)) - options.scrollLeft - options.windowWidth
-    }
+        l: parseInt(options.position.right.toFixed(0), 10) - options.scrollLeft - options.windowWidth
+    };
 }
 
 /**
@@ -397,7 +398,7 @@ function getThreshold(options) {
     return {
         x: options.threshold * options.position.width,
         y: options.threshold * options.position.height
-    }
+    };
 }
 
 export default new InView();

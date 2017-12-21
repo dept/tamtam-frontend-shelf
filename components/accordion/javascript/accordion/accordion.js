@@ -53,8 +53,8 @@ class Accordion {
                 }
             } else {
                 if (!this.isAnimating) {
-                    Object.keys(this.accordionItems).forEach(id => {
-                        this.accordionItems[id].close();
+                    Object.keys(this.accordionItems).forEach(i => {
+                        this.accordionItems[i].close();
                     });
                 }
             }

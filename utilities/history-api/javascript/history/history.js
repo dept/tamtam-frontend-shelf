@@ -73,7 +73,7 @@ function prepareHistoryEvents() {
     events.forEach(obj => addHistoryCallbackEvent(obj));
 
     // Add callback to all events
-    window.onpopstate = history.onreplacestate = history.onpushstate = (state) => Events.$trigger('history::update', { data: { state } });
+    window.onpopstate = history.onreplacestate = history.onpushstate = state => Events.$trigger('history::update', { data: { state } });
 
 }
 

@@ -99,7 +99,7 @@ class AccordionItem {
      */
     _heightTransitionEnd(event) {
 
-        if (event.propertyName == 'height') {
+        if (event.propertyName === 'height') {
 
             if (this.isOpen) {
                 this.content.style.height = 'auto';

@@ -110,7 +110,7 @@ class Video {
         this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
-            this._initVideo(video)
+            this._initVideo(video);
         });
 
     }
@@ -168,7 +168,7 @@ function constructVideoOptions(element) {
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
-    if (!videoPlatform || !videoId || element._initialised) { return false; }
+    if (!videoPlatform || !videoId || element._initialised) { return {}; }
 
     element._initialised = true;
 
