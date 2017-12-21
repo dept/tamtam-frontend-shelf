@@ -156,7 +156,7 @@ function getClosestVideoSource(sources) {
     const windowWidth = window.innerWidth;
     let closestSource = null;
 
-    sources.map((el) => {
+    sources.map(el => {
         if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
             closestSource = el;
         }
