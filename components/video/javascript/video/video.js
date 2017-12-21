@@ -110,7 +110,7 @@ class Video {
         this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
-            this._initVideo(video)
+            this._initVideo(video);
         });
 
     }
