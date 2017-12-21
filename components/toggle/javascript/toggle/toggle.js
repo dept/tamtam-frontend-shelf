@@ -112,7 +112,7 @@ class Toggle {
     _toggleLinksClassNames() {
 
         const toggleAction = this.isActive ? 'add' : 'remove';
-        this.links.forEach((link) => link.classList[toggleAction](this.activeClass));
+        this.links.forEach(link => link.classList[toggleAction](this.activeClass));
 
     }
 

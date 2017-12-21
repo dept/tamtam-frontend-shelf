@@ -60,7 +60,8 @@ class History {
  */
 function prepareHistoryEvents() {
 
-    const events = [{
+    const events = [
+        {
             eventName: 'pushState',
             callbackEventName: 'onpushstate'
         },
@@ -87,11 +88,11 @@ function addHistoryCallbackEvent(obj) {
 
     const historyEvent = history[obj.eventName];
 
-    history[obj.eventName] = function(state) {
+    history[obj.eventName] = function (state) {
 
-        if (typeof history[obj.callbackEventName] == "function") {
+        if (typeof history[obj.callbackEventName] == 'function') {
 
-            history[obj.callbackEventName]({ state: state });
+            history[obj.callbackEventName]({ state });
 
         }
 

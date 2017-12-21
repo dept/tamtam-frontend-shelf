@@ -37,7 +37,7 @@ function objectFitPolyfill(element) {
         const srcSet = parseSrcSet(img.getAttribute('data-srcset') || img.getAttribute('srcset'));
 
         // Pick tablet image.
-        const src = Array.from(srcSet).find((a) => a.width === 1024);
+        const src = Array.from(srcSet).find(a => a.width === 1024);
 
         // Pick correct image source
         const srcUrl = (src !== undefined) ? src.url : img.src;

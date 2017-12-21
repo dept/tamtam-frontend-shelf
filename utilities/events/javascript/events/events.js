@@ -56,9 +56,7 @@ const _Events = new Events();
 function readAndBindEventsFromDOM() {
 
     // Elements that have attributes starting with on:
-    const elements = _domFind(crawlEl, element => {
-        return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
-    });
+    const elements = _domFind(crawlEl, element => element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:'));
 
     elements.map(el => {
         const attrs = [].slice.call(el.attributes);

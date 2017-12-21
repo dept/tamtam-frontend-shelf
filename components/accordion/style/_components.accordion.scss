@@ -1,5 +1,4 @@
 // @shelf-version 1.0.0
-
 $accordion-spacing: 2rem;
 
 $accordion-item-border-radius: 3px;
@@ -39,12 +38,12 @@ $accordion-transition-ease: $ease-in-out-quad;
     width: 100%;
     text-align: left;
     padding: $accordion-item-header-padding;
-    border-radius:$accordion-item-border-radius;
-    transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time/2;
+    border-radius: $accordion-item-border-radius;
+    transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time / 2;
     transition-property: border-radius;
 
     .accordion__item--is-active & {
-        border-radius:$accordion-item-border-radius $accordion-item-border-radius 0 0;
+        border-radius: $accordion-item-border-radius $accordion-item-border-radius 0 0;
         transition: $accordion-transition-time $accordion-transition-ease;
         transition-property: border-radius;
     }
