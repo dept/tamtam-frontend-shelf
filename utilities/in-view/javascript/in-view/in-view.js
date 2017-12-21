@@ -129,7 +129,7 @@ class InView {
             config.triggers.forEach((trigger) => setTriggers(trigger, element));
         }
 
-        if (element._inViewport.scrolledPastTop && !element._hasBeenInViewport) {
+        if (element._inViewport.scrolledPastTop) {
 
             element.classList.remove('is--out-view');
 
@@ -142,8 +142,6 @@ class InView {
                     event: 'scroll',
                     namespace: `ElementInView-${config.index}`
                 }]);
-
-                element._hasBeenInViewport = true;
 
             }
 
