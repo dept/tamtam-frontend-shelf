@@ -36,12 +36,15 @@ function objectFitPolyfill(element) {
         const $img = $(img);
         const srcSet = parseSrcSet(img.getAttribute('data-srcset') || img.getAttribute('srcset'));
 
-        const src = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
+        // Pick tablet image.
+        const src = Array.from(srcSet).find((a) => a.width === 1024);
 
-        const srcUrl = (src !== undefined) ? src.url : img.src; // Pick correct image source
+        // Pick correct image source
+        const srcUrl = (src !== undefined) ? src.url : img.src;
+
         const $container = $img.closest('[js-hook-objectfit-container]');
 
-        $container.attr('style', 'background-image: url(' + srcUrl + ');');
+        $container.attr('style', `background-image: url(${srcUrl});`);
 
     });
 
