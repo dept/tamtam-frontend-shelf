@@ -34,12 +34,15 @@ class NativeVideo {
         }
 
         if (parseInt(this.options.videoPlaysinline, 10)) {
-            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
+            // For mobile autoplay
+            this.player.setAttribute('playsinline', 'playsinline');
         }
 
         if (parseInt(this.options.videoAutoplay, 10)) {
             this.player.setAttribute('autoplay', 'autoplay');
-            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
+
+            // For mobile autoplay
+            this.player.setAttribute('playsinline', 'playsinline');
         }
 
         if (parseInt(this.options.videoMuted, 10)) {

@@ -127,7 +127,7 @@ class InView {
         element._inViewport = elementIsInViewport(config);
 
         if (config.persistent) {
-            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+            config.triggers.forEach(trigger => setTriggers(trigger, element));
         }
 
         if (element._inViewport.scrolledPastTop && !element._hasBeenInViewport) {
@@ -136,7 +136,7 @@ class InView {
 
             if (!config.persistent) {
 
-                config.triggers.forEach((trigger) => setTriggers(trigger, element));
+                config.triggers.forEach(trigger => setTriggers(trigger, element));
 
                 RafThrottle.remove([{
                     element: SCROLL_ELEMENT,
@@ -272,8 +272,8 @@ function getElementPositions(element) {
     const { top, left } = getElementOffset(element);
 
     return {
-        top: top,
-        left: left,
+        top,
+        left,
         right: left + width,
         bottom: top + height,
         width,
@@ -289,7 +289,8 @@ function getElementPositions(element) {
  */
 function getElementOffset(element) {
 
-    const elementStyles = window.getComputedStyle(element);
+    let targetElement = element;
+    const elementStyles = window.getComputedStyle(targetElement);
 
     const margin = {};
     margin.top = parseInt(elementStyles.marginTop / 2, 10) || 0;
@@ -301,14 +302,14 @@ function getElementOffset(element) {
     let left = 0 + margin.left + margin.right;
 
     do {
-        top += element.offsetTop || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += targetElement.offsetTop || 0;
+        left += targetElement.offsetLeft || 0;
+        targetElement = targetElement.offsetParent;
+    } while (targetElement);
 
     return {
-        top: top,
-        left: left
+        top,
+        left
     };
 }
 
