@@ -168,7 +168,7 @@ function constructVideoOptions(element) {
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
-    if (!videoPlatform || !videoId || element._initialised) { return false; }
+    if (!videoPlatform || !videoId || element._initialised) { return {}; }
 
     element._initialised = true;
 
