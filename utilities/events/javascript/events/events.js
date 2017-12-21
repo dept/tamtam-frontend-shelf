@@ -195,7 +195,7 @@ function polyfillCustomEvent() {
     if (typeof window.CustomEvent !== 'function') {
 
         function CustomEvent(event, params) {
-            let newParams = params || { bubbles: false, cancelable: false, detail: undefined };
+            const newParams = params || { bubbles: false, cancelable: false, detail: undefined };
             const evt = document.createEvent('CustomEvent');
             evt.initCustomEvent(event, newParams.bubbles, newParams.cancelable, newParams.detail);
             return evt;
