@@ -51,7 +51,7 @@ class Header {
 
     get _maxHeaderHeight() {
 
-        return this.fixed ? this.dHeight : this.height + 5;
+        return this.fixed ? this.scrollingDistanceHeight : this.height + 5;
 
     }
     
@@ -105,7 +105,7 @@ class Header {
     _scrollHandler() {
 
         this.height = this.element.offsetHeight;
-        this.dHeight = this.stickyElement ? this.height - this.stickyElement.offsetHeight : 0;
+        this.scrollingDistanceHeight = this.stickyElement ? this.height - this.stickyElement.offsetHeight : 0;
         this.stickyElementTop = this.stickyElement ? this.stickyElement.offsetTop : 0;
 
         this.scrollValue = window.pageYOffset;
@@ -136,9 +136,9 @@ class Header {
 
         }
 
-        if ( this.scrollValue >= this.dHeight ) {
+        if ( this.scrollValue >= this.scrollingDistanceHeight ) {
 
-            this.translateValue = this.condenses && !this.fixed ? Math.max(this.dHeight, this.translateValue) : this.translateValue;
+            this.translateValue = this.condenses && !this.fixed ? Math.max(this.scrollingDistanceHeight, this.translateValue) : this.translateValue;
     
         }
         
@@ -168,11 +168,11 @@ class Header {
         
         if ( this.stickyElement ) {
 
-            this.stickyElement.style.transform = `translate3d(0, ${ (Math.min(value, this.dHeight) - this.stickyElementTop) }px, 0)`;
+            this.stickyElement.style.transform = `translate3d(0, ${ (Math.min(value, this.scrollingDistanceHeight) - this.stickyElementTop) }px, 0)`;
 
             if ( this.condenses && value >= this.stickyElementTop ) {
 
-                this.stickyElement.style.transform = `translate3d(0 ,${ (Math.min(value, this.dHeight) - this.stickyElementTop) }px, 0)`;
+                this.stickyElement.style.transform = `translate3d(0 ,${ (Math.min(value, this.scrollingDistanceHeight) - this.stickyElementTop) }px, 0)`;
 
             } else {
 
