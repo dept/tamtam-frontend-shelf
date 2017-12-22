@@ -1,5 +1,6 @@
 import RafThrottle from './util/raf-throttle';
 
+const HEADER_SHADOW_CLASS = 'header--has-shadow';
 class Header {
 
     constructor(element) {
@@ -39,11 +40,11 @@ class Header {
 
         if (val) {
             
-            this.element.setAttribute('shadow', '');
+            this.element.classList.add( HEADER_SHADOW_CLASS );
 
         } else {
 
-            this.element.removeAttribute('shadow');
+            this.element.classList.remove( HEADER_SHADOW_CLASS );
 
         }
 
@@ -144,7 +145,6 @@ class Header {
         
         this.prevScrollValue = this.scrollValue;
 
-        // When 
         if( this.scrollValue <= 0 ) {
 
             this._transformHeader( 0 );

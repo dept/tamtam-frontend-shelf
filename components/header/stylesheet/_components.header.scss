@@ -15,24 +15,17 @@ $header-shadow-color: inset 0px 5px 6px -3px rgba($color-black, 0.2);
     transition-duration: 0s;
     will-change: transform;
     width: 100%;
+}
 
-    &::before {
-        bottom: -5px;
-        box-shadow: $header-shadow-color;
-        content: '';
-        height: 5px;
-        opacity: 0;
-        position: absolute;
-        transition: .2s opacity;
-        width: 100%;
-        will-change: opacity;
-    }
+    .header--has-shadow {
 
-    &[shadow] {
-        
         &::before {
-            opacity: 1;
+            bottom: -5px;
+            box-shadow: $header-shadow-color;
+            content: '';
+            height: 5px;
+            position: absolute;
+            width: 100%;
         }
 
     }
-}

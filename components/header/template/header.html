@@ -5,11 +5,10 @@
 
 {% macro Header( data ) %}
 
-    <div class="c-header" 
+    <div class="c-header {% if data.shadow %} header--has-shadow{% endif %}" 
         {% if data.condenses %} condenses{% endif %}
         {% if data.reveals %} reveals{% endif %}
         {% if data.fixed %} fixed{% endif %}
-        {% if data.shadow %} shadow{% endif %}
         js-hook-header>
 
         {{ caller() }}
