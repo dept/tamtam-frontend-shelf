@@ -108,7 +108,7 @@ class API {
  */
 function getEndpoint(path, json, method) {
 
-    if (path.substr(0, 2) === '//' && path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
+    if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
         return path;
     }
 
