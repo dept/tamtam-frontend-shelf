@@ -123,13 +123,13 @@ class InView {
     _elementInView(config) {
 
         const element = config.element;
-        element._inViewport = elementIsInViewport(config);
+        element.inviewProperties = elementIsInViewport(config);
 
         if (config.persistent) {
             config.triggers.forEach(trigger => setTriggers(trigger, element));
         }
 
-        if (element._inViewport.scrolledPastTop) {
+        if (element.inviewProperties.scrolledPastTop) {
 
             element.classList.remove('is--out-view');
 
@@ -361,6 +361,10 @@ function getInViewDirections(options) {
             right: rightPosition,
             bottom: bottomPosition,
             left: leftPosition
+        },
+        isInViewport: {
+            horizontal: leftPosition >= 0 && rightPosition <= 0,
+            vertical: topPosition >= 0 && bottomPosition <= 0
         },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
