@@ -363,8 +363,8 @@ function getInViewDirections(options) {
             left: leftPosition
         },
         isInViewport: {
-            horizontal: leftPosition >= 0 && rightPosition <= 0,
-            vertical: topPosition >= 0 && bottomPosition <= 0
+            horizontal: leftPosition >= -options.windowWidth && rightPosition <= options.position.width,
+            vertical: topPosition >= -options.windowHeight && topPosition <= options.position.height
         },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
