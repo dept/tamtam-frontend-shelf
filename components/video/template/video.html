@@ -43,7 +43,7 @@
         {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         {% if data.sources %}data-video-sources="{{ data.sources|dump|escape }}"{% endif %}
-        {% if not data.inview or data.inview === true %}
+        {% if data.inview != false %}
             js-hook-inview
             data-inview-persistent="true"
             data-inview-trigger="video::inview"
