@@ -121,6 +121,10 @@ class Video {
      */
     _initVideo(video) {
 
+        if (video._initialised) {
+            return;
+        }
+
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = constructVideoOptions(video);
 
