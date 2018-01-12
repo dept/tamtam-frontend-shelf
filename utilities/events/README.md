@@ -34,9 +34,17 @@ import Events from './src/modules/util/events';
 Events.$on('eventname', (e, data) => yourOwnFunction(data));
 
 // Trigger events
-Events.$trigger('eventname', data);
+const dataObject = {
+    data: {
+        your: 'data here',
+        or: 'here'
+    }
+};
+Events.$trigger('eventname', dataObject);
 
 ```
+Passing data to the `$trigger` method always needs to be an object with a data object nested into that.
+This is to prevent future breaking changes, if we need to send more parameters as a config to the `$trigger` method.
 
 ### Bind events on DOM node
 
