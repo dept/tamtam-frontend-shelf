@@ -4,7 +4,7 @@ In this repository you find all standardized front-end components and utilities.
 # Components
 * [Accordion](/components/accordion/README.md)
 * [Breadcrumb](/components/breadcrumb/README.md)
-* [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
+* [Cookiebar - Simple](/utilities/cookie-bar/simple/README.md)
 * [Form elements](/components/form-elements/README.md)
 * [Teaser](/components/teaser/README.md)
 * [Modal](/components/modal/README.md)
