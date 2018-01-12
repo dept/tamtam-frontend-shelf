@@ -43,7 +43,7 @@ class Video {
 
         Events.$on('video::inview', (event, element) => {
 
-            if (!element._inViewport.bottom && !element._inViewport.top && !element.dataset.videoLoop) {
+            if (!element.inviewProperties.bottom && !element.inviewProperties.top && !element.dataset.videoLoop) {
                 Events.$trigger(`video::pause(${element.id})`);
             }
 
