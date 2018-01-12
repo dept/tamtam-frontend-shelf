@@ -41,9 +41,12 @@ function deepUnique(arr) {
 }
 
 function numberIsNan(x) {
-    Number.isNaN || function (x) {
-        return x !== x;
-    };
+
+    if ( Number.isNaN ) {
+        return Number.isNaN(x);
+    }
+
+    return x !== x;
 }
 
 export default parseSrcSet;

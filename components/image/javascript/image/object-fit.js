@@ -1,3 +1,4 @@
+import Events from '../util/events';
 import parseSrcSet from './util/parse-srcset';
 import 'core-js/fn/array/from';
 import 'core-js/fn/array/find';
@@ -31,8 +32,8 @@ class ObjectFit {
 
     }
 
-    getObjectfitImages() {
-        const images = [];
+    getObjectfitImages(element) {
+        let images = [];
 
         if (element) {
             // If element without hook is passed in, ignore it.
@@ -52,10 +53,12 @@ class ObjectFit {
         const src = Array.from(srcSet).find(a => a.width === 1024);
 
         // Pick correct image source
-        const srcUrl = (src !== undefined) ? src.url : img.src;
+        const srcUrl = (src !== undefined) ? src.url : image.src;
 
-        const container = image.closest(`[${OBJECT_FIT_IMAGE_HOOK}]`);
+        const container = image.closest(`[${OBJECT_FIT_CONTAINER_HOOK}]`);
         container.setAttribute('style', `background-image: url(${srcUrl});`);
     }
 
 }
+
+export default new ObjectFit();
