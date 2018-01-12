@@ -17,7 +17,6 @@
 Install npm package dependency
 ```node
 npm i layzr.js@2.2.2 --save
-npm i number-is-nan@1.0.1 --save
 ```
 Import module
 ```javascript
@@ -46,7 +45,7 @@ import './src/modules/image';
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [core-js/fn/array/find](https://www.npmjs.com/package/core-js) for IE11 support
-* [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
+* [Closest polyfill](/polyfills/DOM/closest.js) (included in FE setup, make sure include it in the polyfills file)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen-reumkens@tamtam.nl)
