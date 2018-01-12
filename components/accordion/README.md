@@ -70,11 +70,11 @@ Each accordion item will trigger a generic and specific `accordion::opened` and 
 ```javascript
 // accordion has been opened
 Events.$on('accordion::opened', doSomething);
-Events.$on('accordion::opened({id})', doSomethingSpecific);
+Events.$on('accordion[{id}]::opened', doSomethingSpecific);
 
 // accordion has been closed
 Events.$on('accordion::closed', doSomething);
-Events.$on('accordion::closed({id})', doSomethingSpecific);
+Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
