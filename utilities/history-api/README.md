@@ -14,6 +14,7 @@
 * Triggers a callback with the new state object.
 
 ## Install
+Import module
 ```javascript
 import './src/modules/util/history.js';
 ```
@@ -55,7 +56,7 @@ Events.$on('history::update', (e, state) => {
 ```
 
 ## Dependencies
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)

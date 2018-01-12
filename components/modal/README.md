@@ -16,6 +16,7 @@
 * Bind custom events to DOM elements that should have modalbox behavior. (ie. Open and Close)
 
 ## Install
+Import module
 ```javascript
 import './src/modules/util/focus-trap';
 import './src/modules/modal';
@@ -43,7 +44,7 @@ You can add the following options:
 
 {% endcall %}
 
-<button type="button" aria-controls="modal-example" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-example" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
@@ -58,12 +59,12 @@ Custom html element
     data-modal-no-body-class="false">
     I am a custom modalbox
 
-    <button type="button" js-hook-button-modal-close aria-title="Close modalbox">
+    <button type="button" js-hook-button-modal-close aria-label="Close modalbox">
         Close
     </button>
 </div>
 
-<button type="button" aria-controls="modal-custom" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-custom" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
@@ -76,7 +77,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers

@@ -33,7 +33,7 @@ class LazyImage {
     _loadImages() {
 
         if (!SUPPORTS_SRCSET) {
-            this.setTabletImage();
+            this._setTabletImage();
             return;
         }
 
@@ -43,19 +43,12 @@ class LazyImage {
             threshold: 20
         });
 
-        // Get all image data.
-        this.instance.update();
-
-        // Bind event listeners.
-        this.instance.handlers(true);
-
-        // Lazy load images that are already in view (before user starts scrolling).
-        this.instance.check();
-
         // Retrigger objectfit polyfill after image is loaded.
         this.instance.on('src:after', element => {
             Events.$trigger('image::object-fit', element);
         });
+
+        this._triggerUpdate();
 
     }
 
@@ -65,9 +58,18 @@ class LazyImage {
     _updateImages() {
 
         if (!SUPPORTS_SRCSET) {
-            this.setTabletImage();
+            this._setTabletImage();
             return;
         }
+
+        this._triggerUpdate();
+
+    }
+
+    /**
+     * Update new images
+     */
+    _triggerUpdate() {
 
         // Get all image data.
         this.instance.update();
@@ -87,17 +89,20 @@ class LazyImage {
 
         const images = document.querySelectorAll('img');
 
-        Array.from(images).forEach(function (image) {
+        Array.from(images).forEach(image => {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
-            if (!srcSet) { return; }
+            if (!srcSet[0].url) { return; }
 
-            const tablet = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
+            // Pick tablet image.
+            const tablet = Array.from(srcSet).find(a => a.width === 1024);
 
             const src = tablet ? tablet.url : srcSet[0].url;
 
-            image.src = null; // Setting to null first prevents weird bugs of not updating src in IE.
+            // Setting to null first prevents weird bugs of not updating src in IE.
+            image.src = null;
+
             image.src = src;
 
             image.removeAttribute('data-srcset');

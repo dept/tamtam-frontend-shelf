@@ -3,7 +3,7 @@
     Search field
     data {
         action:     'string',
-        submitText: 'string',
+        submitButtonText: 'string',
         id:         'string',
         label:      'string',    Also used as placeholder
         autocomplete: boolean   (optional, default false)
@@ -20,7 +20,7 @@
           action="{{ data.action }}">
 
         <div class="search-field__wrapper">
-            <label class="u-sr-only" for="{{ options.id }}">{{ data.label | safe }}</label>
+            <label class="u-sr-only" for="{{ data.id }}">{{ data.label | safe }}</label>
 
             <input id="{{ data.id }}"
                 class="search-field__input"
@@ -31,7 +31,7 @@
                 required>
 
             <button type="submit" class="search-field__submit">
-                <span class="u-sr-only">{{ data.submitText }}</span>
+                <span class="u-sr-only">{{ data.submitButtonText }}</span>
                 🔎
             </button>
         </div>

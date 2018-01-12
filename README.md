@@ -5,11 +5,15 @@ In this repository you find all standardized front-end components and utilities.
 * [Accordion](/components/accordion/README.md)
 * [Breadcrumb](/components/breadcrumb/README.md)
 * [Cookiebar - Simple](/utilities/cookiebar/simple/README.md)
+* [Form elements](/components/form-elements/README.md)
+* [Teaser](/components/teaser/README.md)
 * [Modal](/components/modal/README.md)
+* [Newsletter](/components/newsletter/simple/README.md)
 * [Pagination](/components/pagination/README.md)
 * [Search field](/components/search/search-field/README.md)
 * [Search results](/components/search/search-results/README.md)
 * [Social Share links - Simple](/components/social-share-links/simple/README.md)
+* [Toggle](/components/toggle/README.md)
 * [Video](/components/video/README.md)
 
 # Utilities

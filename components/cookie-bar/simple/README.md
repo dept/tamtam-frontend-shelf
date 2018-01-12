@@ -37,7 +37,7 @@ Add cookiebar template to page
 ```
 
 ## Dependencies
-* [Events component](/utilities/events/)
+* [Events utility](/utilities/events/)
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers

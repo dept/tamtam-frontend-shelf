@@ -34,12 +34,15 @@ class NativeVideo {
         }
 
         if (parseInt(this.options.videoPlaysinline, 10)) {
-            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
+            // For mobile autoplay
+            this.player.setAttribute('playsinline', 'playsinline');
         }
 
         if (parseInt(this.options.videoAutoplay, 10)) {
             this.player.setAttribute('autoplay', 'autoplay');
-            this.player.setAttribute('playsinline', 'playsinline'); // For mobile autoplay
+
+            // For mobile autoplay
+            this.player.setAttribute('playsinline', 'playsinline');
         }
 
         if (parseInt(this.options.videoMuted, 10)) {
@@ -59,6 +62,8 @@ class NativeVideo {
      * Bind events
      */
     _bindEvents() {
+
+        Events.$trigger('video::bind-player-events', { data: this.options });
 
         this.player.addEventListener('loadedmetadata', () => {
             Events.$trigger('video::ready', { data: this.options });
@@ -154,7 +159,7 @@ function getClosestVideoSource(sources) {
     const windowWidth = window.innerWidth;
     let closestSource = null;
 
-    sources.map((el) => {
+    sources.map(el => {
         if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
             closestSource = el;
         }

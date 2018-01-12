@@ -45,11 +45,14 @@ $video-button-transition-ease: $ease-in-quad;
     left: 50%;
     width: $video-loader-size;
     height: $video-loader-size;
+    background-color: $video-background-color;
     box-shadow: inset 0 0 0 $video-loader-thickness $video-loader-color;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     backface-visibility: hidden;
-    z-index: 0;
+    z-index: 3;
+    transition: $video-button-transition-time $ease-in-quad;
+    transition-property: opacity;
 
     &::before,
     &::after {
@@ -80,6 +83,9 @@ $video-button-transition-ease: $ease-in-quad;
     }
 
     .video--is-initialised & {
+        opacity: 0;
+        pointer-events: none;
+
         &::before,
         &::after {
             animation: none;

@@ -2,6 +2,7 @@ import RafThrottle from '../raf-throttle';
 import Events from '../events';
 
 const INVIEW_HOOK = '[js-hook-inview]';
+const SCROLL_ELEMENT = window;
 
 class InView {
 
@@ -15,7 +16,6 @@ class InView {
         this._bindEvent();
 
         Events.$trigger('in-view::update');
-        Events.$trigger('scroll');
 
     }
 
@@ -29,6 +29,8 @@ class InView {
             this._updateElements();
             this._addElements();
             this._bindScrollEvent();
+            Events.$trigger('resize');
+            Events.$trigger('scroll');
 
         });
 
@@ -58,7 +60,8 @@ class InView {
 
         if (element.elementInViewIdentifier) { return; }
 
-        const index = ++this.lastEventIndex;
+        ++this.lastEventIndex;
+        const index = this.lastEventIndex;
         element.elementInViewIdentifier = index;
 
         const {
@@ -88,17 +91,19 @@ class InView {
 
         this.elementArray.push(config);
 
-        this.eventsToBeBound.push({
-            element: window,
-            event: 'scroll',
-            namespace: `ElementInView-${config.index}`,
-            fn: () => this._elementInView(config)
-        }, {
-                element: window,
+        this.eventsToBeBound.push(
+            {
+                element: SCROLL_ELEMENT,
+                event: 'scroll',
+                namespace: `ElementInView-${config.index}`,
+                fn: () => this._elementInView(config)
+            }, {
+                element: SCROLL_ELEMENT,
                 event: 'resize',
                 namespace: `ElementRecalculatePositions-${config.index}`,
                 fn: () => this._reCalculateElementPositions(config)
-            });
+            }
+        );
 
     }
 
@@ -118,27 +123,25 @@ class InView {
     _elementInView(config) {
 
         const element = config.element;
-        element._inViewport = elementIsInViewport(config);
+        element.inviewProperties = elementIsInViewport(config);
 
         if (config.persistent) {
-            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+            config.triggers.forEach(trigger => setTriggers(trigger, element));
         }
 
-        if (element._inViewport.top && !element._hasBeenInViewport) {
+        if (element.inviewProperties.scrolledPastTop) {
 
             element.classList.remove('is--out-view');
 
             if (!config.persistent) {
 
-                config.triggers.forEach((trigger) => setTriggers(trigger, element));
+                config.triggers.forEach(trigger => setTriggers(trigger, element));
 
                 RafThrottle.remove([{
-                    element: window,
+                    element: SCROLL_ELEMENT,
                     event: 'scroll',
                     namespace: `ElementInView-${config.index}`
                 }]);
-
-                element._hasBeenInViewport = true;
 
             }
 
@@ -160,11 +163,10 @@ class InView {
     _addElements() {
 
         Object.keys(this.elements).forEach(index => {
-
-            this._setNewElement(this.elements[index]);
-
+            if (typeof this.elements[index] === 'object') {
+                this._setNewElement(this.elements[index]);
+            }
         });
-
 
     }
 
@@ -234,8 +236,8 @@ function setTriggers(trigger, element) {
  */
 function elementIsInViewport(options) {
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop;
+    const scrollLeft = SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft;
 
     const windowHeight = window.innerHeight;
     const windowWidth = document.body.clientWidth;
@@ -246,7 +248,7 @@ function elementIsInViewport(options) {
 
     const calculatedThreshold = getThreshold({ threshold, position });
 
-    const inViewDirections = getInViewDirections({ position, intersection, offset, windowHeight, scrollLeft, scrollTop, calculatedThreshold });
+    const inViewDirections = getInViewDirections({ position, intersection, offset, windowHeight, windowWidth, scrollLeft, scrollTop, calculatedThreshold });
 
     inViewDirections.any = getAnyInViewDirection(inViewDirections);
     inViewDirections.all = getAllInViewDirection(inViewDirections);
@@ -267,12 +269,12 @@ function getElementPositions(element) {
     const { top, left } = getElementOffset(element);
 
     return {
-        top: top,
-        left: left,
-        right: left + width,
-        bottom: top + height,
+        top,
+        left,
         width,
-        height
+        height,
+        right: left + width,
+        bottom: top + height
     };
 
 }
@@ -284,18 +286,27 @@ function getElementPositions(element) {
  */
 function getElementOffset(element) {
 
-    let top = 0;
-    let left = 0;
+    let targetElement = element;
+    const elementStyles = window.getComputedStyle(targetElement);
+
+    const margin = {};
+    margin.top = parseInt(elementStyles.marginTop, 10) / 2 || 0;
+    margin.right = parseInt(elementStyles.marginRight, 10) / 2 || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom, 10) / 2 || 0;
+    margin.left = parseInt(elementStyles.marginLeft, 10) / 2 || 0;
+
+    let top = 0 + margin.top + margin.bottom;
+    let left = 0 + margin.left + margin.right;
 
     do {
-        top += element.offsetTop || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += targetElement.offsetTop || 0;
+        left += targetElement.offsetLeft || 0;
+        targetElement = targetElement.offsetParent;
+    } while (targetElement);
 
     return {
-        top: top,
-        left: left
+        top,
+        left
     };
 }
 
@@ -323,12 +334,48 @@ function getAllInViewDirection(directions) {
  * @returns {Object} matches
  */
 function getInViewDirections(options) {
+
+    const topPosition = options.offset.top + options.calculatedThreshold.y - options.intersection.t;
+    const top = {};
+    top.scrolledPastViewport = topPosition > -options.windowHeight;
+    top.elementInView = topPosition <= 0 && topPosition >= -options.windowHeight;
+
+    const rightPosition = options.offset.right + options.calculatedThreshold.x - options.intersection.r;
+    const right = {};
+    right.scrolledPastViewport = rightPosition >= -options.windowWidth;
+    right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
+
+    const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
+    const bottom = {};
+    bottom.scrolledPastViewport = bottomPosition >= 0;
+    bottom.elementInView = bottomPosition >= 0 && bottomPosition <= options.windowHeight;
+
+    const leftPosition = options.offset.left + options.calculatedThreshold.x - options.intersection.r;
+    const left = {};
+    left.scrolledPastViewport = leftPosition >= - options.windowWidth;
+    left.elementInView = leftPosition <= 0 && leftPosition >= -options.windowWidth;
+
     return {
-        top: (options.offset.top + options.calculatedThreshold.y) - options.intersection.t >= - options.windowHeight && (options.offset.top + options.calculatedThreshold.y - options.intersection.t) <= 0,
-        right: options.intersection.r >= (options.offset.right + options.calculatedThreshold.x),
-        bottom: (options.offset.bottom + options.calculatedThreshold.y) - options.intersection.b <= options.windowHeight && (options.offset.bottom + options.calculatedThreshold.y - options.intersection.b) >= 0,
-        left: options.intersection.l >= (options.offset.left + options.calculatedThreshold.x)
-    }
+        position: {
+            top: topPosition,
+            right: rightPosition,
+            bottom: bottomPosition,
+            left: leftPosition
+        },
+        isInViewport: {
+            horizontal: leftPosition >= -options.windowWidth && rightPosition <= options.position.width,
+            vertical: topPosition >= -options.windowHeight && topPosition <= options.position.height
+        },
+        scrolledPastTop: top.scrolledPastViewport,
+        scrolledPastRight: right.scrolledPastViewport,
+        scrolledPastBottom: bottom.scrolledPastViewport,
+        scrolledPastLeft: left.scrolledPastViewport,
+        top: top.scrolledPastViewport && top.elementInView,
+        right: right.scrolledPastViewport && right.elementInView,
+        bottom: bottom.scrolledPastViewport && bottom.elementInView,
+        left: left.scrolledPastViewport && left.elementInView,
+        windowHeight: options.windowHeight
+    };
 }
 
 /**
@@ -339,10 +386,10 @@ function getInViewDirections(options) {
 function getIntersections(options) {
     return {
         t: options.position.top - options.scrollTop,
-        r: options.position.right.toFixed(0) + options.scrollLeft - options.windowWidth,
+        r: parseInt(options.position.left.toFixed(0), 10) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
-        l: options.position.left.toFixed(0) + options.scrollLeft
-    }
+        l: parseInt(options.position.right.toFixed(0), 10) - options.scrollLeft - options.windowWidth
+    };
 }
 
 /**
@@ -354,7 +401,7 @@ function getThreshold(options) {
     return {
         x: options.threshold * options.position.width,
         y: options.threshold * options.position.height
-    }
+    };
 }
 
 export default new InView();

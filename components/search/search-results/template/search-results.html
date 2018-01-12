@@ -1,5 +1,5 @@
 {#
-    @shelf-version: 1.0.0
+    @shelf-version: 1.1.0
     Search results list
 
     data {
@@ -8,11 +8,19 @@
             {
                 title:          'string',
                 description:    'string',
-                url:            'string'
+                url:            'string',
+                image: {        (optional)
+                    image:   'string', (desktop fallback image)
+                    preload: 'string', (10xratio preload image)
+                    srcset:  'string'  (image srcset)
+                },
             }
         ]
     }
 #}
+
+{% from 'components/teaser.html' import teaser %}
+
 {% macro searchResults(data) %}
 
     <div class="c-search-results">
@@ -20,27 +28,20 @@
             {% for result in data.results %}
 
                 <li class="search-results__item">
-                    <a href="{{ result.url }}" class="search-results__link">
 
-                        {% if result.image %}
-                            <img
-                                src="{{ result.image }}"
-                                alt="{{ result.title }}"
-                                class="search-results__image"
-                            >
-                        {% endif %}
+                    {% call teaser({
+                        classes: 'search-results__teaser',
+                        title: result.title,
+                        image: result.image,
+                        url: result.url
+                    }) %}
+                        <p>{{ result.description }}</p>
 
-                        <div class="search-results__content">
-                            <h2>{{ result.title }}</h2>
-                            <p>
-                                {{ result.description }}
-                            </p>
+                        <span class="search-results__button">
+                            {{ data.viewResultsLabel }}
+                        </span>
+                    {% endcall %}
 
-                            <span class="search-results__button">
-                                {{ data.viewResultsLabel }}
-                            </span>
-                        </div>
-                    </a>
                 </li>
 
             {% endfor %}

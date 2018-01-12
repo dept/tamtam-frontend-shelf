@@ -14,6 +14,7 @@
 * VueJS like event binding on DOM elements.
 
 ## Install
+Import module
 ```javascript
 // Without enabling logging
 import './src/modules/util/events';

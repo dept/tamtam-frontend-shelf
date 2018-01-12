@@ -1,0 +1,65 @@
+{#
+    @shelf-version: 1.0.0
+    Teaser Component
+
+    data {
+        url:        'string', (optional)
+        classes:    'string', (optional)
+        image: {
+            image:   'string', (desktop fallback image)
+            preload: 'string', (10xratio preload image)
+            srcset:  'string'  (image srcset)
+        },
+        title:      'string',
+        align:      'top' (optional) - aligns content to the top
+    }
+
+    caller - for content.
+#}
+
+{% from 'components/image.html' import image  %}
+
+{% macro teaser(data) %}
+
+    <article class="u-margin-top--md c-teaser
+     {% if data.classes %}{{data.classes}}{% endif %}
+     {% if data.align %}teaser--align-{{data.align}}{% endif %}">
+        {% if data.url %}
+        <a href="{{ data.url }}" class="o-grid teaser__wrapper">
+        {% else %}
+        <span class="o-grid teaser__wrapper">
+        {% endif %}
+
+            {% if data.image %}
+                <div class="o-col-3 teaser__aside">
+                    {{ image({
+                        classes: 'teaser__figure',
+                        preload: data.image.preload,
+                        image: data.image.image,
+                        srcset: data.image.srcset
+                    }) }}
+                </div>
+            {% endif %}
+
+            {% if data.image %}
+                {% set contentWidthClass = "o-col-9" %}
+            {% else %}
+                {% set contentWidthClass = "o-col-12" %}
+            {% endif %}
+
+            <div class="{{ contentWidthClass }} teaser__content">
+                <h3>{{ data.title }}</h3>
+                {% if caller %}
+                    {{ caller() }}
+                {%endif %}
+            </div>
+
+        {% if data.url %}
+        </a>
+        {% else %}
+        </span>
+        {% endif %}
+
+    </article>
+
+{% endmacro %}

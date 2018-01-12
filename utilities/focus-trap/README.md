@@ -12,7 +12,7 @@
 * After the acivation hook, the focus stays inside the supplied element
 
 ## Install
-
+Import module
 ```javascript
 import './src/modules/util/focus-trap';
 ```
@@ -61,7 +61,7 @@ Events.$trigger('focustrap::activate', {
 ```
 
 ## Dependencies
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Daphne Smit](mailto:daphne@tamtam.nl)

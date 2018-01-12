@@ -40,7 +40,7 @@
 ```
 
 ## Dependencies
-This package doesn't have any dependencies.
+* [Teaser component](/components/teaser/)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)

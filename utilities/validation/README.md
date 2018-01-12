@@ -13,7 +13,12 @@
 * Generic functions for common input data to ease developers from the task of always having to look up regexes or methods to validate
 
 ## Install
-
+Install npm package dependency
+```node
+npm i iban@0.0.8 --save
+npm i luhn@2.1.0 --save
+```
+Import module
 ```javascript
 import { isValidEmail, isValidPhoneNumber, isValidZipcode, isValidIBAN, isValidLuhnNumber } from './src/modules/util/validation';
 ```

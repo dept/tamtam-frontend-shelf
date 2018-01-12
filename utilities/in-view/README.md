@@ -13,7 +13,7 @@
 * Trigger when element enters viewport
 
 ## Install
-
+Import module
 ```javascript
 import './src/modules/util/in-view';
 ```
@@ -70,8 +70,8 @@ Events.$trigger('in-view::update');
 
 ## Dependencies
 * [RAF](https://www.npmjs.com/package/raf)
-* [Events library](/utilities/events/)
-* [Raf throttle library](/utilities/raf-throttle/)
+* [Events utility](/utilities/events/)
+* [Raf throttle utility](/utilities/raf-throttle/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)

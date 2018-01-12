@@ -43,7 +43,7 @@ class Video {
 
         Events.$on('video::inview', (event, element) => {
 
-            if (!element._inViewport.bottom && !element._inViewport.top && !element.dataset.videoLoop) {
+            if (!element.inviewProperties.bottom && !element.inviewProperties.top && !element.dataset.videoLoop) {
                 Events.$trigger(`video[${element.id}]::pause`);
             }
 
@@ -94,6 +94,12 @@ class Video {
 
         });
 
+        Events.$on('video::bind-player-events', (event, data) => {
+            if (data) {
+                bindPlayerEvents(data);
+            }
+        });
+
     }
 
     /**
@@ -104,7 +110,7 @@ class Video {
         this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
-            this._initVideo(video)
+            this._initVideo(video);
         });
 
     }
@@ -115,12 +121,15 @@ class Video {
      */
     _initVideo(video) {
 
+        if (video._initialised) {
+            return;
+        }
+
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
-        const options = _constructVideoOptions(video);
+        const options = constructVideoOptions(video);
 
         if (Object.keys(options).length) {
             options.element.playerInstance = new platformClass(options);
-            bindPlayerEvents(options);
         }
 
     }
@@ -144,7 +153,7 @@ function getVideos(platforms) {
  * @param {NodeList} element
  * @returns {Object}
  */
-function _constructVideoOptions(element) {
+function constructVideoOptions(element) {
 
     const {
         videoPlatform,
@@ -163,7 +172,7 @@ function _constructVideoOptions(element) {
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
-    if (!videoPlatform || !videoId || element._initialised) { return false; }
+    if (!videoPlatform || !videoId || element._initialised) { return {}; }
 
     element._initialised = true;
 
