@@ -248,4 +248,4 @@ function bindPlayerEvents(options) {
 
 }
 
-export default Video;
+export default new Video();

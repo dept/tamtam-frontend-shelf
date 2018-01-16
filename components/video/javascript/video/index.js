@@ -1,5 +1,5 @@
 /**
- *  @shelf-version: 1.0.0
+ *  @shelf-version: 1.0.2
  */
 import Video from './video';
 
