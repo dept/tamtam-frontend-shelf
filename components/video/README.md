@@ -144,7 +144,14 @@ video.registerPlatforms({
     sources: [
         {
             size : 1920,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119'
+            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
+            "cc": [
+                {
+                "url": "url to vtt file",
+                "label": "Nederlands",
+                "lang": "nl"
+                }
+            ]
         },
         {
             size : 1280,

@@ -27,7 +27,24 @@ class NativeVideo {
         this.sourceData = getClosestVideoSource(this.sources);
         this.player = document.createElement('video');
 
-        this.player.src = this.sourceData.url;
+        this.sourceMP4 = document.createElement("source"); 
+        this.sourceMP4.type = "video/mp4";
+        this.sourceMP4.src = this.sourceData.url;
+        this.player.appendChild(this.sourceMP4);
+
+        this.sourceData.cc.forEach((cc) => {
+            this.cc = document.createElement("track");
+            this.cc.src = cc.url;
+            this.cc.kind = "subtitles";
+            this.cc.label = cc.label
+            this.cc.srclang = cc.lang;
+            this.player.appendChild(this.cc);
+        });
+        
+        
+        if (parseInt(this.options.videoControls, 10)) {
+            this.player.setAttribute('controls', true);
+        }
 
         if (parseInt(this.options.videoLoop, 10)) {
             this.player.setAttribute('loop', 'loop');
