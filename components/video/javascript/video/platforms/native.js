@@ -27,10 +27,12 @@ class NativeVideo {
         this.sourceData = getClosestVideoSource(this.sources);
         this.player = document.createElement('video');
 
-        this.sourceMP4 = document.createElement("source"); 
-        this.sourceMP4.type = "video/mp4";
-        this.sourceMP4.src = this.sourceData.url;
-        this.player.appendChild(this.sourceMP4);
+        this.sourceData.source.forEach((source) => {
+            this.source = document.createElement("source");
+            this.source.type = source.type;
+            this.source.src = source.url;
+            this.player.appendChild(this.source);
+        });
 
         this.sourceData.cc.forEach((cc) => {
             this.cc = document.createElement("track");
