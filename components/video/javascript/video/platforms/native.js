@@ -28,16 +28,16 @@ class NativeVideo {
         this.player = document.createElement('video');
 
         this.sourceData.source.forEach((source) => {
-            this.source = document.createElement("source");
+            this.source = document.createElement('source');
             this.source.type = source.type;
             this.source.src = source.url;
             this.player.appendChild(this.source);
         });
 
         this.sourceData.cc.forEach((cc) => {
-            this.cc = document.createElement("track");
+            this.cc = document.createElement('track');
             this.cc.src = cc.url;
-            this.cc.kind = "subtitles";
+            this.cc.kind = 'subtitles';
             this.cc.label = cc.label;
             this.cc.srclang = cc.lang;
             this.player.appendChild(this.cc);

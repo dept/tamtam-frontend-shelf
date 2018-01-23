@@ -150,7 +150,7 @@ video.registerPlatforms({
                     type: 'video/mp4'
                 }
             ]
-            "cc": [
+            cc: [
                 {
                     url: 'url to vtt file',
                     label: 'Nederlands',
