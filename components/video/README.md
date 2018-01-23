@@ -147,7 +147,7 @@ video.registerPlatforms({
             source: [
                 {
                     url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
-                    type: 'video/mp4 or video/webm or video/ogg'
+                    type: 'video/mp4'
                 }
             ]
             "cc": [
@@ -163,7 +163,7 @@ video.registerPlatforms({
             source: [
                 {
                     url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
-                    type: 'video/mp4 or video/webm or video/ogg'
+                    type: 'video/mp4'
                 }
             ]
         },
@@ -172,7 +172,7 @@ video.registerPlatforms({
             source: [
                 {
                     url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
-                    type: 'video/mp4 or video/webm or video/ogg'
+                    type: 'video/mp4'
                 }
             ]
         },
@@ -181,7 +181,7 @@ video.registerPlatforms({
             source: [
                 {
                     url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
-                    type: 'video/mp4 or video/webm or video/ogg'
+                    type: 'video/mp4'
                 }
             ]
         },
@@ -190,7 +190,7 @@ video.registerPlatforms({
             source: [
                 {
                     url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
-                    type: 'mp4/webm/ogg'
+                    type: 'video/mp4'
                 }
             ]
         }
