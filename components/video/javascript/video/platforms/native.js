@@ -38,7 +38,7 @@ class NativeVideo {
             this.cc = document.createElement("track");
             this.cc.src = cc.url;
             this.cc.kind = "subtitles";
-            this.cc.label = cc.label
+            this.cc.label = cc.label;
             this.cc.srclang = cc.lang;
             this.player.appendChild(this.cc);
         });
