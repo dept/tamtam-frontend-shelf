@@ -34,14 +34,19 @@ class NativeVideo {
             this.player.appendChild(this.source);
         });
 
-        this.sourceData.cc.forEach(cc => {
-            this.cc = document.createElement('track');
-            this.cc.src = cc.url;
-            this.cc.kind = 'subtitles';
-            this.cc.label = cc.label;
-            this.cc.srclang = cc.lang;
-            this.player.appendChild(this.cc);
-        });
+        if (this.options.videoClosedcaptions) {
+
+            this.closedcaptions = JSON.parse(this.options.videoClosedcaptions);
+
+            this.closedcaptions.forEach(cc => {
+                this.cc = document.createElement('track');
+                this.cc.src = cc.url;
+                this.cc.kind = 'subtitles';
+                this.cc.label = cc.label;
+                this.cc.srclang = cc.lang;
+                this.player.appendChild(this.cc);
+            });
+        }
         
         
         if (parseInt(this.options.videoControls, 10)) {
