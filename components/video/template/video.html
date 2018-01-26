@@ -19,6 +19,7 @@
         controls: integer, (optional, default 0)
         info: integer (optional, default 0),
         sources: object (optional) for native video only
+        closedcaptions: object (optional) for native video only
         inview: boolean (optional, default true)
         image: object (optional)
     }
@@ -43,6 +44,7 @@
         {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         {% if data.sources %}data-video-sources="{{ data.sources|dump|escape }}"{% endif %}
+        {% if data.closedcaptions %}data-video-closedcaptions="{{ data.closedcaptions|dump|escape }}"{% endif %}
         {% if data.inview != false %}
             js-hook-inview
             data-inview-persistent="true"

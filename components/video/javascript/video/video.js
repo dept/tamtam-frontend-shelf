@@ -166,7 +166,8 @@ function constructVideoOptions(element) {
         videoAutoplay,
         videoLoop,
         videoPlaysinline,
-        videoSources
+        videoSources,
+        videoClosedcaptions
     } = element.dataset;
 
     const instanceId = element.id;
@@ -190,7 +191,8 @@ function constructVideoOptions(element) {
         videoAutoplay,
         videoPlaysinline,
         videoLoop,
-        videoSources
+        videoSources,
+        videoClosedcaptions
     };
 
 }

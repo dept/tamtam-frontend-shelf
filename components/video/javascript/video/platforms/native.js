@@ -10,12 +10,10 @@ class NativeVideo {
 
         this.options = options;
 
-        if (!this.options.videoSources) { return; }
-
-        this.sources = JSON.parse(this.options.videoSources);
-
-        this._initPlayer();
-        this._bindEvents();
+        if (this._parseSources()) {
+            this._initPlayer();
+            this._bindEvents();
+        }
 
     }
 
@@ -27,7 +25,15 @@ class NativeVideo {
         this.sourceData = getClosestVideoSource(this.sources);
         this.player = document.createElement('video');
 
-        this.player.src = this.sourceData.url;
+        this._addMediaSources();
+
+        if (this.options.videoClosedcaptions) {
+            this._addClosedCaptions();
+        }
+
+        if (parseInt(this.options.videoControls, 10)) {
+            this.player.setAttribute('controls', true);
+        }
 
         if (parseInt(this.options.videoLoop, 10)) {
             this.player.setAttribute('loop', 'loop');
@@ -84,6 +90,56 @@ class NativeVideo {
             Events.$trigger('video::ended', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::ended`, { data: this.options });
         });
+
+    }
+
+    _parseSources() {
+
+        try {
+
+            this.sources = JSON.parse(this.options.videoSources);
+            if (typeof this.sources === 'object') {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (e) {
+            console.error('Failed to parse sources. Are you sure this is an object?');
+            return false;
+        }
+
+    }
+
+    _addMediaSources() {
+
+        this.sourceData.source.forEach(source => {
+            this.source = document.createElement('source');
+            this.source.type = source.type;
+            this.source.src = source.url;
+            this.player.appendChild(this.source);
+        });
+
+    }
+
+    _addClosedCaptions() {
+
+        try {
+
+            this.closedcaptions = JSON.parse(this.options.videoClosedcaptions);
+
+            this.closedcaptions.forEach(cc => {
+                this.cc = document.createElement('track');
+                this.cc.src = cc.url;
+                this.cc.kind = 'subtitles';
+                this.cc.label = cc.label;
+                this.cc.srclang = cc.lang;
+                this.player.appendChild(this.cc);
+            });
+
+        } catch (e) {
+            console.error('Failed to parse closed captions. Are you sure this is an object?');
+        }
 
     }
 
@@ -159,13 +215,20 @@ function getClosestVideoSource(sources) {
     const windowWidth = window.innerWidth;
     let closestSource = null;
 
-    sources.map(el => {
-        if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
-            closestSource = el;
-        }
-    });
+    try {
 
-    return closestSource;
+        sources.map(el => {
+            if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
+                closestSource = el;
+            }
+        });
+
+        return closestSource;
+
+    } catch (e) {
+        console.error('Failed to find closest source. Are you sure this is an object?');
+        return closestSource;
+    }
 
 }
 
