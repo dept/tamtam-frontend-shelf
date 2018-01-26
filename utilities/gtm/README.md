@@ -1,5 +1,5 @@
 
-# DOM Elements
+# GTM utility
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -10,54 +10,26 @@
 
 
 ## What does it do
-* Listens for events to update the url and state object on [History](https://developer.mozilla.org/en-US/docs/Web/API/History) with pushState / replaceState.
-* Triggers a callback with the new state object.
+* Keep your code clean by having a generic gtm utility to push `dataLayer` events to.
 
 ## Install
 Import module
 ```javascript
-import './src/modules/util/history.js';
+import './src/modules/util/gtm';
 ```
 
 ## How to use
 ### Trigger push state or replace state from anywhere in your site.
 ```javascript
-
-Events.$trigger('history::push', {
+Events.$trigger('gtm::push', {
     data: {
-        url : '/your-new-url',
-        state: {}
+        variable_name: 'variable_value'
     }
 });
-
-Events.$trigger('history::replace', {
-    data: {
-        url : '/your-new-url',
-        state: {}
-    }
-});
-
-```
-
-### Listen to the history callback
-This callback will be triggered on the following events:
-* pushState
-* replaceState
-* onpopstate
-```javascript
-
-Events.$on('history::update', (e, state) => {
-
-    console.log('new url', window.location.href);
-    console.log('new state', state);
-
-});
-
 ```
 
 ## Dependencies
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:jeroen.reumkens@tamtam.nl)

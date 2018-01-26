@@ -4,11 +4,11 @@ class GTM {
 
     constructor() {
 
-        this.bindEvents();
+        this._bindEvents();
 
     }
 
-    bindEvents() {
+    _bindEvents() {
 
         Events.$on('gtm::push', (event, data) => this.push(data));
 
