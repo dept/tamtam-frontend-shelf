@@ -10,12 +10,10 @@ class NativeVideo {
 
         this.options = options;
 
-        if (!this.options.videoSources) { return; }
-
-        this.sources = JSON.parse(this.options.videoSources);
-
-        this._initPlayer();
-        this._bindEvents();
+        if (this._parseSources()) {
+            this._initPlayer();
+            this._bindEvents();
+        }
 
     }
 
@@ -27,28 +25,12 @@ class NativeVideo {
         this.sourceData = getClosestVideoSource(this.sources);
         this.player = document.createElement('video');
 
-        this.sourceData.source.forEach(source => {
-            this.source = document.createElement('source');
-            this.source.type = source.type;
-            this.source.src = source.url;
-            this.player.appendChild(this.source);
-        });
+        this._addMediaSources();
 
         if (this.options.videoClosedcaptions) {
-
-            this.closedcaptions = JSON.parse(this.options.videoClosedcaptions);
-
-            this.closedcaptions.forEach(cc => {
-                this.cc = document.createElement('track');
-                this.cc.src = cc.url;
-                this.cc.kind = 'subtitles';
-                this.cc.label = cc.label;
-                this.cc.srclang = cc.lang;
-                this.player.appendChild(this.cc);
-            });
+            this._addClosedCaptions();
         }
-        
-        
+
         if (parseInt(this.options.videoControls, 10)) {
             this.player.setAttribute('controls', true);
         }
@@ -108,6 +90,52 @@ class NativeVideo {
             Events.$trigger('video::ended', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::ended`, { data: this.options });
         });
+
+    }
+
+    _parseSources() {
+
+        try {
+
+            this.sources = JSON.parse(this.options.videoSources);
+            return true;
+
+        } catch (e) {
+            console.error('Failed to parse sources. Are you sure this is an object?');
+            return false;
+        }
+
+    }
+
+    _addMediaSources() {
+
+        this.sourceData.source.forEach(source => {
+            this.source = document.createElement('source');
+            this.source.type = source.type;
+            this.source.src = source.url;
+            this.player.appendChild(this.source);
+        });
+
+    }
+
+    _addClosedCaptions() {
+
+        try {
+
+            this.closedcaptions = JSON.parse(this.options.videoClosedcaptions);
+
+            this.closedcaptions.forEach(cc => {
+                this.cc = document.createElement('track');
+                this.cc.src = cc.url;
+                this.cc.kind = 'subtitles';
+                this.cc.label = cc.label;
+                this.cc.srclang = cc.lang;
+                this.player.appendChild(this.cc);
+            });
+
+        } catch (e) {
+            console.error('Failed to parse closed captions. Are you sure this is an object?');
+        }
 
     }
 
