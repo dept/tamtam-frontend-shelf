@@ -5,7 +5,8 @@
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
 4. [Dependencies](#markdown-header-dependencies)
-5. [Developers](#markdown-header-developers)
+5. [Changelog](#markdown-header-changelog)
+6. [Developers](#markdown-header-developers)
 
 ![Video Demo](./_demo/video.gif)
 
@@ -38,9 +39,8 @@ import './src/modules/image';
 import './src/modules/in-view';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native,
     'youtube': Youtube,
     'vimeo': Vimeo
@@ -77,9 +77,8 @@ This will initialise all the players on the page. If autoplay parameter is set, 
 import './src/modules/image';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native,
     'youtube': Youtube,
     'vimeo': Vimeo
@@ -120,9 +119,8 @@ import './src/modules/image';
 import './src/modules/in-view';
 import { Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native
 });
 ```
@@ -182,3 +180,10 @@ video.registerPlatforms({
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
+
+## Changelog
+
+### 1.0.2
+Changed export in Javascript to singleton, to prevent multiple instances.
+### 1.0.0
+Initial version
