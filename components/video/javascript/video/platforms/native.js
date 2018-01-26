@@ -98,7 +98,11 @@ class NativeVideo {
         try {
 
             this.sources = JSON.parse(this.options.videoSources);
-            return true;
+            if (typeof this.sources === 'object') {
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (e) {
             console.error('Failed to parse sources. Are you sure this is an object?');
@@ -211,13 +215,20 @@ function getClosestVideoSource(sources) {
     const windowWidth = window.innerWidth;
     let closestSource = null;
 
-    sources.map(el => {
-        if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
-            closestSource = el;
-        }
-    });
+    try {
 
-    return closestSource;
+        sources.map(el => {
+            if (closestSource == null || Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)) {
+                closestSource = el;
+            }
+        });
+
+        return closestSource;
+
+    } catch (e) {
+        console.error('Failed to find closest source. Are you sure this is an object?');
+        return closestSource;
+    }
 
 }
 
