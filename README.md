@@ -26,3 +26,9 @@ In this repository you find all standardized front-end components and utilities.
 * [RAF throttle](/utilities/raf-throttle/README.md)
 * [Storage](/utilities/storage/README.md)
 * [Validation](/utilities/validation/README.md)
+
+# Polyfills
+Various browser polyfills. Easiest way is to copy the whole folder, and include the polyfills you need in the index file.
+* [DOM](/polyfills/DOM/README.md)
+* * [Closest](/polyfills/DOM/closest.js)
+* * [Matches](/polyfills/DOM/matches.js)
