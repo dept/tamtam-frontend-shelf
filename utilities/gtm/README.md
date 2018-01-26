@@ -22,11 +22,15 @@ import './src/modules/util/gtm';
 ### Trigger push state or replace state from anywhere in your site.
 ```javascript
 Events.$trigger('gtm::push', {
-    data: {
-        variable_name: 'variable_value'
+    data: { 
+        'ecommerce': {
+            'currencyCode': 'EUR',
+            'impressions': []
+        }
     }
 });
 ```
+> See the [Feyenoord GTM utility](https://bitbucket.org/tamtam-nl/feyenoord-webshop/src/develop/frontend/source/javascript/src/modules/util/gtm/?at=develop) for more usecases.
 
 ## Dependencies
 * [Events utility](/utilities/events/)

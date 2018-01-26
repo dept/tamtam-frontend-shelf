@@ -4,7 +4,7 @@ In this repository you find all standardized front-end components and utilities.
 # Components
 * [Accordion](/components/accordion/README.md)
 * [Breadcrumb](/components/breadcrumb/README.md)
-* [Cookiebar - Simple](/utilities/cookie-bar/simple/README.md)
+* [Cookiebar - Simple](/components/cookie-bar/simple/README.md)
 * [Form elements](/components/form-elements/README.md)
 * [Teaser](/components/teaser/README.md)
 * [Modal](/components/modal/README.md)
@@ -21,6 +21,7 @@ In this repository you find all standardized front-end components and utilities.
 * [DOM Elements](/utilities/dom-elements/README.md)
 * [Events](/utilities/events/README.md)
 * [Focus Trap](/utilities/focus-trap/README.md)
+* [GTM](/utilities/gtm/README.md)
 * [History](/utilities/history-api/README.md)
 * [Inview](/utilities/in-view/README.md)
 * [RAF throttle](/utilities/raf-throttle/README.md)
