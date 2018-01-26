@@ -32,4 +32,4 @@ Events.$trigger('gtm::push', {
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Adrian Klingen](mailto:jeroen.reumkens@tamtam.nl)
+* [Adrian Klingen](mailto:adrian@tamtam.nl)
