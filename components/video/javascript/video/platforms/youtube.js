@@ -32,7 +32,7 @@ class YoutubeVideo {
                 start: this.options.videoTime,
                 modestbranding: 0,
                 showinfo: 0,
-                controls: parseInt(this.options.videoControls, 10) || 0,
+                controls: this.options.videoControls || 0,
                 rel: 0
             }
         });

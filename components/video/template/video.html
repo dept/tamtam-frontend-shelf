@@ -12,7 +12,6 @@
         total_time: 'string', (optional)
         start_time: 'string', (optional)
         classes: 'string', (optional)
-        autopause: integer, (optional, default 1) for Vimeo video only
         muted: integer, (optional, default 1)
         autoplay: integer, (optional, default 1)
         playsinline: integer, (optional, default 1)
@@ -36,7 +35,6 @@
         {% if data.platform %}data-video-platform="{{ data.platform }}"{% endif %}
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
-        {% if data.autopause >= 0 %}data-video-autopause="{{ data.autopause }}"{% endif %}
         {% if data.muted >= 0 %}data-video-muted="{{ data.muted }}"{% endif %}
         {% if data.autoplay >= 0 %}data-video-autoplay="{{ data.autoplay }}"{% endif %}
         {% if data.playsinline >= 0 %}data-video-playsinline="{{ data.playsinline }}"{% endif %}
