@@ -41,6 +41,18 @@ import './src/modules/image';
 }) }}
 ```
 
+### Object fit polyfill
+For object fit, the image macro simply has a boolean option `objectFit` to turn it on or off.
+If the polyfill is applied (Edge and IE), it will take the tablet image and make this a background image on the `figure` element, with `background-size: cover;`.
+
+#### Use Objectfit without image component
+If you somehow want to use the polyfill without the image component, it will work like this:
+* Make sure your image has an attribute `js-hook-objectfit-img`.
+* Make sure your image is wrapped in an block element with the attribute `js-hook-objectfit-container` (doesn't need to be a direct child).
+* The JS will apply a class to the html node if the polyfill is applied, and based on that class the container will get a `background-size: cover;`.
+* The JS will then first look for a `srcset` with an image of 1024px. If that isn't found it will use as fallback the image src param.
+* That image will be applied as background image to your container element.
+
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
