@@ -15,6 +15,7 @@ $video-button-transition-ease: $ease-in-quad;
     margin-bottom: 20px;
     background-color: $video-background-color;
 
+    .video__image,
     .video__player,
     iframe,
     video {
