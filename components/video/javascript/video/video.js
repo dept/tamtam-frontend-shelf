@@ -158,16 +158,15 @@ function constructVideoOptions(element) {
     const {
         videoPlatform,
         videoId,
+        videoSources,
+        videoClosedcaptions,
         videoTime,
         videoInfo,
         videoControls,
         videoMuted,
-        videoAutopause,
         videoAutoplay,
         videoLoop,
         videoPlaysinline,
-        videoSources,
-        videoClosedcaptions
     } = element.dataset;
 
     const instanceId = element.id;
@@ -183,16 +182,16 @@ function constructVideoOptions(element) {
         instanceId,
         videoPlatform,
         videoId,
-        videoTime,
         videoInfo,
-        videoControls,
-        videoMuted,
-        videoAutopause,
-        videoAutoplay,
-        videoPlaysinline,
-        videoLoop,
         videoSources,
-        videoClosedcaptions
+        videoClosedcaptions,
+        // Boolean options:
+        videoTime: parseInt(videoTime, 10),
+        videoControls: parseInt(videoControls, 10),
+        videoMuted: parseInt(videoMuted, 10),
+        videoAutoplay: parseInt(videoAutoplay, 10),
+        videoPlaysinline: parseInt(videoPlaysinline, 10),
+        videoLoop: parseInt(videoLoop, 10)
     };
 
 }

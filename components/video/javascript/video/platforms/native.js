@@ -31,32 +31,32 @@ class NativeVideo {
             this._addClosedCaptions();
         }
 
-        if (parseInt(this.options.videoControls, 10)) {
+        if (this.options.videoControls) {
             this.player.setAttribute('controls', true);
         }
 
-        if (parseInt(this.options.videoLoop, 10)) {
+        if (this.options.videoLoop) {
             this.player.setAttribute('loop', 'loop');
         }
 
-        if (parseInt(this.options.videoPlaysinline, 10)) {
+        if (this.options.videoPlaysinline) {
             // For mobile autoplay
             this.player.setAttribute('playsinline', 'playsinline');
         }
 
-        if (parseInt(this.options.videoAutoplay, 10)) {
+        if (this.options.videoAutoplay) {
             this.player.setAttribute('autoplay', 'autoplay');
 
             // For mobile autoplay
             this.player.setAttribute('playsinline', 'playsinline');
         }
 
-        if (parseInt(this.options.videoMuted, 10)) {
+        if (this.options.videoMuted) {
             this.player.setAttribute('muted', 'muted');
             this.player.muted = true;
         }
 
-        if (parseInt(this.options.videoTime, 10)) {
+        if (this.options.videoTime) {
             this.player.currentTime = this.options.videoTime;
         }
 
@@ -148,7 +148,7 @@ class NativeVideo {
      */
     play() {
 
-        if (parseInt(this.options.videoControls, 10)) {
+        if (this.options.videoControls) {
             this.player.controls = 1;
         }
 
@@ -161,7 +161,7 @@ class NativeVideo {
      */
     pause() {
 
-        if (parseInt(this.options.videoControls, 10)) {
+        if (this.options.videoControls) {
             this.player.controls = 0;
         }
 
