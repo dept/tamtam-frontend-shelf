@@ -63,7 +63,8 @@ class RafThrottle {
                 event: bind.event,
                 namespace: generateNamespace(bind.event, bind.namespace),
                 callback: event => this._trigger(bind, event),
-                eventOptions: { passive: true }
+                eventOptions: { passive: true },
+                delay: bind.delay
             };
 
             this._addThrottledEvent(eventOptions);
@@ -115,10 +116,8 @@ class RafThrottle {
                 this.timeoutList[eventNamespace] = {};
             }
 
-            if (this.timeoutList[eventNamespace].timeoutTimestamp + bind.delay > Date.now()) {
-
+            if ( this.timeoutList[eventNamespace].timeout ) {
                 clearTimeout(this.timeoutList[eventNamespace].timeout);
-
             }
 
             this.timeoutList[eventNamespace].timeout = setTimeout(() => {
@@ -131,7 +130,7 @@ class RafThrottle {
 
                 });
 
-            }, bind.delay || 0);
+            }, bind.delay);
 
         } else {
 
