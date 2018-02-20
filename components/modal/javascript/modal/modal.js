@@ -80,12 +80,20 @@ class Modal {
      * @param {HTMLElement} triggerBtn Button to open modal
      * @param {HTMLElement} closeBtn Button to close modal
      */
-    bindModalEvents({ id, triggerBtn, closeBtn }) {
+    bindModalEvents({ el, id, triggerBtn, closeBtn }) {
 
-        Array.from(triggerBtn).forEach(el => el.addEventListener('click', () => {
-            Events.$trigger('modal::open', { data: { id } });
-            Events.$trigger(`modal[${id}]::open`, { data: { id } });
+        Array.from(triggerBtn).forEach(triggerEl => triggerEl.addEventListener('click', () => {
+            if (el.modalIsOpen) {
+                Events.$trigger('modal::close', { data: { id } });
+                Events.$trigger(`modal[${id}]::close`, { data: { id } });
+            } else {
+                Events.$trigger('modal::open', { data: { id } });
+                Events.$trigger(`modal[${id}]::open`, { data: { id } });
+            }
         }));
+
+        Events.$on(`modal[${id}]::close`, () => this.closeModal(event, { id }) );
+        Events.$on(`modal[${id}]::open`, () => this.openModal(event, { id }) );
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
@@ -94,7 +102,9 @@ class Modal {
 
         // Close on ESCAPE_KEY
         document.addEventListener('keyup', event => {
-            if (event.keyCode === 27) { this.closeModal(); }
+            if (event.keyCode === 27) {
+                Events.$trigger('modal::close');
+            }
         });
 
     }
@@ -122,6 +132,7 @@ class Modal {
         // Add tabindex and add visible class
         modal.el.setAttribute('tabindex', 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
+        modal.el.modalIsOpen = true;
 
         Events.$trigger('focustrap::activate', {
             data: {
@@ -165,6 +176,7 @@ class Modal {
         // Remove tabindex and remove visible class
         modal.el.setAttribute('tabindex', 0);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
+        modal.el.modalIsOpen = false;
 
         Events.$trigger('focustrap::deactivate');
 
