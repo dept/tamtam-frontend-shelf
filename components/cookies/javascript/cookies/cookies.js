@@ -49,7 +49,7 @@ class Cookies {
             this.setCookie(COOKIEBAR_COOKIE_NAME, '0');
         }
 
-        if (this.getCookie(COOKIEBAR_COOKIE_NAME) === '0' && !this.form.element) {
+        if (this.getCookie('cookie-version') !== this.config.version && this.getCookie(COOKIEBAR_COOKIE_NAME) === '0' && !this.form.element) {
             this._show();
         }
 
@@ -82,6 +82,7 @@ class Cookies {
             this.setCookie(`cookie-${cookieName}`, '1');
         });
 
+        this.setCookie(`cookie-version`, this.config.version);
         this.setCookie(COOKIEBAR_COOKIE_NAME, '1');
 
         location.reload();
@@ -111,6 +112,7 @@ class Cookies {
             }
         });
 
+        this.setCookie('cookie-version', this.config.version);
         this.setCookie(COOKIEBAR_COOKIE_NAME, '1');
 
         window.location = this.form.url;
@@ -150,7 +152,7 @@ class Cookies {
      */
     getCookie(name) {
 
-        return cookies.get(`${this.config.cookiePrefix}-${name}`);
+        return this.getCookie('cookie-version') !== this.config.version ? '0' : cookies.get(`${this.config.cookiePrefix}-${name}`);
 
     }
 
