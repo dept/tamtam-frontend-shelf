@@ -1,4 +1,3 @@
-import numberIsNan from 'number-is-nan';
 
 function parseSrcSet(str) {
 
@@ -39,6 +38,15 @@ function deepUnique(arr) {
     return arr.sort().filter(function (el, i) {
         return JSON.stringify(el) !== JSON.stringify(arr[i - 1]);
     });
+}
+
+function numberIsNan(x) {
+
+    if ( Number.isNaN ) {
+        return Number.isNaN(x);
+    }
+
+    return x !== x;
 }
 
 export default parseSrcSet;
