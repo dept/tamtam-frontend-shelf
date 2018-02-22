@@ -215,7 +215,9 @@ Video.registerPlatforms({
 
 ## Changelog
 
+### 1.1.0
+* Added cookie message
 ### 1.0.2
-Changed export in Javascript to singleton, to prevent multiple instances.
+* Changed export in Javascript to singleton, to prevent multiple instances.
 ### 1.0.0
-Initial version
+* Initial version

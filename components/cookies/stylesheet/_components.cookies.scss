@@ -1,8 +1,8 @@
-// @shelf-version 1.0.0
-$cookiebar-transition-time: 400ms !default;
-$cookiebar-transition-ease: $ease-in-out-quad !default;
+// @shelf-version 2.0.0
+$cookie-transition-time: 400ms !default;
+$cookie-transition-ease: $ease-in-out-quad !default;
 
-.c-cookiebar {
+.c-cookie-bar {
     position: fixed;
     z-index: 99;
     left: 0;
@@ -12,19 +12,20 @@ $cookiebar-transition-ease: $ease-in-out-quad !default;
     background-color: rgba($color-black, 0.85);
     color: $color-white;
     transform: translateY(100%);
-    transition: $cookiebar-transition-time $cookiebar-transition-ease;
+    transition: $cookie-transition-time $cookie-transition-ease;
     transition-property: transform;
 
-    &.cookiebar--is-visible{
+    &.cookie-bar--is-visible {
         transform: translateY(0);
     }
 }
 
-.cookiebar__content {
+.cookie-bar__content {
     display: flex;
     align-items: center;
+    margin-right: $global-spacing;
 }
 
-.cookiebar__button-close {
+.cookie-bar__button-holder {
     margin-left: auto;
 }

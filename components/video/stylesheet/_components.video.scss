@@ -83,6 +83,7 @@ $video-button-transition-ease: $ease-in-quad;
         animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
+    .video--has-invalid-cookie &,
     .video--is-initialised & {
         opacity: 0;
         pointer-events: none;
@@ -91,6 +92,28 @@ $video-button-transition-ease: $ease-in-quad;
         &::after {
             animation: none;
         }
+    }
+}
+
+.video__invalid-cookie {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: $global-spacing-md;
+    z-index: 10;
+    background-color: $video-background-color;
+    opacity: 0;
+    pointer-events: none;
+
+    .video--has-invalid-cookie & {
+        opacity: 1;
+        pointer-events: all;
     }
 }
 

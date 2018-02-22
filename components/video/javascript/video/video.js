@@ -14,6 +14,7 @@ const VIDEO_READY_CLASS = 'video--is-initialised';
 const VIDEO_PLAYING_CLASS = 'video--is-playing';
 const VIDEO_PAUSED_CLASS = 'video--is-paused';
 const VIDEO_REPLAY_CLASS = 'video--is-ended';
+const VIDEO_COOKIE_INVALID_CLASS = 'video--has-invalid-cookie';
 
 const VIDEOS = document.querySelectorAll(VIDEO_HOOK);
 
@@ -97,6 +98,12 @@ class Video {
         Events.$on('video::bind-player-events', (event, data) => {
             if (data) {
                 bindPlayerEvents(data);
+            }
+        });
+
+        Events.$on('video::cookie-invalid', (event, element) => {
+            if (element) {
+                element.classList.add(VIDEO_COOKIE_INVALID_CLASS);
             }
         });
 

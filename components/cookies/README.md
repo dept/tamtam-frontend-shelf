@@ -1,5 +1,5 @@
 
-# Simple cookiebar component
+# Cookies component
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -8,11 +8,10 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Cookiebar Demo](./_demo/cookiebar-simple.gif)
 
 ## What does it do
-* Simple cookiebar that closes when close is pressed.
-* Automatically assumes users consent when being closed.
+* GDPR proof cookie bar and cookie form
+* Will set cookies based for all types of cookies.
 
 ## Install
 
@@ -22,24 +21,44 @@ npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import Cookiebar from './src/modules/cookiebar';
-moduleInit('[js-hook-cookiebar]', Cookiebar);
+import Cookiebar from 'components/cookies';
 ```
 
 ## How to use
 
-### Default modal
-Add cookiebar template to page
+### Default cookie bar
+Add cookie bar template to page
 
 ```htmlmixed
-{% include "components/cookiebar.html" %}
+{% include "cookie-bar.html" %}
 ```
 
+```javascript
+    Cookiebar.init({
+        //Optional config
+    });
+```
+
+### Default cookie form
+Add cookie form template to page
+
+```htmlmixed
+{% include "cookie-form.html" %}
+```
+
+{% from 'button.html' import button %}
+
+
 ## Dependencies
+* [Form elements component](/components/form-elements/)
 * [Events utility](/utilities/events/)
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
 * [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)
+
+### 2.0.0
+* Refactored component to meet GDPR requirements
+### 1.0.0
+* Initial version

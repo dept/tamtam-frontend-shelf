@@ -7,6 +7,11 @@ class VimeoVideo {
 
         this.options = options;
 
+        if (Cookies.getCookie('cookie-analytics') !== '1') {
+            Events.$trigger('video::cookie-invalid', { data: this.options.element });
+            return;
+        }
+
         this._initPlayer();
         this._bindEvents();
 
