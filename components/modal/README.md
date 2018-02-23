@@ -8,6 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
+![Modal Demo](./_demo/modal.gif)
 
 ## What does it do
 * Create modalboxes with an easy to use macro.
@@ -15,6 +16,7 @@
 * Bind custom events to DOM elements that should have modalbox behavior. (ie. Open and Close)
 
 ## Install
+Import module
 ```javascript
 import './src/modules/util/focus-trap';
 import './src/modules/modal';
@@ -28,15 +30,21 @@ Create modalbox in HTML.
 ```htmlmixed
 {% from 'components/modal.html' import modal  %}
 
+You can add the following options:
+* `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.
+* `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal
+
 {% call modal({
-    id : 'modal-example'
+    id : 'modal-example',
+    autoFocus   : 'true',
+    noBodyClass : 'false'
 }) %}
 
     Your content here.
 
 {% endcall %}
 
-<button type="button" aria-controls="modal-example" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-example" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
@@ -46,15 +54,17 @@ Create modalbox in HTML.
 
 Custom html element
 ```htmlmixed
-<div id="modal-custom">
+<div id="modal-custom"
+    data-modal-auto-focus="true"
+    data-modal-no-body-class="false">
     I am a custom modalbox
 
-    <button type="button" js-hook-button-modal-close aria-title="Close modalbox">
+    <button type="button" js-hook-button-modal-close aria-label="Close modalbox">
         Close
     </button>
 </div>
 
-<button type="button" aria-controls="modal-custom" aria-title="Open modalbox">
+<button type="button" aria-controls="modal-custom" aria-label="Open modalbox">
     Open example modalbox
 </button>
 
@@ -62,12 +72,12 @@ Custom html element
 
 Bind custom html element to modal.
 ```javascript
-Events.$trigger('modal::bind', '#modal-custom');
+Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ```
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers

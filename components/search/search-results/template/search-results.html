@@ -1,0 +1,51 @@
+{#
+    @shelf-version: 1.1.0
+    Search results list
+
+    data {
+        viewResultsLabel: 'string'
+        results: [
+            {
+                title:          'string',
+                description:    'string',
+                url:            'string',
+                image: {        (optional)
+                    image:   'string', (desktop fallback image)
+                    preload: 'string', (10xratio preload image)
+                    srcset:  'string'  (image srcset)
+                },
+            }
+        ]
+    }
+#}
+
+{% from 'components/teaser.html' import teaser %}
+
+{% macro searchResults(data) %}
+
+    <div class="c-search-results">
+        <ul class="search-results__list">
+            {% for result in data.results %}
+
+                <li class="search-results__item">
+
+                    {% call teaser({
+                        classes: 'search-results__teaser',
+                        title: result.title,
+                        image: result.image,
+                        url: result.url
+                    }) %}
+                        <p>{{ result.description }}</p>
+
+                        <span class="search-results__button">
+                            {{ data.viewResultsLabel }}
+                        </span>
+                    {% endcall %}
+
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endmacro %}

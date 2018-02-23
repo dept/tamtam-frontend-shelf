@@ -1,0 +1,41 @@
+{#
+    @shelf-version: 1.0.0
+    Search field
+    data {
+        action:     'string',
+        submitButtonText: 'string',
+        id:         'string',
+        label:      'string',    Also used as placeholder
+        autocomplete: boolean   (optional, default false)
+        classes:    'string',   (optional)
+        attr:       'string'    (optional)
+        inputAttrs: 'string'    (optional)
+    }
+ #}
+{% macro searchField(data) %}
+
+    <form method="post"
+          class="c-search-field{%- if data.classes %} {{ data.classes }}{% endif -%}"
+          {% if data.attr %} {{ data.attr | safe }}{% endif %}
+          action="{{ data.action }}">
+
+        <div class="search-field__wrapper">
+            <label class="u-sr-only" for="{{ data.id }}">{{ data.label | safe }}</label>
+
+            <input id="{{ data.id }}"
+                class="search-field__input"
+                placeholder="{{ data.label }}"
+                {% if data.inputAttrs %} {{ data.inputAttrs | safe }}{% endif %}
+                {% if not data.autocomplete %}autocomplete="off"{% endif %}
+                type="text"
+                required>
+
+            <button type="submit" class="search-field__submit">
+                <span class="u-sr-only">{{ data.submitButtonText }}</span>
+                🔎
+            </button>
+        </div>
+
+    </form>
+
+{% endmacro %}

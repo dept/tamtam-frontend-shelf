@@ -8,6 +8,7 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
+![Pagination Demo](./_demo/pagination.png)
 
 ## What does it do
 * Render pagination

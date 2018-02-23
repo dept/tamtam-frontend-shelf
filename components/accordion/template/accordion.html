@@ -1,0 +1,57 @@
+{#
+    @shelf-version: 1.0.0
+    Accordion macro
+    Usage as a call, inject the accordion items there.
+
+    Options:
+        autoclose {boolean}     - Disable autoclose (optional)
+
+    Item Options:
+        id {string}             - Adds id for a11y reference
+        open {boolean}          - Defaults open or closed
+        title.default {string}  - Label for default state
+        title.open {string}     - Label for open state
+#}
+
+{% macro default(data) %}
+
+    <div class="c-accordion"
+        {% if not data.autoclose %}data-autoclose="{{ data.autoclose }}"{% endif %}
+        js-hook-accordion>
+
+        {{ caller() }}
+
+    </div>
+
+{% endmacro %}
+
+{% macro item(data) %}
+
+    <div class="accordion__item {% if data.open %} accordion__item--is-active{% endif %}"
+        js-hook-accordion-item>
+
+        <button type="button" class="accordion__item-header"
+            on:click.prevent="accordion::toggle({{ data.id }})"
+            aria-expanded="{% if data.open %}true{% else %}false{% endif %}"
+            aria-controls="{{ data.id }}"
+            js-hook-accordion-button>
+
+            <span class="accordion__item-header--open">{{ data.title.default }}</span>
+            <span class="accordion__item-header--close">{{ data.title.close }}</span>
+
+        </button>
+
+        <div class="accordion__item-content-holder"
+            aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
+            id="{{ data.id }}"
+            js-hook-accordion-content>
+
+            <div class="accordion__item-content">
+                {{ caller() }}
+            </div>
+
+        </div>
+
+    </div>
+
+{% endmacro %}
