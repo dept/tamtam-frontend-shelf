@@ -17,14 +17,15 @@ $breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !defaul
 
 .breadcrumb__list {
     display: flex;
+    flex-wrap: nowrap;
     list-style: none;
     padding-left: 0;
-    white-space: nowrap;
 }
 
 .breadcrumb__list-item {
     position: relative;
     padding-right: $breadcrumb-spacing;
+    overflow: hidden;
 
     &:not(:last-child) {
         &::after {
@@ -37,10 +38,32 @@ $breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !defaul
             content: '\276D';
         }
     }
+
+    @include screen-mobile-plus-and-smaller() {
+        padding-left: $breadcrumb-spacing / 2;
+        padding-right: 0;
+
+        &:not(:last-child) {
+            &::after {
+                width: $breadcrumb-spacing / 2;
+                right: auto;
+                left: 0;
+                text-align: left;
+                content: "\276C";
+            }
+        }
+
+        &:not(:nth-last-child(2)) {
+            display: none;
+        }
+    }
 }
 
 .breadcrumb__item {
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .breadcrumb__item--current {
