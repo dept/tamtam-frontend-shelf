@@ -57,8 +57,11 @@
 
 ## Install
 ```javascript
+import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/in-view';
 import './src/modules/sticky';
+
+moduleInit('[js-hook-sticky]', Sticky);
 ```
 
 ## How to use

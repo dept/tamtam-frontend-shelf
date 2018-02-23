@@ -3,15 +3,18 @@
  */
 
 import Events from './util/events';
+import RafThrottle from './util/raf-throttle';
 
-const STICKY_SCROLL_ELEMENT_HOOK      = '[js-hook-sticky-scroll-element]';
+const STICKY_SCROLL_ELEMENT_HOOK = '[js-hook-sticky-scroll-element]';
+const STICKY_STICKED_CLASS = 'sticky--is-sticked';
+const STICKY_UNSTICKED_CLASS = 'sticky--is-unsticked';
 
 class Sticky {
 
-    constructor(el) {
+    constructor(element) {
 
+        const el = element;
         const id = el.getAttribute('id');
-
         const scrollElement = el.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
 
         const stickyComponent = {
@@ -21,7 +24,7 @@ class Sticky {
             threshold: parseInt(el.dataset.stickyThreshold) || 0
         };
 
-        this.bindStickyComponentEvents(stickyComponent);
+        this._bindStickyComponentEvents(stickyComponent);
 
     }
 
@@ -32,95 +35,82 @@ class Sticky {
      * @param {HTMLElement} scrollElement Child element that scrolls through the sticky component lane
      * @param {number} threshold amount of offset before starting the animation
      */
-    bindStickyComponentEvents({ el, id, scrollElement, threshold }) {
+    _bindStickyComponentEvents({ el, id, scrollElement, threshold }) {
 
-        Events.$on(`sticky::update(${ id })`, () => {
+        RafThrottle.set([{
+            element: window,
+            event: 'resize',
+            namespace: `StickyComponentResize-${id}`,
+            fn: () => setScrollElementSize(scrollElement)
+        }]);
 
-            setScrollElementPosition( scrollElement, getUpdatedTransformValue( el, scrollElement, threshold ) );
+        setScrollElementSize(scrollElement);
 
-        });
+        Events.$on(`sticky::update(${id})`, () => setStickyValues(el, scrollElement, threshold));
 
     }
 
 }
 
-
 /**
- * Sets inline style attribute (transform: translateY) to mimic sticky effect
- * @param {HTMLElement} scrollElement Element that is updated
- * @param {number} position amount of added offset to the element
- */
-function setScrollElementPosition( scrollElement, position ) {
-
-    const transformValue = `translateY(${position}px)`;
-
-    scrollElement.style.webkitTransform = transformValue;
-    scrollElement.style.MozTransform = transformValue;
-    scrollElement.style.msTransform = transformValue;
-    scrollElement.style.OTransform = transformValue;
-    scrollElement.style.transform = transformValue;
-
-}
-
-
-/**
- * Resets the position of the sticky scroll element to the default state (0)
+ * Sets the classes for the sticky element
  * @param {HTMLElement} el sticky component lane element
  * @param {HTMLElement} scrollElement Element that is updated
  * @param {number} threshold amount of offset before starting the animation
  */
-function getUpdatedTransformValue( el, scrollElement, threshold ) {
-    const { pageYOffset: windowScrollPosition } = window;
+function setStickyValues(el, scrollElement, threshold) {
 
-    const startScroll = getStartScroll( el, threshold );
-    const endScroll   = getEndScroll( el, scrollElement );
+    if (!el.inviewProperties) { return; }
 
-    // If scrolled passed the start Y position, enable sticky position
-    return ( windowScrollPosition > startScroll ) ?
+    if (el.inviewProperties.position.top + threshold >= 0) {
 
-        // Constrain so that new sticky position can't get past the end scroll value
-        Math.min(endScroll, windowScrollPosition - startScroll) :
+        if (el.inviewProperties.height - el.inviewProperties.position.top - threshold >= scrollElement.position.height) {
+            setStickyClasses(scrollElement, threshold);
+        } else {
+            setUnStickyClasses(scrollElement);
+        }
 
-        // If not scrolled passed the start Y position, constrain to 0 so that new sticky position can't get above the start scroll value
-        0;
+    } else {
+
+        resetStickyClasses(scrollElement);
+
+    }
+
+}
+
+function setStickyClasses(scrollElement, threshold) {
+
+    scrollElement.style.top = `${threshold}px`;
+    scrollElement.classList.add(STICKY_STICKED_CLASS);
+    scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
+
+}
+
+function setUnStickyClasses(scrollElement) {
+
+    scrollElement.style.top = '';
+    scrollElement.classList.add(STICKY_UNSTICKED_CLASS);
+    scrollElement.classList.remove(STICKY_STICKED_CLASS);
+
+}
+
+function resetStickyClasses(scrollElement) {
+
+    scrollElement.style.top = '';
+    scrollElement.classList.remove(STICKY_STICKED_CLASS);
+    scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
 
 }
 
 
 /**
- * Returns the offset top value of the sticky component
- * @param {HTMLElement} el sticky component lane element
- * @param {number} threshold amount of offset before starting the animation
+ * Calculates the position of an element
+ * @param {HTMLElement} element HTML element that is used to calculate the position
  */
-function getStartScroll( el, threshold ) {
+function setScrollElementSize(element) {
 
-    return getOffsetTopRelativeToDocumentTop( el ) - threshold;
+    element.position = element.getBoundingClientRect();
 
-}
-
-
-/**
- * Calculates what scroll value is the end of the sticky lane
- * @param {HTMLElement} el sticky component lane element
- * @param {HTMLElement} scrollElement Element that is updated
- */
-function getEndScroll( el, scrollElement ) {
-    const stickyHostElementHeight   = el.offsetHeight;
-    const stickyScrollElementHeight = scrollElement.offsetHeight;
-
-    return stickyHostElementHeight - stickyScrollElementHeight;
-}
-
-
-/**
- * Calculates the offset top of an element relative to the top of the page
- * @param {HTMLElement} element HTML element that is used to calculate the offset
- */
-function getOffsetTopRelativeToDocumentTop( element ) {
-    const { top         : elementOffsetTopRelativeToWindow } = element.getBoundingClientRect();
-    const { pageYOffset : windowScrollPosition             } = window;
-
-    return elementOffsetTopRelativeToWindow + windowScrollPosition;
 }
 
 export default Sticky;
