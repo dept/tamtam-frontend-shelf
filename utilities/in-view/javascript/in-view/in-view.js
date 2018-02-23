@@ -384,6 +384,8 @@ function getInViewDirections(options) {
         right: right.scrolledPastViewport && right.elementInView,
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
         left: left.scrolledPastViewport && left.elementInView,
+        height: options.position.height,
+        width: options.position.width,
         windowHeight: options.windowHeight
     };
 }
