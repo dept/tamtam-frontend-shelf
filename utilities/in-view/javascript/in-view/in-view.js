@@ -20,11 +20,13 @@ class InView {
     }
 
     _initAfterPageLoad() {
+
         document.addEventListener('readystatechange', () => {
             if (document.readyState === 'complete') {
                 Events.$trigger('in-view::update');
             }
         });
+
     }
 
     /**
