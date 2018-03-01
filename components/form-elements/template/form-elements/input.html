@@ -32,6 +32,7 @@
                 name="{{ data.name }}"
                 value="{{ data.value }}"
                 id="{{ data.id }}"
+                {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>

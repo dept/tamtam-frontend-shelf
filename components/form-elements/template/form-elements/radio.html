@@ -32,7 +32,8 @@
                 name="{{ data.name }}"
                 value="{{ option.value }}"
                 id="{{ option.value }}"
-                {%- if option.checked %} checked{% endif -%}
+                {%- if option.disabled %} disabled="disabled"{% endif -%}
+                {%- if option.checked %} checked="checked"{% endif -%}
                 {%- if option.hook %} js-hook-{{ option.hook }}{% endif -%}
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="radio__label" for="{{ option.value }}" role="button">

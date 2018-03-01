@@ -32,6 +32,7 @@
             <select class="select__input"
                 name="{{ data.name }}"
                 id="{{ data.id }}"
+                {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
 

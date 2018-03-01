@@ -1,5 +1,5 @@
 import cookies from 'js-cookie';
-import Events from 'components/events';
+import Events from 'utilities/events';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
 const COOKIE_FORM_HOOK = '[js-hook-cookies-form]';
@@ -25,11 +25,26 @@ class Cookies {
             cookiePrefix: 'default',
             version: 1,
             cookies: [
-                "functional",
-                "analytics",
-                "social",
-                "advertising",
-                "other"
+                {
+                    'name': 'functional',
+                    'default': 1 // Always enabled by default (law)
+                },
+                {
+                    'name': 'analytics',
+                    'default': 1 // Always enabled by default (law)
+                },
+                {
+                    'name': 'social',
+                    'default': 0
+                },
+                {
+                    'name': 'advertising',
+                    'default': 0
+                },
+                {
+                    'name': 'other',
+                    'default': 0
+                }
             ]
         }
 
@@ -38,10 +53,11 @@ class Cookies {
     init(config) {
 
         this._setConfig(config);
+        this._setDefaultCookies();
 
         this._bindEvents();
 
-        if (this.form.element){
+        if (this.form.element) {
             this._prefillFormCookies();
         }
 
@@ -49,7 +65,7 @@ class Cookies {
             this.setCookie(COOKIEBAR_COOKIE_NAME, '0');
         }
 
-        if (this.getCookie('cookie-version') !== this.config.version && this.getCookie(COOKIEBAR_COOKIE_NAME) === '0' && !this.form.element) {
+        if (this.getCookie(COOKIEBAR_COOKIE_NAME) === '0' && !this.form.element) {
             this._show();
         }
 
@@ -76,24 +92,33 @@ class Cookies {
 
     }
 
-    _acceptAllCookies() {
+    _setDefaultCookies() {
 
-        this.config.cookies.map(cookieName => {
-            this.setCookie(`cookie-${cookieName}`, '1');
+        this.config.cookies.map(cookie => {
+            if (!this.getCookie(`cookie-${cookie.name}`)) {
+                this.setCookie(`cookie-${cookie.name}`, cookie.default);
+            }
         });
 
-        this.setCookie(`cookie-version`, this.config.version);
+    }
+
+    _acceptAllCookies() {
+
+        this.config.cookies.map(cookie => {
+            this.setCookie(`cookie-${cookie.name}`, '1');
+        });
+
         this.setCookie(COOKIEBAR_COOKIE_NAME, '1');
 
         location.reload();
 
     }
 
-    _prefillFormCookies(){
+    _prefillFormCookies() {
 
         Array.from(this.form.options).map(option => {
 
-            if (this.getCookie(`cookie-${option.value}`) === '1'){
+            if (this.getCookie(`cookie-${option.value}`) === '1') {
                 option.setAttribute('checked', 'checked');
             }
 
@@ -107,12 +132,13 @@ class Cookies {
 
         Array.from(this.form.options).map(option => {
             const value = option.value;
-            if (this.config.cookies.indexOf(value) !== -1) {
-                this.setCookie(`cookie-${value}`, option.checked ? '1' : '0');
-            }
+            this.config.cookies.map(cookie => {
+                if (cookie.default !== 1 && cookie.name.indexOf(value) !== -1) {
+                    this.setCookie(`cookie-${value}`, option.checked ? '1' : '0');
+                }
+            })
         });
 
-        this.setCookie('cookie-version', this.config.version);
         this.setCookie(COOKIEBAR_COOKIE_NAME, '1');
 
         window.location = this.form.url;
@@ -152,7 +178,7 @@ class Cookies {
      */
     getCookie(name) {
 
-        return this.getCookie('cookie-version') !== this.config.version ? '0' : cookies.get(`${this.config.cookiePrefix}-${name}`);
+        return cookies.get(`${this.config.cookiePrefix}-${name}`);
 
     }
 

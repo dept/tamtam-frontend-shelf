@@ -19,7 +19,7 @@ class YoutubeVideo {
 
         this.options = options;
 
-        if (Cookies.getCookie('cookie-analytics') !== '1') {
+        if (Cookies.getCookie('cookie-advertising') !== '1') {
             Events.$trigger('video::cookie-invalid', { data: this.options.element });
             return;
         }
