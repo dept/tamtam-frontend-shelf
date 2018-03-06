@@ -133,6 +133,8 @@ class RafThrottle {
 
                 });
 
+                this.runningList[eventNamespace] = true;
+
             }, bind.delay);
 
         } else {
