@@ -13,7 +13,7 @@
 
     <form class="c-form{%- if data.class %} {{ data.class }}{% endif -%}"
         action="{{ data.action or '#' }}"
-        {%- if data.method %} method="{{ data.class }}"{% endif -%}
+        {%- if data.method %} method="{{ data.method }}"{% endif -%}
         {%- if data.attr %} {{ data.attr|safe }}{% endif -%}
         {%- if data.hook %} js-hook-{{ data.hook|safe }}{% endif -%}>
 
