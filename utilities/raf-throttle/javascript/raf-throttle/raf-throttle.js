@@ -5,7 +5,7 @@ class RafThrottle {
     constructor() {
 
         this.timeoutList = {};
-        this.namespaces = {};
+        this.namespaces = [];
 
     }
 
