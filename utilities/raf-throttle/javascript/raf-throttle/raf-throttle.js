@@ -182,9 +182,10 @@ class RafThrottle {
     _removeThrottledEvent(options) {
 
         const { element, event, namespace } = options;
-
-        element.removeEventListener(event, this.namespaces[namespace]);
-        delete this.namespaces[namespace];
+        if (this.namespaces[namespace]) {
+            element.removeEventListener(event, this.namespaces[namespace]);
+            delete this.namespaces[namespace];
+        }
 
     }
 
