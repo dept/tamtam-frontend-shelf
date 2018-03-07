@@ -129,11 +129,10 @@ class RafThrottle {
 
                     bind.fn(event);
                     bind.element = false;
+
                     this.runningList[eventNamespace] = false;
 
                 });
-
-                this.runningList[eventNamespace] = true;
 
             }, bind.delay);
 
