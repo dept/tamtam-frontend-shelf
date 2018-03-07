@@ -45,7 +45,7 @@ class LazyImage {
 
         // Retrigger objectfit polyfill after image is loaded.
         this.instance.on('src:after', element => {
-            Events.$trigger('image::object-fit', element);
+            Events.$trigger('image::object-fit', { data: element });
         });
 
         this._triggerUpdate();
