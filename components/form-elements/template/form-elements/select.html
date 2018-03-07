@@ -37,7 +37,7 @@
 
                 {% for option in data.options %}
                     <option
-                        {% if option.default %}hidden selected{% endif -%}
+                        {% if option.default %}hidden selected {% endif -%}
                         value="{{ option.value }}">
                         {{ option.label }}
                     </option>
