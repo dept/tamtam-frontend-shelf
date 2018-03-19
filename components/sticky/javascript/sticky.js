@@ -46,7 +46,7 @@ class Sticky {
 
         this._setScrollElementSize();
 
-        Events.$on(`sticky::update(${id})`, () => setStickyValues(element, scrollElement, threshold));
+        Events.$on(`sticky::update(${id})`, () => setStickyValues(element, scrollElement, threshold, this.windowHeight));
 
     }
 
@@ -69,9 +69,9 @@ class Sticky {
  * @param {HTMLElement} scrollElement Element that is updated
  * @param {number} threshold amount of offset before starting the animation
  */
-function setStickyValues(element, scrollElement, threshold) {
+function setStickyValues(element, scrollElement, threshold, windowHeight) {
 
-    if (!element.inviewProperties || this.windowHeight < element.position.height || element.position.height <= scrollElement.position.height) { return; }
+    if (!element.inviewProperties || windowHeight <= scrollElement.height || element.position.height <= scrollElement.position.height) { return; }
 
     if (element.inviewProperties.position.top + threshold >= 0) {
 
