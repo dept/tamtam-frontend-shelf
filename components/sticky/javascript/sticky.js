@@ -13,15 +13,15 @@ class Sticky {
 
     constructor(element) {
 
-        const el = element;
-        const id = el.getAttribute('id');
-        const scrollElement = el.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
+        this.element = element;
+        this.id = element.getAttribute('id');
+        this.scrollElement = element.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
 
         const stickyComponent = {
-            el,
-            id,
-            scrollElement,
-            threshold: parseInt(el.dataset.stickyThreshold) || 0
+            element: this.element,
+            id: this.id,
+            scrollElement: this.scrollElement,
+            threshold: parseInt(element.dataset.stickyThreshold, 10) || 0
         };
 
         this._bindStickyComponentEvents(stickyComponent);
@@ -30,23 +30,34 @@ class Sticky {
 
     /**
      * Bind all sticky component specific events
-     * @param {HTMLElement} el Sticky component HTML element lane
+     * @param {HTMLElement} element Sticky component HTML element lane
      * @param {string} id Sticky component id
      * @param {HTMLElement} scrollElement Child element that scrolls through the sticky component lane
      * @param {number} threshold amount of offset before starting the animation
      */
-    _bindStickyComponentEvents({ el, id, scrollElement, threshold }) {
+    _bindStickyComponentEvents({ element, id, scrollElement, threshold }) {
 
         RafThrottle.set([{
             element: window,
             event: 'resize',
             namespace: `StickyComponentResize-${id}`,
-            fn: () => setScrollElementSize(scrollElement)
+            fn: () => this._setScrollElementSize()
         }]);
 
-        setScrollElementSize(scrollElement);
+        this._setScrollElementSize();
 
-        Events.$on(`sticky::update(${id})`, () => setStickyValues(el, scrollElement, threshold));
+        Events.$on(`sticky::update(${id})`, () => setStickyValues(element, scrollElement, threshold));
+
+    }
+
+    /**
+     * Calculates the position of an element
+     * @param {HTMLElement} element HTML element that is used to calculate the position
+     */
+    _setScrollElementSize() {
+
+        this.scrollElement.position = this.scrollElement.getBoundingClientRect();
+        this.element.position = this.element.getBoundingClientRect();
 
     }
 
@@ -58,13 +69,13 @@ class Sticky {
  * @param {HTMLElement} scrollElement Element that is updated
  * @param {number} threshold amount of offset before starting the animation
  */
-function setStickyValues(el, scrollElement, threshold) {
+function setStickyValues(element, scrollElement, threshold) {
 
-    if (!el.inviewProperties) { return; }
+    if (!element.inviewProperties || element.position.height <= scrollElement.position.height) { return; }
 
-    if (el.inviewProperties.position.top + threshold >= 0) {
+    if (element.inviewProperties.position.top + threshold >= 0) {
 
-        if (el.inviewProperties.height - el.inviewProperties.position.top - threshold >= scrollElement.position.height) {
+        if (element.inviewProperties.height - element.inviewProperties.position.top - threshold >= scrollElement.position.height) {
             setStickyClasses(scrollElement, threshold);
         } else {
             setUnStickyClasses(scrollElement);
@@ -99,17 +110,6 @@ function resetStickyClasses(scrollElement) {
     scrollElement.style.top = '';
     scrollElement.classList.remove(STICKY_STICKED_CLASS);
     scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
-
-}
-
-
-/**
- * Calculates the position of an element
- * @param {HTMLElement} element HTML element that is used to calculate the position
- */
-function setScrollElementSize(element) {
-
-    element.position = element.getBoundingClientRect();
 
 }
 
