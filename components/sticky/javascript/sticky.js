@@ -16,37 +16,27 @@ class Sticky {
         this.element = element;
         this.id = element.getAttribute('id');
         this.scrollElement = element.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
+        this.thresold = parseInt(element.dataset.stickyThreshold, 10) || 0;
 
-        const stickyComponent = {
-            element: this.element,
-            id: this.id,
-            scrollElement: this.scrollElement,
-            threshold: parseInt(element.dataset.stickyThreshold, 10) || 0
-        };
-
-        this._bindStickyComponentEvents(stickyComponent);
+        this._bindStickyComponentEvents();
 
     }
 
     /**
      * Bind all sticky component specific events
-     * @param {HTMLElement} element Sticky component HTML element lane
-     * @param {string} id Sticky component id
-     * @param {HTMLElement} scrollElement Child element that scrolls through the sticky component lane
-     * @param {number} threshold amount of offset before starting the animation
      */
-    _bindStickyComponentEvents({ element, id, scrollElement, threshold }) {
+    _bindStickyComponentEvents() {
 
         RafThrottle.set([{
             element: window,
             event: 'resize',
-            namespace: `StickyComponentResize-${id}`,
+            namespace: `StickyComponentResize-${this.id}`,
             fn: () => this._setScrollElementSize()
         }]);
 
         this._setScrollElementSize();
 
-        Events.$on(`sticky::update(${id})`, () => setStickyValues(element, scrollElement, threshold, this.windowHeight));
+        Events.$on(`sticky::update(${this.id})`, () => setStickyValues(this.element, this.scrollElement, this.threshold, this.windowHeight));
 
     }
 
@@ -58,6 +48,7 @@ class Sticky {
 
         this.scrollElement.position = this.scrollElement.getBoundingClientRect();
         this.element.position = this.element.getBoundingClientRect();
+        this.windowHeight = window.innerHeight;
 
     }
 
@@ -112,5 +103,6 @@ function resetStickyClasses(scrollElement) {
     scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
 
 }
+
 
 export default Sticky;
