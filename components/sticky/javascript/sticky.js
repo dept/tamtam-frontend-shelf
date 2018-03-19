@@ -16,7 +16,7 @@ class Sticky {
         this.element = element;
         this.id = element.getAttribute('id');
         this.scrollElement = element.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
-        this.thresold = parseInt(element.dataset.stickyThreshold, 10) || 0;
+        this.threshold = parseInt(element.dataset.stickyThreshold, 10) || 0;
 
         this._bindStickyComponentEvents();
 
