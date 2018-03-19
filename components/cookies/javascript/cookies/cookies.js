@@ -27,26 +27,24 @@ class Cookies {
             version: '1',
             cookies: [
                 {
-                    'name': 'functional',
-                    // Always enabled by default (law)
-                    'default': 1
+                    name: 'functional',
+                    default: 1
                 },
                 {
-                    'name': 'analytics',
-                    // Always enabled by default (law)
-                    'default': 1
+                    name: 'analytics',
+                    default: 1
                 },
                 {
-                    'name': 'social',
-                    'default': 1
+                    name: 'social',
+                    default: 0
                 },
                 {
-                    'name': 'advertising',
-                    'default': 1
+                    name: 'advertising',
+                    default: 0
                 },
                 {
-                    'name': 'other',
-                    'default': 1
+                    name: 'other',
+                    default: 0
                 }
             ]
         };
@@ -56,6 +54,11 @@ class Cookies {
     init(config) {
 
         this._setConfig(config);
+
+        if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version) {
+            this._removeInvalidatedCookies();
+        }
+
         this._setDefaultCookies();
 
         this._bindEvents();
@@ -98,7 +101,7 @@ class Cookies {
     _setDefaultCookies() {
 
         this.config.cookies.forEach(cookie => {
-            if (!this.getCookie(cookie.name)) {
+            if (!this.getCookie(cookie.name) && cookie.default === 1) {
                 this.setCookie(cookie.name, cookie.default);
             }
         });
@@ -120,12 +123,12 @@ class Cookies {
 
     }
 
-    _addGlobalCookies(cookies) {
+    _addGlobalCookies(_cookies) {
 
-        cookies['date'] = Date(Date.now());
-        cookies['version'] = this.config.version;
+        _cookies['date'] = Date(Date.now());
+        _cookies['version'] = this.config.version;
 
-        this.setCookie(COOKIEBAR_COOKIE_NAME, cookies);
+        this.setCookie(COOKIEBAR_COOKIE_NAME, _cookies);
         this.setCookie(COOKIEBAR_COOKIE_VERSION, this.config.version);
 
     }
@@ -136,9 +139,24 @@ class Cookies {
 
             if (this.getCookie(option.value) === '1') {
                 option.setAttribute('checked', 'checked');
+            } else if (this.getCookie(option.value) === '0') {
+                option.removeAttribute('checked');
+            } else {
+                option.setAttribute('checked', 'checked');
             }
 
         });
+
+    }
+
+    _removeInvalidatedCookies() {
+
+        this.config.cookies.forEach(cookie => {
+            this.removeCookie(cookie.name);
+        });
+
+        this.removeCookie(COOKIEBAR_COOKIE_NAME);
+        this.removeCookie(COOKIEBAR_COOKIE_VERSION);
 
     }
 
@@ -191,15 +209,33 @@ class Cookies {
     }
 
     /**
+     * Remove cookie with given value
+     * @param {String} name
+     */
+    removeCookie(name) {
+        cookies.remove(this.prefixCookieName(name));
+    }
+
+    /**
      * Gets cookie with given value
      * @param {String} name
+     * @returns {Any} value
      */
     getCookie(name) {
         return cookies.get(this.prefixCookieName(name));
     }
 
+
     prefixCookieName(name) {
         return `${this.config.cookiePrefix}-cookie-${name}`;
+    }
+
+    /**
+     * Checks if cookie is valid and version is correct
+     * @returns {Boolean}
+     */
+    cookieIsValid(name) {
+        return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === '1';
     }
 }
 
