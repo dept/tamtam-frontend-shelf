@@ -71,7 +71,7 @@ class Sticky {
  */
 function setStickyValues(element, scrollElement, threshold) {
 
-    if (!element.inviewProperties || element.position.height <= scrollElement.position.height) { return; }
+    if (!element.inviewProperties || this.windowHeight < element.position.height || element.position.height <= scrollElement.position.height) { return; }
 
     if (element.inviewProperties.position.top + threshold >= 0) {
 
