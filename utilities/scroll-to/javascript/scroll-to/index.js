@@ -2,6 +2,6 @@
  * @shelf-version: 1.0.0
  */
 
-import ScrollToTop from './scroll-to-top';
+import ScrollTo from './scroll-to';
 
-export default ScrollToTop;
+export default ScrollTo;
