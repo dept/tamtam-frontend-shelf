@@ -59,8 +59,8 @@ You also have the option to pass a (string only!) parameter to the event as data
 ```
 
 ## Dependencies
-This package doest not have any dependencies.
+This package doesn't not have any dependencies.
 
 ## Developers
-* Jeroen Reumkens
-* Adrian Klingen (co author)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
