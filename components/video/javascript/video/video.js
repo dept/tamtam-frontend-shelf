@@ -43,8 +43,8 @@ class Video {
 
         Events.$on('video::inview', (event, element) => {
 
-            if (!element._inViewport.bottom && !element._inViewport.top && !element.dataset.videoLoop) {
-                Events.$trigger(`video::pause(${element.id})`);
+            if (!element.inviewProperties.bottom && !element.inviewProperties.top && !element.dataset.videoLoop) {
+                Events.$trigger(`video[${element.id}]::pause`);
             }
 
             if (element._initialised) {
@@ -110,7 +110,7 @@ class Video {
         this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
-            this._initVideo(video)
+            this._initVideo(video);
         });
 
     }
@@ -120,6 +120,10 @@ class Video {
      * @param {Array} videos
      */
     _initVideo(video) {
+
+        if (video._initialised) {
+            return;
+        }
 
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = constructVideoOptions(video);
@@ -154,21 +158,21 @@ function constructVideoOptions(element) {
     const {
         videoPlatform,
         videoId,
+        videoSources,
+        videoClosedcaptions,
         videoTime,
         videoInfo,
         videoControls,
         videoMuted,
-        videoAutopause,
         videoAutoplay,
         videoLoop,
         videoPlaysinline,
-        videoSources
     } = element.dataset;
 
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
-    if (!videoPlatform || !videoId || element._initialised) { return false; }
+    if (!videoPlatform || !videoId || element._initialised) { return {}; }
 
     element._initialised = true;
 
@@ -178,15 +182,16 @@ function constructVideoOptions(element) {
         instanceId,
         videoPlatform,
         videoId,
-        videoTime,
         videoInfo,
-        videoControls,
-        videoMuted,
-        videoAutopause,
-        videoAutoplay,
-        videoPlaysinline,
-        videoLoop,
-        videoSources
+        videoSources,
+        videoClosedcaptions,
+        // Boolean options:
+        videoTime: parseInt(videoTime, 10),
+        videoControls: parseInt(videoControls, 10),
+        videoMuted: parseInt(videoMuted, 10),
+        videoAutoplay: parseInt(videoAutoplay, 10),
+        videoPlaysinline: parseInt(videoPlaysinline, 10),
+        videoLoop: parseInt(videoLoop, 10)
     };
 
 }
@@ -197,51 +202,51 @@ function constructVideoOptions(element) {
  */
 function bindPlayerEvents(options) {
 
-    Events.$on(`video::play(${options.instanceId})`, () => {
+    Events.$on(`video[${options.instanceId}]::play`, () => {
         options.element.playerInstance.play();
     });
 
-    Events.$on(`video::pause(${options.instanceId})`, () => {
+    Events.$on(`video[${options.instanceId}]::pause`, () => {
         options.element.playerInstance.pause();
     });
 
-    Events.$on(`video::replay(${options.instanceId})`, () => {
+    Events.$on(`video[${options.instanceId}]::replay`, () => {
         options.element.playerInstance.replay();
     });
 
-    Events.$on(`video::mute(${options.instanceId})`, () => {
+    Events.$on(`video[${options.instanceId}]::mute`, () => {
         options.element.playerInstance.mute();
     });
 
-    Events.$on(`video::unmute(${options.instanceId})`, () => {
+    Events.$on(`video[${options.instanceId}]::unmute`, () => {
         options.element.playerInstance.unMute();
     });
 
-    Events.$on(`video::volume(${options.instanceId})`, (event, data) => {
+    Events.$on(`video[${options.instanceId}]::volume`, (event, data) => {
         options.element.playerInstance.setVolume(data.data);
     });
 
     const playButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (playButton) {
         options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
-            Events.$trigger(`video::play(${options.instanceId})`);
+            Events.$trigger(`video[${options.instanceId}]::play`);
         });
     }
 
     const pauseButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (pauseButton) {
         options.element.querySelector(VIDEO_PAUSE_HOOK).addEventListener('click', () => {
-            Events.$trigger(`video::pause(${options.instanceId})`);
+            Events.$trigger(`video[${options.instanceId}]::pause`);
         });
     }
 
     const replayButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (replayButton) {
         options.element.querySelector(VIDEO_REPLAY_HOOK).addEventListener('click', () => {
-            Events.$trigger(`video::replay(${options.instanceId})`);
+            Events.$trigger(`video[${options.instanceId}]::replay`);
         });
     }
 
 }
 
-export default Video;
+export default new Video();

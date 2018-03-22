@@ -19,7 +19,7 @@
     }
 #}
 
-{% from 'components/media.html' import media %}
+{% from 'components/teaser.html' import teaser %}
 
 {% macro searchResults(data) %}
 
@@ -28,12 +28,12 @@
             {% for result in data.results %}
 
                 <li class="search-results__item">
-                    <a href="{{ result.url }}" class="search-results__link">
 
-                    {% call media({
-                        classes: 'search-results__media',
+                    {% call teaser({
+                        classes: 'search-results__teaser',
                         title: result.title,
-                        image: result.image
+                        image: result.image,
+                        url: result.url
                     }) %}
                         <p>{{ result.description }}</p>
 
@@ -41,7 +41,7 @@
                             {{ data.viewResultsLabel }}
                         </span>
                     {% endcall %}
-                    </a>
+
                 </li>
 
             {% endfor %}

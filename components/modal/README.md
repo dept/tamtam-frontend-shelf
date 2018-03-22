@@ -16,6 +16,7 @@
 * Bind custom events to DOM elements that should have modalbox behavior. (ie. Open and Close)
 
 ## Install
+Import module
 ```javascript
 import './src/modules/util/focus-trap';
 import './src/modules/modal';
@@ -76,7 +77,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers

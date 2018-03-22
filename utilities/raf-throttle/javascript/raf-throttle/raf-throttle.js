@@ -4,8 +4,9 @@ class RafThrottle {
 
     constructor() {
 
-        this.timeoutList = {};
         this.namespaces = {};
+        this.timeoutList = {};
+        this.runningList = {};
 
     }
 
@@ -63,8 +64,12 @@ class RafThrottle {
                 event: bind.event,
                 namespace: generateNamespace(bind.event, bind.namespace),
                 callback: event => this._trigger(bind, event),
-                eventOptions: { passive: true }
+                eventOptions: { passive: true },
+                delay: bind.delay
             };
+
+            this.timeoutList[eventOptions.namespace] = null;
+            this.runningList[eventOptions.namespace] = false;
 
             this._addThrottledEvent(eventOptions);
 
@@ -91,6 +96,7 @@ class RafThrottle {
             };
 
             this._removeThrottledEvent(eventOptions);
+
         });
 
     }
@@ -109,35 +115,39 @@ class RafThrottle {
 
         const eventNamespace = generateNamespace(bind.event, bind.namespace);
 
+        if (this.runningList[eventNamespace]) { return; }
+
         if (bind.delay && bind.delay !== 0) {
 
-            if (!this.timeoutList[eventNamespace]) {
-                this.timeoutList[eventNamespace] = {};
+            if (this.timeoutList[eventNamespace]) {
+                clearTimeout(this.timeoutList[eventNamespace]);
             }
 
-            if (this.timeoutList[eventNamespace].timeoutTimestamp + bind.delay > Date.now()) {
-
-                clearTimeout(this.timeoutList[eventNamespace].timeout);
-
-            }
-
-            this.timeoutList[eventNamespace].timeout = setTimeout(() => {
+            this.timeoutList[eventNamespace] = setTimeout(() => {
 
                 raf(() => {
 
-                    this.timeoutList[eventNamespace].timeoutTimestamp = Date.now();
-
                     bind.fn(event);
+                    bind.element = false;
+
+                    this.runningList[eventNamespace] = false;
 
                 });
 
-            }, bind.delay || 0);
+            }, bind.delay);
 
         } else {
 
-            raf(() => bind.fn(event));
+            raf(() => {
+
+                bind.fn(event);
+                this.runningList[eventNamespace] = false;
+
+            });
 
         }
+
+        this.runningList[eventNamespace] = true;
 
     }
 
@@ -172,9 +182,10 @@ class RafThrottle {
     _removeThrottledEvent(options) {
 
         const { element, event, namespace } = options;
-
-        element.removeEventListener(event, this.namespaces[namespace]);
-        delete this.namespaces[namespace];
+        if (this.namespaces[namespace]) {
+            element.removeEventListener(event, this.namespaces[namespace]);
+            delete this.namespaces[namespace];
+        }
 
     }
 

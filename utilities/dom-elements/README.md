@@ -13,11 +13,9 @@
 * Caches the most common DOM elements as jQUery objects such as; document, window, body, etc. This way you only need to bind them once.
 
 ## Install
-
+Install npm package dependency
 ```node
-
 npm install jquery@3.2.1 --save
-
 ```
 
 ## How to use

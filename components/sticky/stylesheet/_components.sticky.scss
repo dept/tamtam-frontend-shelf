@@ -1,0 +1,22 @@
+// @shelf-version 1.0.0
+$sticky-transition-time: 150ms !default;
+$sticky-transition-ease: $ease-in-out-quad !default;
+
+.c-sticky {
+    position: relative;
+    display: block;
+    height: 100%;
+}
+
+.sticky--is-sticked {
+    @include screen-tablet-portrait-and-bigger {
+        position: fixed !important;
+    }
+}
+
+.sticky--is-unsticked {
+    @include screen-tablet-portrait-and-bigger {
+        position: absolute;
+        bottom: 0;
+    }
+}

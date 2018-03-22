@@ -13,6 +13,7 @@
 * localStorage / sessionStorage supported check.
 
 ## Install
+Import module
 ```javascript
 // Import all exports
 import * as Storage from './src/modules/util/storage';

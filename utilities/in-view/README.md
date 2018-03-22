@@ -13,7 +13,7 @@
 * Trigger when element enters viewport
 
 ## Install
-
+Import module
 ```javascript
 import './src/modules/util/in-view';
 ```
@@ -36,9 +36,11 @@ You can add the `js-hook-inview` attribute to an element. Inview will automatica
 ### Add options to element
 
 You can add the following options:
+
 * `offset` must be a number. Will allow you to trigger an element later or earlier.
 * `threshold` must be a value between 0 and 1. Will allow you to specify how far the element has to be in view before it will trigger.
-* `triggers` must be a string. When element is in view it will fire the events, can be multiple events seperated by comma.
+* `trigger` must be a string. When element is in view it will fire the events, can be multiple events seperated by comma.
+* `persistent` is a boolean to toggle on or off continuous functionality or a single check (default false)
 
 ```html
 
@@ -48,8 +50,8 @@ You can add the following options:
     data-inview-offset-left="100"
     data-inview-offset-right="100"
     data-inview-threshold="0.5"
-    data-inview-persistent="true"
-    data-inview-trigger="event::example, event2::example">
+    data-inview-trigger="event::example, event2::example"
+    data-inview-persistent="true">
 
     Track me
 
@@ -70,8 +72,8 @@ Events.$trigger('in-view::update');
 
 ## Dependencies
 * [RAF](https://www.npmjs.com/package/raf)
-* [Events library](/utilities/events/)
-* [Raf throttle library](/utilities/raf-throttle/)
+* [Events utility](/utilities/events/)
+* [Raf throttle utility](/utilities/raf-throttle/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)

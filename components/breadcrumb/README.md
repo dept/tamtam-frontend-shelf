@@ -14,6 +14,8 @@
 * Render breadcrumb
 * Meets structured data standard
 
+Overly long strings get ellipsed until the mobile-plus-and-smaller breakpoint is touched. From there on the breadcrumb will only show the last click-able link.
+
 ## Install
 ```htmlmixed
 {% from 'components/breadcrumb.html' import breadcrumb %}
@@ -47,3 +49,4 @@ This package doesn't have any dependencies.
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Matt van Voorst](mailto:mattv@tamtam.nl)

@@ -1,4 +1,4 @@
-// @shelf-version 1.0.1
+// @shelf-version 1.0.2
 $video-background-color: $color-off-white;
 $video-loader-size: 50px;
 $video-loader-thickness: 4px;
@@ -15,6 +15,7 @@ $video-button-transition-ease: $ease-in-quad;
     margin-bottom: 20px;
     background-color: $video-background-color;
 
+    .video__image,
     .video__player,
     iframe,
     video {
@@ -45,11 +46,14 @@ $video-button-transition-ease: $ease-in-quad;
     left: 50%;
     width: $video-loader-size;
     height: $video-loader-size;
+    background-color: $video-background-color;
     box-shadow: inset 0 0 0 $video-loader-thickness $video-loader-color;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     backface-visibility: hidden;
-    z-index: 0;
+    z-index: 3;
+    transition: $video-button-transition-time $ease-in-quad;
+    transition-property: opacity;
 
     &::before,
     &::after {
@@ -80,6 +84,9 @@ $video-button-transition-ease: $ease-in-quad;
     }
 
     .video--is-initialised & {
+        opacity: 0;
+        pointer-events: none;
+
         &::before,
         &::after {
             animation: none;

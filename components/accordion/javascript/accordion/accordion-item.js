@@ -99,7 +99,7 @@ class AccordionItem {
      */
     _heightTransitionEnd(event) {
 
-        if (event.propertyName == 'height') {
+        if (event.propertyName === 'height') {
 
             if (this.isOpen) {
                 this.content.style.height = 'auto';
@@ -115,7 +115,7 @@ class AccordionItem {
                 }
             });
 
-            Events.$trigger(`accordion::${(this.isOpen) ? `opened(${this.id})` : `closed(${this.id})`}`);
+            Events.$trigger(`accordion[${this.id}]::${(this.isOpen) ? `opened` : `closed`}`);
 
         }
 

@@ -1,4 +1,3 @@
-import numberIsNan from 'number-is-nan';
 
 function parseSrcSet(str) {
 
@@ -9,7 +8,8 @@ function parseSrcSet(str) {
 
         el.trim().split(/\s+/).forEach(function (_el, i) {
             if (i === 0) {
-                return ret.url = _el;
+                ret.url = _el;
+                return ret.url;
             }
 
             const value = _el.substring(0, _el.length - 1);
@@ -24,8 +24,10 @@ function parseSrcSet(str) {
             } else if (postfix === 'x' && !numberIsNan(floatVal)) {
                 ret.density = floatVal;
             } else {
-                throw new Error('Invalid srcset descriptor: ' + _el + '.');
+                throw new Error(`Invalid srcset descriptor: ${_el}.`);
             }
+
+            return ret;
         });
 
         return ret;
@@ -36,6 +38,15 @@ function deepUnique(arr) {
     return arr.sort().filter(function (el, i) {
         return JSON.stringify(el) !== JSON.stringify(arr[i - 1]);
     });
+}
+
+function numberIsNan(x) {
+
+    if ( Number.isNaN ) {
+        return Number.isNaN(x);
+    }
+
+    return x !== x;
 }
 
 export default parseSrcSet;

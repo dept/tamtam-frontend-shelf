@@ -5,7 +5,8 @@
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
 4. [Dependencies](#markdown-header-dependencies)
-5. [Developers](#markdown-header-developers)
+5. [Changelog](#markdown-header-changelog)
+6. [Developers](#markdown-header-developers)
 
 ![Video Demo](./_demo/video.gif)
 
@@ -14,12 +15,14 @@
 * Fires generic video ready, play & pause events.
 
 ## Install
+Install npm package dependency
 ```node
 npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
 npm i layzr.js@2.2.2 --save
 npm i number-is-nan@1.0.1 --save
 ```
+Import module
 ```javascript
 import './src/modules/image';
 import './src/modules/in-view';
@@ -36,9 +39,8 @@ import './src/modules/image';
 import './src/modules/in-view';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native,
     'youtube': Youtube,
     'vimeo': Vimeo
@@ -75,9 +77,8 @@ This will initialise all the players on the page. If autoplay parameter is set, 
 import './src/modules/image';
 import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native,
     'youtube': Youtube,
     'vimeo': Vimeo
@@ -118,9 +119,8 @@ import './src/modules/image';
 import './src/modules/in-view';
 import { Native } from './src/modules/video/platforms';
 import Video from './src/modules/video';
-const video = new Video();
 
-video.registerPlatforms({
+Video.registerPlatforms({
     'native': Native
 });
 ```
@@ -139,26 +139,58 @@ video.registerPlatforms({
     start_time: '10',
     classes: 'additional-class',
     controls: 1,
+    closedcaptions: [
+        {
+            url: 'url to vtt file',
+            label: 'Nederlands',
+            lang: 'nl'
+        }
+    ],
     sources: [
         {
             size : 1920,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119'
+            source: [
+                {
+                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
+                    type: 'video/mp4'
+                }
+            ]
         },
         {
             size : 1280,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174'
+            source: [
+                {
+                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    type: 'video/mp4'
+                }
+            ]
         },
         {
             size : 1024,
-            url : 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174'
+            source: [
+                {
+                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    type: 'video/mp4'
+                }
+            ]
         },
         {
             size : 960,
-            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165'
+            source: [
+                {
+                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
+                    type: 'video/mp4'
+                }
+            ]
         },
         {
             size : 640,
-            url : 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164'
+            source: [
+                {
+                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
+                    type: 'video/mp4'
+                }
+            ]
         }
     ]
 }) }}
@@ -172,11 +204,18 @@ video.registerPlatforms({
 * [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
 * [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 * [Image component](/components/image/)
-* [Events library](/utilities/events/)
-* [In-view library](/utilities/in-view/)
+* [Events utility](/utilities/events/)
+* [In-view utility](/utilities/in-view/)
 * [layzr](https://github.com/callmecavs/layzr.js)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
+
+## Changelog
+
+### 1.0.2
+Changed export in Javascript to singleton, to prevent multiple instances.
+### 1.0.0
+Initial version

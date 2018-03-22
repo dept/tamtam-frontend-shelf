@@ -15,6 +15,7 @@
 * Triggers `opened` and `closed` event
 
 ## Install
+Import module
 ```javascript
 import moduleInit from './src/modules/util/module-init';
 import './src/modules/util/events';
@@ -69,17 +70,17 @@ Each accordion item will trigger a generic and specific `accordion::opened` and 
 ```javascript
 // accordion has been opened
 Events.$on('accordion::opened', doSomething);
-Events.$on('accordion::opened({id})', doSomethingSpecific);
+Events.$on('accordion[{id}]::opened', doSomethingSpecific);
 
 // accordion has been closed
 Events.$on('accordion::closed', doSomething);
-Events.$on('accordion::closed({id})', doSomethingSpecific);
+Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
 * [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)

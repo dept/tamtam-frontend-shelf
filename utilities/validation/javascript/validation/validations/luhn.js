@@ -1,4 +1,4 @@
-import luhn from "luhn";
+import luhn from 'luhn';
 
 /**
  * Check if string complies with the Luhn algorithm (used to validate credit card numbers or OV-chipkaart numbers)
@@ -11,4 +11,4 @@ function isValidLuhnNumber(number) {
 
 export {
     isValidLuhnNumber
-}
+};

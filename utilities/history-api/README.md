@@ -1,5 +1,5 @@
 
-# DOM Elements
+# History API
 
 ## Table of contents
 1. [What does it do](#markdown-header-what-does-it-do)
@@ -14,6 +14,7 @@
 * Triggers a callback with the new state object.
 
 ## Install
+Import module
 ```javascript
 import './src/modules/util/history.js';
 ```
@@ -21,7 +22,6 @@ import './src/modules/util/history.js';
 ## How to use
 ### Trigger push state or replace state from anywhere in your site.
 ```javascript
-
 Events.$trigger('history::push', {
     data: {
         url : '/your-new-url',
@@ -35,7 +35,6 @@ Events.$trigger('history::replace', {
         state: {}
     }
 });
-
 ```
 
 ### Listen to the history callback
@@ -44,18 +43,16 @@ This callback will be triggered on the following events:
 * replaceState
 * onpopstate
 ```javascript
-
 Events.$on('history::update', (e, state) => {
 
     console.log('new url', window.location.href);
     console.log('new state', state);
 
 });
-
 ```
 
 ## Dependencies
-* [Events library](/utilities/events/)
+* [Events utility](/utilities/events/)
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)

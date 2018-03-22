@@ -1,0 +1,37 @@
+{#
+    @shelf-version: 1.0.0
+    Sticky macro
+    Usage as a call, inject the sticky content there.
+
+    Options:
+        Required
+        id {string|int}       - Adds an id to the sticky component
+
+        Optional
+        class {boolean}       - Additional classnames
+        threshold {number}    - Amount of offset to manipulate start offset top
+#}
+
+{% macro sticky(data) %}
+
+    {%- if data.id -%}
+
+        <div class="c-sticky {% if data.class %} {{ data.class }} {% endif %}"
+            id="{{ data.id }}"
+            data-inview-trigger="sticky::update({{ data.id }})"
+            data-sticky-threshold="120"
+            data-inview-persistent="true"
+            js-hook-inview
+            js-hook-sticky>
+
+            <div class="sticky__scroll-element" js-hook-sticky-scroll-element>
+
+                {{ caller() }}
+
+            </div>
+
+        </div>
+
+    {%- endif -%}
+
+{% endmacro %}

@@ -28,29 +28,28 @@ class VimeoVideo {
 
         this.player.ready().then(() => {
 
-            if (this.options.videoTime) {
-                this.player.setCurrentTime(this.options.videoTime)
-                    .then(() => this.player.pause());
+            if (this.options.videoTime && !this.initialPlay) {
+                this.setStartTime(this.options.videoTime);
             }
 
             Events.$trigger('video::ready', { data: this.options });
-            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::ready`, { data: this.options });
 
         });
 
         this.player.on('play', () => {
             Events.$trigger('video::playing', { data: this.options });
-            Events.$trigger(`video::ready(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options });
         });
 
         this.player.on('pause', () => {
             Events.$trigger('video::paused', { data: this.options });
-            Events.$trigger(`video::paused(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::paused`, { data: this.options });
         });
 
         this.player.on('ended', () => {
             Events.$trigger('video::ended', { data: this.options });
-            Events.$trigger(`video::ended(${this.options.instanceId})`, { data: this.options });
+            Events.$trigger(`video[${this.options.instanceId}]::ended`, { data: this.options });
         });
 
     }
@@ -89,6 +88,17 @@ class VimeoVideo {
     setVolume(value) {
 
         this.player.setVolume(value);
+
+    }
+
+    setStartTime(seconds) {
+
+        this.player.setCurrentTime(seconds)
+            .then(() => this.initialPlay = true)
+            .catch(() => {
+                this.initialPlay = false;
+                console.error('Unable to set start time for video', this.options.id);
+            });
 
     }
 
