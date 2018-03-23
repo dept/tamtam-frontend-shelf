@@ -10,6 +10,7 @@ class ScrollTo {
     constructor() {
 
         this._bindEvents();
+        this._initElements();
 
     }
 
@@ -18,8 +19,6 @@ class ScrollTo {
      * Bind event
      */
     _bindEvents() {
-
-        Events.$on('scroll-to::init', () => this._initElements());
 
         Events.$on('scroll-to::scroll', (event, data) => {
 
@@ -35,7 +34,9 @@ class ScrollTo {
         this.elements = getElements();
 
         Array.from(this.elements).forEach(element => {
+
             if (element.scrollToisInitialised) { return; }
+
             element.addEventListener('click', event => {
                 event.preventDefault();
                 const target = element.getAttribute('href');
@@ -50,19 +51,24 @@ class ScrollTo {
                     scrollTo(scrollConfig);
                 }
             });
+
             element.scrollToisInitialised = true;
+
         });
 
     }
 
     scrollTo(scrollElement, target, duration, offset) {
+
         const scrollConfig = {
             scrollElement: scrollElement,
             position: target.getBoundingClientRect(),
             duration: parseInt(duration, 10) || ST_DURATION,
             offset: parseInt(offset, 10) || ST_OFFSET
         };
+
         return scrollTo(scrollConfig);
+
     }
 
 }

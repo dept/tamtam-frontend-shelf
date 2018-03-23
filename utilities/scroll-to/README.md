@@ -16,8 +16,6 @@
 
 ```javascript
 import './src/modules/util/scroll-to';
-
-Events.$trigger('scroll-to::init');
 ```
 
 ## How to use
