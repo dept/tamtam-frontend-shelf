@@ -58,7 +58,7 @@ class ScrollTo {
 
     }
 
-    scrollTo(scrollElement, target, duration, offset) {
+    scrollTo(target, scrollElement, duration, offset) {
 
         const scrollConfig = {
             scrollElement: scrollElement,

@@ -39,8 +39,8 @@ __NOTE: This will not be accessible.__
 ```javascript
 Events.$trigger('scroll-to::scroll', {
     data: {
-        scrollElement: false, // Optional, only needed when scrolling inside an element
         target: document.querySelector('footer'),
+        scrollElement: false, // Optional, only needed when scrolling inside an element
         offset: false, // Optional, will default to ST_OFFSET
         duration: false // Optional, will default to ST_DURATION
     }
@@ -55,7 +55,7 @@ __NOTE: This will not be accessible.__
 ```javascript
 import ScrollTo from '../util/scroll-to';
 
-ScrollTo.scrollTo(false, document.querySelector('footer'), false, false)
+ScrollTo.scrollTo(document.querySelector('footer'), false, false, false)
     .then(() => doStuff)
     .catch(() => doStuff);
 ```
