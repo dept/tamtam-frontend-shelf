@@ -76,7 +76,6 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ```
 
 ## Dependencies
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 

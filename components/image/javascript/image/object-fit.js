@@ -1,7 +1,5 @@
 import Events from '../util/events';
 import parseSrcSet from './util/parse-srcset';
-import 'core-js/fn/array/from';
-import 'core-js/fn/array/find';
 
 const HAS_POLYFILL_CLASS            = 'has--object-fit-polyfill';
 const OBJECT_FIT_IMAGE_HOOK         = 'js-hook-objectfit-img';

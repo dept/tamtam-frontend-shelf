@@ -1,6 +1,3 @@
-import 'core-js/fn/array/reduce';
-import 'core-js/fn/array/from';
-
 import Events from '../util/events';
 
 const VIDEO_HOOK = '[js-hook-video]';
