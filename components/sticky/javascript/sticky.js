@@ -36,7 +36,8 @@ class Sticky {
 
         this._setScrollElementSize();
 
-        Events.$on(`sticky::update(${this.id})`, () => setStickyValues(this.element, this.scrollElement, this.threshold, this.windowHeight));
+        Events.$on(`sticky[${this.id}]::recalc`, () => this._setScrollElementSize());
+        Events.$on(`sticky[${this.id}]::update`, () => setStickyValues(this.element, this.scrollElement, this.threshold, this.windowHeight));
 
     }
 
