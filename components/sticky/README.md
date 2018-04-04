@@ -84,6 +84,13 @@ Create sticky component in HTML.
 
 ```
 
+### Recalc event
+
+When using dynamic content you can call a `sticky[id]::recalc` event to update the container.
+```javascript
+Events.$trigger('sticky[id]::recalc');
+```
+
 ## Dependencies
 * [In-view libary](/utilities/in-view/)
 * [Events libary](/utilities/events/)
