@@ -1,6 +1,3 @@
-import 'core-js/fn/array/from';
-import 'core-js/fn/array/find';
-
 import Events from '../util/events';
 import Layzr from 'layzr.js';
 import parseSrcSet from './util/parse-srcset';
