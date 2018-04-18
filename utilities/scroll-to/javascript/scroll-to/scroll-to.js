@@ -22,8 +22,8 @@ class ScrollTo {
 
         Events.$on('scroll-to::scroll', (event, data) => {
 
-            const { scrollElement, target, duration, offset } = data;
-            this.scrollTo(scrollElement, target, duration, offset);
+            const { target, scrollElement, offset, duration } = data;
+            this.scrollTo(target, scrollElement, offset, duration);
 
         });
 
@@ -43,10 +43,10 @@ class ScrollTo {
                 const targetEl = document.querySelector(target);
                 if (targetEl) {
                     const scrollConfig = {
-                        scrollElement: element.dataset.scrollElement,
                         position: targetEl.getBoundingClientRect(),
-                        duration: element.dataset.scrollDuration ? parseInt(element.dataset.scrollDuration, 10) : ST_DURATION,
-                        offset: element.dataset.scrollOffset ? parseInt(element.dataset.scrollOffset, 10) : ST_OFFSET
+                        scrollElement: element.dataset.scrollElement,
+                        offset: element.dataset.scrollOffset ? parseInt(element.dataset.scrollOffset, 10) : ST_OFFSET,
+                        duration: element.dataset.scrollDuration ? parseInt(element.dataset.scrollDuration, 10) : ST_DURATION
                     };
                     scrollTo(scrollConfig);
                 }
@@ -61,10 +61,10 @@ class ScrollTo {
     scrollTo(target, scrollElement, duration, offset) {
 
         const scrollConfig = {
-            scrollElement: scrollElement,
             position: target.getBoundingClientRect(),
-            duration: parseInt(duration, 10) || ST_DURATION,
-            offset: parseInt(offset, 10) || ST_OFFSET
+            scrollElement: scrollElement,
+            offset: parseInt(offset, 10) || ST_OFFSET,
+            duration: parseInt(duration, 10) || ST_DURATION
         };
 
         return scrollTo(scrollConfig);
@@ -84,7 +84,7 @@ function getElements() {
 /**
  * Scrolls the window to the top
  */
-function scrollTo({ scrollElement, position, duration, offset }) {
+function scrollTo({ position, scrollElement, offset, duration }) {
 
     return new Promise(resolve => {
 
@@ -94,7 +94,6 @@ function scrollTo({ scrollElement, position, duration, offset }) {
         const change = to - start;
         let currentTime = 0;
         const increment = 10;
-
 
         const animate = () => {
 

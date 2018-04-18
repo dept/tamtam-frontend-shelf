@@ -55,7 +55,7 @@ __NOTE: This will not be accessible.__
 ```javascript
 import ScrollTo from '../util/scroll-to';
 
-ScrollTo.scrollTo(document.querySelector('footer'), false, false, false)
+ScrollTo.scrollTo(document.querySelector('footer'))
     .then(() => doStuff)
     .catch(() => doStuff);
 ```
