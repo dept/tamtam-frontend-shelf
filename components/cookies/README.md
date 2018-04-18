@@ -12,6 +12,7 @@
 ## What does it do
 * GDPR proof cookie bar and cookie form
 * Will set cookies based for all types of cookies.
+* *NOTE: The video module has also been updated*
 
 ## Install
 
@@ -34,9 +35,10 @@ Add cookie bar template to page
 ```
 
 ```javascript
-    Cookiebar.init({
-        //Optional config
-    });
+Cookiebar.init({
+    cookiePrefix: 'client-name', // optional - recommended to change
+    version: '1' // optional - recommended to update
+});
 ```
 
 ### Default cookie form
@@ -45,8 +47,6 @@ Add cookie form template to page
 ```htmlmixed
 {% include "cookie-form.html" %}
 ```
-
-{% from 'button.html' import button %}
 
 
 ## Dependencies
