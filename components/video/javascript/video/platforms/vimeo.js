@@ -1,3 +1,4 @@
+import Cookies from '../../util/cookies';
 import Events from '../../util/events';
 import VimeoPlayer from '@vimeo/player';
 

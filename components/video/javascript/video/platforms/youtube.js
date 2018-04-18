@@ -1,5 +1,6 @@
 import 'core-js/fn/symbol';
 import 'core-js/fn/symbol/iterator';
+import Cookies from '../../util/cookies';
 import Events from '../../util/events';
 import YouTubePlayer from 'youtube-player';
 
