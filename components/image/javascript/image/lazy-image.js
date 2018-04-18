@@ -45,7 +45,7 @@ class LazyImage {
 
         // Retrigger objectfit polyfill after image is loaded.
         this.instance.on('src:after', element => {
-            Events.$trigger('image::object-fit', element);
+            Events.$trigger('image::object-fit', { data: element });
         });
 
         this._triggerUpdate();
@@ -93,17 +93,16 @@ class LazyImage {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
-            if (!srcSet[0].url) { return; }
-
             // Pick tablet image.
-            const tablet = Array.from(srcSet).find(a => a.width === 1024);
+            const src = Array.from(srcSet).find(a => a.width === 1024);
 
-            const src = tablet ? tablet.url : srcSet[0].url;
+            // Pick correct image source
+            const srcUrl = (src !== undefined) ? src.url : image.getAttribute('data-src') || image.src;
 
             // Setting to null first prevents weird bugs of not updating src in IE.
             image.src = null;
 
-            image.src = src;
+            image.src = srcUrl;
 
             image.removeAttribute('data-srcset');
 

@@ -15,7 +15,17 @@ class InView {
 
         this._bindEvent();
 
-        Events.$trigger('in-view::update');
+        this._initAfterPageLoad();
+
+    }
+
+    _initAfterPageLoad() {
+
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'complete') {
+                Events.$trigger('in-view::update');
+            }
+        });
 
     }
 
@@ -374,6 +384,8 @@ function getInViewDirections(options) {
         right: right.scrolledPastViewport && right.elementInView,
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
         left: left.scrolledPastViewport && left.elementInView,
+        height: options.position.height,
+        width: options.position.width,
         windowHeight: options.windowHeight
     };
 }

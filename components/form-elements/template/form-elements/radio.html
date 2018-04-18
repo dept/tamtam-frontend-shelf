@@ -29,7 +29,7 @@
         {% for option in data.options %}
             <input class="radio__input u-sr-only"
                 type="radio"
-                name="{{ data.name }}"
+                name="{{ option.name }}"
                 value="{{ option.value }}"
                 id="{{ option.value }}"
                 {%- if option.disabled %} disabled="disabled"{% endif -%}

@@ -3,7 +3,7 @@ function parseSrcSet(str) {
 
     if ( !str ) {return false; }
 
-    return deepUnique(str.split(',').map(function (el) {
+    return deepUnique(str.split(', ').map(function (el) {
         const ret = {};
 
         el.trim().split(/\s+/).forEach(function (_el, i) {

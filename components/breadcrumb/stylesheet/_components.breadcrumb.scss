@@ -68,4 +68,5 @@ $breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !defaul
 
 .breadcrumb__item--current {
     color: $color-grey;
+    pointer-events: none;
 }
