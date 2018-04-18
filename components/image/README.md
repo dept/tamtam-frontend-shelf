@@ -55,8 +55,6 @@ If you somehow want to use the polyfill without the image component, it will wor
 
 
 ## Dependencies
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [core-js/fn/array/find](https://www.npmjs.com/package/core-js) for IE11 support
 * [Closest polyfill](/polyfills/DOM/closest.js) (included in FE setup, make sure include it in the polyfills file)
 
 ## Developers

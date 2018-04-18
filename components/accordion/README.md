@@ -78,7 +78,6 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
 * [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
 * [Events utility](/utilities/events/)
 

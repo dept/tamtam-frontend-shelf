@@ -1,5 +1,3 @@
-import 'core-js/fn/array/from';
-
 import Events from '../util/events';
 
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';

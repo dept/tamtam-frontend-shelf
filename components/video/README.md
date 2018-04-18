@@ -198,10 +198,6 @@ Video.registerPlatforms({
 
 
 ## Dependencies
-* [core-js/fn/symbol](https://www.npmjs.com/package/core-js) for IE11 support
-* [core-js/fn/symbol/iterator](https://www.npmjs.com/package/core-js) for IE11 support
-* [core-js/fn/array/from](https://www.npmjs.com/package/core-js) for IE11 support
-* [core-js/fn/array/reduce](https://www.npmjs.com/package/core-js) for IE11 support
 * [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 * [Image component](/components/image/)
 * [Events utility](/utilities/events/)
