@@ -9,10 +9,11 @@
 5. [Developers](#markdown-header-developers)
 
 
+__NOTE: The video module has been updated aswell__
+
 ## What does it do
 * GDPR proof cookie bar and cookie form
 * Will set cookies based for all types of cookies.
-* *NOTE: The video module has also been updated*
 
 ## Install
 
