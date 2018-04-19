@@ -38,7 +38,7 @@ Add cookie bar template to page
 ```javascript
 Cookiebar.init({
     cookiePrefix: 'client-name', // optional - recommended to change
-    version: '1' // optional - recommended to update
+    version: '1' // optional - recommended to update. MUST BE STRING
 });
 ```
 
