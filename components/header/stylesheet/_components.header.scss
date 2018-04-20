@@ -1,14 +1,14 @@
 // @shelf-version 1.0.0
 
-$header-background-color: $color-primary; 
+$header-background-color: $color-primary;
 $header-text-color: $color-black;
 $header-shadow-color: inset 0px 5px 6px -3px rgba($color-black, 0.2);
 
 .c-header {
     background-color: $header-background-color;
-    color: $header-text-color; 
+    color: $header-text-color;
     left: 0;
-    position: fixed; 
+    position: fixed;
     top: 0;
     transition-timing-function: linear;
     transition-property: transform;
