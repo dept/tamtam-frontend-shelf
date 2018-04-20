@@ -12,7 +12,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Pagination](/components/pagination/README.md)
 * [Search field](/components/search/search-field/README.md)
 * [Search results](/components/search/search-results/README.md)
-* [Social Share links - Simple](/components/social-share-links/simple/README.md)
+* [Social Share links - Simple](/components/social-share/simple/README.md)
 * [Sticky](/components/sticky/README.md)
 * [Teaser](/components/teaser/README.md)
 * [Toggle](/components/toggle/README.md)
@@ -27,6 +27,7 @@ In this repository you find all standardized front-end components and utilities.
 * [History](/utilities/history-api/README.md)
 * [Inview](/utilities/in-view/README.md)
 * [RAF throttle](/utilities/raf-throttle/README.md)
+* [Scroll to](/utilities/scroll-to/README.md)
 * [Storage](/utilities/storage/README.md)
 * [Validation](/utilities/validation/README.md)
 
