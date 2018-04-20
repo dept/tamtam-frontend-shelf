@@ -1,6 +1,3 @@
-import 'core-js/fn/array/from';
-import 'core-js/fn/array/find';
-
 import Events from '../util/events';
 import Layzr from 'layzr.js';
 import parseSrcSet from './util/parse-srcset';
@@ -45,7 +42,7 @@ class LazyImage {
 
         // Retrigger objectfit polyfill after image is loaded.
         this.instance.on('src:after', element => {
-            Events.$trigger('image::object-fit', element);
+            Events.$trigger('image::object-fit', { data: element });
         });
 
         this._triggerUpdate();
@@ -89,18 +86,20 @@ class LazyImage {
 
         const images = document.querySelectorAll('img');
 
-        Array.from(images).forEach((image) => {
+        Array.from(images).forEach(image => {
 
             const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
 
-            if (!srcSet[0].url) { return; }
+            // Pick tablet image.
+            const src = Array.from(srcSet).find(a => a.width === 1024);
 
-            const tablet = Array.from(srcSet).find((a) => a.width === 1024); // Pick tablet image.
+            // Pick correct image source
+            const srcUrl = (src !== undefined) ? src.url : image.getAttribute('data-src') || image.src;
 
-            const src = tablet ? tablet.url : srcSet[0].url;
+            // Setting to null first prevents weird bugs of not updating src in IE.
+            image.src = null;
 
-            image.src = null; // Setting to null first prevents weird bugs of not updating src in IE.
-            image.src = src;
+            image.src = srcUrl;
 
             image.removeAttribute('data-srcset');
 

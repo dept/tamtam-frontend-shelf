@@ -1,4 +1,4 @@
-// @shelf-version 1.0.1
+// @shelf-version 1.0.2
 $video-background-color: $color-off-white;
 $video-loader-size: 50px;
 $video-loader-thickness: 4px;
@@ -15,6 +15,7 @@ $video-button-transition-ease: $ease-in-quad;
     margin-bottom: 20px;
     background-color: $video-background-color;
 
+    .video__image,
     .video__player,
     iframe,
     video {
@@ -45,11 +46,14 @@ $video-button-transition-ease: $ease-in-quad;
     left: 50%;
     width: $video-loader-size;
     height: $video-loader-size;
+    background-color: $video-background-color;
     box-shadow: inset 0 0 0 $video-loader-thickness $video-loader-color;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     backface-visibility: hidden;
-    z-index: 0;
+    z-index: 3;
+    transition: $video-button-transition-time $ease-in-quad;
+    transition-property: opacity;
 
     &::before,
     &::after {
@@ -79,11 +83,37 @@ $video-button-transition-ease: $ease-in-quad;
         animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
+    .video--has-invalid-cookie &,
     .video--is-initialised & {
+        opacity: 0;
+        pointer-events: none;
+
         &::before,
         &::after {
             animation: none;
         }
+    }
+}
+
+.video__invalid-cookie {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: $global-spacing-md;
+    z-index: 10;
+    background-color: $video-background-color;
+    opacity: 0;
+    pointer-events: none;
+
+    .video--has-invalid-cookie & {
+        opacity: 1;
+        pointer-events: all;
     }
 }
 

@@ -1,5 +1,3 @@
-import 'core-js/fn/array/from';
-
 import Events from '../util/events';
 
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';
@@ -26,12 +24,12 @@ class Toggle {
     _getToggleLinks() {
 
         const ariaControls = this.controls;
-        if ( !ariaControls) {
+        if (!ariaControls) {
             return [];
         }
 
         const LINKS_SELECTOR = ariaControls.split(/[ ,]+/)
-            .map(id => `#${ id }`)
+            .map(id => `#${id}`)
             .join(', ');
 
         return Array.from(document.querySelectorAll(LINKS_SELECTOR));
@@ -43,15 +41,15 @@ class Toggle {
      */
     _bindEvents() {
 
-        this.element.addEventListener('click', (event) => {
+        this.element.addEventListener('click', event => {
             this._toggleState();
 
-            if ( this.element.dataset.togglePreventDefault ) {
+            if (this.element.dataset.togglePreventDefault) {
                 event.preventDefault();
             }
         });
 
-        Events.$on(`toggle[${ this.element.id }]::toggle`, (event) => {
+        Events.$on(`toggle[${this.element.id}]::toggle`, event => {
             this._toggleState();
             event.preventDefault();
         });
@@ -63,7 +61,7 @@ class Toggle {
      */
     _toggleState() {
 
-        if ( this.element.dataset.toggleLive === 'true' ) {
+        if (this.element.dataset.toggleLive === 'true') {
             this.links = this._getToggleLinks();
         }
 
@@ -78,7 +76,7 @@ class Toggle {
      */
     _setDefaultState() {
 
-        if ( this.element.dataset.toggleDefaultActive === 'true' ) {
+        if (this.element.dataset.toggleDefaultActive === 'true') {
             this._toggleState();
         }
 
@@ -112,7 +110,7 @@ class Toggle {
     _toggleLinksClassNames() {
 
         const toggleAction = this.isActive ? 'add' : 'remove';
-        this.links.forEach((link) => link.classList[toggleAction](this.activeClass));
+        this.links.forEach(link => link.classList[toggleAction](this.activeClass));
 
     }
 
@@ -122,7 +120,7 @@ class Toggle {
     _setARIAAttributeValues() {
 
         this.element.setAttribute('aria-expanded', this.isActive.toString());
-        this.links.forEach((link) => link.setAttribute('aria-hidden', (!this.isActive).toString()));
+        this.links.forEach(link => link.setAttribute('aria-hidden', (!this.isActive).toString()));
 
     }
 
@@ -132,8 +130,8 @@ class Toggle {
     _triggerExternalEvents() {
 
         const newState = this.isActive ? 'opened' : 'closed';
-        Events.$trigger(`toggle[${ this.element.id }]::${ newState }`);
-        Events.$trigger(`toggle[${ this.element.id }]::toggled`, { data: this.isActive });
+        Events.$trigger(`toggle[${this.element.id}]::${newState}`);
+        Events.$trigger(`toggle[${this.element.id}]::toggled`, { data: this.isActive });
 
     }
 

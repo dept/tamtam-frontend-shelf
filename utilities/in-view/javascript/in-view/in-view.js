@@ -15,8 +15,17 @@ class InView {
 
         this._bindEvent();
 
-        Events.$trigger('in-view::update');
-        Events.$trigger('scroll');
+        this._initAfterPageLoad();
+
+    }
+
+    _initAfterPageLoad() {
+
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'complete') {
+                Events.$trigger('in-view::update');
+            }
+        });
 
     }
 
@@ -61,7 +70,8 @@ class InView {
 
         if (element.elementInViewIdentifier) { return; }
 
-        const index = ++this.lastEventIndex;
+        ++this.lastEventIndex;
+        const index = this.lastEventIndex;
         element.elementInViewIdentifier = index;
 
         const {
@@ -123,27 +133,25 @@ class InView {
     _elementInView(config) {
 
         const element = config.element;
-        element._inViewport = elementIsInViewport(config);
+        element.inviewProperties = elementIsInViewport(config);
 
         if (config.persistent) {
-            config.triggers.forEach((trigger) => setTriggers(trigger, element));
+            config.triggers.forEach(trigger => setTriggers(trigger, element));
         }
 
-        if (element._inViewport.scrolledPastTop && !element._hasBeenInViewport) {
+        if (element.inviewProperties.scrolledPastTop) {
 
             element.classList.remove('is--out-view');
 
             if (!config.persistent) {
 
-                config.triggers.forEach((trigger) => setTriggers(trigger, element));
+                config.triggers.forEach(trigger => setTriggers(trigger, element));
 
                 RafThrottle.remove([{
                     element: SCROLL_ELEMENT,
                     event: 'scroll',
                     namespace: `ElementInView-${config.index}`
                 }]);
-
-                element._hasBeenInViewport = true;
 
             }
 
@@ -271,12 +279,12 @@ function getElementPositions(element) {
     const { top, left } = getElementOffset(element);
 
     return {
-        top: top,
-        left: left,
-        right: left + width,
-        bottom: top + height,
+        top,
+        left,
         width,
-        height
+        height,
+        right: left + width,
+        bottom: top + height
     };
 
 }
@@ -288,26 +296,27 @@ function getElementPositions(element) {
  */
 function getElementOffset(element) {
 
-    const elementStyles = window.getComputedStyle(element);
+    let targetElement = element;
+    const elementStyles = window.getComputedStyle(targetElement);
 
     const margin = {};
-    margin.top = parseInt(elementStyles.marginTop / 2) || 0;
-    margin.right = parseInt(elementStyles.marginRight / 2) || 0;
-    margin.bottom = parseInt(elementStyles.marginBottom / 2) || 0;
-    margin.left = parseInt(elementStyles.marginLeft / 2) || 0;
+    margin.top = parseInt(elementStyles.marginTop, 10) / 2 || 0;
+    margin.right = parseInt(elementStyles.marginRight, 10) / 2 || 0;
+    margin.bottom = parseInt(elementStyles.marginBottom, 10) / 2 || 0;
+    margin.left = parseInt(elementStyles.marginLeft, 10) / 2 || 0;
 
     let top = 0 + margin.top + margin.bottom;
     let left = 0 + margin.left + margin.right;
 
     do {
-        top += element.offsetTop || 0;
-        left += element.offsetLeft || 0;
-        element = element.offsetParent;
-    } while (element);
+        top += targetElement.offsetTop || 0;
+        left += targetElement.offsetLeft || 0;
+        targetElement = targetElement.offsetParent;
+    } while (targetElement);
 
     return {
-        top: top,
-        left: left
+        top,
+        left
     };
 }
 
@@ -341,17 +350,17 @@ function getInViewDirections(options) {
     top.scrolledPastViewport = topPosition > -options.windowHeight;
     top.elementInView = topPosition <= 0 && topPosition >= -options.windowHeight;
 
-    const rightPosition = options.offset.right + options.calculatedThreshold.y - options.intersection.r;
+    const rightPosition = options.offset.right + options.calculatedThreshold.x - options.intersection.r;
     const right = {};
     right.scrolledPastViewport = rightPosition >= -options.windowWidth;
     right.elementInView = rightPosition >= 0 && rightPosition <= options.windowWidth;
 
     const bottomPosition = options.offset.bottom + options.calculatedThreshold.y - options.intersection.b;
     const bottom = {};
-    bottom.scrolledPastViewport = bottomPosition <= options.windowHeight;
-    bottom.elementInView = bottomPosition >= 0 && bottomPosition >= -options.windowHeight;
+    bottom.scrolledPastViewport = bottomPosition >= 0;
+    bottom.elementInView = bottomPosition >= 0 && bottomPosition <= options.windowHeight;
 
-    const leftPosition = options.offset.left + options.calculatedThreshold.y - options.intersection.r;
+    const leftPosition = options.offset.left + options.calculatedThreshold.x - options.intersection.r;
     const left = {};
     left.scrolledPastViewport = leftPosition >= - options.windowWidth;
     left.elementInView = leftPosition <= 0 && leftPosition >= -options.windowWidth;
@@ -361,7 +370,11 @@ function getInViewDirections(options) {
             top: topPosition,
             right: rightPosition,
             bottom: bottomPosition,
-            left: leftPosition,
+            left: leftPosition
+        },
+        isInViewport: {
+            horizontal: leftPosition >= -options.windowWidth && rightPosition <= options.position.width,
+            vertical: topPosition >= -options.windowHeight && topPosition <= options.position.height
         },
         scrolledPastTop: top.scrolledPastViewport,
         scrolledPastRight: right.scrolledPastViewport,
@@ -371,8 +384,10 @@ function getInViewDirections(options) {
         right: right.scrolledPastViewport && right.elementInView,
         bottom: bottom.scrolledPastViewport && bottom.elementInView,
         left: left.scrolledPastViewport && left.elementInView,
+        height: options.position.height,
+        width: options.position.width,
         windowHeight: options.windowHeight
-    }
+    };
 }
 
 /**
@@ -381,13 +396,12 @@ function getInViewDirections(options) {
  * @returns {Object} matches
  */
 function getIntersections(options) {
-
     return {
         t: options.position.top - options.scrollTop,
-        r: parseInt(options.position.left.toFixed(0)) - options.scrollLeft,
+        r: parseInt(options.position.left.toFixed(0), 10) - options.scrollLeft,
         b: options.position.bottom - options.scrollTop - options.windowHeight,
-        l: parseInt(options.position.right.toFixed(0)) - options.scrollLeft - options.windowWidth
-    }
+        l: parseInt(options.position.right.toFixed(0), 10) - options.scrollLeft - options.windowWidth
+    };
 }
 
 /**
@@ -399,7 +413,7 @@ function getThreshold(options) {
     return {
         x: options.threshold * options.position.width,
         y: options.threshold * options.position.height
-    }
+    };
 }
 
 export default new InView();

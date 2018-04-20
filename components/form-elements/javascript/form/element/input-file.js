@@ -15,7 +15,7 @@ class CustomFile {
 
     _bindEvents() {
 
-        this.element.addEventListener('change', () => this._handleChange())
+        this.element.addEventListener('change', () => this._handleChange());
 
     }
 

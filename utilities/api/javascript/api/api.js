@@ -42,7 +42,7 @@ class API {
         const options = {
             data,
             method: getMethod('GET', json)
-        }
+        };
 
         $.extend(true, options, params);
 
@@ -56,7 +56,7 @@ class API {
         const options = {
             data,
             method: getMethod('POST', json)
-        }
+        };
 
         if (this.antiForgeryToken) {
             options.headers = {};
@@ -76,7 +76,7 @@ class API {
         const options = {
             data,
             method: getMethod('PUT', json)
-        }
+        };
 
         $.extend(true, options, params);
 
@@ -90,7 +90,7 @@ class API {
         const options = {
             data,
             method: getMethod('DELETE', json)
-        }
+        };
 
         $.extend(true, options, params);
 
@@ -108,7 +108,7 @@ class API {
  */
 function getEndpoint(path, json, method) {
 
-    if (path.substr(0, 2) === '//' && path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
+    if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
         return path;
     }
 

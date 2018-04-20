@@ -10,8 +10,9 @@
         name {string}                       - Adds a name to the input
         hook {string}            (optional) - Adds a hook to the input
         attr {string}                       - Adds attributes to the input
-        regex {string}           (optional) - Adds attributes to the input
+        pattern {string}           (optional) - Adds attributes to the input
         disabled {boolean}       (optional) - Add disabled property to the input
+        required {boolean}       (optional) - Add required property to the input
         error {string}           (optional) - Add error state and message
 
 #}
@@ -24,7 +25,7 @@
         {%- if data.error %} form__item--error{% endif -%}">
 
         <div class="input__wrapper">
-            <label class="input__label {%- if data.noLabel %} u-sr-only{% endif -%}" for="{{ data.id }}">
+            <label class="input__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
             <input class="input__input"
@@ -32,8 +33,11 @@
                 name="{{ data.name }}"
                 value="{{ data.value }}"
                 id="{{ data.id }}"
+                {%- if data.required %} required="required"{% endif -%}
+                {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.pattern %} pattern="{{ data.pattern }}"{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
         </div>
         {%- if data.error %}

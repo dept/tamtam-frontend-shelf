@@ -1,5 +1,5 @@
 {#
-    @shelf-version: 1.0.1
+    @shelf-version: 1.1.0
     Video macro
 
     data {
@@ -12,19 +12,20 @@
         total_time: 'string', (optional)
         start_time: 'string', (optional)
         classes: 'string', (optional)
-        autopause: integer, (optional, default 1) for Vimeo video only
         muted: integer, (optional, default 1)
         autoplay: integer, (optional, default 1)
         playsinline: integer, (optional, default 1)
         controls: integer, (optional, default 0)
         info: integer (optional, default 0),
         sources: object (optional) for native video only
+        closedcaptions: object (optional) for native video only
         inview: boolean (optional, default true)
         image: object (optional)
     }
 #}
 
 {% from 'components/image.html' import image %}
+{% from 'button.html' import button %}
 
 {% macro video(data) %}
 
@@ -35,7 +36,6 @@
         {% if data.platform %}data-video-platform="{{ data.platform }}"{% endif %}
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
-        {% if data.autopause >= 0 %}data-video-autopause="{{ data.autopause }}"{% endif %}
         {% if data.muted >= 0 %}data-video-muted="{{ data.muted }}"{% endif %}
         {% if data.autoplay >= 0 %}data-video-autoplay="{{ data.autoplay }}"{% endif %}
         {% if data.playsinline >= 0 %}data-video-playsinline="{{ data.playsinline }}"{% endif %}
@@ -43,7 +43,8 @@
         {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         {% if data.sources %}data-video-sources="{{ data.sources|dump|escape }}"{% endif %}
-        {% if not data.inview or data.inview === true %}
+        {% if data.closedcaptions %}data-video-closedcaptions="{{ data.closedcaptions|dump|escape }}"{% endif %}
+        {% if data.inview != false %}
             js-hook-inview
             data-inview-persistent="true"
             data-inview-trigger="video::inview"
@@ -88,6 +89,19 @@
                 objectFit: true
             }) }}
         {% endif %}
+
+        <div class="video__invalid-cookie">
+            <p>
+                You are seeing this because you have not accepted our advertising cookies.<br>
+                If you want to see our videos, please change your cookie preferences.
+            </p>
+
+            {{ button({
+                url: '/cookie-settings.html',
+                variant: 'primary',
+                label: 'Change preferences'
+            }) }}
+        </div>
 
     </div>
 

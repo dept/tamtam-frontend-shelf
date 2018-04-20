@@ -3,4 +3,4 @@
  * Form utility
  */
 
-export { CustomFile } from "./element/input-file";
+export { CustomFile } from './element/input-file';

@@ -1,0 +1,43 @@
+{#
+    Textarea
+
+    Options:
+        class {string}           (optional) - Adds custom classes
+        label {string}                      - Adds a label to the input
+        id {string|int}                     - Adds an id to the input (needed for label to be clickable)
+        value {string                       - Adds a value to the input
+        name {string}                       - Adds a name to the input
+        hook {string}            (optional) - Adds a hook to the input
+        attr {string}                       - Adds attributes to the input
+        pattern {string}           (optional) - Adds attributes to the input
+        disabled {boolean}       (optional) - Add disabled property to the input
+        error {string}           (optional) - Add error state and message
+
+#}
+{% macro textarea(data) %}
+
+    <div class="c-textarea form__item
+        {%- if data.class %} {{ data.class }}{% endif -%}
+        {%- if data.disabled %} form__item--disabled{% endif -%}
+        {%- if data.error %} form__item--error{% endif -%}">
+
+        <div class="textarea__wrapper">
+            <label class="textarea__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
+                {{ data.label|safe }}
+            </label>
+            <textarea class="textarea__input"
+                name="{{ data.name }}"
+                value="{{ data.value }}"
+                id="{{ data.id }}"
+                {%- if data.disabled %} disabled="disabled"{% endif -%}
+                {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
+                {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}></textarea>
+        </div>
+        {%- if data.error %}
+            <div class="form__item-error">{{ data.error }}</div>
+        {% endif -%}
+
+    </div>
+
+{% endmacro %}

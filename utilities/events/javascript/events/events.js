@@ -56,17 +56,15 @@ const _Events = new Events();
 function readAndBindEventsFromDOM() {
 
     // Elements that have attributes starting with on:
-    const elements = _domFind(crawlEl, element => {
-        return element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:');
-    });
+    const elements = _domFind(crawlEl, element => element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:'));
 
-    elements.map((el) => {
+    elements.map(el => {
         const attrs = [].slice.call(el.attributes);
         attrs
-        // Filter attributes (so not elements this time) starting with on:
-            .filter((attr) => attr.name.slice(0, 3) === 'on:')
+            // Filter attributes (so not elements this time) starting with on:
+            .filter(attr => attr.name.slice(0, 3) === 'on:')
             // Listen to the native event.
-            .map((attr) => bindEvent(attr.ownerElement, attr.name, attr.value));
+            .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
     });
 
 }
@@ -88,7 +86,7 @@ function bindEvent(targetEl, attrName, attrValue) {
     // Filters out only the clicked element, based on event attribute.
     const delegateFilter = el => el === targetEl;
 
-    eventEl.addEventListener(nativeEvent, _delegate(delegateFilter, (e) => {
+    eventEl.addEventListener(nativeEvent, _delegate(delegateFilter, e => {
         runModifiers(modifiers, e);
         _Events.$trigger(eventToTrigger, eventData, targetEl);
     }));
@@ -102,7 +100,7 @@ function bindEvent(targetEl, attrName, attrValue) {
  */
 function runModifiers(modifiers, e) {
 
-    modifiers.map((modifier) => {
+    modifiers.map(modifier => {
         if (modifier === 'prevent' || modifier === 'preventDefault') {
             e.preventDefault();
         }
@@ -137,16 +135,17 @@ function parseEventString(eventString) {
  */
 function _delegate(criteria, callback) {
 
-    return function(e) {
+    return function (e) {
         let el = e.target;
         if (criteria(el)) {
             callback.apply(this, arguments);
         }
         while ((el = el.parentNode)) {
-            if (!criteria(el)) { continue; }
-            e.delegateTarget = el;
-            callback.apply(this, arguments);
-            return;
+            if (criteria(el)) {
+                e.delegateTarget = el;
+                callback.apply(this, arguments);
+                return;
+            }
         }
     };
 
@@ -191,18 +190,20 @@ function extractPropFromObject(object, propName) {
  */
 function polyfillCustomEvent() {
 
-    if (typeof window.CustomEvent === "function") return false;
+    if (typeof window.CustomEvent !== 'function') {
 
-    function CustomEvent(event, params) {
-        params = params || { bubbles: false, cancelable: false, detail: undefined };
-        const evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-        return evt;
+        const CustomEvent = (event, params) => {
+            const newParams = params || { bubbles: false, cancelable: false, detail: undefined };
+            const evt = document.createEvent('CustomEvent');
+            evt.initCustomEvent(event, newParams.bubbles, newParams.cancelable, newParams.detail);
+            return evt;
+        }
+
+        CustomEvent.prototype = window.Event.prototype;
+
+        window.CustomEvent = CustomEvent;
+
     }
-
-    CustomEvent.prototype = window.Event.prototype;
-
-    window.CustomEvent = CustomEvent;
 
 }
 

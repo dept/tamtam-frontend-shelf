@@ -1,5 +1,3 @@
-import 'core-js/fn/array/from';
-
 import Events from '../util/events';
 import AccordionItem from './accordion-item';
 
@@ -53,8 +51,8 @@ class Accordion {
                 }
             } else {
                 if (!this.isAnimating) {
-                    Object.keys(this.accordionItems).forEach(id => {
-                        this.accordionItems[id].close();
+                    Object.keys(this.accordionItems).forEach(i => {
+                        this.accordionItems[i].close();
                     });
                 }
             }

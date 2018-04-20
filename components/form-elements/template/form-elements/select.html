@@ -10,6 +10,7 @@
         name {string}                       - Adds a name to the select
         hook {string}            (optional) - Adds a hook to the select
         attr {string}                       - Adds attributes to the select
+        required {boolean}       (optional) - Add required property to the select
         disabled {boolean}       (optional) - Add disabled property to the select
         error {string}           (optional) - Add error state and message
         options {object}                    - Adds options
@@ -26,18 +27,20 @@
         {%- if data.error %} form__item--error{% endif -%}">
 
         <div class="select__wrapper">
-            <label class="select__label {%- if data.noLabel %} u-sr-only{% endif -%}" for="{{ data.id }}">
+            <label class="select__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
             <select class="select__input"
                 name="{{ data.name }}"
                 id="{{ data.id }}"
+                {%- if data.required %} required="required"{% endif -%}
+                {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
 
                 {% for option in data.options %}
                     <option
-                        {% if option.default %}hidden selected{% endif -%}
+                        {% if option.default %}hidden selected {% endif -%}
                         value="{{ option.value }}">
                         {{ option.label }}
                     </option>

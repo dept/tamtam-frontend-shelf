@@ -5,6 +5,7 @@
         class {string}             (optional) - Adds custom classes
         horizontal {boolean}       (optional) - Makes radio group horizontal
         disabled {boolean}         (optional) - Add disabled property to the radio
+        required {boolean}         (optional) - Add required property to the select
         attr {string}              (optional) - Adds attributes to the radio element
         error {string}             (optional) - Add error state and message
         options.label {string}                - Adds a label to the radio option
@@ -29,10 +30,12 @@
         {% for option in data.options %}
             <input class="radio__input u-sr-only"
                 type="radio"
-                name="{{ data.name }}"
+                name="{{ option.name }}"
                 value="{{ option.value }}"
-                id="{{ option.value }}"
-                {%- if option.checked %} checked{% endif -%}
+                id="{{ option.id }}"
+                {%- if option.disabled %} disabled="disabled"{% endif -%}
+                {%- if data.required %} required="required"{% endif -%}
+                {%- if option.checked %} checked="checked"{% endif -%}
                 {%- if option.hook %} js-hook-{{ option.hook }}{% endif -%}
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="radio__label" for="{{ option.value }}" role="button">
