@@ -8,7 +8,7 @@
 5. [Changelog](#markdown-header-changelog)
 6. [Developers](#markdown-header-developers)
 
-![Video Demo](./_demo/video.gif)
+![Video Demo](https://media.giphy.com/media/7AaqrqQUPys39wn1CN/giphy.gif)
 
 ## What does it do
 * Plays Youtube, Vimeo and native video
