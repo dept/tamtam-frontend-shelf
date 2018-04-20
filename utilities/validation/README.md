@@ -20,7 +20,7 @@ npm i luhn@2.1.0 --save
 ```
 Import module
 ```javascript
-import { isValidEmail, isValidPhoneNumber, isValidZipcode, isValidIBAN, isValidLuhnNumber } from './src/modules/util/validation';
+import { isValidEmail, isValidPhoneNumber, isValidZipcode, isValidIBAN, isValidLuhnNumber } from '@utilities/validation';
 ```
 
 ## How to use

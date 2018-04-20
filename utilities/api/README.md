@@ -20,7 +20,7 @@ npm i jquery@3.2.1 --save
 ```
 Import module
 ```javascript
-import API from './util/api';
+import API from '@utilities/api';
 ```
 
 ## How to use

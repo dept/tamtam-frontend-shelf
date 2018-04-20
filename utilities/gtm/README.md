@@ -15,7 +15,7 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/gtm';
+import '@utilities/gtm';
 ```
 
 ## How to use

@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 
 class SocialShare {
 

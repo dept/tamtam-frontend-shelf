@@ -20,7 +20,7 @@ npm i layzr.js@2.2.2 --save
 ```
 Import module
 ```javascript
-import './src/modules/image';
+import '@components/image';
 ```
 
 ## How to use
@@ -28,7 +28,7 @@ import './src/modules/image';
 ### Default
 
 ```javascript
-import './src/modules/image';
+import '@components/image';
 ```
 
 ```htmlmixed

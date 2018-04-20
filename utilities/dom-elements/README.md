@@ -23,10 +23,10 @@ npm install jquery@3.2.1 --save
 ```javascript
 
 // Load all DOM elements.
-import * from './src/modules/util/dom-elements';
+import * from '@utilities/dom-elements';
 
 // Load only the window element
-import { $window } from './src/modules/util/dom-elements';
+import { $window } from '@utilities/dom-elements';
 
 ```
 

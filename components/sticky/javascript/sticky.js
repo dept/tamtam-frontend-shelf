@@ -2,8 +2,8 @@
  *  @shelf-version: 1.0.0
  */
 
-import Events from './util/events';
-import RafThrottle from './util/raf-throttle';
+import Events from '@utilities/events';
+import RafThrottle from '@utilities/raf-throttle';
 
 const STICKY_SCROLL_ELEMENT_HOOK = '[js-hook-sticky-scroll-element]';
 const STICKY_STICKED_CLASS = 'sticky--is-sticked';

@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 import Layzr from 'layzr.js';
 import parseSrcSet from './util/parse-srcset';
 import hasResponsiveImages from './util/detect-responsive-images';

@@ -2,7 +2,7 @@
  * Accordion item class
  * Will be created for each item inside an accordion
  */
-import Events from '../util/events';
+import Events from '@utilities/events';
 
 const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
 

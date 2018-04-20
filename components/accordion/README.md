@@ -17,9 +17,9 @@
 ## Install
 Import module
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import './src/modules/util/events';
-import Accordion from './src/modules/accordion';
+import moduleInit from '@utilities/module-init';
+import '@utilities/events';
+import Accordion from '@components/accordion';
 
 moduleInit('[js-hook-accordion]', Accordion);
 ```
@@ -78,7 +78,7 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
-* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
+* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/utilities/module-init.js) from the TamTam Frontend Setup
 * [Events utility](/utilities/events/)
 
 ## Developers

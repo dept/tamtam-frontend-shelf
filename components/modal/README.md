@@ -18,8 +18,8 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/focus-trap';
-import './src/modules/modal';
+import '@utilities/focus-trap';
+import '@components/modal';
 ```
 
 ## How to use

@@ -15,7 +15,7 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/in-view';
+import '@utilities/in-view';
 ```
 
 ## How to use
@@ -64,7 +64,7 @@ You can manually trigger an in-view update ie. after lazyloading new elements in
 
 ```javascript
 
-import Events from './src/modules/util/events';
+import Events from '@utilities/events';
 
 Events.$trigger('in-view::update');
 

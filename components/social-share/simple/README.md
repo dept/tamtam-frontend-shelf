@@ -17,7 +17,7 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/social-share';
+import '@components/social-share';
 ```
 
 ## How to use

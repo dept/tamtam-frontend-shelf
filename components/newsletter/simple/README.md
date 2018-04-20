@@ -17,8 +17,8 @@
 
 Import module
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import Newsletter from './src/modules/newsletter';
+import moduleInit from '@utilities/module-init';
+import Newsletter from '@components/newsletter';
 moduleInit('[js-hook-newsletter]', Newsletter);
 ```
 
