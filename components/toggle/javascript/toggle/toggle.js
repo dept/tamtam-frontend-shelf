@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';
 

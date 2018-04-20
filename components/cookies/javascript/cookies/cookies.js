@@ -1,5 +1,5 @@
 import cookies from 'js-cookie';
-import Events from 'modules/util/events';
+import Events from '@utilities/events';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
 const COOKIE_FORM_HOOK = '[js-hook-cookies-form]';

@@ -17,13 +17,13 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/social-share';
+import '@components/social-share';
 ```
 
 ## How to use
 Include component in your template. Binding of clicks will be handles by the [Events component](/utilities/events/);
 ```htmlmixed
-{% include 'components/social-share.html' %}
+{% include 'social-share.html' %}
 ```
 
 ## Dependencies

@@ -28,8 +28,8 @@ npm i raf-throttle --save
 Import module
 
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import Header from './src/modules/header';
+import moduleInit from '@utilities/module-init';
+import Header from '@components/header';
 moduleInit('[js-hook-header]', Header);
 ```
 
@@ -39,7 +39,7 @@ moduleInit('[js-hook-header]', Header);
 Add header template to page
 
 ```htmlmixed
-{% from 'components/header.html' import header %}
+{% from 'header.html' import header %}
 ```
 
 #### Default state 

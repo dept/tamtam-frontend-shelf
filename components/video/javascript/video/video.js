@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 
 const VIDEO_HOOK = '[js-hook-video]';
 const PLAYER_HOOK = '[js-hook-video-player]';

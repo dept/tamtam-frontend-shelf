@@ -16,7 +16,7 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/history.js';
+import '@utilities/history.js';
 ```
 
 ## How to use

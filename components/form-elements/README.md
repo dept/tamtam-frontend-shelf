@@ -17,13 +17,13 @@ This is currently only needed if you use file input fields.
 
 Import module
 ```javascript
-import { CustomFile } from './src/modules/form';
+import { CustomFile } from '@components/form';
 
 moduleInit('[js-hook-input-file]', CustomFile);
 ```
 
 ```htmlmixed
-{% import 'components/form-elements.html' as form %}
+{% import 'form-elements.html' as form %}
 ```
 
 ## How to use

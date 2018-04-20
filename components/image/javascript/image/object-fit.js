@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 import parseSrcSet from './util/parse-srcset';
 
 const HAS_POLYFILL_CLASS            = 'has--object-fit-polyfill';

@@ -1,5 +1,5 @@
 import raf from 'raf';
-import Events from 'modules/util/events';
+import Events from '@utilities/events';
 
 const ST_HOOK = 'a[href^="#"]';
 const ST_DURATION = 500;

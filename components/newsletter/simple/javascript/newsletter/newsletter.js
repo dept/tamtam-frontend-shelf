@@ -1,6 +1,6 @@
-import { isValidEmail } from '../util/validation';
-import Events from '../util/events';
-import Api from '../util/api';
+import { isValidEmail } from '@utilities/validation';
+import Events from '@utilities/events';
+import Api from '@utilities/api';
 
 const API_URL = '/api/test/';
 

@@ -8,7 +8,7 @@
 5. [Changelog](#markdown-header-changelog)
 6. [Developers](#markdown-header-developers)
 
-![Video Demo](./_demo/video.gif)
+![Video Demo](https://media.giphy.com/media/7AaqrqQUPys39wn1CN/giphy.gif)
 
 ## What does it do
 * Plays Youtube, Vimeo and native video
@@ -24,10 +24,10 @@ npm i number-is-nan@1.0.1 --save
 ```
 Import module
 ```javascript
-import './src/modules/image';
-import './src/modules/in-view';
-import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
-import Video from './src/modules/video';
+import '@components/image';
+import '@components/in-view';
+import { Youtube, Vimeo, Native } from '@components/video/platforms';
+import Video from '@components/video';
 ```
 
 ## How to use
@@ -35,10 +35,10 @@ import Video from './src/modules/video';
 ### Default
 
 ```javascript
-import './src/modules/image';
-import './src/modules/in-view';
-import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
-import Video from './src/modules/video';
+import '@components/image';
+import '@components/in-view';
+import { Youtube, Vimeo, Native } from '@components/video/platforms';
+import Video from '@components/video';
 
 Video.registerPlatforms({
     'native': Native,
@@ -49,7 +49,7 @@ Video.registerPlatforms({
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,
@@ -74,9 +74,9 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 ### Without in-view
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
-import './src/modules/image';
-import { Youtube, Vimeo, Native } from './src/modules/video/platforms';
-import Video from './src/modules/video';
+import '@components/image';
+import { Youtube, Vimeo, Native } from '@components/video/platforms';
+import Video from '@components/video';
 
 Video.registerPlatforms({
     'native': Native,
@@ -89,7 +89,7 @@ Events.$trigger('video::update');
 
 Create the player the same as in the previous demo. But now add a `inview: false` as parameter.
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,
@@ -115,10 +115,10 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
-import './src/modules/image';
-import './src/modules/in-view';
-import { Native } from './src/modules/video/platforms';
-import Video from './src/modules/video';
+import '@components/image';
+import '@components/in-view';
+import { Native } from '@components/video/platforms';
+import Video from '@components/video';
 
 Video.registerPlatforms({
     'native': Native
@@ -126,7 +126,7 @@ Video.registerPlatforms({
 ```
 
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,

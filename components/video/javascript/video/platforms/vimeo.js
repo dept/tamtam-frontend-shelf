@@ -1,5 +1,5 @@
-import Cookies from '../../util/cookies';
-import Events from '../../util/events';
+import Cookies from '@utilities/cookies';
+import Events from '@utilities/events';
 import VimeoPlayer from '@vimeo/player';
 
 class VimeoVideo {

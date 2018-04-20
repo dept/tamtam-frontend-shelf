@@ -20,7 +20,7 @@ npm i layzr.js@2.2.2 --save
 ```
 Import module
 ```javascript
-import './src/modules/image';
+import '@components/image';
 ```
 
 ## How to use
@@ -28,11 +28,11 @@ import './src/modules/image';
 ### Default
 
 ```javascript
-import './src/modules/image';
+import '@components/image';
 ```
 
 ```htmlmixed
-{% from 'components/image.html' import image  %}
+{% from 'image.html' import image  %}
 
 {{ image({
     preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',

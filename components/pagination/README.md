@@ -15,7 +15,7 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/pagination.html' import pagination %}
+{% from 'pagination.html' import pagination %}
 ```
 
 ## How to use

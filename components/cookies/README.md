@@ -23,7 +23,7 @@ npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
-import Cookiebar from 'components/cookies';
+import Cookiebar from '@components/cookies';
 ```
 
 ## How to use

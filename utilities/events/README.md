@@ -17,10 +17,10 @@
 Import module
 ```javascript
 // Without enabling logging
-import './src/modules/util/events';
+import '@utilities/events';
 
 // Optionally enable logging
-import Events from './src/modules/util/events';
+import Events from '@utilities/events';
 Events.logging = (!Environment.isProduction() && !Environment.isAcceptation());
 ```
 
@@ -28,7 +28,7 @@ Events.logging = (!Environment.isProduction() && !Environment.isAcceptation());
 ### Bind and listen to events in Javascript
 ```javascript
 
-import Events from './src/modules/util/events';
+import Events from '@utilities/events';
 
 // Listen to events
 Events.$on('eventname', (e, data) => yourOwnFunction(data));

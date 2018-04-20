@@ -8,7 +8,7 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Modal Demo](./_demo/modal.gif)
+![Modal Demo](https://media.giphy.com/media/3BMtWjq6gBFu8iHqsS/giphy.gif)
 
 ## What does it do
 * Create modalboxes with an easy to use macro.
@@ -18,8 +18,8 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/focus-trap';
-import './src/modules/modal';
+import '@utilities/focus-trap';
+import '@components/modal';
 ```
 
 ## How to use
@@ -28,7 +28,7 @@ import './src/modules/modal';
 
 Create modalbox in HTML.
 ```htmlmixed
-{% from 'components/modal.html' import modal  %}
+{% from 'modal.html' import modal  %}
 
 You can add the following options:
 * `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.

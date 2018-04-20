@@ -17,8 +17,8 @@
 
 Import module
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import Newsletter from './src/modules/newsletter';
+import moduleInit from '@utilities/module-init';
+import Newsletter from '@components/newsletter';
 moduleInit('[js-hook-newsletter]', Newsletter);
 ```
 
@@ -27,7 +27,7 @@ moduleInit('[js-hook-newsletter]', Newsletter);
 Add newsletter template to page
 
 ```htmlmixed
-{% include "components/newsletter.html" %}
+{% include "newsletter.html" %}
 ```
 
 ## Dependencies

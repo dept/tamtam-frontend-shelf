@@ -15,7 +15,7 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/search-field.html' import searchField %}
+{% from 'search-field.html' import searchField %}
 ```
 
 ## How to use

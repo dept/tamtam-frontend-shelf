@@ -1,4 +1,4 @@
-import Events from '../util/events';
+import Events from '@utilities/events';
 import AccordionItem from './accordion-item';
 
 const ACCORDION_ITEM_HOOK = '[js-hook-accordion-item]';

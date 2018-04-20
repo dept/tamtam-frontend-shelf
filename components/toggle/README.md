@@ -14,9 +14,9 @@
 ## Install
 Import module
 ```javascript
-import moduleInit from './src/modules/util/module-init';
-import './src/modules/util/events';
-import Toggle from './src/modules/toggle';
+import moduleInit from '@utilities/module-init';
+import '@utilities/events';
+import Toggle from '@components/toggle';
 
 moduleInit('[js-hook-toggle]', Toggle);
 ```

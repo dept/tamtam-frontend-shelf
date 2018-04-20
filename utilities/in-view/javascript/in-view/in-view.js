@@ -1,5 +1,5 @@
 import RafThrottle from '../raf-throttle';
-import Events from '../events';
+import Events from '@utilities/events';
 
 const INVIEW_HOOK = '[js-hook-inview]';
 const SCROLL_ELEMENT = window;

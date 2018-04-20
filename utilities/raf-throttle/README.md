@@ -19,14 +19,14 @@ npm i raf@3.4.0 --save
 ```
 Import module
 ```javascript
-import RafThrottle from './src/modules/util/raf-throttle';
+import RafThrottle from '@utilities/raf-throttle';
 ```
 
 ## How to use
 ### Import utility
 ```javascript
 
-import RafThrottle from './src/modules/util/raf-throttle';
+import RafThrottle from '@utilities/raf-throttle';
 
 ```
 

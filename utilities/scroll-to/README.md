@@ -15,7 +15,7 @@
 ## Install
 
 ```javascript
-import './src/modules/util/scroll-to';
+import '@utilities/scroll-to';
 ```
 
 ## How to use
@@ -53,7 +53,7 @@ For custom usage you can use the scroll-to class, without the need on an id.
 
 __NOTE: This will not be accessible.__
 ```javascript
-import ScrollTo from '../util/scroll-to';
+import ScrollTo from '@utilities/scroll-to';
 
 ScrollTo.scrollTo(document.querySelector('footer'))
     .then(() => doStuff)

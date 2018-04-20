@@ -14,7 +14,7 @@
 ## Install
 Import module
 ```javascript
-import './src/modules/util/focus-trap';
+import '@utilities/focus-trap';
 ```
 
 ## How to use

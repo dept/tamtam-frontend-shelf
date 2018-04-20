@@ -16,13 +16,13 @@
 Import module
 ```javascript
 // Import all exports
-import * as Storage from './src/modules/util/storage';
+import * as Storage from '@utilities/storage';
 
 // Import specific module
-import { LocalStorage } from './src/modules/util/storage';
-import { SessionStorage } from './src/modules/util/storage';
-import { localStorageIsSupported } from './src/modules/util/storage';
-import { sessionStorageIsSupported } from './src/modules/util/storage';
+import { LocalStorage } from '@utilities/storage';
+import { SessionStorage } from '@utilities/storage';
+import { localStorageIsSupported } from '@utilities/storage';
+import { sessionStorageIsSupported } from '@utilities/storage';
 ```
 
 ## How to use
@@ -30,23 +30,23 @@ import { sessionStorageIsSupported } from './src/modules/util/storage';
 ### Detection
 ```javascript
 // Detect localStorage
-import { localStorageIsSupported } from './src/modules/util/storage';
+import { localStorageIsSupported } from '@utilities/storage';
 
 // Detect sessionStorage
-import { sessionStorageIsSupported } from './src/modules/util/storage';
+import { sessionStorageIsSupported } from '@utilities/storage';
 ```
 
 ### Storage types
 You can use either localStorage or sessionStorage
 ```javascript
 // Use localStorage
-import { LocalStorage } from './src/modules/util/storage';
+import { LocalStorage } from '@utilities/storage';
 
 // Use sessionStorage
-import { SessionStorage } from './src/modules/util/storage';
+import { SessionStorage } from '@utilities/storage';
 
 // Use both
-import { LocalStorage, SessionStorage } from './src/modules/util/storage';
+import { LocalStorage, SessionStorage } from '@utilities/storage';
 ```
 
 ### Set prefix
