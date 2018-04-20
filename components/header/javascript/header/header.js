@@ -1,4 +1,4 @@
-import RafThrottle from './util/raf-throttle';
+import RafThrottle from '@utilities/raf-throttle';
 
 const HEADER_SHADOW_CLASS = 'header--has-shadow';
 class Header {
