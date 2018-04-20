@@ -70,8 +70,8 @@ The next code snippet will look for the video instance with '12' set as instance
 ```
 
 ## Dependencies
-This package doest not have any dependencies.
+This package doesn't not have any dependencies.
 
 ## Developers
-* Jeroen Reumkens
-* Adrian Klingen (co author)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
