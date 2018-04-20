@@ -70,7 +70,7 @@ moduleInit('[js-hook-sticky]', Sticky);
 
 Create sticky component in HTML.
 ```htmlmixed
-{% from 'components/sticky.html' import sticky  %}
+{% from 'sticky.html' import sticky  %}
 
 {% call sticky({
     id: 'my-awesome-sticky-component',

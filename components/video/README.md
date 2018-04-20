@@ -49,7 +49,7 @@ Video.registerPlatforms({
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,
@@ -89,7 +89,7 @@ Events.$trigger('video::update');
 
 Create the player the same as in the previous demo. But now add a `inview: false` as parameter.
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,
@@ -126,7 +126,7 @@ Video.registerPlatforms({
 ```
 
 ```htmlmixed
-{% from 'components/video.html' import video  %}
+{% from 'video.html' import video  %}
 
 {{ video({
     instance_id: 1,

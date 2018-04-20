@@ -15,7 +15,7 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/search-results.html' import searchResults %}
+{% from 'search-results.html' import searchResults %}
 ```
 
 ## How to use

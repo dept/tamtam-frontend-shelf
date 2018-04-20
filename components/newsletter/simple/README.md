@@ -27,7 +27,7 @@ moduleInit('[js-hook-newsletter]', Newsletter);
 Add newsletter template to page
 
 ```htmlmixed
-{% include "components/newsletter.html" %}
+{% include "newsletter.html" %}
 ```
 
 ## Dependencies

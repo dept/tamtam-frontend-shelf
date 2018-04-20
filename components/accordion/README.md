@@ -30,7 +30,7 @@ moduleInit('[js-hook-accordion]', Accordion);
 
 Create an accordion in html and add items.
 ```htmlmixed
-{% import 'components/accordion.html' as accordion %}
+{% import 'accordion.html' as accordion %}
 
 {% call accordion.default({
     autoclose: false // optional

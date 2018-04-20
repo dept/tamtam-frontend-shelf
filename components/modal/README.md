@@ -28,7 +28,7 @@ import '@components/modal';
 
 Create modalbox in HTML.
 ```htmlmixed
-{% from 'components/modal.html' import modal  %}
+{% from 'modal.html' import modal  %}
 
 You can add the following options:
 * `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.

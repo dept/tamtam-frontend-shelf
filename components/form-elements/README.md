@@ -23,7 +23,7 @@ moduleInit('[js-hook-input-file]', CustomFile);
 ```
 
 ```htmlmixed
-{% import 'components/form-elements.html' as form %}
+{% import 'form-elements.html' as form %}
 ```
 
 ## How to use

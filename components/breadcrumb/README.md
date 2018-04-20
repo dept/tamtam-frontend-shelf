@@ -18,7 +18,7 @@ Overly long strings get ellipsed until the mobile-plus-and-smaller breakpoint is
 
 ## Install
 ```htmlmixed
-{% from 'components/breadcrumb.html' import breadcrumb %}
+{% from 'breadcrumb.html' import breadcrumb %}
 ```
 
 ## How to use

@@ -17,7 +17,7 @@
 
 ## Install
 ```htmlmixed
-{% from 'components/teaser.html' import teaser %}
+{% from 'teaser.html' import teaser %}
 ```
 
 ## How to use

@@ -32,7 +32,7 @@ import '@components/image';
 ```
 
 ```htmlmixed
-{% from 'components/image.html' import image  %}
+{% from 'image.html' import image  %}
 
 {{ image({
     preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
