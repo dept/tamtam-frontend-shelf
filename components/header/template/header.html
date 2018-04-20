@@ -1,0 +1,18 @@
+{#
+    @shelf-version: 1.0.0
+    Header template
+#}
+
+{% macro header( data ) %}
+
+    <div class="c-header {% if data.shadow %} header--has-shadow{% endif %}" 
+        {% if data.condenses %} condenses{% endif %}
+        {% if data.reveals %} reveals{% endif %}
+        {% if data.fixed %} fixed{% endif %}
+        js-hook-header>
+
+        {{ caller() }}
+
+    </div>
+
+{% endmacro %}
