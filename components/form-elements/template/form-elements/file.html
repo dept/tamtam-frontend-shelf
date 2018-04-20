@@ -11,6 +11,7 @@
         multiple                 (optional) - Adds multiple option and translation label when multiple files
         accept                   (optional) - Limit file extension selection
         disabled {boolean}       (optional) - Add disabled property to the input
+        required {boolean}       (optional) - Add required property to the input
         error {string}           (optional) - Add error state and message
 
 #}
@@ -34,6 +35,8 @@
                     name="{{ data.name }}"
                     id="{{ data.id }}"
                     {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
+                    {%- if data.required %} required="required"{% endif -%}
+                    {%- if data.disabled %} disabled="disabled"{% endif -%}
                     js-hook-input-file
                     {%- if data.accept %} accept="{{ data.accept }}"{% endif -%}
                     {%- if data.multiple %} multiple data-multiple-label="{count} files selected"{% endif -%}
