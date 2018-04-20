@@ -5,6 +5,7 @@
         class {string}             (optional) - Adds custom classes
         horizontal {boolean}       (optional) - Makes radio group horizontal
         disabled {boolean}         (optional) - Add disabled property to the checkbox element
+        required {boolean}         (optional) - Add required property to the select
         attr {string}              (optional) - Adds attributes to the checkbox element
         error {string}             (optional) - Add error state and message
         options.label {string}                - Adds a label to the checkbox option
@@ -31,7 +32,8 @@
                 type="checkbox"
                 name="{{ data.name }}"
                 value="{{ option.value }}"
-                id="{{ option.value }}"
+                id="{{ option.id }}"
+                {%- if data.required %} required="required"{% endif -%}
                 {%- if option.disabled %} disabled="disabled"{% endif -%}
                 {%- if option.checked %} checked="checked"{% endif -%}
                 {%- if option.hook %} js-hook-{{ option.hook }}{% endif -%}

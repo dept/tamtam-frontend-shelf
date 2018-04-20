@@ -1,9 +1,8 @@
 {#
-    Input
+    Textarea
 
     Options:
         class {string}           (optional) - Adds custom classes
-        type {string}            (optional) - Adds a label to the input
         label {string}                      - Adds a label to the input
         id {string|int}                     - Adds an id to the input (needed for label to be clickable)
         value {string                       - Adds a value to the input
@@ -12,33 +11,28 @@
         attr {string}                       - Adds attributes to the input
         pattern {string}           (optional) - Adds attributes to the input
         disabled {boolean}       (optional) - Add disabled property to the input
-        required {boolean}       (optional) - Add required property to the input
         error {string}           (optional) - Add error state and message
 
 #}
-{% macro input(data) %}
+{% macro textarea(data) %}
 
-    <div class="c-input form__item
+    <div class="c-textarea form__item
         {%- if data.class %} {{ data.class }}{% endif -%}
-        {%- if data.type %} input--{{ data.type }}{% endif -%}
         {%- if data.disabled %} form__item--disabled{% endif -%}
         {%- if data.error %} form__item--error{% endif -%}">
 
-        <div class="input__wrapper">
-            <label class="input__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
+        <div class="textarea__wrapper">
+            <label class="textarea__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
-            <input class="input__input"
-                type="{%- if data.type %}{{ data.type }}{% else %}text{% endif -%}"
+            <textarea class="textarea__input"
                 name="{{ data.name }}"
                 value="{{ data.value }}"
                 id="{{ data.id }}"
-                {%- if data.required %} required="required"{% endif -%}
                 {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
-                {%- if data.pattern %} pattern="{{ data.pattern }}"{% endif -%}
-                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+                {%- if data.attr %} {{ data.attr|safe }}{% endif -%}></textarea>
         </div>
         {%- if data.error %}
             <div class="form__item-error">{{ data.error }}</div>

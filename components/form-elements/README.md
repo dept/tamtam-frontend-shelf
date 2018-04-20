@@ -145,6 +145,17 @@ See the [select](/components/form-elements/template/form-elements/select.html) m
 }) }}
 ```
 
+### Textarea
+See the [input](/components/form-elements/template/form-elements/textarea.html) macro for all available options.
+```htmlmixed
+{{ form.textarea({
+    name: 'textarea-text',
+    id: 'textarea-text',
+    label: 'Textarea',
+    placeholder: 'Textarea'
+}) }}
+```
+
 ## Dependencies
 This package doesn't have any dependencies.
 
