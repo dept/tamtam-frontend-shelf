@@ -32,6 +32,11 @@ $input-transition-ease: $ease-in-out-quad;
     background-color: $input-fill-color;
     line-height: $font-line-height-body;
 
+    &[disabled] {
+        cursor: default;
+        opacity: 0.5;
+    }
+
     &::-ms-expand {
         display: none;
     }

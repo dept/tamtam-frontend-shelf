@@ -1,3 +1,4 @@
+import Cookies from '../../util/cookies';
 import Events from '../../util/events';
 import YouTubePlayer from 'youtube-player';
 
@@ -16,6 +17,11 @@ class YoutubeVideo {
     constructor(options) {
 
         this.options = options;
+
+        if (!Cookies.cookieIsValid('advertising')) {
+            Events.$trigger('video::cookie-invalid', { data: this.options.element });
+            return;
+        }
 
         this._initPlayer();
         this._bindEvents();

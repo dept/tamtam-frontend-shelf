@@ -20,6 +20,17 @@ $checkbox-transition-ease: $ease-in-out-quad;
             }
         }
     }
+
+    &[disabled] {
+        & + label {
+            cursor: default;
+
+            &::after,
+            &::before {
+                opacity: 0.5;
+            }
+        }
+    }
 }
 
 .checkbox__label {

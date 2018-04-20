@@ -1,3 +1,4 @@
+import Cookies from '../../util/cookies';
 import Events from '../../util/events';
 import VimeoPlayer from '@vimeo/player';
 
@@ -6,6 +7,11 @@ class VimeoVideo {
     constructor(options) {
 
         this.options = options;
+
+        if (!Cookies.cookieIsValid('advertising')) {
+            Events.$trigger('video::cookie-invalid', { data: this.options.element });
+            return;
+        }
 
         this._initPlayer();
         this._bindEvents();
