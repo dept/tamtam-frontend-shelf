@@ -88,7 +88,7 @@ function scrollTo({ position, scrollElement, offset, duration }) {
 
     return new Promise(resolve => {
 
-        const scrollPosition = window.pageYOffset || window.scrollY;
+        const scrollPosition = (window.scrollY == null) ? window.pageYOffset : window.scrollY;
         const to = position.top + scrollPosition - offset;
         const start = scrollElement ? scrollElement.scrollTop : Math.max(document.body.scrollTop, document.documentElement.scrollTop);
         const change = to - start;
