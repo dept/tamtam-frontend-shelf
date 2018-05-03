@@ -43,6 +43,7 @@
                 options: [
                     {
                         label: 'Functional: Cookies that make sure the site works properly.',
+                        id: 'functional',
                         value: 'functional',
                         checked: true,
                         disabled: true,
@@ -50,6 +51,7 @@
                     },
                     {
                         label: 'Analytics: Cookies which allows us to measure the usage of the site. The collected data will be combined and aggregated to allow us to do static analyses',
+                        id: 'analytics',
                         value: 'analytics',
                         checked: true,
                         disabled: true,
@@ -57,16 +59,19 @@
                     },
                     {
                         label: 'Social networks: Cookies that allow us to share the contents of this site on social networks. Social networks profile and track users. By accepting these cookies you allow social networks to track your browsing activity.',
+                        id: 'social',
                         value: 'social',
                         hook: 'cookies-option'
                     },
                     {
                         label: 'Advertising: Cookies which allow us to offer you tailored content based on your browsing behavior. By accepting these cookies you allow advertising networks to track your browsing activity.',
+                        id: 'advertising',
                         value: 'advertising',
                         hook: 'cookies-option'
                     },
                     {
                         label: 'Other: Cookies which do not apply to the categories above. By accepting these cookies you allow social, advertising or other networks to track your browsing activity.',
+                        id: 'other',
                         value: 'other',
                         hook: 'cookies-option'
                     }

@@ -3,10 +3,10 @@ import Events from '@utilities/events';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
 const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]';
-const COOKIE_OPTION_HOOK = '[js-hook-cookies-option]';
 
 const COOKIE_FORM_HOOK = '[js-hook-cookies-form]';
 const COOKIE_FORM_SUBMIT_HOOK = '[js-hook-cookies-form-accept]';
+const COOKIE_OPTION_HOOK = '[js-hook-cookies-option]';
 
 const COOKIEBAR_COOKIE_NAME = 'accepted';
 const COOKIEBAR_COOKIE_VERSION = 'version';
