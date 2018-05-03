@@ -18,7 +18,8 @@
                 label: 'Change cookie settings',
                 url: '/cookie-settings.html',
                 class: 'cookie-bar__button',
-                size: 'small'
+                size: 'small',
+                hook: 'cookies-settings-button'
             } ) }}
 
             {{ button( {
@@ -28,7 +29,8 @@
                 label: 'I agree',
                 class: 'cookie-bar__button',
                 attr: 'on:click="cookies::dismiss"',
-                size: 'small'
+                size: 'small',
+                hook: 'cookies-dismiss'
             } ) }}
         </div>
 
