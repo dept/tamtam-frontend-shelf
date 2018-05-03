@@ -2,7 +2,10 @@ import cookies from 'js-cookie';
 import Events from '@utilities/events';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
+const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]';
+
 const COOKIE_FORM_HOOK = '[js-hook-cookies-form]';
+const COOKIE_FORM_SUBMIT_HOOK = '[js-hook-cookies-form-accept]';
 const COOKIE_OPTION_HOOK = '[js-hook-cookies-option]';
 
 const COOKIEBAR_COOKIE_NAME = 'accepted';
@@ -14,12 +17,15 @@ class Cookies {
     constructor() {
 
         this.cookiebar = document.querySelector(COOKIE_BAR_HOOK);
+        this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK);
+
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
         if (this.form.element) {
             this.form.url = this.form.element.getAttribute('action');
             this.form.options = this.form.element.querySelectorAll(COOKIE_OPTION_HOOK);
+            this.form.submit = this.form.element.querySelector(COOKIE_FORM_SUBMIT_HOOK);
         }
 
         this.config = {
@@ -94,6 +100,20 @@ class Cookies {
         if (this.form.element) {
             Events.$on('cookies::preferences-default', () => this._setDefaultPreferences());
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
+        }
+
+        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === '0') {
+            Array.from(document.querySelectorAll('a, input[type="submit"], button[type="submit"]'))
+                .filter(link => link !== this.cookiebarOptionsButton && link !== this.form.submit)
+                .map(link => {
+                    link.addEventListener('click', event => {
+                        this._acceptAllCookies();
+                        const url = event.currentTarget.href;
+                        if (url) {
+                            window.location = url;
+                        }
+                    });
+                });
         }
 
     }
