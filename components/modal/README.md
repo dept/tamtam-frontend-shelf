@@ -36,9 +36,9 @@ You can add the following options:
 
 {% call modal({
     id : 'modal-example',
-    autoFocus   : 'true',
-    closeAll    : 'true',
-    noBodyClass : 'false'
+    autoFocus      : 'true',
+    closeAllOthers : 'true',
+    noBodyClass    : 'false'
 }) %}
 
     Your content here.
@@ -57,7 +57,7 @@ Custom html element
 ```htmlmixed
 <div id="modal-custom"
     data-modal-auto-focus="true"
-    data-modal-close-all="true"
+    data-modal-close-all-others="true"
     data-modal-no-body-class="false">
     I am a custom modalbox
 

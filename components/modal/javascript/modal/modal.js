@@ -121,14 +121,14 @@ class Modal {
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
-        const closeAll = modal.el.dataset.modalCloseAll === 'true';
+        const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true';
 
         // Add modal open class to html element if noBodyClass is false
         if (!noBodyClass) {
             html.classList.add(MODAL_HTML_CLASS);
         }
 
-        if (closeAll) {
+        if (closeAllOthers) {
             Object.keys(this.registeredModals)
                 .filter(key => this.registeredModals[key].id !== data.id)
                 .map(id => {
