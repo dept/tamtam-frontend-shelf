@@ -90,8 +90,8 @@ class Modal {
             }
         }));
 
-        Events.$on(`modal[${id}]::close`, () => this.closeModal(event, { id }) );
-        Events.$on(`modal[${id}]::open`, () => this.openModal(event, { id }) );
+        Events.$on(`modal[${id}]::close`, () => this.closeModal(event, { id }));
+        Events.$on(`modal[${id}]::open`, () => this.openModal(event, { id }));
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
@@ -121,10 +121,22 @@ class Modal {
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
+        const closeAll = modal.el.dataset.modalCloseAll === 'true';
 
         // Add modal open class to html element if noBodyClass is false
         if (!noBodyClass) {
             html.classList.add(MODAL_HTML_CLASS);
+        }
+
+        if (closeAll) {
+            Object.keys(this.registeredModals)
+                .filter(key => this.registeredModals[key].id !== data.id)
+                .map(id => {
+                    const _modal = this.registeredModals[id];
+                    if (_modal.el.modalIsOpen) {
+                        Events.$trigger(`modal[${_modal.id}]::close`, { data: { id: _modal.id } });
+                    }
+                });
         }
 
         // Add tabindex and add visible class
