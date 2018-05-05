@@ -58,7 +58,7 @@ class ScrollTo {
 
     }
 
-    scrollTo(target, scrollElement, duration, offset) {
+    scrollTo(target, duration, offset, scrollElement) {
 
         const scrollConfig = {
             position: target.getBoundingClientRect(),
