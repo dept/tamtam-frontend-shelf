@@ -131,7 +131,7 @@ class Modal {
         if (closeAllOthers) {
             Object.keys(this.registeredModals)
                 .filter(key => this.registeredModals[key].id !== data.id)
-                .map(id => {
+                .forEach(id => {
                     const _modal = this.registeredModals[id];
                     if (_modal.el.modalIsOpen) {
                         Events.$trigger(`modal[${_modal.id}]::close`, { data: { id: _modal.id } });
