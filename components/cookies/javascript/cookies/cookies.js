@@ -105,7 +105,7 @@ class Cookies {
         if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === '0') {
             Array.from(document.querySelectorAll('a, input[type="submit"], button[type="submit"]'))
                 .filter(link => link !== this.cookiebarOptionsButton && link !== this.form.submit)
-                .map(link => {
+                .forEach(link => {
                     link.addEventListener('click', event => {
                         this._acceptAllCookies();
                         const url = event.currentTarget.href;
