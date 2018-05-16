@@ -7,31 +7,35 @@
 
 <div class="c-cookie-bar" js-hook-cookies-bar>
 
-    <div class="cookie-bar__content o-container">
+    <div class="o-container">
 
-        <div class="cookie-bar__text">
-            Cookie content here
-        </div>
+        <div class="cookie-bar__content">
 
-        <div class="cookie-bar__button-holder">
-            {{ button( {
-                label: 'Change cookie settings',
-                url: '/cookie-settings.html',
-                class: 'cookie-bar__button',
-                size: 'small',
-                hook: 'cookies-settings-button'
-            } ) }}
+            <div class="cookie-bar__text">
+                Cookie content here
+            </div>
 
-            {{ button( {
-                element: 'button',
-                type: 'button',
-                variant: 'primary',
-                label: 'I agree',
-                class: 'cookie-bar__button',
-                attr: 'on:click="cookies::dismiss"',
-                size: 'small',
-                hook: 'cookies-dismiss'
-            } ) }}
+            <div class="cookie-bar__button-holder">
+                {{ button( {
+                    label: 'Change cookie settings',
+                    url: '/cookie-settings.html',
+                    class: 'cookie-bar__button',
+                    size: 'small',
+                    hook: 'cookies-settings-button'
+                } ) }}
+
+                {{ button( {
+                    element: 'button',
+                    type: 'button',
+                    variant: 'primary',
+                    label: 'I agree',
+                    class: 'cookie-bar__button',
+                    attr: 'on:click="cookies::dismiss"',
+                    size: 'small',
+                    hook: 'cookies-dismiss'
+                } ) }}
+            </div>
+
         </div>
 
     </div>
