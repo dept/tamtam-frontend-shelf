@@ -1,0 +1,16 @@
+.c-googlemaps {}
+
+.googlemaps__container {
+    
+    @include screen-mobile-plus-and-smaller {
+        height: 450px;
+    }
+
+    @include screen-tablet-portrait-and-bigger {
+        height: 500px;
+    }
+
+    @include screen-tablet-landscape-and-bigger {
+        height: 575px;
+    }
+}

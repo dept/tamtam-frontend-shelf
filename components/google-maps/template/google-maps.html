@@ -1,0 +1,12 @@
+{% macro googlemaps( data ) %}
+
+<div class="c-googlemaps" js-hook-googlemaps>
+
+    <div class="googlemaps__container"
+         js-hook-googlemaps-container 
+         data-locations='{{ data | dump }}'>
+    </div>
+
+</div>
+
+{% endmacro %}
