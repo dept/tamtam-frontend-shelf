@@ -102,6 +102,7 @@ class Modal {
         document.addEventListener('keyup', event => {
             if (event.keyCode === 27) {
                 Events.$trigger('modal::close');
+                Events.$trigger(`modal[${id}]::close`, { data: { id } });
             }
         });
 
