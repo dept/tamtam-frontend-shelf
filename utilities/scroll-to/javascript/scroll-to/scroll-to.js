@@ -107,7 +107,7 @@ function scrollTo({ position, scrollElement, offset, duration }) {
                 document.documentElement.scrollTop = val;
             }
 
-            if (currentTime < duration) {
+            if (val >= to) {
                 raf(animate);
             } else {
                 resolve();
