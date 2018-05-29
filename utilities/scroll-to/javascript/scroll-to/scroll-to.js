@@ -98,7 +98,7 @@ function scrollTo({ position, scrollElement, offset, duration }) {
         const animate = () => {
 
             currentTime += increment;
-            const val = easeInOutQuad(currentTime, start, change, duration);
+            const val = parseInt(easeInOutQuad(currentTime, start, change, duration).toFixed(0), 10);
 
             if (scrollElement) {
                 scrollElement.scrollTop = val;
