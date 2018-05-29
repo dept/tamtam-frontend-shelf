@@ -38,15 +38,15 @@ class ScrollTo {
             if (element.scrollToisInitialised) { return; }
 
             element.addEventListener('click', event => {
-                event.preventDefault();
-                const target = element.getAttribute('href');
-                const targetEl = document.querySelector(target);
+                const target = element.getAttribute('href').split('#');
+                const targetEl = target[1] !== "" ? document.querySelector(`#${target[1]}`) : false;
                 if (targetEl) {
+                    event.preventDefault();
                     const scrollConfig = {
                         position: targetEl.getBoundingClientRect(),
-                        scrollElement: element.dataset.scrollElement,
                         offset: element.dataset.scrollOffset ? parseInt(element.dataset.scrollOffset, 10) : ST_OFFSET,
-                        duration: element.dataset.scrollDuration ? parseInt(element.dataset.scrollDuration, 10) : ST_DURATION
+                        duration: element.dataset.scrollDuration ? parseInt(element.dataset.scrollDuration, 10) : ST_DURATION,
+                        scrollElement: element.dataset.scrollElement
                     };
                     scrollTo(scrollConfig);
                 }
@@ -58,13 +58,13 @@ class ScrollTo {
 
     }
 
-    scrollTo(target, scrollElement, duration, offset) {
+    scrollTo(target, duration, offset, scrollElement) {
 
         const scrollConfig = {
             position: target.getBoundingClientRect(),
-            scrollElement: scrollElement,
             offset: parseInt(offset, 10) || ST_OFFSET,
-            duration: parseInt(duration, 10) || ST_DURATION
+            duration: parseInt(duration, 10) || ST_DURATION,
+            scrollElement: scrollElement
         };
 
         return scrollTo(scrollConfig);
@@ -84,7 +84,7 @@ function getElements() {
 /**
  * Scrolls the window to the top
  */
-function scrollTo({ position, scrollElement, offset, duration }) {
+function scrollTo({ position, offset, duration, scrollElement }) {
 
     return new Promise(resolve => {
 
