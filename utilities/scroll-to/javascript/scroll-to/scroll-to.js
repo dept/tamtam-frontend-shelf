@@ -39,7 +39,7 @@ class ScrollTo {
 
             element.addEventListener('click', event => {
                 const target = element.getAttribute('href').split('#');
-                const targetEl = document.querySelector(`#${target.length > 1 ? target[1] : target}`);
+                const targetEl = target[1] !== "" ? document.querySelector(`#${target[1]}`) : false;
                 if (targetEl) {
                     event.preventDefault();
                     const scrollConfig = {
