@@ -108,9 +108,7 @@ function scrollTo({ position, scrollElement, offset, duration }) {
                 document.documentElement.scrollTop = val;
             }
 
-            if (val >= to && direction === 1) {
-                resolve();
-            } else if (val <= to && direction === 0) {
+            if (val >= to && direction === 1 || val <= to && direction === 0) {
                 resolve();
             } else {
                 raf(animate);
