@@ -94,6 +94,7 @@ function scrollTo({ position, scrollElement, offset, duration }) {
         const change = to - start;
         let currentTime = 0;
         const increment = 10;
+        const direction = to > start ? 1 : 0;
 
         const animate = () => {
 
@@ -107,10 +108,12 @@ function scrollTo({ position, scrollElement, offset, duration }) {
                 document.documentElement.scrollTop = val;
             }
 
-            if (val >= to) {
-                raf(animate);
-            } else {
+            if (val >= to && direction === 1) {
                 resolve();
+            } else if (val <= to && direction === 0) {
+                resolve();
+            } else {
+                raf(animate);
             }
         }
 
