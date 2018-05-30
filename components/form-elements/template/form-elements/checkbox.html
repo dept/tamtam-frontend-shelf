@@ -38,7 +38,7 @@
                 {%- if option.checked %} checked="checked"{% endif -%}
                 {%- if option.hook %} js-hook-{{ option.hook }}{% endif -%}
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
-            <label class="checkbox__label" for="{{ option.value }}" role="button">
+            <label class="checkbox__label" for="{{ option.id }}" role="button">
                 {{ option.label|safe }}
             </label>
         {% endfor %}
