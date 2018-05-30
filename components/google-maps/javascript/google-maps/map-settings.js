@@ -173,6 +173,8 @@ export const MAP_API_KEY = 'AIzaSyCY_bsldrvl7tbx8MmkV9CqrT7vLH8_hrQ';
 
 export const MAP_MARKER = '/assets/images/marker.png';
 
+export const MAP_MARKER_ACTIVE = '/assets/images/marker_active.png';
+
 export const MAP_SETTINGS = {
 
     "center": {

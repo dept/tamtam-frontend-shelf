@@ -1,24 +1,39 @@
 import Events from '@utilities/events';
-import { MAP_SETTINGS, MAP_MARKER, MAP_API_KEY  } from './map-settings.js';
+import { MAP_SETTINGS, MAP_MARKER, MAP_MARKER_ACTIVE, MAP_API_KEY  } from './map-settings.js';
 
-const HOOK_MAPS_CONTAINER   = '[js-hook-googlemaps-container]';
-const HOOK_LOCATION_LIST    = '[js-hook-googlemaps-office-list]';
-const LOCATIONS_DATA_ATTR   = 'data-locations';
+const HOOK_MAPS_CONTAINER       = '[js-hook-googlemaps-container]';
+const HOOK_REGION_SELECT        = '[js-hook-region-select]';
+const HOOK_VIEW_BUTTONS         = '[js-hook-googlemaps-view-button]';
+const HOOK_REGION               = '[js-hook-region]';
+const HOOK_LOCATION             = '[js-hook-location]';
+
+const LOCATIONS_DATA_ATTR       = 'data-locations';
+
+const LIST_VIEW_CLASS           = 'googlemaps--list-view';
+const LOCATION_VISIBLE_CLASS    = 'location--is-visible';
+const REGION_ACTIVE_CLASS       = 'region--is-active';
+const BUTTON_ACTIVE_CLASS       = 'is-active';
 
 class GoogleMaps {
 
     constructor( element ) {
 
-        this.map = null;
-        this.currentBounds = [];
-        this.markers = [];
+        this.map                = null;
+        this.currentBounds      = [];
+        this.markers            = [];
 
-        this.el            = element;
-        this.mapContainer  = this.el.querySelector( HOOK_MAPS_CONTAINER );
-        this.locationList  = this.el.querySelector( HOOK_LOCATION_LIST );
+        this.el                 = element;
+        this.mapContainer       = this.el.querySelector( HOOK_MAPS_CONTAINER );
 
-        this.locationData   = this.mapContainer.getAttribute( LOCATIONS_DATA_ATTR );
-        this.locations      = JSON.parse(this.locationData);
+        this.regions            = this.el.querySelectorAll( HOOK_REGION );
+        this.locations          = this.el.querySelectorAll( HOOK_LOCATION );
+
+        this.regionSelect       = this.el.querySelector( HOOK_REGION_SELECT );
+        this.viewButtons        = this.el.querySelectorAll( HOOK_VIEW_BUTTONS );
+
+        this.locationData       = this.mapContainer.getAttribute( LOCATIONS_DATA_ATTR );
+        this.locationsJSON      = JSON.parse(this.locationData);
+
 
         this.loadGoogleAPI();
         this.bindEvents();
@@ -30,7 +45,15 @@ class GoogleMaps {
         //Bind initMap to window to let Google Maps access it
         window.initMap = () => this.initMap(this.mapContainer);
 
+        window.onresize = () => this.resetMap();
+
         Events.$on('googlemaps::handleMarkerClick', (e) => this.handleMarkerClick(e));
+
+        Events.$on('googlemaps::handleMapClick', () => this.resetActiveMarkersAndLocations());
+
+        Events.$on('googlemaps::toggleview', () => this.toggleview());
+
+        Events.$on('googlemaps::changeregion', (e) => this.changeRegion(e));
 
     }
 
@@ -46,36 +69,167 @@ class GoogleMaps {
 
     initMap(el) {
 
-       this.map = new google.maps.Map(el, MAP_SETTINGS);
+        this.map = new google.maps.Map(el, MAP_SETTINGS);
 
-       this.addMarkers();
-       this.setBounds();
-    }
+        this.createFilter( this.locationsJSON );
 
-    addMarkers() {
+        this.activateRegion( "all" );
 
-        this.locations.forEach( ( location ) => {
+        this.addMarkers( this.locationsJSON );
 
-            let marker = new google.maps.Marker({
-                position: location.position,
-                map: this.map,
-                icon: MAP_MARKER,
-                id: location.id,
-            });
-
-            marker.addListener('click', function() {
-                Events.$trigger('googlemaps::handleMarkerClick', marker);
-            });
-
-            this.markers.push(marker);
-            
+        this.map.addListener('click', function() {
+            Events.$trigger('googlemaps::handleMapClick');
         });
 
     }
 
-    handleMarkerClick(marker) {
+    resetMap() {
+        this.activateRegion( "all" );
+        this.addMarkers( this.locationsJSON );
+    }
 
-        // Do custom stuff on marker click
+    createFilter( data ) {
+
+        const option = document.createElement('option');
+        option.text = 'All';
+        option.value = "-1" ;
+        this.regionSelect.appendChild( option );
+
+        Array.from(data).forEach( (region, index) => {
+
+            const option = document.createElement('option');
+            option.text = region.name;
+            option.value = index ;
+            this.regionSelect.appendChild( option );
+
+        });
+
+    }
+
+    addMarkers( data ) {
+
+        this.removeAllMarkers();
+
+        Array.from(data).forEach( region => {
+
+            if( !region.locations ) return;
+
+            region.locations.forEach( location => {
+
+                let marker = new google.maps.Marker({
+                    position: location.position,
+                    map: this.map,
+                    icon: location.icon ? location.icon : MAP_MARKER,
+                    id: location.id,
+                });
+
+                marker.addListener('click', function() {
+                    Events.$trigger('googlemaps::handleMarkerClick', marker);
+                });
+
+                this.markers.push(marker);
+
+            });
+
+        });
+
+        this.setBounds();
+
+    }
+
+    removeAllMarkers() {
+
+        this.markers.map(marker => {
+            marker.setMap(null);
+        });
+
+        this.markers = [];
+
+    }
+
+
+    handleMarkerClick(data) {
+
+        this.hideAllLocations();
+        this.resetAllMarkerIcons();
+
+        let marker = data.detail;
+        let clickedLocation = document.querySelector(`#${marker.id}`);
+        clickedLocation.classList.add( LOCATION_VISIBLE_CLASS );
+
+        marker.setIcon( MAP_MARKER_ACTIVE );
+
+    }
+
+    toggleview() {
+
+        this.resetActiveMarkersAndLocations();
+
+        this.el.classList.toggle(LIST_VIEW_CLASS);
+
+        Array.from(this.viewButtons).forEach( ( button ) => {
+            button.classList.toggle(BUTTON_ACTIVE_CLASS);
+        });
+
+        // set bounds again
+        this.setBounds();
+    }
+
+    resetActiveMarkersAndLocations() {
+        this.hideAllLocations();
+        this.resetAllMarkerIcons();
+    }
+
+    hideAllLocations() {
+        Array.from(this.locations).forEach( ( item ) => {
+            item.classList.remove( LOCATION_VISIBLE_CLASS );
+        });
+    }
+
+    resetAllMarkerIcons() {
+        this.markers.forEach( marker => {
+            marker.setIcon( MAP_MARKER );
+        });
+    }
+
+    changeRegion(data) {
+
+        this.hideAllLocations();
+
+        const selectedIndex = data.detail.currentTarget.selectedIndex;
+        const value = data.detail.currentTarget[selectedIndex].value;
+
+        if( value === "-1" ) {
+
+            this.activateRegion( "all" );
+            this.addMarkers( this.locationsJSON );
+
+        } else {
+
+            this.activateRegion( this.locationsJSON[value].id );
+            this.addMarkers( [ this.locationsJSON[value] ] );
+
+        }
+
+    }
+
+    activateRegion( region_id ) {
+
+        if( region_id === "all" ) {
+
+            Array.from(this.regions).forEach( ( item ) => {
+                item.classList.add( REGION_ACTIVE_CLASS );
+            });
+
+        } else {
+
+            Array.from(this.regions).forEach( ( item ) => {
+                item.classList.remove( REGION_ACTIVE_CLASS );
+            });
+
+            document.querySelector(`#${region_id}`).classList.add( REGION_ACTIVE_CLASS );
+
+        }
 
     }
 

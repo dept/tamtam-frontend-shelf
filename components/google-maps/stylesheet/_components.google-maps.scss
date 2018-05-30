@@ -13,4 +13,111 @@
     @include screen-tablet-landscape-and-bigger {
         height: 575px;
     }
+
+    .googlemaps--list-view & {
+        display: none;
+    }
+
+}
+
+.googlemaps__title {
+    margin-bottom: 3rem;
+}
+
+.googlemaps__toggle {
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: flex-end;
+
+    @include screen-mobile-plus-and-smaller {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.googlemaps__toggleselect {
+    margin: 0 5rem 0 0;
+    width: 100%;
+    max-width: 55rem;
+
+    @include screen-mobile-plus-and-smaller {
+        max-width: none;
+        margin-right: 0;
+    }
+}
+
+.googlemaps__togglebutton {
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    padding: 20px 1px;
+    transition: 200ms $ease-in-out-quad;
+    transition-property: color;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        display: block;
+        background: $color-grey-darkest;
+        transform: scale(0);
+        transition: 200ms $ease-in-out-quad;
+        transition-property: transform;
+    }
+
+    &.is-active {
+        font-weight: $font-weight-bold;
+        color: $color-grey-darkest;
+        pointer-events: none;
+
+        &::after {
+            transform: scale(1);
+        }
+    }
+
+    &:not(:last-child) {
+        margin-right: 2rem;
+    }
+}
+
+.googlemaps__region-lists {
+    list-style: none;
+}
+
+.c-region {
+    display: none;
+
+    &.region--is-active {
+        display: block;
+    }
+}
+
+.region__title {
+    margin: 4rem 0 2rem;
+    display: none;
+
+    .googlemaps--list-view & {
+        display: block;
+    }
+}
+
+.region__location-list {
+    list-style: none;
+    position: relative;
+}
+
+.region__location-list-item {
+    background: $color-white;
+    margin-bottom: 1rem;
+    padding: 2rem;
+    width: 100%;
+    pointer-events: none;
+    display: none;
+
+    &.location--is-visible,
+    .googlemaps--list-view & {
+        pointer-events: auto;
+        display: block;
+    }
 }
