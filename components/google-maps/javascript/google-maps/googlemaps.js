@@ -134,7 +134,7 @@ class GoogleMaps {
 
     removeAllMarkers() {
 
-        this.markers.map(marker => {
+        this.markers.forEach( marker => {
             marker.setMap(null);
         });
 
@@ -160,7 +160,7 @@ class GoogleMaps {
 
         this.el.classList.toggle(LIST_VIEW_CLASS);
 
-        Array.from(this.viewButtons).forEach( ( button ) => {
+        Array.from(this.viewButtons).forEach( button => {
             button.classList.toggle(BUTTON_ACTIVE_CLASS);
         });
 
@@ -175,7 +175,7 @@ class GoogleMaps {
 
     hideAllLocations() {
 
-        Array.from(this.locations).forEach( ( item ) => {
+        Array.from(this.locations).forEach( item => {
             item.classList.remove( LOCATION_VISIBLE_CLASS );
         });
     }
@@ -211,13 +211,13 @@ class GoogleMaps {
 
         if( region_id === "all" ) {
 
-            Array.from(this.regions).forEach( ( item ) => {
+            Array.from(this.regions).forEach( item => {
                 item.classList.add( REGION_ACTIVE_CLASS );
             });
 
         } else {
 
-            Array.from(this.regions).forEach( ( item ) => {
+            Array.from(this.regions).forEach( item => {
                 item.classList.remove( REGION_ACTIVE_CLASS );
             });
 
@@ -230,7 +230,7 @@ class GoogleMaps {
 
         this.currentBounds = new google.maps.LatLngBounds();
 
-        this.markers.map(marker => {
+        this.markers.forEach( marker => {
             this.currentBounds.extend(marker.position);
         });
 
