@@ -1,11 +1,11 @@
 /*
     Contains:
 
-    const MAP_STYLE (create your own at https://mapstyle.withgoogle.com/ )
+    const MAP_STYLE ( CREATE AT https://mapstyle.withgoogle.com/ )
     
-    export const MAP_API_KEY
-    export const MAP_MARKER
-    export const MAP_SETTINGS
+    export const MAP_API_KEY ( REGISTER AT https://developers.google.com/maps/documentation/javascript/get-api-key)
+    export const MAP_MARKER ( PATH TO MARKER IMAGE )
+    export const MAP_SETTINGS ( PATH TO ACTIVE MARKER IMAGE )
 */
 
 const MAP_STYLE = [
@@ -169,7 +169,7 @@ const MAP_STYLE = [
   }
 ];
 
-export const MAP_API_KEY = 'AIzaSyCY_bsldrvl7tbx8MmkV9CqrT7vLH8_hrQ';
+export const MAP_API_KEY = '123456789abcdefghijklmnopqrstuvwxyz';
 
 export const MAP_MARKER = '/assets/images/marker.png';
 
