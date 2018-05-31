@@ -1,13 +1,12 @@
-{% from 'location.html' import location  %}
 {% import 'form-elements.html' as form %}
 
 {% macro googlemaps( data ) %}
 
         <div class="c-googlemaps" js-hook-googlemaps>
 
-            <h2 class="googlemaps__title">Find your local partner</h2>
+            <h2 class="googlemaps__title">Locations</h2>
 
-            <div class="googlemaps__toggle">
+            <div class="googlemaps__actions">
 
                 {{ form.select({
                     name: 'region',
@@ -21,9 +20,9 @@
                 
                 <div class="googlemaps__togglebuttons">
                     
-                    <button type="button" class="googlemaps__togglebutton is-active" on:click.prevent="googlemaps::toggleview" js-hook-googlemaps-view-button>map</button>
+                    <button type="button" class="googlemaps__togglebutton is-active" on:click.prevent="googlemaps::toggleview" js-hook-googlemaps-view-button>Map</button>
 
-                    <button type="button" class="googlemaps__togglebutton" on:click.prevent="googlemaps::toggleview" js-hook-googlemaps-view-button>list</button>
+                    <button type="button" class="googlemaps__togglebutton" on:click.prevent="googlemaps::toggleview" js-hook-googlemaps-view-button>List</button>
 
                 </div>
 
@@ -34,21 +33,23 @@
                  data-locations='{{ data | dump }}'>
             </div>
 
-            <ul class="googlemaps__region-lists">
+            <ul class="googlemaps__region-list">
 
                 {% for region in data %}
 
-                    <li class="c-region" id="{{ region.id }}" js-hook-region>
+                    <li class="googlemaps__region" id="{{ region.id }}" js-hook-region>
                         
-                        <h2 class="region__title">{{ region.name }}</h2>
+                        <h2 class="googlemaps__region-title">{{ region.name }}</h2>
 
                         {% if region.locations %}
-                        <ul class="region__location-list">
+                        <ul class="googlemaps__location-list">
 
-                            {% for locationitem in region.locations %}
-                                <li class="region__location-list-item" id="{{ locationitem.id }}" js-hook-location>
+                            {% for location in region.locations %}
+                                <li class="googlemaps__location" id="{{ locationitem.id }}" js-hook-location>
 
-                                    {{ location( locationitem ) }}
+                                    {{ location.title }}
+
+                                    LOCATION CONTENT
 
                                 </li>
                             {% endfor %}

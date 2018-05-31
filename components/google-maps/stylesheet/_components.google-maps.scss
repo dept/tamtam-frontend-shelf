@@ -1,31 +1,35 @@
+$map-height-mobile = 45rem;
+$map-height-tablet-portrait = 50rem;
+$map-height-tablet-landscape = 60rem;
+
 .c-googlemaps {}
 
 .googlemaps__container {
     
     @include screen-mobile-plus-and-smaller {
-        height: 450px;
+        height: $map-height-mobile;
     }
 
     @include screen-tablet-portrait-and-bigger {
-        height: 500px;
+        height: $map-height-tablet-portrait;
     }
 
     @include screen-tablet-landscape-and-bigger {
-        height: 575px;
+        height: $map-height-tablet-landscape;
     }
 
-    .googlemaps--list-view & {
+    .is--list-view & {
         display: none;
     }
 
 }
 
 .googlemaps__title {
-    margin-bottom: 3rem;
+    margin-bottom: $global-spacing*3;
 }
 
-.googlemaps__toggle {
-    margin-bottom: 3rem;
+.googlemaps__actions {
+    margin-bottom: $global-spacing*3;
     display: flex;
     align-items: flex-end;
 
@@ -35,20 +39,12 @@
     }
 }
 .googlemaps__toggleselect {
-    margin: 0 5rem 0 0;
-    width: 100%;
-    max-width: 55rem;
-
-    @include screen-mobile-plus-and-smaller {
-        max-width: none;
-        margin-right: 0;
-    }
+    margin: 0 $global-spacing*5 0 0;
 }
 
 .googlemaps__togglebutton {
     text-transform: uppercase;
-    font-size: 1.6rem;
-    padding: 20px 1px;
+    padding: $global-spacing*2 0;
     transition: 200ms $ease-in-out-quad;
     transition-property: color;
 
@@ -60,15 +56,15 @@
         width: 100%;
         height: 3px;
         display: block;
-        background: $color-grey-darkest;
+        background: $color-black;
         transform: scale(0);
         transition: 200ms $ease-in-out-quad;
         transition-property: transform;
     }
 
-    &.is-active {
+    &.is--active {
         font-weight: $font-weight-bold;
-        color: $color-grey-darkest;
+        color: $color-black;
         pointer-events: none;
 
         &::after {
@@ -77,46 +73,46 @@
     }
 
     &:not(:last-child) {
-        margin-right: 2rem;
+        margin-right: $global-spacing*2;
     }
 }
 
-.googlemaps__region-lists {
+.googlemaps__region-list {
     list-style: none;
 }
 
-.c-region {
+.googlemaps__region {
     display: none;
 
-    &.region--is-active {
+    &.is--active {
         display: block;
     }
 }
 
-.region__title {
-    margin: 4rem 0 2rem;
+.googlemaps__region-title {
+    margin: $global-spacing*4 0 $global-spacing*2;
     display: none;
 
-    .googlemaps--list-view & {
+    .is--list-view & {
         display: block;
     }
 }
 
-.region__location-list {
+.googlemaps__location-list {
     list-style: none;
     position: relative;
 }
 
-.region__location-list-item {
+.googlemaps__location {
     background: $color-white;
-    margin-bottom: 1rem;
-    padding: 2rem;
+    margin-bottom: $global-spacing;
+    padding: $global-spacing;
     width: 100%;
     pointer-events: none;
     display: none;
 
-    &.location--is-visible,
-    .googlemaps--list-view & {
+    &.is--visible,
+    .is--list-view & {
         pointer-events: auto;
         display: block;
     }

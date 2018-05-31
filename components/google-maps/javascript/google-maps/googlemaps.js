@@ -9,10 +9,10 @@ const HOOK_LOCATION             = '[js-hook-location]';
 
 const LOCATIONS_DATA_ATTR       = 'data-locations';
 
-const LIST_VIEW_CLASS           = 'googlemaps--list-view';
-const LOCATION_VISIBLE_CLASS    = 'location--is-visible';
-const REGION_ACTIVE_CLASS       = 'region--is-active';
-const BUTTON_ACTIVE_CLASS       = 'is-active';
+const LIST_VIEW_CLASS           = 'is--list-view';
+const LOCATION_VISIBLE_CLASS    = 'is--visible';
+const REGION_ACTIVE_CLASS       = 'is--active';
+const BUTTON_ACTIVE_CLASS       = 'is--active';
 
 class GoogleMaps {
 
@@ -37,12 +37,10 @@ class GoogleMaps {
 
         this.loadGoogleAPI();
         this.bindEvents();
-
     }
 
     bindEvents() {
 
-        //Bind initMap to window to let Google Maps access it
         window.initMap = () => this.initMap(this.mapContainer);
 
         window.onresize = () => this.resetMap();
@@ -54,7 +52,6 @@ class GoogleMaps {
         Events.$on('googlemaps::toggleview', () => this.toggleview());
 
         Events.$on('googlemaps::changeregion', (e) => this.changeRegion(e));
-
     }
 
     loadGoogleAPI() {
@@ -80,10 +77,10 @@ class GoogleMaps {
         this.map.addListener('click', function() {
             Events.$trigger('googlemaps::handleMapClick');
         });
-
     }
 
     resetMap() {
+
         this.activateRegion( "all" );
         this.addMarkers( this.locationsJSON );
     }
@@ -103,7 +100,6 @@ class GoogleMaps {
             this.regionSelect.appendChild( option );
 
         });
-
     }
 
     addMarkers( data ) {
@@ -134,7 +130,6 @@ class GoogleMaps {
         });
 
         this.setBounds();
-
     }
 
     removeAllMarkers() {
@@ -144,7 +139,6 @@ class GoogleMaps {
         });
 
         this.markers = [];
-
     }
 
 
@@ -158,7 +152,6 @@ class GoogleMaps {
         clickedLocation.classList.add( LOCATION_VISIBLE_CLASS );
 
         marker.setIcon( MAP_MARKER_ACTIVE );
-
     }
 
     toggleview() {
@@ -171,22 +164,24 @@ class GoogleMaps {
             button.classList.toggle(BUTTON_ACTIVE_CLASS);
         });
 
-        // set bounds again
         this.setBounds();
     }
 
     resetActiveMarkersAndLocations() {
+
         this.hideAllLocations();
         this.resetAllMarkerIcons();
     }
 
     hideAllLocations() {
+
         Array.from(this.locations).forEach( ( item ) => {
             item.classList.remove( LOCATION_VISIBLE_CLASS );
         });
     }
 
     resetAllMarkerIcons() {
+
         this.markers.forEach( marker => {
             marker.setIcon( MAP_MARKER );
         });
@@ -210,7 +205,6 @@ class GoogleMaps {
             this.addMarkers( [ this.locationsJSON[value] ] );
 
         }
-
     }
 
     activateRegion( region_id ) {
@@ -230,7 +224,6 @@ class GoogleMaps {
             document.querySelector(`#${region_id}`).classList.add( REGION_ACTIVE_CLASS );
 
         }
-
     }
 
     setBounds() {
