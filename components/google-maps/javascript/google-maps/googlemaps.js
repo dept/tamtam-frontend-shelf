@@ -45,19 +45,19 @@ class GoogleMaps {
 
         window.onresize = () => this.resetMap();
 
-        Events.$on('googlemaps::handleMarkerClick', (e) => this.handleMarkerClick(e));
+        Events.$on('googlemaps::handleMarkerClick', event => this.handleMarkerClick(event));
 
         Events.$on('googlemaps::handleMapClick', () => this.resetActiveMarkersAndLocations());
 
         Events.$on('googlemaps::toggleview', () => this.toggleview());
 
-        Events.$on('googlemaps::changeregion', (e) => this.changeRegion(e));
+        Events.$on('googlemaps::changeregion', event => this.changeRegion(event));
     }
 
     loadGoogleAPI() {
 
         const script = document.createElement('script');
-        script.src = "//maps.googleapis.com/maps/api/js?key="+MAP_API_KEY+"&callback=initMap";
+        script.src = `//maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&callback=initMap`;
         script.setAttribute('async', true);
         script.setAttribute('defer', true);
         
@@ -142,12 +142,12 @@ class GoogleMaps {
     }
 
 
-    handleMarkerClick(data) {
+    handleMarkerClick(event) {
 
         this.hideAllLocations();
         this.resetAllMarkerIcons();
 
-        let marker = data.detail;
+        let marker = event.detail;
         let clickedLocation = document.querySelector(`#${marker.id}`);
         clickedLocation.classList.add( LOCATION_VISIBLE_CLASS );
 
@@ -187,12 +187,12 @@ class GoogleMaps {
         });
     }
 
-    changeRegion(data) {
+    changeRegion(event) {
 
         this.hideAllLocations();
 
-        const selectedIndex = data.detail.currentTarget.selectedIndex;
-        const value = data.detail.currentTarget[selectedIndex].value;
+        const selectedIndex = event.detail.currentTarget.selectedIndex;
+        const value = event.detail.currentTarget[selectedIndex].value;
 
         if( value === "-1" ) {
 
