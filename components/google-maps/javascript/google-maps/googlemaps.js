@@ -8,6 +8,7 @@ const HOOK_REGION               = '[js-hook-region]';
 const HOOK_LOCATION             = '[js-hook-location]';
 
 const LOCATIONS_DATA_ATTR       = 'data-locations';
+const FIRST_OPTION_DATA_ATTR    = 'data-text-first-option';
 
 const LIST_VIEW_CLASS           = 'is--list-view';
 const LOCATION_VISIBLE_CLASS    = 'is--visible';
@@ -87,7 +88,7 @@ class GoogleMaps {
     createFilter( data ) {
 
         const option = document.createElement('option');
-        option.text = 'All';
+        option.text = this.regionSelect.getAttribute( FIRST_OPTION_DATA_ATTR );
         option.value = "-1" ;
         this.regionSelect.appendChild( option );
 
