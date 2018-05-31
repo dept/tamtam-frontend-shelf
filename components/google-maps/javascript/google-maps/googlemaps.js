@@ -59,7 +59,6 @@ class GoogleMaps {
         const script = document.createElement('script');
         script.src = `//maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&callback=initMap`;
         script.setAttribute('async', true);
-        script.setAttribute('defer', true);
         
         document.body.appendChild(script);
     }
