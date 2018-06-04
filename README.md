@@ -17,6 +17,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Teaser](components/teaser/README.md)
 * [Toggle](components/toggle/README.md)
 * [Video](components/video/README.md)
+* [Image](components/image/README.md)
 
 # Utilities
 * [API](utilities/api/README.md)
