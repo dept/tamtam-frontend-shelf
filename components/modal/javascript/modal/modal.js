@@ -152,6 +152,8 @@ class Modal {
             }
         });
 
+        this.clearCurrentFocus();
+
     }
 
     /**
@@ -191,6 +193,12 @@ class Modal {
 
         Events.$trigger('focustrap::deactivate');
 
+        this.clearCurrentFocus();
+
+    }
+
+    clearCurrentFocus() {
+        if (document.activeElement != document.body) document.activeElement.blur();
     }
 
 }
