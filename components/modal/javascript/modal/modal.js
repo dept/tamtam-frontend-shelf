@@ -90,8 +90,8 @@ class Modal {
             }
         }));
 
-        Events.$on(`modal[${id}]::close`, () => this.closeModal(event, { id }) );
-        Events.$on(`modal[${id}]::open`, () => this.openModal(event, { id }) );
+        Events.$on(`modal[${id}]::close`, (event) => this.closeModal(event, { id }) );
+        Events.$on(`modal[${id}]::open`, (event) => this.openModal(event, { id }) );
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
