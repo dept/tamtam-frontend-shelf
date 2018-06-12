@@ -22,7 +22,7 @@ $select-transition-ease: $ease-in-out-quad;
         text-align: center;
         padding-top: $select-padding-top + $select-border-width;
         padding-bottom: $select-padding-bottom + $select-border-width;
-        cursor: pointer;
+        pointer-events: none;
     }
 }
 
