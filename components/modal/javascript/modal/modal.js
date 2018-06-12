@@ -24,11 +24,10 @@ class Modal {
 
     /**
      * Bind event based on custom hook
-     * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
      */
-    customBind(event, data) {
+    customBind(data) {
 
         const modals = document.querySelectorAll(data.hook);
 
@@ -65,10 +64,10 @@ class Modal {
      */
     bindEvents() {
 
-        Events.$on('modal::close', (event, data) => this.closeModal(event, data));
-        Events.$on('modal::open', (event, data) => this.openModal(event, data));
+        Events.$on('modal::close', (data) => this.closeModal(data));
+        Events.$on('modal::open', (data) => this.openModal(data));
 
-        Events.$on('modal::bind', (event, data) => this.customBind(event, data));
+        Events.$on('modal::bind', (data) => this.customBind(data));
 
     }
 
@@ -90,8 +89,8 @@ class Modal {
             }
         }));
 
-        Events.$on(`modal[${id}]::close`, (event) => this.closeModal(event, { id }) );
-        Events.$on(`modal[${id}]::open`, (event) => this.openModal(event, { id }) );
+        Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }) );
+        Events.$on(`modal[${id}]::open`, () => this.openModal({ id }) );
 
         Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
@@ -109,11 +108,10 @@ class Modal {
 
     /**
      * Open modal by given id
-     * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
      */
-    openModal(event, data) {
+    openModal(data) {
 
         const modal = this.registeredModals[`modal-${data.id}`];
 
@@ -143,11 +141,10 @@ class Modal {
 
     /**
      * Close modal by id, if none gives it will close all
-     * @param {Event} event
      * @param {Object[]} data
      * @param {string} data[].id
      */
-    closeModal(event, data) {
+    closeModal(data) {
 
         // If no ID is given we will close all modals
         if (!data || !data.id) {
