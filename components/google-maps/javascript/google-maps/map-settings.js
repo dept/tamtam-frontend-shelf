@@ -175,6 +175,8 @@ export const MAP_MARKER = '/assets/images/marker.png';
 
 export const MAP_MARKER_ACTIVE = '/assets/images/marker_active.png';
 
+export const MAP_MAX_ZOOM = 10;
+
 export const MAP_SETTINGS = {
 
     "center": {

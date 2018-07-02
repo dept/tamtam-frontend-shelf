@@ -1,5 +1,5 @@
 import Events from '@utilities/events';
-import { MAP_SETTINGS, MAP_MARKER, MAP_MARKER_ACTIVE, MAP_API_KEY  } from './map-settings.js';
+import { MAP_SETTINGS, MAP_MARKER, MAP_MARKER_ACTIVE, MAP_MAX_ZOOM, MAP_API_KEY  } from './map-settings.js';
 
 // HOOKS
 const HOOK_MAPS_CONTAINER       = '[js-hook-googlemaps-container]';
@@ -247,6 +247,11 @@ class GoogleMaps {
 
         this.map.fitBounds( this.currentBounds );
         this.map.setCenter( this.currentBounds.getCenter() );
+
+        if( this.map.getZoom() > MAP_MAX_ZOOM ) {
+            this.map.setZoom( MAP_MAX_ZOOM );
+        }
+
     }
 
 }
