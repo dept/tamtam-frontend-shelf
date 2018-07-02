@@ -21,7 +21,7 @@
 ## How to use
 
 ```htmlmixed
-{{ searchField{(
+{{ searchField({
      action:        'string',
      submitText:    'string',
      id:            'string',
