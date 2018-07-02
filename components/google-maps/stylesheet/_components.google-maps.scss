@@ -2,7 +2,24 @@ $map-height-mobile: 45rem;
 $map-height-tablet-portrait: 50rem;
 $map-height-tablet-landscape: 60rem;
 
-.c-googlemaps {}
+.c-googlemaps {
+
+    &:not(.has--loaded-api) {
+
+        .googlemaps__toggle,
+        .googlemaps__container {
+            display: none;
+        }
+
+        .region__title,
+        .region__location-list-item {
+            pointer-events: auto;
+            display: block;
+        }
+
+    }
+
+}
 
 .googlemaps__container {
     

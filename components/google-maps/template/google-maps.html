@@ -37,7 +37,7 @@
 
                 {% for region in data %}
 
-                    <li class="googlemaps__region" id="{{ region.id }}" js-hook-region>
+                    <li class="googlemaps__region" id="{{ region.id }}" data-name="{{ region.name }}" js-hook-region>
                         
                         <h2 class="googlemaps__region-title">{{ region.name }}</h2>
 
@@ -45,7 +45,7 @@
                         <ul class="googlemaps__location-list">
 
                             {% for location in region.locations %}
-                                <li class="googlemaps__location" id="{{ locationitem.id }}" js-hook-location>
+                                <li class="region__location-list-item" id="{{ locationitem.id }}" data-lat="{{ locationitem.position.lat }}" data-lng="{{ locationitem.position.lng }}" js-hook-location>
 
                                     {{ location.title }}
 

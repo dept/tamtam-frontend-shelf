@@ -1,19 +1,25 @@
 import Events from '@utilities/events';
 import { MAP_SETTINGS, MAP_MARKER, MAP_MARKER_ACTIVE, MAP_API_KEY  } from './map-settings.js';
 
+// HOOKS
 const HOOK_MAPS_CONTAINER       = '[js-hook-googlemaps-container]';
 const HOOK_REGION_SELECT        = '[js-hook-region-select]';
 const HOOK_VIEW_BUTTONS         = '[js-hook-googlemaps-view-button]';
 const HOOK_REGION               = '[js-hook-region]';
 const HOOK_LOCATION             = '[js-hook-location]';
 
-const LOCATIONS_DATA_ATTR       = 'data-locations';
-const FIRST_OPTION_DATA_ATTR    = 'data-text-first-option';
+//CLASSES
+const CLASS_API_LOADED          = 'has--loaded-api';
+const CLASS_LIST_VIEW           = 'googlemaps--list-view';
+const CLASS_LOCATION_VISIBLE    = 'location--is-visible';
+const CLASS_REGION_ACTIVE       = 'region--is-active';
+const CLASS_BUTTON_ACTIVE       = 'is-active';
 
-const LIST_VIEW_CLASS           = 'is--list-view';
-const LOCATION_VISIBLE_CLASS    = 'is--visible';
-const REGION_ACTIVE_CLASS       = 'is--active';
-const BUTTON_ACTIVE_CLASS       = 'is--active';
+// DATA
+const DATA_LAT                  = 'data-lat';
+const DATA_LNG                  = 'data-lng';
+const DATA_ICON                 = 'data-icon';
+
 
 class GoogleMaps {
 
@@ -32,33 +38,32 @@ class GoogleMaps {
         this.regionSelect       = this.el.querySelector( HOOK_REGION_SELECT );
         this.viewButtons        = this.el.querySelectorAll( HOOK_VIEW_BUTTONS );
 
-        this.locationData       = this.mapContainer.getAttribute( LOCATIONS_DATA_ATTR );
-        this.locationsJSON      = JSON.parse(this.locationData);
-
-
         this.loadGoogleAPI();
         this.bindEvents();
+
     }
 
     bindEvents() {
 
+        //Bind initMap to window to let Google Maps access it
         window.initMap = () => this.initMap(this.mapContainer);
 
         window.onresize = () => this.resetMap();
 
-        Events.$on('googlemaps::handleMarkerClick', event => this.handleMarkerClick(event));
+        Events.$on('googlemaps::handleMarkerClick', e => this.handleMarkerClick(e));
 
         Events.$on('googlemaps::handleMapClick', () => this.resetActiveMarkersAndLocations());
 
         Events.$on('googlemaps::toggleview', () => this.toggleview());
 
-        Events.$on('googlemaps::changeregion', event => this.changeRegion(event));
+        Events.$on('googlemaps::changeregion', e => this.changeRegion(e));
+
     }
 
     loadGoogleAPI() {
 
         const script = document.createElement('script');
-        script.src = `//maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&callback=initMap`;
+        script.src = "//maps.googleapis.com/maps/api/js?key="+MAP_API_KEY+"&callback=initMap";
         script.setAttribute('async', true);
         
         document.body.appendChild(script);
@@ -66,70 +71,75 @@ class GoogleMaps {
 
     initMap(el) {
 
+        this.el.classList.add( CLASS_API_LOADED );
+
         this.map = new google.maps.Map(el, MAP_SETTINGS);
 
-        this.createFilter( this.locationsJSON );
+        this.createFilter();
 
         this.activateRegion( "all" );
 
-        this.addMarkers( this.locationsJSON );
+        this.addMarkers( this.locations );
 
         this.map.addListener('click', function() {
             Events.$trigger('googlemaps::handleMapClick');
         });
+
     }
 
     resetMap() {
-
         this.activateRegion( "all" );
-        this.addMarkers( this.locationsJSON );
+        this.addMarkers( this.locations );
     }
 
-    createFilter( data ) {
+    createFilter() {
 
         const option = document.createElement('option');
-        option.text = this.regionSelect.getAttribute( FIRST_OPTION_DATA_ATTR );
+        option.text = 'All';
         option.value = "-1" ;
         this.regionSelect.appendChild( option );
 
-        Array.from(data).forEach( (region, index) => {
-
+        this.regions.forEach( region => {
             const option = document.createElement('option');
-            option.text = region.name;
-            option.value = index ;
+            option.text = region.getAttribute('data-name');
+            option.value = region.getAttribute('id') ;
             this.regionSelect.appendChild( option );
-
         });
+
     }
 
-    addMarkers( data ) {
+    addMarkers( locations ) {
 
         this.removeAllMarkers();
 
-        Array.from(data).forEach( region => {
+        locations.forEach( location => {
 
-            if( !region.locations ) return;
+            const item = {
+                position: {
+                    lat: parseFloat( location.getAttribute( DATA_LAT ) ),
+                    lng: parseFloat( location.getAttribute( DATA_LNG ) )
+                },
+                id: location.getAttribute('id'),
+                icon: location.getAttribute( DATA_ICON ) || MAP_MARKER
+            }
 
-            region.locations.forEach( location => {
-
-                let marker = new google.maps.Marker({
-                    position: location.position,
-                    map: this.map,
-                    icon: location.icon ? location.icon : MAP_MARKER,
-                    id: location.id,
-                });
-
-                marker.addListener('click', function() {
-                    Events.$trigger('googlemaps::handleMarkerClick', marker);
-                });
-
-                this.markers.push(marker);
-
+            const marker = new google.maps.Marker({
+                position: item.position,
+                map: this.map,
+                icon: item.icon,
+                id: item.id,
             });
+
+            marker.addListener('click', function() {
+                Events.$trigger('googlemaps::handleMarkerClick', marker);
+            });
+
+            this.markers.push( marker );
 
         });
 
         this.setBounds();
+
     }
 
     removeAllMarkers() {
@@ -139,91 +149,92 @@ class GoogleMaps {
         });
 
         this.markers = [];
+
     }
 
 
-    handleMarkerClick(event) {
+    handleMarkerClick(data) {
 
         this.hideAllLocations();
         this.resetAllMarkerIcons();
 
-        let marker = event.detail;
-        let clickedLocation = document.querySelector(`#${marker.id}`);
-        clickedLocation.classList.add( LOCATION_VISIBLE_CLASS );
+        const marker = data.detail;
+        const clickedLocation = document.getElementById( marker.id );
+        clickedLocation.classList.add( CLASS_LOCATION_VISIBLE );
 
         marker.setIcon( MAP_MARKER_ACTIVE );
+
     }
 
     toggleview() {
 
         this.resetActiveMarkersAndLocations();
 
-        this.el.classList.toggle(LIST_VIEW_CLASS);
+        this.el.classList.toggle( CLASS_LIST_VIEW );
 
-        Array.from(this.viewButtons).forEach( button => {
-            button.classList.toggle(BUTTON_ACTIVE_CLASS);
+        this.viewButtons.forEach( button => {
+            button.classList.toggle( CLASS_BUTTON_ACTIVE );
         });
 
         this.setBounds();
     }
 
     resetActiveMarkersAndLocations() {
-
         this.hideAllLocations();
         this.resetAllMarkerIcons();
     }
 
     hideAllLocations() {
-
-        Array.from(this.locations).forEach( item => {
-            item.classList.remove( LOCATION_VISIBLE_CLASS );
+        this.locations.forEach( item => {
+            item.classList.remove( CLASS_LOCATION_VISIBLE );
         });
     }
 
     resetAllMarkerIcons() {
-
         this.markers.forEach( marker => {
             marker.setIcon( MAP_MARKER );
         });
     }
 
-    changeRegion(event) {
+    changeRegion(data) {
 
         this.hideAllLocations();
 
-        const selectedIndex = event.detail.currentTarget.selectedIndex;
-        const value = event.detail.currentTarget[selectedIndex].value;
+        const selectedIndex = data.detail.currentTarget.selectedIndex;
+        const selectedRegionID = data.detail.currentTarget[selectedIndex].value;
 
-        if( value === "-1" ) {
+        if( selectedRegionID === "-1" ) {
 
             this.activateRegion( "all" );
-            this.addMarkers( this.locationsJSON );
+            this.addMarkers( this.locations );
 
         } else {
 
-            this.activateRegion( this.locationsJSON[value].id );
-            this.addMarkers( [ this.locationsJSON[value] ] );
+            this.activateRegion( selectedRegionID );
+            this.addMarkers( document.getElementById( selectedRegionID ).querySelectorAll( HOOK_LOCATION ) );
 
         }
+
     }
 
     activateRegion( region_id ) {
 
         if( region_id === "all" ) {
 
-            Array.from(this.regions).forEach( item => {
-                item.classList.add( REGION_ACTIVE_CLASS );
+            this.regions.forEach( item => {
+                item.classList.add( CLASS_REGION_ACTIVE );
             });
 
         } else {
 
-            Array.from(this.regions).forEach( item => {
-                item.classList.remove( REGION_ACTIVE_CLASS );
+            this.regions.forEach( item => {
+                item.classList.remove( CLASS_REGION_ACTIVE );
             });
 
-            document.querySelector(`#${region_id}`).classList.add( REGION_ACTIVE_CLASS );
+            document.getElementById( region_id ).classList.add( CLASS_REGION_ACTIVE );
 
         }
+
     }
 
     setBounds() {
@@ -231,11 +242,11 @@ class GoogleMaps {
         this.currentBounds = new google.maps.LatLngBounds();
 
         this.markers.forEach( marker => {
-            this.currentBounds.extend(marker.position);
+            this.currentBounds.extend( marker.position );
         });
 
-        this.map.fitBounds(this.currentBounds);
-        this.map.setCenter(this.currentBounds.getCenter());
+        this.map.fitBounds( this.currentBounds );
+        this.map.setCenter( this.currentBounds.getCenter() );
     }
 
 }
