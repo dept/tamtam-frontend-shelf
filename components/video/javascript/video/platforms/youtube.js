@@ -1,6 +1,5 @@
 import Cookies from '@utilities/cookies';
 import Events from '@utilities/events';
-import YouTubePlayer from 'youtube-player';
 
 /**
  *
@@ -23,8 +22,13 @@ class YoutubeVideo {
             return;
         }
 
-        this._initPlayer();
-        this._bindEvents();
+        import(/* webpackChunkName: "Youtube-Player" */'youtube-player')
+            .then(Player => {
+
+                this._initPlayer(Player);
+                this._bindEvents();
+
+            });
 
     }
 

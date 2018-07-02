@@ -1,6 +1,6 @@
 import Cookies from '@utilities/cookies';
 import Events from '@utilities/events';
-import VimeoPlayer from '@vimeo/player';
+
 
 class VimeoVideo {
 
@@ -13,8 +13,13 @@ class VimeoVideo {
             return;
         }
 
-        this._initPlayer();
-        this._bindEvents();
+        import(/* webpackChunkName: "Vimeo-Player" */'@vimeo/player')
+            .then(Player => {
+
+                this._initPlayer(Player);
+                this._bindEvents();
+
+            });
 
     }
 
