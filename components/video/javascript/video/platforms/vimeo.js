@@ -23,9 +23,9 @@ class VimeoVideo {
 
     }
 
-    _initPlayer() {
+    _initPlayer(Player) {
 
-        this.player = new VimeoPlayer(this.options.player, {
+        this.player = new Player(this.options.player, {
             id: this.options.videoId,
             title: false,
             portrait: false

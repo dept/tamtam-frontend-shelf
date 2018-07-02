@@ -32,9 +32,9 @@ class YoutubeVideo {
 
     }
 
-    _initPlayer() {
+    _initPlayer(Player) {
 
-        this.player = YouTubePlayer(this.options.player, {
+        this.player = new Player(this.options.player, {
             videoId: this.options.videoId,
             playerVars: {
                 start: this.options.videoTime,
