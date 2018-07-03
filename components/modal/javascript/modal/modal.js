@@ -149,7 +149,7 @@ class Modal {
         // If no ID is given we will close all modals
         if (!data || !data.id) {
             for (const modalIndex of Object.keys(this.registeredModals)) {
-                this.closeModal(null, { id: this.registeredModals[modalIndex].id });
+                this.closeModal({ id: this.registeredModals[modalIndex].id });
                 Events.$trigger('focustrap::deactivate');
             }
             return;
