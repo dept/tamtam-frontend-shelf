@@ -63,7 +63,7 @@ class GoogleMaps {
     loadGoogleAPI() {
 
         const script = document.createElement('script');
-        script.src = "//maps.googleapis.com/maps/api/js?key="+MAP_API_KEY+"&callback=initMap";
+        script.src = `//maps.googleapis.com/maps/api/js?key=${MAP_API_KEY}&callback=initMap`;
         script.setAttribute('async', true);
         
         document.body.appendChild(script);
@@ -77,7 +77,7 @@ class GoogleMaps {
 
         this.createFilter();
 
-        this.activateRegion( "all" );
+        this.activateRegion( 'all' );
 
         this.addMarkers( this.locations );
 
@@ -88,7 +88,7 @@ class GoogleMaps {
     }
 
     resetMap() {
-        this.activateRegion( "all" );
+        this.activateRegion( 'all' );
         this.addMarkers( this.locations );
     }
 
@@ -96,7 +96,7 @@ class GoogleMaps {
 
         const option = document.createElement('option');
         option.text = 'All';
-        option.value = "-1" ;
+        option.value = '-1' ;
         this.regionSelect.appendChild( option );
 
         this.regions.forEach( region => {
@@ -203,9 +203,9 @@ class GoogleMaps {
         const selectedIndex = data.detail.currentTarget.selectedIndex;
         const selectedRegionID = data.detail.currentTarget[selectedIndex].value;
 
-        if( selectedRegionID === "-1" ) {
+        if( selectedRegionID === '-1' ) {
 
-            this.activateRegion( "all" );
+            this.activateRegion( 'all' );
             this.addMarkers( this.locations );
 
         } else {
@@ -219,7 +219,7 @@ class GoogleMaps {
 
     activateRegion( region_id ) {
 
-        if( region_id === "all" ) {
+        if( region_id === 'all' ) {
 
             this.regions.forEach( item => {
                 item.classList.add( CLASS_REGION_ACTIVE );
