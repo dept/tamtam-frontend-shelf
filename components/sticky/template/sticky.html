@@ -18,7 +18,7 @@
 
         <div class="c-sticky {% if data.class %} {{ data.class }} {% endif %}"
             id="{{ data.id }}"
-            data-inview-trigger="sticky::update({{ data.id }})"
+            data-inview-trigger="sticky[{{ data.id }}]::update"
             data-sticky-threshold="120"
             data-inview-persistent="true"
             js-hook-inview
