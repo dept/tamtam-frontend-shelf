@@ -62,7 +62,7 @@ See the [input](/components/form-elements/template/form-elements/input.html) mac
 }) }}
 ```
 
-### Input
+### Input - file upload
 See the [file](/components/form-elements/template/form-elements/file.html) macro for all available options.
 ```htmlmixed
 {{ form.file({
