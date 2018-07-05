@@ -5,7 +5,7 @@ const SCROLL_ELEMENT = window;
 
 const OBSERVER_DEFAULT_OFFSET_Y = 0;
 const OBSERVER_DEFAULT_OFFSET_X = 0;
-const OBSERVER_DEFAULT_THRESHOLD = 0;
+const OBSERVER_DEFAULT_THRESHOLD = buildThresholdList();
 
 const INVIEW_JS_HOOK = '[js-hook-inview]';
 const INVIEW_TRIGGERS_HOOK = 'data-inview-trigger';
@@ -113,21 +113,9 @@ function getNodes() {
 
 /**
  * Checks if given element is in viewport
- * @param {HTMLElement} options[].element Element to check if it's in viewport
- * @param {Object[]} [options[].position]
- * @param {Number} [options[].position[].top] Position in pixels
- * @param {Number} [options[].position[].bottom] Position in pixels
- * @param {Number} [options[].position[].left] Position in pixels
- * @param {Number} [options[].position[].right] Position in pixels
- * @param {Object[]} [options[].offset]
- * @param {Number} [options[].offset[].top] Offset in pixels
- * @param {Number} [options[].offset[].bottom] Offset in pixels
- * @param {Number} [options[].offset[].left] Offset in pixels
- * @param {Number} [options[].offset[].right] Offset in pixels
- * @param {Number} [options[].threshold] Can be a value between 0 and 1
+ * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-
 
     const scrollTop = SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop;
     const scrollLeft = SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft;
@@ -225,5 +213,18 @@ function getInViewDirections(options) {
     };
 }
 
+function buildThresholdList() {
+
+    const numSteps = 1000;
+    const thresholds = [];
+
+    for (let i = 1.0; i <= numSteps; i++) {
+        const ratio = i / numSteps;
+        thresholds.push(ratio);
+    }
+
+    thresholds.push(0);
+    return thresholds;
+}
 
 export default new InView();
