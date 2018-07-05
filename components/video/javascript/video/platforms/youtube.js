@@ -1,4 +1,4 @@
-import Cookies from '@utilities/cookies';
+import Cookies from '@components/cookies';
 import Events from '@utilities/events';
 
 /**

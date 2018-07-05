@@ -25,7 +25,7 @@ npm i number-is-nan@1.0.1 --save
 Import module
 ```javascript
 import '@components/image';
-import '@components/in-view';
+import '@utilities/in-view';
 import { Youtube, Vimeo, Native } from '@components/video/platforms';
 import Video from '@components/video';
 ```
@@ -35,8 +35,8 @@ import Video from '@components/video';
 ### Default
 
 ```javascript
+import '@utilities/in-view';
 import '@components/image';
-import '@components/in-view';
 import VideoLoader from '@components/video/loader';
 
 VideoLoader
@@ -126,8 +126,8 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
+import '@utilities/in-view';
 import '@components/image';
-import '@components/in-view';
 import VideoLoader from '@components/video/loader';
 
 VideoLoader
