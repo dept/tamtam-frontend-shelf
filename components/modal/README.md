@@ -80,5 +80,5 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 * [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)

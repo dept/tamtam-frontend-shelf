@@ -59,4 +59,4 @@ If you somehow want to use the polyfill without the image component, it will wor
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen-reumkens@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)

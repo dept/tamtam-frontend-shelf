@@ -70,4 +70,4 @@ LocalStorage.get('data');
 This package doest not have any dependencies.
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

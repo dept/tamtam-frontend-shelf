@@ -82,4 +82,5 @@ Events.$trigger('in-view::update');
 * [Raf throttle utility](/utilities/raf-throttle/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+* [Dylan Vens](mailto:dylan.vens@deptagency.com)

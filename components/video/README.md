@@ -207,7 +207,7 @@ Video.registerPlatforms({
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 
 ## Changelog
 

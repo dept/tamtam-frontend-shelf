@@ -67,4 +67,4 @@ ScrollTo.scrollTo(document.querySelector('footer'))
 
 ## Developers
 * [Danillo Tuhumury](mailto:danillo.tuhumury@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)
