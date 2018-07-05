@@ -63,14 +63,18 @@ class Sticky {
  */
 function setStickyValues(element, scrollElement, threshold, windowHeight) {
 
-    if (!element.inviewProperties || windowHeight <= scrollElement.position.height + threshold || element.position.height <= scrollElement.position.height) {
+    if (
+        !element.inviewProperties
+        || windowHeight <= scrollElement.position.height + threshold
+        || element.position.height <= scrollElement.position.height
+    ) {
         resetStickyClasses(scrollElement);
         return;
     }
 
-    if (element.inviewProperties.position.top + threshold >= 0) {
+    if (element.inviewProperties.position.top - threshold <= 0) {
 
-        if (element.inviewProperties.height - element.inviewProperties.position.top - threshold >= scrollElement.position.height) {
+        if (element.inviewProperties.position.top - scrollElement.position.height - threshold >= -element.inviewProperties.height) {
             setStickyClasses(scrollElement, threshold);
         } else {
             setUnStickyClasses(scrollElement);
