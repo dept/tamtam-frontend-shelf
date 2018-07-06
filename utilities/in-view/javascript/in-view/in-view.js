@@ -103,7 +103,6 @@ class InView {
 function triggerEvents(triggers, data) {
 
     triggers.forEach(trigger => {
-        console.log(trigger)
         Events.$trigger(trigger, { data })
     });
 
