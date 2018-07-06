@@ -1,7 +1,6 @@
 import Events from '@utilities/events';
 import InView from '@utilities/in-view';
 
-// import parseSrcSet from './util/parse-srcset';
 import hasResponsiveImages from './util/detect-responsive-images';
 
 const LAZY_IMAGE_HOOK = '.c-image';
@@ -10,7 +9,6 @@ const LAZY_IMAGE_SRCSET_HOOK = 'data-srcset';
 const LAZY_IMAGE_ANIMATE_IN_CLASS = 'u-fade-in';
 
 const SUPPORTS_SRCSET = checkResponsiveImageRequirements();
-// const SUPPORTS_SRCSET = false;
 
 class LazyImage {
 
