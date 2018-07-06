@@ -38,10 +38,10 @@ class InView {
 
         this.nodes.forEach(node => {
 
-            if (!node.__inviewTriggerHook) node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK);
-            if (!node.__inviewPersistent) node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) ? node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true' : false;
-            if (!node.__inviewInitialized) this.observer.observe(node);
-            if (!node.__inviewInitialized) node.__inviewInitialized = true;
+            if (!node.__inviewTriggerHook) { node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK); }
+            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) ? node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true' : false; }
+            if (!node.__inviewInitialized) { this.observer.observe(node); }
+            if (!node.__inviewInitialized) { node.__inviewInitialized = true; }
 
         });
 
@@ -63,16 +63,21 @@ class InView {
         if (element.inviewProperties.scrolledPastViewport.bottom) {
 
             element.classList.remove(INVIEW_OUTVIEW_CLASS);
-            triggerEvents(getTriggers(triggers), element);
 
-        } else {
-
-            element.classList.add(INVIEW_OUTVIEW_CLASS);
             triggerEvents(getTriggers(triggers), element);
 
             if (!entry.target.__inviewPersistent) {
                 observer.unobserve(entry.target);
             }
+
+        } else {
+
+            element.classList.add(INVIEW_OUTVIEW_CLASS);
+
+            if (entry.target.__inviewPersistent) {
+                triggerEvents(getTriggers(triggers), element);
+            }
+
 
         }
 
@@ -81,6 +86,8 @@ class InView {
     addElements(elements, hook) {
 
         elements.forEach(element => {
+
+            if (element.__inviewInitialized) { return; }
 
             element.__inviewTriggerHook = hook;
             this.nodes.push(element);
@@ -107,7 +114,7 @@ function getTriggers(triggers) {
 
 function getNodes() {
 
-    return [].slice.call(document.querySelectorAll(INVIEW_JS_HOOK));
+    return [...document.querySelectorAll(INVIEW_JS_HOOK)];
 
 }
 
