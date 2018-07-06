@@ -18,18 +18,19 @@ class LazyImage {
 
         this.images = getImageNodes(LAZY_IMAGE_HOOK);
 
-        this.bindEvents();
-        this.setObserverables();
+        this._bindEvents();
+        this._setObserverables();
 
     }
 
-    bindEvents() {
+    _bindEvents() {
 
         Events.$on('lazyimage::load', (e, element) => this._loadImage(element));
+        Events.$on('lazyimage::update', () => this._updateImages());
 
     }
 
-    setObserverables() {
+    _setObserverables() {
 
         InView.addElements(this.images, 'lazyimage::load');
 
@@ -64,6 +65,16 @@ class LazyImage {
             Events.$trigger('image::object-fit', { data: image });
 
         }
+
+    }
+
+    /**
+     * Update new images
+     */
+    _updateImages() {
+
+        this.images = getImageNodes(LAZY_IMAGE_HOOK);
+        this._setObserverables();
 
     }
 
