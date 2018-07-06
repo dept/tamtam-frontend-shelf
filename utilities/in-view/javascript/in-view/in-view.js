@@ -66,7 +66,7 @@ class InView {
 
             triggerEvents(getTriggers(triggers), element);
 
-            if (!entry.target.__inviewPersistent) {
+            if (!element.__inviewPersistent) {
                 observer.unobserve(entry.target);
             }
 
@@ -74,7 +74,7 @@ class InView {
 
             element.classList.add(INVIEW_OUTVIEW_CLASS);
 
-            if (entry.target.__inviewPersistent) {
+            if (element.__inviewPersistent) {
                 triggerEvents(getTriggers(triggers), element);
             }
 
@@ -102,7 +102,10 @@ class InView {
 
 function triggerEvents(triggers, data) {
 
-    triggers.forEach(trigger => Events.$trigger(trigger, { data }));
+    triggers.forEach(trigger => {
+        console.log(trigger)
+        Events.$trigger(trigger, { data })
+    });
 
 }
 
