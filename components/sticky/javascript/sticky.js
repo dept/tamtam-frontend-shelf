@@ -20,6 +20,8 @@ class Sticky {
 
         this._bindStickyComponentEvents();
 
+        Events.$trigger(`sticky[${this.id}]::update`);
+
     }
 
     /**
