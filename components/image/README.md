@@ -14,12 +14,9 @@
 * Adds `object-fit` polyfill
 
 ## Install
-Install npm package dependency
-```node
-npm i layzr.js@2.2.2 --save
-```
 Import module
 ```javascript
+import '@utilities/polyfills';
 import '@components/image';
 ```
 
@@ -28,6 +25,7 @@ import '@components/image';
 ### Default
 
 ```javascript
+import '@utilities/polyfills';
 import '@components/image';
 ```
 
