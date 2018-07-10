@@ -21,6 +21,18 @@ class AccordionItem {
 
     }
 
+    set isOpen(boolean) {
+
+        this._isOpen = boolean;
+
+    }
+
+    get isOpen() {
+
+        return this._isOpen;
+
+    }
+
     /**
      * Toggles the accordion item
      */
