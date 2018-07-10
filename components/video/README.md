@@ -24,10 +24,9 @@ npm i number-is-nan@1.0.1 --save
 ```
 Import module
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/videoloader';
 ```
 
 ## How to use
