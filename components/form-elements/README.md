@@ -81,15 +81,18 @@ See the [radio](/components/form-elements/template/form-elements/radio.html) mac
     options: [
         {
             label: 'One',
-            value: 'one-1'
+            value: 'one-1',
+            id: 'radio-1-1'
         },
         {
             label: 'Two',
-            value: 'two-1'
+            value: 'two-1',
+            id: 'radio-1-2'
         },
         {
             label: 'Three',
-            value: 'three-1'
+            value: 'three-1',
+            id: 'radio-1-2'
         }
     ]
 }) }}
@@ -99,19 +102,22 @@ See the [radio](/components/form-elements/template/form-elements/radio.html) mac
 See the [checkbox](/components/form-elements/template/form-elements/checkbox.html) macro for all available options.
 ```htmlmixed
 {{ form.checkbox({
-    name: 'Checkbox',
+    name: 'checkbox 1',
     options: [
         {
             label: 'One',
-            value: 'one-2'
+            value: 'one-2',
+            id: 'checkbox-1-1'
         },
         {
             label: 'Two',
-            value: 'two-2'
+            value: 'two-2',
+            id: 'checkbox-1-2'
         },
         {
             label: 'Three',
-            value: 'three-2'
+            value: 'three-2',
+            id: 'checkbox-1-3'
         }
     ]
 }) }}
