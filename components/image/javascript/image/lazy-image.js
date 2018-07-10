@@ -34,6 +34,10 @@ class LazyImage {
 
     }
 
+    /**
+     * Load the image
+    * @param {HTMLElement} element Figure element
+     */
     _loadImage(element) {
 
         const image = element.querySelector('img');
@@ -49,20 +53,27 @@ class LazyImage {
         }
 
         image.src = src;
+        image.onload = () => this._renderImage(element);
 
-        image.onload = () => {
+    }
 
-            image.classList.add(LAZY_IMAGE_ANIMATE_IN_CLASS);
-            image.removeAttribute(LAZY_IMAGE_SRC_HOOK);
-            image.removeAttribute(LAZY_IMAGE_SRCSET_HOOK);
+    /**
+     * Set image source
+     * @param {HTMLElement} element Figure element
+     */
+    _renderImage(element) {
 
-            if (!hasResponsiveImages.currentSrc) {
-                image.currentSrc = image.src;
-            }
+        const image = element.querySelector('img');
 
-            Events.$trigger('image::object-fit', { data: image });
+        element.classList.add(LAZY_IMAGE_ANIMATE_IN_CLASS);
+        image.removeAttribute(LAZY_IMAGE_SRC_HOOK);
+        image.removeAttribute(LAZY_IMAGE_SRCSET_HOOK);
 
+        if (!hasResponsiveImages.currentSrc) {
+            image.currentSrc = image.src;
         }
+
+        Events.$trigger('image::object-fit', { data: image });
 
     }
 
