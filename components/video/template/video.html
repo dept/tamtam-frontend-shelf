@@ -8,6 +8,7 @@
         platform: 'string', (youtube or vimeo)
         title: 'string',
         description: 'string',
+        noschema: 'boolean', (optional, default true)
         thumbnail: 'string', (optional)
         total_time: 'string', (optional)
         start_time: 'string', (optional)
@@ -31,7 +32,7 @@
 
     <div class="c-video
         {%- if data.classes %} {{ data.classes }}{% endif -%}"
-        itemprop="video" itemscope itemtype="http://schema.org/VideoObject"
+        {% if data.noschema != false %}itemprop="video" itemscope itemtype="http://schema.org/VideoObject"{% endif %}
         {% if data.instance_id %}id="video-{{ data.instance_id }}"{% endif %}
         {% if data.platform %}data-video-platform="{{ data.platform }}"{% endif %}
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
@@ -51,12 +52,14 @@
         {% endif %}
         js-hook-video>
 
-        {% if data.title %}<meta itemprop="name" content="{{ data.title }}" />{% endif %}
-        {% if data.description %}<meta itemprop="description" content="{{ data.description }}" />{% endif %}
-        {% if data.totalTime %}<meta itemprop="duration" content="{{ data.totalTime }}" />{% endif %}
-        {% if data.thumbnail %}<meta itemprop="thumbnailUrl" content="{{ data.thumbnail }}" />{% endif %}
-        {% if data.embedUrl %}<meta itemprop="embedURL" content="{{ data.embed_url }}" />{% endif %}
-        {% if data.uploadDate %}<meta itemprop="uploadDate" content="{{ data.uploadDate }}" />{% endif %}
+        {% if data.noschema != false %}
+            {% if data.title %}<meta itemprop="name" content="{{ data.title }}" />{% endif %}
+            {% if data.description %}<meta itemprop="description" content="{{ data.description }}" />{% endif %}
+            {% if data.totalTime %}<meta itemprop="duration" content="{{ data.totalTime }}" />{% endif %}
+            {% if data.thumbnail %}<meta itemprop="thumbnailUrl" content="{{ data.thumbnail }}" />{% endif %}
+            {% if data.embedUrl %}<meta itemprop="embedURL" content="{{ data.embed_url }}" />{% endif %}
+            {% if data.uploadDate %}<meta itemprop="uploadDate" content="{{ data.uploadDate }}" />{% endif %}
+        {% endif %}
 
         <div class="video__player" js-hook-video-player></div>
 
