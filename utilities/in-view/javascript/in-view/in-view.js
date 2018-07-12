@@ -10,6 +10,7 @@ const OBSERVER_DEFAULT_THRESHOLD = buildThresholdList();
 const INVIEW_JS_HOOK = '[js-hook-inview]';
 const INVIEW_TRIGGERS_HOOK = 'data-inview-trigger';
 const INVIEW_OUTVIEW_CLASS = 'is--out-view';
+const INVIEW_THRESHOLD_HOOK = 'data-inview-thresold';
 const INVIEW_PERSISTENT_HOOK = 'data-inview-persistent';
 
 const CONFIG = {
@@ -39,7 +40,8 @@ class InView {
         this.nodes.forEach(node => {
 
             if (!node.__inviewTriggerHook) { node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK); }
-            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) ? node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true' : false; }
+            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'; }
+            if (!node.__inviewThreshold) { node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK) ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false : false; }
             if (!node.__inviewInitialized) { this.observer.observe(node); }
             if (!node.__inviewInitialized) { node.__inviewInitialized = true; }
 
@@ -62,7 +64,9 @@ class InView {
 
         if (element.inviewProperties.scrolledPastViewport.bottom) {
 
-            element.classList.remove(INVIEW_OUTVIEW_CLASS);
+            if (!element.__inviewThreshold || element.__inviewThreshold && element.__inviewThreshold >= entry.intersectionRatio) {
+                element.classList.remove(INVIEW_OUTVIEW_CLASS);
+            }
 
             triggerEvents(getTriggers(triggers), element);
 
