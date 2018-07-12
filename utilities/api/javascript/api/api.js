@@ -1,5 +1,10 @@
+/**
+ * @shelf-version: 1.0.0
+ */
+
 import Environment from '@utilities/environment';
-import $ from 'jquery';
+
+import axios from 'axios';
 
 const endpointBase = {
     local: '/api/',
@@ -30,71 +35,71 @@ class API {
      */
     setEndpointBase(environment, endpoint) {
 
-        if (endpointBase[environment]) {
+        if ( endpointBase[environment] ) {
             endpointBase[environment] = endpoint;
         }
 
     }
 
-    get(path, data, json, params = {}) {
+    get(path, data = {} , json, options = {}) {
 
-        const endpoint = getEndpoint(path, json, 'get');
-        const options = {
-            data,
-            method: getMethod('GET', json)
+        let config = {
+            url: getEndpoint(path, json, 'get'),
+            params: data,
+            method: getMethod('GET', json),
         };
 
-        $.extend(true, options, params);
+        config = Object.assign({}, config, options );
 
-        return $.ajax(endpoint, options);
+        return axios( config );
 
     }
 
-    post(path, data, json, params = {}) {
+    post(path, data = {}, json, options = {}) {
 
-        const endpoint = getEndpoint(path, json, 'post');
-        const options = {
+        let config = {
+            url: getEndpoint(path, json, 'post'),
             data,
-            method: getMethod('POST', json)
-        };
-
-        if (this.antiForgeryToken) {
-            options.headers = {};
-            options.headers[this.antiForgeryToken.name] = this.antiForgeryToken.value;
+            method: getMethod('POST', json),
         }
 
-        $.extend(true, options, params);
+        if (this.antiForgeryToken) {
+            config.headers = {};
+            config.headers[this.antiForgeryToken.name] = this.antiForgeryToken.value;
+        }
 
-        return $.ajax(endpoint, options);
+        config = Object.assign({}, config, options );
 
-    }
-
-
-    put(path, data, json, params = {}) {
-
-        const endpoint = getEndpoint(path, json, 'put');
-        const options = {
-            data,
-            method: getMethod('PUT', json)
-        };
-
-        $.extend(true, options, params);
-
-        return $.ajax(endpoint, options);
+        return axios( config );
 
     }
 
-    delete(path, data, json, params = {}) {
 
-        const endpoint = getEndpoint(path, json, 'delete');
-        const options = {
+    put(path, data = {}, json, options = {}) {
+
+        let config = {
+            url: getEndpoint(path, json, 'put'),
             data,
-            method: getMethod('DELETE', json)
+            method: getMethod('PUT', json),
         };
 
-        $.extend(true, options, params);
+        config = Object.assign({}, config, options );
 
-        return $.ajax(endpoint, options);
+        return axios( config );
+
+    }
+
+    delete(path, data = {}, json, options = {}) {
+
+        let config = {
+            url: getEndpoint(path, json, 'delete'),
+            data,
+            method: getMethod('DELETE', json),
+        };
+
+        config = Object.assign({}, config, options );
+
+        return axios( config );
 
     }
 
@@ -108,7 +113,7 @@ class API {
  */
 function getEndpoint(path, json, method) {
 
-    if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
+    if ( path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
         return path;
     }
 
