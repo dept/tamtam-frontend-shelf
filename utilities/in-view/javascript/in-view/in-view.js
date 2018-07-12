@@ -62,13 +62,20 @@ class InView {
 
         element.inviewProperties = calculateInviewProperties(entry);
 
-        if (element.inviewProperties.scrolledPastViewport.bottom) {
+        if (
+            // Element is past bottom of the screen
+            element.inviewProperties.scrolledPastViewport.bottom
+            &&
+            (
+                // Element does not have a threshold or it has a threshold and the threshold is met
+                !element.__inviewThreshold
+                || element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio
+            )
+        ) {
 
-            if (!element.__inviewThreshold || element.__inviewThreshold && element.__inviewThreshold >= entry.intersectionRatio) {
-                element.classList.remove(INVIEW_OUTVIEW_CLASS);
-            }
-
+            element.classList.remove(INVIEW_OUTVIEW_CLASS);
             triggerEvents(getTriggers(triggers), element);
+
 
             if (!element.__inviewPersistent) {
                 observer.unobserve(entry.target);
