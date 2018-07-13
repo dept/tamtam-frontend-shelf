@@ -10,6 +10,7 @@ const OBSERVER_DEFAULT_THRESHOLD = buildThresholdList();
 const INVIEW_JS_HOOK = '[js-hook-inview]';
 const INVIEW_TRIGGERS_HOOK = 'data-inview-trigger';
 const INVIEW_OUTVIEW_CLASS = 'is--out-view';
+const INVIEW_THRESHOLD_HOOK = 'data-inview-thresold';
 const INVIEW_PERSISTENT_HOOK = 'data-inview-persistent';
 
 const CONFIG = {
@@ -39,7 +40,8 @@ class InView {
         this.nodes.forEach(node => {
 
             if (!node.__inviewTriggerHook) { node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK); }
-            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) ? node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true' : false; }
+            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'; }
+            if (!node.__inviewThreshold) { node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK) ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false : false; }
             if (!node.__inviewInitialized) { this.observer.observe(node); }
             if (!node.__inviewInitialized) { node.__inviewInitialized = true; }
 
@@ -60,13 +62,22 @@ class InView {
 
         element.inviewProperties = calculateInviewProperties(entry);
 
-        if (element.inviewProperties.scrolledPastViewport.bottom) {
+        if (
+            // Element is past bottom of the screen
+            element.inviewProperties.scrolledPastViewport.bottom
+            &&
+            (
+                // Element does not have a threshold or it has a threshold and the threshold is met
+                !element.__inviewThreshold
+                || element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio
+            )
+        ) {
 
             element.classList.remove(INVIEW_OUTVIEW_CLASS);
-
             triggerEvents(getTriggers(triggers), element);
 
-            if (!entry.target.__inviewPersistent) {
+
+            if (!element.__inviewPersistent) {
                 observer.unobserve(entry.target);
             }
 
@@ -74,7 +85,7 @@ class InView {
 
             element.classList.add(INVIEW_OUTVIEW_CLASS);
 
-            if (entry.target.__inviewPersistent) {
+            if (element.__inviewPersistent) {
                 triggerEvents(getTriggers(triggers), element);
             }
 
@@ -102,7 +113,9 @@ class InView {
 
 function triggerEvents(triggers, data) {
 
-    triggers.forEach(trigger => Events.$trigger(trigger, { data }));
+    triggers.forEach(trigger => {
+        Events.$trigger(trigger, { data })
+    });
 
 }
 
