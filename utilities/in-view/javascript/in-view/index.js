@@ -1,5 +1,5 @@
 /**
- * @shelf-version: 1.0.0
+ * @shelf-version: 2.0.0
  */
 
 import InView from './in-view';

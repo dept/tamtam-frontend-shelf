@@ -81,4 +81,4 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
