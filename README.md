@@ -6,6 +6,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Breadcrumb](components/breadcrumb/README.md)
 * [Cookies](components/cookies/README.md)
 * [Form elements](components/form-elements/README.md)
+* [Google Maps](components/google-maps/README.md)
 * [Header](components/header/README.md)
 * [Modal](components/modal/README.md)
 * [Newsletter](components/newsletter/simple/README.md)

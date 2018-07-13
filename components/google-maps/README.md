@@ -25,12 +25,9 @@ Cookiebar.init({
     cookiePrefix: 'client-name', // optional - recommended to change
     version: '1' // optional - recommended to update. MUST BE STRING
 });
-```
 
-Import module
-```javascript
 import GoogleMaps from '@components/google-maps';
-moduleInit.sync('[js-hook-googlemaps]', GoogleMaps);
+moduleInit.async('[js-hook-googlemaps]', GoogleMaps);
 ```
 
 ## How to use ( MAPS VIEW ONLY )
