@@ -166,5 +166,5 @@ See the [input](/components/form-elements/template/form-elements/textarea.html) 
 This package doesn't have any dependencies.
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Arnout Jansen (co-author)](mailto:arnout.jansen@tamtam.nl)

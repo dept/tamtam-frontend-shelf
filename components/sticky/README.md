@@ -59,9 +59,8 @@
 ```javascript
 import moduleInit from '@utilities/module-init';
 import '@utilities/in-view';
-import '@components/sticky';
 
-moduleInit('[js-hook-sticky]', Sticky);
+moduleInit.async('[js-hook-sticky]', () => import(/* webpackChunkName: "Sticky" */'@components/sticky'));
 ```
 
 ## How to use

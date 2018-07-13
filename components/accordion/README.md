@@ -19,9 +19,8 @@ Import module
 ```javascript
 import moduleInit from '@utilities/module-init';
 import '@utilities/events';
-import Accordion from '@components/accordion';
 
-moduleInit('[js-hook-accordion]', Accordion);
+moduleInit.async('[js-hook-accordion]', () => import(/* webpackChunkName: "Accordion" */'@components/accordion'));
 ```
 
 ## How to use
@@ -82,4 +81,4 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

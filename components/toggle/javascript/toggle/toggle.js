@@ -18,6 +18,18 @@ class Toggle {
 
     }
 
+    set isActive(boolean) {
+
+        this._isActive = boolean;
+
+    }
+
+    get isActive() {
+
+        return this._isActive;
+
+    }
+
     /**
      * Get all the external link elements from the toggle component
      */

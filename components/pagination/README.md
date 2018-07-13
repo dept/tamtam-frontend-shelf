@@ -28,4 +28,4 @@ Call the macro with optional `classes` object.
 This package doesn't have any dependencies.
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

@@ -48,5 +48,5 @@ Call the macro with an array of breadcrumb objects.
 This package doesn't have any dependencies.
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Matt van Voorst](mailto:mattv@tamtam.nl)

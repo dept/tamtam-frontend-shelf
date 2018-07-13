@@ -17,18 +17,16 @@
 ## Install
 Install npm package dependency
 ```node
+npm i intersection-observer@0.5.0 --save
 npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
-npm i layzr.js@2.2.2 --save
-npm i number-is-nan@1.0.1 --save
 npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/video/loader';
 ```
 
 ## How to use
@@ -36,16 +34,21 @@ import Video from '@components/video';
 ### Default
 
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native,
-    'youtube': Youtube,
-    'vimeo': Vimeo
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
+
+        Video.default.registerPlatforms({
+            'native': Platforms.Native,
+            'youtube': Platforms.Youtube,
+            'vimeo': Platforms.Vimeo
+        });
+
+    })
+    .catch(() => { });
 ```
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
@@ -76,16 +79,22 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
 import '@components/image';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native,
-    'youtube': Youtube,
-    'vimeo': Vimeo
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
 
-Events.$trigger('video::update');
+        Video.default.registerPlatforms({
+            'native': Platforms.Native,
+            'youtube': Platforms.Youtube,
+            'vimeo': Platforms.Vimeo
+        });
+
+        Events.$trigger('video::update');
+
+    })
+    .catch(() => { });
+
 ```
 
 Create the player the same as in the previous demo. But now add a `inview: false` as parameter.
@@ -116,14 +125,19 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
+
+        Video.default.registerPlatforms({
+            'native': Platforms.Native
+        });
+
+    })
+    .catch(() => { });
 ```
 
 ```htmlmixed
@@ -199,17 +213,16 @@ Video.registerPlatforms({
 
 
 ## Dependencies
-* [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 * [Image component](/components/image/)
 * [Events utility](/utilities/events/)
 * [In-view utility](/utilities/in-view/)
-* [layzr](https://github.com/callmecavs/layzr.js)
+* [Intersection Observer](https://www.npmjs.com/package/raf)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 
 ## Changelog
 
