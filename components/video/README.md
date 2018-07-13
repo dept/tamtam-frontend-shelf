@@ -17,10 +17,9 @@
 ## Install
 Install npm package dependency
 ```node
+npm i intersection-observer@0.5.0 --save
 npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
-npm i layzr.js@2.2.2 --save
-npm i number-is-nan@1.0.1 --save
 ```
 Import module
 ```javascript
@@ -213,11 +212,10 @@ VideoLoader
 
 
 ## Dependencies
-* [number-is-nan](https://github.com/sindresorhus/number-is-nan) for isNan check
 * [Image component](/components/image/)
 * [Events utility](/utilities/events/)
 * [In-view utility](/utilities/in-view/)
-* [layzr](https://github.com/callmecavs/layzr.js)
+* [Intersection Observer](https://www.npmjs.com/package/raf)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
