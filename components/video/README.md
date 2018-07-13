@@ -25,7 +25,7 @@ Import module
 ```javascript
 import '@utilities/in-view';
 import '@components/image';
-import VideoLoader from '@components/videoloader';
+import VideoLoader from '@components/video/loader';
 ```
 
 ## How to use
