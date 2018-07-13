@@ -26,8 +26,7 @@ Cookiebar.init({
     version: '1' // optional - recommended to update. MUST BE STRING
 });
 
-import GoogleMaps from '@components/google-maps';
-moduleInit.async('[js-hook-googlemaps]', GoogleMaps);
+moduleInit.async('[js-hook-googlemaps]', () => import(/* webpackChunkName: "GoogleMaps" */'@components/google-maps'));
 ```
 
 ## How to use ( MAPS VIEW ONLY )
@@ -86,7 +85,7 @@ export const DEFAULT_REGIONS = [
 ```htmlmixed
 {% from 'google-maps.html' import googlemaps  %}
 
-{ googlemaps() }}
+{{ googlemaps() }}
 ```
 
 ## How to use (MAPS + LIST VIEW )
@@ -95,7 +94,7 @@ The maps + listview creates the locations + regions out of the rendered html.
 ```htmlmixed
 {% from 'google-maps.html' import googlemaps  %}
 
-{ googlemaps(
+{{ googlemaps(
     [
         {
             "name": "Name Region",
