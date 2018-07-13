@@ -10,13 +10,13 @@
 
 
 ## What does it do
-* Create a small wrapper around $.ajax which is exposed as an API utility.
+* Create a small wrapper around Axios which is exposed as an API utility.
 * Provides JSON fallback for local testing
 
 ## Install
 Install npm package dependency
 ```node
-npm i jquery@3.2.1 --save
+npm i axios@0.17.1 --save
 ```
 Import module
 ```javascript
@@ -52,7 +52,7 @@ API.get('whatever-you-want/', {
 ```
 
 ### Use JSON fallback, locally or everywhere
-If you wish, you can use a JSON fallback. The root path is configured as endpoint json, which 
+If you wish, you can use a JSON fallback. The root path is configured as endpoint json, which
 defaults to '/assets/json-api'. In there it will search for an exact path corresponding to the request
 you are doing. So in the example underneath, it will look for `/assets/api-json/your-path/foo-bar`.
 After that path, it appends a 'modifier' with the current method and than .json. E.g.: `/assets/api-json/your-path/foo-bar--delete.json`.
@@ -77,7 +77,7 @@ API.get('your-path/foo-bar', {
 ```
 
 ## Dependencies
-* jQuery
+* Axios
 
 ## Developers
 * [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
