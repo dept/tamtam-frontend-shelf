@@ -25,10 +25,9 @@ npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/videoloader';
 ```
 
 ## How to use
@@ -36,16 +35,21 @@ import Video from '@components/video';
 ### Default
 
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native,
-    'youtube': Youtube,
-    'vimeo': Vimeo
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
+
+        Video.default.registerPlatforms({
+            'native': Platforms.Native,
+            'youtube': Platforms.Youtube,
+            'vimeo': Platforms.Vimeo
+        });
+
+    })
+    .catch(() => { });
 ```
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
@@ -76,16 +80,22 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
 import '@components/image';
-import { Youtube, Vimeo, Native } from '@components/video/platforms';
-import Video from '@components/video';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native,
-    'youtube': Youtube,
-    'vimeo': Vimeo
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
 
-Events.$trigger('video::update');
+        Video.default.registerPlatforms({
+            'native': Platforms.Native,
+            'youtube': Platforms.Youtube,
+            'vimeo': Platforms.Vimeo
+        });
+
+        Events.$trigger('video::update');
+
+    })
+    .catch(() => { });
+
 ```
 
 Create the player the same as in the previous demo. But now add a `inview: false` as parameter.
@@ -116,14 +126,19 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
-import '@components/image';
 import '@utilities/in-view';
-import { Native } from '@components/video/platforms';
-import Video from '@components/video';
+import '@components/image';
+import VideoLoader from '@components/video/loader';
 
-Video.registerPlatforms({
-    'native': Native
-});
+VideoLoader
+    .then(([Platforms, Video]) => {
+
+        Video.default.registerPlatforms({
+            'native': Platforms.Native
+        });
+
+    })
+    .catch(() => { });
 ```
 
 ```htmlmixed
