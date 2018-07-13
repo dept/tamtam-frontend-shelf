@@ -10,66 +10,140 @@
 
 ## What does it do
 * Create googlemaps including toggle for list view and region selector
+* Creates a googlemaps single view
 
 ## Install
-Import module
+Install npm packages dependency
+```node
+npm i raf@3.4.0 --save
+npm i js-cookie@2.1.4 --save
+```
+Import modules
 ```javascript
-import Form from '@components/form-elements';
-moduleInit('[js-hook-form]', Form);
+import Cookiebar from '@components/cookies';
+Cookiebar.init({
+    cookiePrefix: 'client-name', // optional - recommended to change
+    version: '1' // optional - recommended to update. MUST BE STRING
+});
 ```
 
-## How to use
+Import module
+```javascript
+import GoogleMaps from '@components/google-maps';
+moduleInit.sync('[js-hook-googlemaps]', GoogleMaps);
+```
 
-Create maps in HTML.
+## How to use ( MAPS VIEW ONLY )
+
+The single maps view creates the locations + regions out of the json/javascript object or API call that is placed inside the map-settings.js
+
+```javascript
+export const DEFAULT_REGIONS = [
+  {
+    "name": "Name Region",
+    "id": "region_1",
+    "locations": [
+      {
+        "title":"Name Location 1",
+        "id": "googlemaps_location_1",
+        "position":{
+            "lat":52.1258508,
+            "lng":4.633826
+        }
+      },
+      {
+        "title":"Name Location 2",
+        "id": "googlemaps_location_2",
+        "position":{
+            "lat":51.1236535,
+            "lng":4.4525162
+        }
+      }
+    ]
+  },
+  {
+    "name": "Name Region",
+    "id": "region_2",
+    "locations": [
+        {
+            "title": "Name Location 3",
+            "id": "googlemaps_location_3",
+            "position":{
+            "lat":41.9796238,
+            "lng":-87.9696249
+            }
+        },
+        {
+            "title": "Name Location 4",
+            "id": "googlemaps_location_4",
+            "position":{
+                "lat":25.710471,
+                "lng":-100.3109644
+            }
+        }
+    ]
+  }
+];
+```
+
 ```htmlmixed
 {% from 'google-maps.html' import googlemaps  %}
 
-{{ googlemaps( 
-    [  
-       {
-          "name": "Name Region",
-          "id": "region_1",
-          "locations": [
-             {  
-                "title":"Name Location",
-                "id": "googlemaps_location_1",
-                "position":{  
-                   "lat":52.1258508,
-                   "lng":4.633826
+{ googlemaps() }}
+```
+
+## How to use (MAPS + LIST VIEW )
+The maps + listview creates the locations + regions out of the rendered html.
+
+```htmlmixed
+{% from 'google-maps.html' import googlemaps  %}
+
+{ googlemaps(
+    [
+        {
+            "name": "Name Region",
+            "id": "region_1",
+            "locations": [
+                {
+                    "title":"Name Location 1",
+                    "id": "googlemaps_location_1",
+                    "position":{
+                        "lat":52.1258508,
+                        "lng":4.633826
+                    }
+                },
+                {
+                    "title":"Name Location 2",
+                    "id": "googlemaps_location_2",
+                    "position":{
+                        "lat":51.1236535,
+                        "lng":4.4525162
+                    }
                 }
-             },
-             {  
-                "title":"Name Location",
-                "id": "googlemaps_location_2",
-                "position":{  
-                   "lat":51.1236535,
-                   "lng":4.4525162
+            ]
+        },
+        {
+            "name": "Name Region",
+            "id": "region_2",
+            "locations": [
+                {
+                    "title": "Name Location 3",
+                    "id": "googlemaps_location_3",
+                    "position":{
+                    "lat":41.9796238,
+                    "lng":-87.9696249
+                    }
+                },
+                {
+                    "title": "Name Location 4",
+                    "id": "googlemaps_location_4",
+                    "position":{
+                        "lat":25.710471,
+                        "lng":-100.3109644
+                    }
                 }
-             }
-          ]
-       },
-       {
-          "name": "Name Region",
-          "id": "region_2",
-          "locations": [
-             {  
-                "title": "Name Location",
-                "id": "googlemaps_location_3",
-                "position":{  
-                   "lat":41.9796238,
-                   "lng":-87.9696249
-                }
-             },
-             {
-                "title": "Name Location",
-                "id": "googlemaps_location_4",
-                "position":{  
-                   "lat":25.710471,
-                   "lng":-100.3109644
-                }
-             }
-          ]
-       }
+            ]
+        }
     ]
 ) }}
 
@@ -77,8 +151,11 @@ Create maps in HTML.
 
 ## Dependencies
 * [Events utility](/utilities/events/)
+* [Raf Throttle](/utilities/raf-throttle/)
 * [Form-elements](./form-elements/)
+* [Cookies](./cookies/)
 
 ## Developers
 * [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian@deptagency.com)
+* [Dylan Vens](mailto:dylan.vens@deptagency.com)

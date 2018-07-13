@@ -2,7 +2,7 @@
     Contains:
 
     const MAP_STYLE ( CREATE AT https://mapstyle.withgoogle.com/ )
-    
+
     export const MAP_API_KEY ( REGISTER AT https://developers.google.com/maps/documentation/javascript/get-api-key)
     export const MAP_MARKER ( PATH TO MARKER IMAGE )
     export const MAP_SETTINGS ( PATH TO ACTIVE MARKER IMAGE )
@@ -169,11 +169,11 @@ const MAP_STYLE = [
   }
 ];
 
-export const MAP_API_KEY = '123456789abcdefghijklmnopqrstuvwxyz';
+export const MAP_API_KEY = '1234567890qwertyuiop';
 
-export const MAP_MARKER = '/assets/images/marker.png';
+export const MAP_MARKER = 'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-hawaii-ushi_1f3f4-e0075-e0073-e0068-e0069-e007f.png';
 
-export const MAP_MARKER_ACTIVE = '/assets/images/marker_active.png';
+export const MAP_MARKER_ACTIVE = 'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-bong-lrbg_1f3f4-e006c-e0072-e0062-e0067-e007f.png';
 
 export const MAP_MAX_ZOOM = 10;
 
@@ -181,7 +181,7 @@ export const MAP_SETTINGS = {
 
     "center": {
         "lat": 29.14,
-        "lng": 28.43 
+        "lng": 28.43
     },
     "zoom": 2,
     "disableDefaultUI": false,
@@ -190,3 +190,50 @@ export const MAP_SETTINGS = {
     "styles": MAP_STYLE || null
 
 };
+
+export const DEFAULT_REGIONS = [
+  {
+    "name": "Name Region",
+    "id": "region_1",
+    "locations": [
+      {
+        "title":"Name Location 1",
+        "id": "googlemaps_location_1",
+        "position":{
+            "lat":52.1258508,
+            "lng":4.633826
+        }
+      },
+      {
+        "title":"Name Location 2",
+        "id": "googlemaps_location_2",
+        "position":{
+            "lat":51.1236535,
+            "lng":4.4525162
+        }
+      }
+    ]
+  },
+  {
+    "name": "Name Region",
+    "id": "region_2",
+    "locations": [
+        {
+            "title": "Name Location 3",
+            "id": "googlemaps_location_3",
+            "position":{
+            "lat":41.9796238,
+            "lng":-87.9696249
+            }
+        },
+        {
+            "title": "Name Location 4",
+            "id": "googlemaps_location_4",
+            "position":{
+                "lat":25.710471,
+                "lng":-100.3109644
+            }
+        }
+    ]
+  }
+];
