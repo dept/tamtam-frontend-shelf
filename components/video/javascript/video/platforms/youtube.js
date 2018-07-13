@@ -1,6 +1,5 @@
 import Cookies from '@components/cookies';
 import Events from '@utilities/events';
-import YouTubePlayer from 'youtube-player';
 
 /**
  *
@@ -23,14 +22,19 @@ class YoutubeVideo {
             return;
         }
 
-        this._initPlayer();
-        this._bindEvents();
+        import(/* webpackChunkName: "Youtube-Player" */'youtube-player')
+            .then(Player => {
+
+                this._initPlayer(Player);
+                this._bindEvents();
+
+            });
 
     }
 
-    _initPlayer() {
+    _initPlayer(Player) {
 
-        this.player = YouTubePlayer(this.options.player, {
+        this.player = new Player(this.options.player, {
             videoId: this.options.videoId,
             playerVars: {
                 start: this.options.videoTime,
