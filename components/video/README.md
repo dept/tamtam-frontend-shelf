@@ -21,6 +21,7 @@ npm i youtube-player@5.4.0 --save
 npm i @vimeo/player@2.2.0 --save
 npm i layzr.js@2.2.2 --save
 npm i number-is-nan@1.0.1 --save
+npm i js-cookie@2.1.4 --save
 ```
 Import module
 ```javascript
@@ -205,6 +206,7 @@ Video.registerPlatforms({
 * [layzr](https://github.com/callmecavs/layzr.js)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
+* [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian@tamtam.nl)
