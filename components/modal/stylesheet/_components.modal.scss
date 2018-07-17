@@ -14,13 +14,14 @@ $modal-transition-ease: $ease-in-out-quad !default;
 .c-modal {
     position: fixed;
     top: 0;
-    left: -100%;
+    left: 0;
     height: 100%;
     width: 100%;
     opacity: 0;
     z-index: 9999;
     display: flex;
     overflow: auto;
+    pointer-events: none;
     transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time, 0ms linear $modal-transition-time;
     transition-property: opacity, left, visibility;
     -webkit-overflow-scrolling: touch;
@@ -30,6 +31,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
 .modal--is-showing {
     left: 0;
     opacity: 1;
+    pointer-events: all;
     transition: $modal-transition-time $modal-transition-ease, 0ms;
     transition-property: opacity, left;
     visibility: visible;
