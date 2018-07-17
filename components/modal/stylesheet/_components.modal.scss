@@ -22,7 +22,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
     display: flex;
     overflow: auto;
     pointer-events: none;
-    transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time, 0ms linear $modal-transition-time;
+    transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
     transition-property: opacity, visibility;
     -webkit-overflow-scrolling: touch;
     visibility: hidden;
@@ -32,7 +32,7 @@ $modal-transition-ease: $ease-in-out-quad !default;
     left: 0;
     opacity: 1;
     pointer-events: all;
-    transition: $modal-transition-time $modal-transition-ease, 0ms;
+    transition: $modal-transition-time $modal-transition-ease;
     transition-property: opacity;
     visibility: visible;
 
