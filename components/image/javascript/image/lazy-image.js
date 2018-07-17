@@ -46,7 +46,11 @@ class LazyImage {
         const src = image.getAttribute(LAZY_IMAGE_SRC_HOOK);
         const srcset = image.getAttribute(LAZY_IMAGE_SRCSET_HOOK);
 
-        if (!src) return;
+        // If there is no data-src set just render the element.
+        if (!src && image.src) {
+            this._renderImage(element);
+            return;
+        }
 
         if (SUPPORTS_SRCSET && srcset) {
             image.srcset = srcset;
@@ -54,6 +58,7 @@ class LazyImage {
 
         image.src = src;
         image.onload = () => this._renderImage(element);
+
 
     }
 

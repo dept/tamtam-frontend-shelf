@@ -27,27 +27,31 @@ class ObjectFit {
 
         const images = this.getObjectfitImages(element);
         html.classList.add(HAS_POLYFILL_CLASS);
-
-        Array.from(images).forEach(image => this.polyfillImage(image));
+        images.forEach(image => this.polyfillImage(image));
 
     }
 
     getObjectfitImages(element) {
+
         let images = [];
 
         if (element) {
             // If element without hook is passed in, ignore it.
-            if (typeof element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === 'undefined' || element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === false) { return; }
+            if (
+                typeof element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === 'undefined'
+                || element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === null
+                || element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === false
+            ) { return images; }
             images.push(element);
         } else {
-            images = document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`);
+            images = [...document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`)];
         }
 
         return images;
+
     }
 
     polyfillImage(image) {
-        console.log(image)
         const container = image.closest(`[${OBJECT_FIT_CONTAINER_HOOK}]`);
         container.setAttribute('style', `background-image: url(${image.currentSrc});`);
     }
