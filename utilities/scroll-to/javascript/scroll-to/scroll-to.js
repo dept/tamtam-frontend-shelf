@@ -44,8 +44,8 @@ class ScrollTo {
                     event.preventDefault();
                     const scrollConfig = {
                         position: targetEl.getBoundingClientRect(),
-                        offset: element.dataset.scrollOffset ? parseInt(element.dataset.scrollOffset, 10) : ST_OFFSET,
                         duration: element.dataset.scrollDuration ? parseInt(element.dataset.scrollDuration, 10) : ST_DURATION,
+                        offset: element.dataset.scrollOffset ? parseInt(element.dataset.scrollOffset, 10) : ST_OFFSET,
                         scrollElement: element.dataset.scrollElement
                     };
                     scrollTo(scrollConfig);
@@ -62,8 +62,8 @@ class ScrollTo {
 
         const scrollConfig = {
             position: target.getBoundingClientRect(),
-            offset: parseInt(offset, 10) || ST_OFFSET,
-            duration: parseInt(duration, 10) || ST_DURATION,
+            duration: typeof duration !== 'undefined' ? parseInt(duration, 10) : ST_DURATION,
+            offset: typeof offset !== 'undefined' ? parseInt(offset, 10) : ST_OFFSET,
             scrollElement: scrollElement
         };
 
@@ -84,7 +84,7 @@ function getElements() {
 /**
  * Scrolls the window to the top
  */
-function scrollTo({ position, offset, duration, scrollElement }) {
+function scrollTo({ position, duration, offset, scrollElement }) {
 
     return new Promise(resolve => {
 
