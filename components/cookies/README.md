@@ -56,7 +56,7 @@ Add cookie form template to page
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)
 
 ### 2.0.0

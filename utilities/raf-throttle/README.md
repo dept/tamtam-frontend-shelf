@@ -76,4 +76,4 @@ RafThrottle.remove([
 * [Raf throttle utility](/utilities/raf-throttle/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

@@ -16,9 +16,8 @@ Import module
 ```javascript
 import moduleInit from '@utilities/module-init';
 import '@utilities/events';
-import Toggle from '@components/toggle';
 
-moduleInit('[js-hook-toggle]', Toggle);
+moduleInit.async('[js-hook-toggle]', () => import(/* webpackChunkName: "Toggle" */'@components/toggle'));
 ```
 
 ## How to use

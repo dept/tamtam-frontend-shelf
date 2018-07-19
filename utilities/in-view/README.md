@@ -13,6 +13,11 @@
 * Trigger when element enters viewport
 
 ## Install
+Install npm package dependency
+```node
+npm i intersection-observer@0.5.0 --save
+```
+
 Import module
 ```javascript
 import '@utilities/in-view';
@@ -71,9 +76,9 @@ Events.$trigger('in-view::update');
 ```
 
 ## Dependencies
-* [RAF](https://www.npmjs.com/package/raf)
+* [Intersection Observer](https://www.npmjs.com/package/raf)
 * [Events utility](/utilities/events/)
-* [Raf throttle utility](/utilities/raf-throttle/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+* [Dylan Vens](mailto:dylan.vens@deptagency.com)

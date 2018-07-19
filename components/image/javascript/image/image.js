@@ -6,7 +6,6 @@ class Image {
 
     constructor() {
 
-        Events.$trigger('lazyimage::init');
         Events.$trigger('image::object-fit');
 
     }

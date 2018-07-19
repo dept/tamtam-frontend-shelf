@@ -19,7 +19,8 @@
 Import module
 ```javascript
 import '@utilities/focus-trap';
-import '@components/modal';
+
+moduleInit.async('[js-hook-modal]', () => import(/* webpackChunkName: "Modal" */'@components/modal'));
 ```
 
 ## How to use
@@ -36,8 +37,9 @@ You can add the following options:
 
 {% call modal({
     id : 'modal-example',
-    autoFocus   : 'true',
-    noBodyClass : 'false'
+    autoFocus      : 'true',
+    closeAllOthers : 'true',
+    noBodyClass    : 'false'
 }) %}
 
     Your content here.
@@ -56,6 +58,7 @@ Custom html element
 ```htmlmixed
 <div id="modal-custom"
     data-modal-auto-focus="true"
+    data-modal-close-all-others="true"
     data-modal-no-body-class="false">
     I am a custom modalbox
 
@@ -80,5 +83,5 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 * [Focus trap utility](/utilities/focus-trap/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)

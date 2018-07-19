@@ -36,4 +36,4 @@ Add newsletter template to page
 * [Validation utility](/utilities/validation/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian@tamtam.nl)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

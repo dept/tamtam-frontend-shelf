@@ -1,7 +1,12 @@
 import Events from '@utilities/events';
-import Layzr from 'layzr.js';
-import parseSrcSet from './util/parse-srcset';
+import InView from '@utilities/in-view';
+
 import hasResponsiveImages from './util/detect-responsive-images';
+
+const LAZY_IMAGE_HOOK = '.c-image';
+const LAZY_IMAGE_SRC_HOOK = 'data-src';
+const LAZY_IMAGE_SRCSET_HOOK = 'data-srcset';
+const LAZY_IMAGE_ANIMATE_IN_CLASS = 'u-fade-in';
 
 const SUPPORTS_SRCSET = checkResponsiveImageRequirements();
 
@@ -9,43 +14,71 @@ class LazyImage {
 
     constructor() {
 
-        this.instance = null;
+        this.images = getImageNodes(LAZY_IMAGE_HOOK);
+
         this._bindEvents();
+        this._setObserverables();
 
     }
 
-    /**
-     * Bind generic events
-     */
     _bindEvents() {
 
+        Events.$on('lazyimage::load', (e, element) => this._loadImage(element));
         Events.$on('lazyimage::update', () => this._updateImages());
-        Events.$on('lazyimage::init', () => this._loadImages());
+
+    }
+
+    _setObserverables() {
+
+        InView.addElements(this.images, 'lazyimage::load');
 
     }
 
     /**
-     * Lazy load all images if srcset is supported
+     * Load the image
+    * @param {HTMLElement} element Figure element
      */
-    _loadImages() {
+    _loadImage(element) {
 
-        if (!SUPPORTS_SRCSET) {
-            this._setTabletImage();
+        const image = element.querySelector('img');
+        if (!image) return;
+
+        const src = image.getAttribute(LAZY_IMAGE_SRC_HOOK);
+        const srcset = image.getAttribute(LAZY_IMAGE_SRCSET_HOOK);
+
+        // If there is no data-src set just render the element.
+        if (!src && image.src) {
+            this._renderImage(element);
             return;
         }
 
-        this.instance = Layzr({
-            normal: 'data-src',
-            srcset: 'data-srcset',
-            threshold: 20
-        });
+        if (SUPPORTS_SRCSET && srcset) {
+            image.srcset = srcset;
+        }
 
-        // Retrigger objectfit polyfill after image is loaded.
-        this.instance.on('src:after', element => {
-            Events.$trigger('image::object-fit', { data: element });
-        });
+        image.src = src;
+        image.onload = () => this._renderImage(element);
 
-        this._triggerUpdate();
+
+    }
+
+    /**
+     * Set image source
+     * @param {HTMLElement} element Figure element
+     */
+    _renderImage(element) {
+
+        const image = element.querySelector('img');
+
+        element.classList.add(LAZY_IMAGE_ANIMATE_IN_CLASS);
+        image.removeAttribute(LAZY_IMAGE_SRC_HOOK);
+        image.removeAttribute(LAZY_IMAGE_SRCSET_HOOK);
+
+        if (!hasResponsiveImages.currentSrc) {
+            image.currentSrc = image.src;
+        }
+
+        Events.$trigger('image::object-fit', { data: image });
 
     }
 
@@ -54,58 +87,8 @@ class LazyImage {
      */
     _updateImages() {
 
-        if (!SUPPORTS_SRCSET) {
-            this._setTabletImage();
-            return;
-        }
-
-        this._triggerUpdate();
-
-    }
-
-    /**
-     * Update new images
-     */
-    _triggerUpdate() {
-
-        // Get all image data.
-        this.instance.update();
-
-        // Bind event listeners.
-        this.instance.handlers(true);
-
-        // Lazy load images that are already in view (before user starts scrolling).
-        this.instance.check();
-
-    }
-
-    /**
-     * If srcset isn't supported set the default image size
-     */
-    _setTabletImage() {
-
-        const images = document.querySelectorAll('img');
-
-        Array.from(images).forEach(image => {
-
-            const srcSet = parseSrcSet(image.getAttribute('data-srcset')) || [{ url: image.getAttribute('data-src') }];
-
-            // Pick tablet image.
-            const src = Array.from(srcSet).find(a => a.width === 1024);
-
-            // Pick correct image source
-            const srcUrl = (src !== undefined) ? src.url : image.getAttribute('data-src') || image.src;
-
-            // Setting to null first prevents weird bugs of not updating src in IE.
-            image.src = null;
-
-            image.src = srcUrl;
-
-            image.removeAttribute('data-srcset');
-
-        });
-
-        Events.$trigger('image::object-fit');
+        this.images = getImageNodes(LAZY_IMAGE_HOOK);
+        this._setObserverables();
 
     }
 
@@ -117,6 +100,15 @@ class LazyImage {
  */
 function checkResponsiveImageRequirements() {
     return hasResponsiveImages.srcset || hasResponsiveImages.picture;
+}
+
+/**
+ * Check if srcset is supported
+ * @param {String} selector Lookup identifier
+ * @returns {Array}
+ */
+function getImageNodes(selector) {
+    return [...document.querySelectorAll(selector)];
 }
 
 export default new LazyImage();

@@ -65,4 +65,4 @@ Events.$trigger('focustrap::activate', {
 
 ## Developers
 * [Daphne Smit](mailto:daphne@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian@tamtam.nl)
+* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)

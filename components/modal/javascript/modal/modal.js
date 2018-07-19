@@ -101,6 +101,7 @@ class Modal {
         document.addEventListener('keyup', event => {
             if (event.keyCode === 27) {
                 Events.$trigger('modal::close');
+                Events.$trigger(`modal[${id}]::close`, { data: { id } });
             }
         });
 
@@ -119,10 +120,22 @@ class Modal {
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
+        const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true';
 
         // Add modal open class to html element if noBodyClass is false
         if (!noBodyClass) {
             html.classList.add(MODAL_HTML_CLASS);
+        }
+
+        if (closeAllOthers) {
+            Object.keys(this.registeredModals)
+                .filter(key => this.registeredModals[key].id !== data.id)
+                .forEach(id => {
+                    const _modal = this.registeredModals[id];
+                    if (_modal.el.modalIsOpen) {
+                        Events.$trigger(`modal[${_modal.id}]::close`, { data: { id: _modal.id } });
+                    }
+                });
         }
 
         // Add tabindex and add visible class
@@ -136,6 +149,8 @@ class Modal {
                 autoFocus
             }
         });
+
+        this.clearCurrentFocus();
 
     }
 
@@ -175,6 +190,12 @@ class Modal {
 
         Events.$trigger('focustrap::deactivate');
 
+        this.clearCurrentFocus();
+
+    }
+
+    clearCurrentFocus() {
+        if (document.activeElement != document.body) document.activeElement.blur();
     }
 
 }
