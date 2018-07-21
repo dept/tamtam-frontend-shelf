@@ -58,7 +58,7 @@ class InView {
     whenElementInViewport(entry, observer) {
 
         const triggers = entry.target.__inviewTriggerHook;
-        const element = entry.target
+        const element = entry.target;
 
         element.inviewProperties = calculateInviewProperties(entry);
 
@@ -143,14 +143,14 @@ function calculateInviewProperties(entry) {
     const { top, bottom, left, right } = getElementOffset(entry);
     const position = { top, bottom, left, right };
 
-    const windowHeight = entry.rootBounds.height;
-    const windowWidth = entry.rootBounds.width;
+    const rootHeight = entry.rootBounds.height;
+    const rootWidth = entry.rootBounds.width;
 
     const inViewDirections = getInViewDirections({
         entry,
         position,
-        windowHeight,
-        windowWidth,
+        rootHeight,
+        rootWidth,
         scrollTop,
         scrollLeft,
     });
@@ -208,10 +208,12 @@ function getInViewDirections(options) {
 
     const scrolledPastViewport = {};
 
-    scrolledPastViewport.top = topPosition + height < 0;
-    scrolledPastViewport.bottom = topPosition <= options.windowHeight;
-    scrolledPastViewport.right = leftPosition <= options.windowWidth;
-    scrolledPastViewport.left = leftPosition <= 0;
+    const isVisible = elementIsVisible(width, height);
+
+    scrolledPastViewport.top = topPosition + height < 0 && isVisible;
+    scrolledPastViewport.bottom = topPosition <= options.rootHeight && isVisible;
+    scrolledPastViewport.right = leftPosition <= options.rootWidth && isVisible;
+    scrolledPastViewport.left = leftPosition <= 0 && isVisible;
 
     const isInViewport = {
         horizontal: options.entry.isIntersecting && (scrolledPastViewport.left || scrolledPastViewport.right),
@@ -229,7 +231,8 @@ function getInViewDirections(options) {
         isInViewport,
         height,
         width,
-        windowHeight: options.windowHeight
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
     };
 }
 
@@ -245,6 +248,10 @@ function buildThresholdList() {
 
     thresholds.push(0);
     return thresholds;
+}
+
+function elementIsVisible(width, height) {
+    return width > 0 || height > 0;
 }
 
 export default new InView();
