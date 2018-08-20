@@ -12,7 +12,7 @@ class Accordion {
 
         if (!this.items) { return; }
 
-        this.autoClose = this.element.dataset.autoclose === 'false' ? false : true;
+        this.autoClose = this.element.dataset.autoclose !== 'false';
         this.accordionItems = {};
         this._initItems();
         this._bindEvents();
@@ -49,12 +49,10 @@ class Accordion {
                 if (this.accordionItems[id] && !this.isAnimating) {
                     this.accordionItems[id].close();
                 }
-            } else {
-                if (!this.isAnimating) {
-                    Object.keys(this.accordionItems).forEach(i => {
-                        this.accordionItems[i].close();
-                    });
-                }
+            } else if (!this.isAnimating) {
+                Object.keys(this.accordionItems).forEach(i => {
+                    this.accordionItems[i].close();
+                });
             }
         });
 

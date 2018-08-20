@@ -83,8 +83,8 @@ class AccordionItem {
      */
     _setAriaState() {
 
-        this.button.setAttribute('aria-expanded', (this.isOpen) ? true : false);
-        this.content.setAttribute('aria-hidden', (this.isOpen) ? false : true);
+        this.button.setAttribute('aria-expanded', this.isOpen);
+        this.content.setAttribute('aria-hidden', !this.isOpen);
 
     }
 
@@ -98,7 +98,11 @@ class AccordionItem {
         this.heightTransitionEvent = e => this._heightTransitionEnd(e);
 
         this.content.style.height = (this.isOpen) ? '0' : height;
-        this.content.offsetHeight;
+
+        // The line below triggers a repaint and is necessary for the accordion to work.
+        // https://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
+        this.content.offsetHeight; // eslint-disable-line
+
         this.content.style.height = (this.isOpen) ? height : '0';
 
         this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
