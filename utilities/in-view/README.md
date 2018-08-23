@@ -76,7 +76,7 @@ Events.$trigger('in-view::update');
 ```
 
 ## Dependencies
-* [Intersection Observer](https://www.npmjs.com/package/raf)
+* [Intersection Observer](https://www.npmjs.com/package/intersection-observer)
 * [Events utility](/utilities/events/)
 
 ## Developers
