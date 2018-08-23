@@ -25,6 +25,17 @@ class InView {
         this.nodes = getNodes();
         this.observer = null;
         this.setObserver();
+        this.bindEvents();
+
+    }
+
+    bindEvents() {
+
+        Events.$on('in-view::update', (event, data) => {
+            const elements = data && data.elements ? data.elements : undefined;
+            const hook = data && data.hook ? data.hook : undefined;
+            this.addElements(elements, hook);
+        });
 
     }
 
@@ -94,13 +105,13 @@ class InView {
 
     }
 
-    addElements(elements, hook) {
+    addElements(elements = getNodes(), hook = false) {
 
         elements.forEach(element => {
 
             if (element.__inviewInitialized) { return; }
+            if (hook) { element.__inviewTriggerHook = hook; }
 
-            element.__inviewTriggerHook = hook;
             this.nodes.push(element);
 
             this.bindObservedNodes();
