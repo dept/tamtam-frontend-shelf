@@ -10,7 +10,7 @@ const OBSERVER_DEFAULT_THRESHOLD = buildThresholdList();
 const INVIEW_JS_HOOK = '[js-hook-inview]';
 const INVIEW_TRIGGERS_HOOK = 'data-inview-trigger';
 const INVIEW_OUTVIEW_CLASS = 'is--out-view';
-const INVIEW_THRESHOLD_HOOK = 'data-inview-thresold';
+const INVIEW_THRESHOLD_HOOK = 'data-inview-threshold';
 const INVIEW_PERSISTENT_HOOK = 'data-inview-persistent';
 
 const CONFIG = {
