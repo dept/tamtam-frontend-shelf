@@ -18,8 +18,8 @@
 Install npm package dependency
 ```node
 npm i intersection-observer@0.5.0 --save
-npm i youtube-player@5.4.0 --save
-npm i @vimeo/player@2.2.0 --save
+npm i youtube-player@5.5.0 --save
+npm i @vimeo/player@2.6.3 --save
 npm i js-cookie@2.1.4 --save
 ```
 Import module
