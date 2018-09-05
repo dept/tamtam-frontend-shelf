@@ -232,21 +232,21 @@ function bindPlayerEvents(options) {
 
     const playButton = options.element.querySelector(VIDEO_PLAY_HOOK);
     if (playButton) {
-        options.element.querySelector(VIDEO_PLAY_HOOK).addEventListener('click', () => {
+        playButton.addEventListener('click', () => {
             Events.$trigger(`video[${options.instanceId}]::play`);
         });
     }
 
-    const pauseButton = options.element.querySelector(VIDEO_PLAY_HOOK);
+    const pauseButton = options.element.querySelector(VIDEO_PAUSE_HOOK);
     if (pauseButton) {
-        options.element.querySelector(VIDEO_PAUSE_HOOK).addEventListener('click', () => {
+        pauseButton.addEventListener('click', () => {
             Events.$trigger(`video[${options.instanceId}]::pause`);
         });
     }
 
-    const replayButton = options.element.querySelector(VIDEO_PLAY_HOOK);
+    const replayButton = options.element.querySelector(VIDEO_REPLAY_HOOK);
     if (replayButton) {
-        options.element.querySelector(VIDEO_REPLAY_HOOK).addEventListener('click', () => {
+        replayButton.addEventListener('click', () => {
             Events.$trigger(`video[${options.instanceId}]::replay`);
         });
     }
