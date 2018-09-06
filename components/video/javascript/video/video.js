@@ -45,11 +45,9 @@ class Video {
                 Events.$trigger(`video[${element.id}]::pause`);
             }
 
-            if (element._initialised) {
-                return;
+            if (!element._initialised && element.inviewProperties.scrolledPastViewport.bottom) {
+                this._initVideo(element);
             }
-
-            this._initVideo(element);
 
         });
 
