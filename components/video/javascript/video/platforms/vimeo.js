@@ -16,7 +16,7 @@ class VimeoVideo {
         import(/* webpackChunkName: "Vimeo-Player" */'@vimeo/player')
             .then(Player => {
 
-                this._initPlayer(Player);
+                this._initPlayer(Player.default);
                 this._bindEvents();
 
             });
