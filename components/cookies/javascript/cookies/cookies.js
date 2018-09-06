@@ -24,7 +24,7 @@ class Cookies {
 
         if (this.form.element) {
             this.form.url = this.form.element.getAttribute('action');
-            this.form.options = this.form.element.querySelectorAll(COOKIE_OPTION_HOOK);
+            this.form.options = [...this.form.element.querySelectorAll(COOKIE_OPTION_HOOK)];
             this.form.submit = this.form.element.querySelector(COOKIE_FORM_SUBMIT_HOOK);
         }
 
@@ -139,14 +139,14 @@ class Cookies {
 
         this._addGlobalCookies(acceptedCookies);
 
-        location.reload();
+        window.location.reload();
 
     }
 
     _addGlobalCookies(_cookies) {
 
-        _cookies['date'] = Date(Date.now());
-        _cookies['version'] = this.config.version;
+        _cookies.date = Date(Date.now());
+        _cookies.version = this.config.version;
 
         this.setCookie(COOKIEBAR_COOKIE_NAME, _cookies);
         this.setCookie(COOKIEBAR_COOKIE_VERSION, this.config.version);
@@ -155,7 +155,7 @@ class Cookies {
 
     _prefillFormCookies() {
 
-        Array.from(this.form.options).forEach(option => {
+        this.form.options.forEach(option => {
 
             if (this.getCookie(option.value) === '1') {
                 option.setAttribute('checked', 'checked');
@@ -186,8 +186,8 @@ class Cookies {
 
         const acceptedCookies = {};
 
-        Array.from(this.form.options).forEach(option => {
-            const value = option.value;
+        this.form.options.forEach(option => {
+            const { value } = option;
             this.config.cookies.forEach(cookie => {
                 if (cookie.name.indexOf(value) !== -1) {
                     const state = option.checked ? '1' : '0';
@@ -205,7 +205,7 @@ class Cookies {
 
     _setDefaultPreferences() {
 
-        Array.from(this.form.options).forEach(option => {
+        this.form.options.forEach(option => {
             option.setAttribute('checked', 'checked');
         });
 
