@@ -21,8 +21,6 @@ class Video {
 
         this.videos = [];
 
-        this._bindEvent();
-
         this.registeredPlatforms = {};
 
     }
@@ -31,6 +29,8 @@ class Video {
 
         if (typeof platforms !== 'object') { return; }
         this.registeredPlatforms = platforms;
+
+        this._bindEvent();
 
     }
 
