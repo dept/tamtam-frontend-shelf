@@ -1,5 +1,6 @@
 const eventEl = window;
 const crawlEl = document.querySelector('html');
+const listenQueue = {};
 
 class Events {
 
@@ -24,6 +25,12 @@ class Events {
 
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
 
+        if (!listenQueue[event]) {
+            listenQueue[event] = {};
+        } else {
+            listenQueue[event].eventIsBound = true;
+        }
+
         eventEl.addEventListener(event, ev => {
             callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
         });
@@ -34,10 +41,23 @@ class Events {
 
         if (this.logging) { console.log('Event triggered', '--- Name:', event, '--- Params:', data, '--- currentTarget', currentTarget); }
 
+        if (listenQueue[event] && listenQueue[event].interval) clearInterval(listenQueue[event].interval);
+
         const _data = currentTarget ? { currentTarget, data } : data;
         const _event = new CustomEvent(event, { detail: _data });
 
-        eventEl.dispatchEvent(_event);
+
+        if (typeof listenQueue[event] === 'undefined') {
+            listenQueue[event] = {
+                eventIsBound: false
+            };
+        }
+
+        if (listenQueue[event].eventIsBound === false) {
+            listenQueue[event].interval = setInterval(() => this.$trigger(event, data, currentTarget), 1000);
+        } else {
+            eventEl.dispatchEvent(_event);
+        }
 
     }
 
@@ -135,19 +155,19 @@ function parseEventString(eventString) {
  */
 function _delegate(criteria, callback) {
 
-    return function (e) {
-        let el = e.target;
+    return function (e, args) {
+        const el = e.target;
         if (criteria(el)) {
-            callback.apply(this, arguments);
+            callback.apply(this, ...args);
         }
-        while ((el = el.parentNode)) {
+        while ((el === el.parentNode)) {
             if (criteria(el)) {
                 e.delegateTarget = el;
-                callback.apply(this, arguments);
+                callback.apply(this, ...args);
                 return;
             }
         }
-    };
+    }
 
 }
 
