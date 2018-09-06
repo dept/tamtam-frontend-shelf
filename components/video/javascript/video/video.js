@@ -13,7 +13,7 @@ const VIDEO_PAUSED_CLASS = 'video--is-paused';
 const VIDEO_REPLAY_CLASS = 'video--is-ended';
 const VIDEO_COOKIE_INVALID_CLASS = 'video--has-invalid-cookie';
 
-const VIDEOS = document.querySelectorAll(VIDEO_HOOK);
+const VIDEOS = [...document.querySelectorAll(VIDEO_HOOK)];
 
 class Video {
 
@@ -147,8 +147,7 @@ class Video {
  */
 function getVideos(platforms) {
 
-    if (!VIDEOS) { return []; }
-    return Array.from(VIDEOS).filter(video => platforms.hasOwnProperty(video.dataset.videoPlatform) && !video._initialised ? video : false);
+    return VIDEOS.filter(video => Object.prototype.hasOwnProperty.call(platforms, video.dataset.videoPlatform) && !video._initialised ? video : false);
 
 }
 
