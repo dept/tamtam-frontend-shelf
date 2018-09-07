@@ -21,8 +21,6 @@ class Video {
 
         this.videos = [];
 
-        this._bindEvent();
-
         this.registeredPlatforms = {};
 
     }
@@ -31,6 +29,8 @@ class Video {
 
         if (typeof platforms !== 'object') { return; }
         this.registeredPlatforms = platforms;
+
+        this._bindEvent();
 
     }
 
@@ -45,11 +45,9 @@ class Video {
                 Events.$trigger(`video[${element.id}]::pause`);
             }
 
-            if (element._initialised) {
-                return;
+            if (!element._initialised && element.inviewProperties.scrolledPastViewport.bottom) {
+                this._initVideo(element);
             }
-
-            this._initVideo(element);
 
         });
 
