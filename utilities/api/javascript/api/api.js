@@ -6,13 +6,7 @@ import Environment from '@utilities/environment';
 
 import axios from 'axios';
 
-const endpointBase = {
-    local: '/api/',
-    test: '/api/',
-    acceptation: '/api/',
-    production: '/api/',
-    json: '/assets/data/api/'
-};
+const endpointBase = window.EnvironmentSettings.endpoint
 
 class API {
 
@@ -25,19 +19,6 @@ class API {
 
         this.antiForgeryToken = {};
         this.antiForgeryToken = { name, value };
-
-    }
-
-    /**
-     * Overwrite default enpoints
-     * @param {string} environment
-     * @param {string} endpoint
-     */
-    setEndpointBase(environment, endpoint) {
-
-        if ( endpointBase[environment] ) {
-            endpointBase[environment] = endpoint;
-        }
 
     }
 
@@ -118,9 +99,9 @@ function getEndpoint(path, json, method) {
     }
 
     if (json === true || (json === 'local' && Environment.isLocal())) {
-        return endpointBase.json + path + `--${method}.json`;
+        return endpointBase + path + `--${method}.json`;
     } else {
-        return endpointBase[Environment.get()] + path;
+        return endpointBase + path;
     }
 
 }
