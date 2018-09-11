@@ -22,16 +22,18 @@ class CustomFile {
     _handleChange() {
 
         let label = false;
+        let count = 0;
 
         if (this.element.files && this.element.files.length > 1) {
             label = (this.element.getAttribute('data-multiple-label') || '').replace('{count}', this.element.files.length);
-        } else {
-            label = this.element.value.split('\\').pop();
+        } else if(this.element.value != undefined) {
+            count++;
+            label = this.element.value.split('\\').pop(); 
         }
 
         if (label) {
             this.label.element.innerHTML = label;
-        } else {
+        } else if(count > 0) {
             this.label.element.innerHTML = this.label.text;
         }
 

@@ -1,13 +1,37 @@
 $form-item-margin: $global-spacing * 2;
+$form-padding-left: $global-spacing;
 $form-item-error-border-width: 1px;
 $form-item-error-border-radius: 0;
 $form-item-error-border-color: #ff0000;
 $form-item-error-fill-color: rgba($form-item-error-border-color, 0.2);
 $form-item-error-padding-top: $global-spacing/2;
 $form-item-error-padding-bottom: $global-spacing/2;
-$form-item-error-padding-left: $global-spacing;
+$form-item-error-padding-left: $form-padding-left;
 $form-item-error-padding-right: $global-spacing;
+$lap-transition-time: .3s;
+$lap-transition-ease: ease;
 
 .form__item {
     margin-bottom: $form-item-margin;
+}
+
+.form__item--lap {
+    .input__label,
+    .textarea__label {
+        pointer-events: none;
+        position: absolute;
+        padding-left: $form-padding-left;
+        transform: translateY(10px);
+        transition: $lap-transition-time $lap-transition-ease;
+        transition-property: transform, color, padding, font-size;
+    }
+}
+
+.form__item--lap-active {
+    .input__label,
+    .textarea__label {
+        transform: translateY(-20px);
+        padding-left: 0;
+        font-size: 1.2rem;
+    }
 }

@@ -50,16 +50,25 @@ $input-transition-ease: $ease-in-out-quad;
  * File
  */
 .input--file {
-    .input__input {
+    .input__input,
+    .input__label {
         cursor: pointer;
         padding-left: $input-padding-right;
+    }
 
+    .input__input {
         &::before {
             position: absolute;
             text-align: center;
             width: $input-padding-right;
             left: 0;
             content: '\21EA';
+        }
+    }
+
+    &.form__item--lap-active {
+        .input__label {
+            padding-left: 0;
         }
     }
 }

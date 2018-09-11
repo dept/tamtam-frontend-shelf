@@ -22,7 +22,8 @@
         {%- if data.class %} {{ data.class }}{% endif -%}
         {%- if data.type %} input--{{ data.type }}{% endif -%}
         {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.labelAsPlaceholder %} form__item--lap{% endif -%}
+        {%- if data.labelAsPlaceholder %}js-hook-lap{% endif -%}>
 
         <div class="input__wrapper">
             <label class="input__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">

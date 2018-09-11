@@ -23,8 +23,7 @@
 
     <div class="c-select form__item
         {%- if data.class %} {{ data.class }}{% endif -%}
-        {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.disabled %} form__item--disabled{% endif -%}">
 
         <div class="select__wrapper">
             <label class="select__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
