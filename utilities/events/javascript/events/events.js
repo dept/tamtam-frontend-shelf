@@ -25,15 +25,13 @@ class Events {
 
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
 
-        if (!listenQueue[event]) {
-            listenQueue[event] = {};
-        } else {
-            listenQueue[event].eventIsBound = true;
-        }
 
         eventEl.addEventListener(event, ev => {
             callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
         });
+
+        if (!listenQueue[event]) {listenQueue[event] = {}; }
+        listenQueue[event].eventIsBound = true;
 
     }
 
@@ -46,11 +44,8 @@ class Events {
         const _data = currentTarget ? { currentTarget, data } : data;
         const _event = new CustomEvent(event, { detail: _data });
 
-
         if (typeof listenQueue[event] === 'undefined') {
-            listenQueue[event] = {
-                eventIsBound: false
-            };
+            listenQueue[event] = { eventIsBound: false };
         }
 
         if (listenQueue[event].eventIsBound === false) {
@@ -111,6 +106,9 @@ function bindEvent(targetEl, attrName, attrValue) {
         _Events.$trigger(eventToTrigger, eventData, targetEl);
     }));
 
+    if (!listenQueue[eventToTrigger]) { listenQueue[eventToTrigger] = {}; }
+    listenQueue[eventToTrigger].eventIsBound = true;
+
 }
 
 /**
@@ -154,7 +152,6 @@ function parseEventString(eventString) {
  * @returns {Function}
  */
 function _delegate(criteria, callback) {
-
     return function (e) {
         const el = e.target;
         if (criteria(el)) {
@@ -168,7 +165,6 @@ function _delegate(criteria, callback) {
             }
         }
     }
-
 }
 
 /**
