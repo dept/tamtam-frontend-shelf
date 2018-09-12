@@ -153,11 +153,11 @@ function parseEventString(eventString) {
  */
 function _delegate(criteria, callback) {
     return function (e) {
-        const el = e.target;
+        let el = e.target;
         if (criteria(el)) {
             callback.apply(this, arguments);
         }
-        while ((el === el.parentNode)) {
+        while ((el = el.parentNode)) {
             if (criteria(el)) {
                 e.delegateTarget = el;
                 callback.apply(this, arguments);
