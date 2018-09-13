@@ -49,7 +49,7 @@ class API {
             method: getMethod('GET', json),
         };
 
-        config = Object.assign({}, config, options );
+        config =  { config, ...options };
 
         return axios( config );
 
@@ -68,7 +68,7 @@ class API {
             config.headers[this.antiForgeryToken.name] = this.antiForgeryToken.value;
         }
 
-        config = Object.assign({}, config, options );
+        config =  { config, ...options };
 
         return axios( config );
 
@@ -83,7 +83,7 @@ class API {
             method: getMethod('PUT', json),
         };
 
-        config = Object.assign({}, config, options );
+        config =  { config, ...options };
 
         return axios( config );
 
@@ -97,7 +97,7 @@ class API {
             method: getMethod('DELETE', json),
         };
 
-        config = Object.assign({}, config, options );
+        config =  { config, ...options };
 
         return axios( config );
 
@@ -117,10 +117,10 @@ function getEndpoint(path, json, method) {
         return path;
     }
 
-    if (json === true || (json === 'local' && Environment.isLocal())) {
+    if (json === true || (json === 'local' && Environment.isLocal)) {
         return endpointBase.json + path + `--${method}.json`;
     } else {
-        return endpointBase[Environment.get()] + path;
+        return endpointBase[Environment.get] + path;
     }
 
 }
@@ -133,7 +133,7 @@ function getEndpoint(path, json, method) {
  */
 function getMethod(method, json) {
 
-    return (json === true || (json === 'local' && Environment.isLocal())) ? 'GET' : method;
+    return (json === true || (json === 'local' && Environment.isLocal)) ? 'GET' : method;
 
 }
 
