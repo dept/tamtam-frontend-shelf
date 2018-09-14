@@ -64,10 +64,4 @@ $input-transition-ease: $ease-in-out-quad;
             content: '\21EA';
         }
     }
-
-    &.form__item--lap-active {
-        .input__label {
-            padding-left: 0;
-        }
-    }
 }
