@@ -192,9 +192,12 @@ $video-button-transition-ease: $ease-in-quad;
         letter-spacing: 2px;
     }
 
-    .video--is-playing:hover html:not(.is-touch) & {
-        opacity: 1;
+    .video--is-playing & {
         pointer-events: all;
+    }
+
+    html:not(.is-touch) .video--is-playing:hover & {
+        opacity: 1;
     }
 }
 
