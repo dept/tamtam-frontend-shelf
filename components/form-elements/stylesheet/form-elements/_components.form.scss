@@ -1,4 +1,4 @@
-$form-item-margin: $global-spacing * 2;
+$form-item-margin: $global-spacing * 3;
 $form-padding-left: $global-spacing;
 $form-item-error-border-width: 1px;
 $form-item-error-border-radius: 0;
@@ -13,25 +13,4 @@ $lap-transition-ease: ease;
 
 .form__item {
     margin-bottom: $form-item-margin;
-}
-
-.form__item--lap {
-    .input__label,
-    .textarea__label {
-        pointer-events: none;
-        position: absolute;
-        padding-left: $form-padding-left;
-        transform: translateY(10px);
-        transition: $lap-transition-time $lap-transition-ease;
-        transition-property: transform, color, padding, font-size;
-    }
-}
-
-.form__item--lap-active {
-    .input__label,
-    .textarea__label {
-        transform: translateY(-20px);
-        padding-left: 0;
-        font-size: 1.2rem;
-    }
 }

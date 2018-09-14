@@ -50,8 +50,7 @@ $input-transition-ease: $ease-in-out-quad;
  * File
  */
 .input--file {
-    .input__input,
-    .input__label {
+    .input__input {
         cursor: pointer;
         padding-left: $input-padding-right;
     }

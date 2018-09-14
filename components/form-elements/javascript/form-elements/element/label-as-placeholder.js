@@ -19,7 +19,7 @@ class LabelAsPlaceholder {
 
         this.input.addEventListener('change', () => this._handleChange());
 
-        if(this.input.type != 'file'){
+        if (this.input.type != 'file') {
             this.input.addEventListener('input', () => this._handleInput());
             this.input.addEventListener('focus', () => this._addLabelClass());
             this.input.addEventListener('focusout', () => this._removeLabelClass());
@@ -37,7 +37,7 @@ class LabelAsPlaceholder {
 
     _handleInput() {
 
-        if(this.input.value){
+        if (this.input.value) {
             this._addLabelClass();
         }
 
@@ -51,10 +51,10 @@ class LabelAsPlaceholder {
 
     _removeLabelClass() {
 
-        if(!this.input.value) {
+        if (!this.input.value) {
             this.formItem.classList.remove(LAP_ACTIVE);
         }
-        
+
     }
 
 }

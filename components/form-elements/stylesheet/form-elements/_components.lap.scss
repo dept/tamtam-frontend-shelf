@@ -1,0 +1,25 @@
+.form__item--lap {
+    .input__label,
+    .textarea__label {
+        pointer-events: none;
+        position: absolute;
+        transform: translate(10px, 10px);
+        transform-origin: 0 0;
+        transition: $lap-transition-time $lap-transition-ease;
+        transition-property: transform, color, padding, font-size;
+    }
+
+    &.input--file {
+        .input__label {
+            transform: translate(40px, 10px);
+        }
+    }
+}
+
+.form__item--lap-active {
+    .input__label,
+    .textarea__label,
+    &.input--file .input__label {
+        transform: translate(0, -25px) scale(0.8);
+    }
+}
