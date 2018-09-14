@@ -1,59 +1,37 @@
 const LAP_ACTIVE = 'form__item--lap-active';
-const INPUT_CLASS = 'input, textarea';
+const INPUT_QUERY = 'input, textarea';
+const FORM_ITEM = '.form__item';
 
 class LabelAsPlaceholder {
 
     constructor(element) {
 
-        this.element = element;
-        this.input = this.element.querySelector(INPUT_CLASS);
+        this.input = element.querySelector(INPUT_QUERY);
+        this.formItem = this.input.closest(FORM_ITEM);
 
-        this.formItem = this.input.closest('.form__item');
+        if (this.formItem) {
+            this._toggleLabelClass();
+            this._bindEvents();
+        }
 
-        this._handleInput();
-
-        this._bindEvents();
     }
 
     _bindEvents() {
 
-        this.input.addEventListener('change', () => this._handleChange());
+        this.input.addEventListener('change', () => this._toggleLabelClass());
 
-        if (this.input.type != 'file') {
-            this.input.addEventListener('input', () => this._handleInput());
-            this.input.addEventListener('focus', () => this._addLabelClass());
-            this.input.addEventListener('focusout', () => this._removeLabelClass());
-        }
-    }
-
-    _handleChange() {
-        if (this.input.value) {
-            this._addLabelClass();
-        } else {
-            this._removeLabelClass();
+        if (this.input.type !== 'file') {
+            this.input.addEventListener('input', () => this._toggleLabelClass(true));
+            this.input.addEventListener('focus', () => this._toggleLabelClass(true));
+            this.input.addEventListener('focusout', () => this._toggleLabelClass());
         }
 
     }
 
-    _handleInput() {
+    _toggleLabelClass(forceAnimateLabel) {
 
-        if (this.input.value) {
-            this._addLabelClass();
-        }
-
-    }
-
-    _addLabelClass() {
-
-        this.formItem.classList.add(LAP_ACTIVE);
-
-    }
-
-    _removeLabelClass() {
-
-        if (!this.input.value) {
-            this.formItem.classList.remove(LAP_ACTIVE);
-        }
+        const action = forceAnimateLabel || this.input.value ? 'add' : 'remove';
+        this.formItem.classList[action](LAP_ACTIVE);
 
     }
 
