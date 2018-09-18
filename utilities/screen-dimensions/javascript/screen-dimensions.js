@@ -48,7 +48,7 @@ class ScreenDimensions {
                 element: window,
                 event: 'resize',
                 namespace: 'ScreenDimensionsWidthChange',
-                fn: () => this.updateWidth();,
+                fn: () => this.updateWidth()
             }
         ]);
 
