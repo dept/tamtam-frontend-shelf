@@ -31,11 +31,11 @@ const MEDIA_QUERIES = [
 
 class ScreenDimensions {
 
-    get getHeight() {
+    get screenHeight() {
         return this.screen.height;
     }
 
-    get getWidth() {
+    get screenWidth() {
         return this.screen.width;
     }
 
@@ -75,10 +75,8 @@ class ScreenDimensions {
 
     updateWidth() {
 
-        this.screen = {
-            width: window.innerWidth,
-            height: window.innerHeight
-        }
+        this.width = window.innerWidth,
+        this.height = window.innerHeight
 
     }
 
