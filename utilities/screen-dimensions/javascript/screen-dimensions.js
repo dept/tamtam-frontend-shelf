@@ -1,3 +1,5 @@
+import RafThrottle from '@utilities/raf-throttle';
+
 const MEDIA_QUERIES = [
     {
         reference: 'isMobile',
@@ -41,29 +43,34 @@ class ScreenDimensions {
 
     constructor() {
 
+        RafThrottle.set([
+            {
+                element: window,
+                event: 'resize',
+                namespace: 'ScreenDimensionsWidthChange',
+                fn: () => this.updateWidth();,
+            }
+        ]);
+
         MEDIA_QUERIES.forEach((mqObject, index) => {
 
             const breakpoint = mqObject.breakpoint;
 
             installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
                 this[`${mqObject.reference}AndBigger`] = matches;
-                this.updateWidth();
             });
 
             if (!index) {
                 installMediaQueryWatcher(`(max-width: ${breakpoint}px)`, matches => {
                     this[mqObject.reference] = matches;
-                    this.updateWidth();
                 });
             } else if (MEDIA_QUERIES[index + 1]) {
                 installMediaQueryWatcher(`(min-width: ${breakpoint}px) and (max-width: ${MEDIA_QUERIES[index + 1].breakpoint - 1}px)`, matches => {
                     this[mqObject.reference] = matches;
-                    this.updateWidth();
                 });
             } else {
                 installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
                     this[mqObject.reference] = matches;
-                    this.updateWidth();
                 });
             }
 

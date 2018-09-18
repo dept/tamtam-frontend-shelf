@@ -13,6 +13,12 @@
 * Caches screen dimensions and breakpoints.
 
 ## Install
+
+Install npm package dependency
+```node
+npm i raf-throttle --save
+```
+
 Import module
 ```javascript
 import ScreenDimensions from '@utilities/screen-dimensions';
@@ -61,6 +67,9 @@ ScreenDimensions.isWidescreen
 ScreenDimensions.isWidescreenAndBigger
 
 ```
+
+## Dependencies
+* [Raf Throttle utility](/utilities/raf-throttle)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
