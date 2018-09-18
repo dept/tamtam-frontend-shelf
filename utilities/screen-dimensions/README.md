@@ -33,8 +33,8 @@ Returns a string
 
 ```javascript
 
-ScreenDimensions.width
-ScreenDimensions.height
+ScreenDimensions.screenWidth
+ScreenDimensions.screenHeight
 
 ```
 
