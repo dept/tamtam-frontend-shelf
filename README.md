@@ -26,7 +26,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Events](utilities/events/README.md)
 * [Focus Trap](utilities/focus-trap/README.md)
 * [GTM](utilities/gtm/README.md)
-* [History](utilities/history-api/README.md)
+* [History](utilities/history/README.md)
 * [Inview](utilities/in-view/README.md)
 * [RAF throttle](utilities/raf-throttle/README.md)
 * [Scroll to](utilities/scroll-to/README.md)
