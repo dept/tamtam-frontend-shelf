@@ -23,7 +23,7 @@
         {%- if data.labelAsPlaceholder %} form__item--lap{% endif -%}"
         {%- if data.labelAsPlaceholder %} js-hook-lap{% endif -%}>
 
-        <div class="input__wrapper">
+        <div class="input__wrapper" title="{{ data.label }}">
             <span class="input__label{%- if data.sronly %} u-sr-only{% endif -%}">
                 {{ data.label|safe }}
             </span>

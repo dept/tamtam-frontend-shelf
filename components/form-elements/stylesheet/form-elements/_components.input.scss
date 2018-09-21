@@ -53,9 +53,7 @@ $input-transition-ease: $ease-in-out-quad;
     .input__input {
         cursor: pointer;
         padding-left: $input-padding-right;
-    }
 
-    .input__input {
         &::before {
             position: absolute;
             text-align: center;

@@ -1,13 +1,12 @@
 const LAP_ACTIVE = 'form__item--lap-active';
 const INPUT_QUERY = 'input, textarea';
-const FORM_ITEM = '.form__item';
 
 class LabelAsPlaceholder {
 
     constructor(element) {
 
-        this.input = element.querySelector(INPUT_QUERY);
-        this.formItem = this.input.closest(FORM_ITEM);
+        this.formItem = element;
+        this.input = this.formItem.querySelector(INPUT_QUERY);
 
         if (this.formItem) {
             this._toggleLabelClass();
@@ -37,4 +36,4 @@ class LabelAsPlaceholder {
 
 }
 
-export { LabelAsPlaceholder };
+export default LabelAsPlaceholder;

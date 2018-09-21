@@ -3,5 +3,7 @@
  * Form utility
  */
 
-export { CustomFile } from './element/input-file';
-export { LabelAsPlaceholder } from './element/label-as-placeholder';
+import CustomFile from './element/input-file';
+import LabelAsPlaceholder from './element/label-as-placeholder';
+
+export { CustomFile, LabelAsPlaceholder };

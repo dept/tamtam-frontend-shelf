@@ -41,4 +41,4 @@ class CustomFile {
 
 }
 
-export { CustomFile };
+export default CustomFile;
