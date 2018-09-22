@@ -40,6 +40,7 @@
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="checkbox__label" for="{{ option.id }}" role="button">
                 {{ option.label|safe }}
+                <span class="checkbox__focus-helper"></span>
             </label>
         {% endfor %}
         </div>
