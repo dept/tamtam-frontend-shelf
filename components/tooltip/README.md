@@ -1,16 +1,16 @@
-# Video component
+# Tooltip component
 
 ## Table of contents
-1. [What does it do](#markdown-header-what-does-it-do)
-2. [Install](#markdown-header-install)
-3. [How to use](#markdown-header-how-to-use)
-4. [Dependencies](#markdown-header-dependencies)
-5. [Changelog](#markdown-header-changelog)
-6. [Developers](#markdown-header-developers)
+1. [What does it do](#markdown-tooltip-what-does-it-do)
+2. [Install](#markdown-tooltip-install)
+3. [How to use](#markdown-tooltip-how-to-use)
+4. [Dependencies](#markdown-tooltip-dependencies)
+5. [Changelog](#markdown-tooltip-changelog)
+6. [Developers](#markdown-tooltip-developers)
 
 ## What does it do
-* Creates a toolbar.
-* If the toolbar is out of the screen, the position wil change automatically.
+* Creates a tooltip.
+* If the tooltip is out of the screen, the position wil change automatically.
 
 ## Install
 Import module
@@ -59,7 +59,7 @@ You can read
     id: 'id-name',
     tip : {
         position: 'right-top',
-        nowrap: true,
+        noWrap: true,
         pointerEvents: true,
         content: 'More about the text'
     }
