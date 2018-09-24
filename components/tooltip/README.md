@@ -4,9 +4,7 @@
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
-4. [Dependencies](#markdown-header-dependencies)
-5. [Changelog](#markdown-header-changelog)
-6. [Developers](#markdown-header-developers)
+4. [Developers](#markdown-header-developers)
 
 ## What does it do
 * Creates a tooltip.
