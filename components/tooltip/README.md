@@ -1,12 +1,12 @@
 # Tooltip component
 
 ## Table of contents
-1. [What does it do](#markdown-tooltip-what-does-it-do)
-2. [Install](#markdown-tooltip-install)
-3. [How to use](#markdown-tooltip-how-to-use)
-4. [Dependencies](#markdown-tooltip-dependencies)
-5. [Changelog](#markdown-tooltip-changelog)
-6. [Developers](#markdown-tooltip-developers)
+1. [What does it do](#markdown-header-what-does-it-do)
+2. [Install](#markdown-header-install)
+3. [How to use](#markdown-header-how-to-use)
+4. [Dependencies](#markdown-header-dependencies)
+5. [Changelog](#markdown-header-changelog)
+6. [Developers](#markdown-header-developers)
 
 ## What does it do
 * Creates a tooltip.
