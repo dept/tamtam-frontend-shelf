@@ -150,8 +150,6 @@ class Modal {
             }
         });
 
-        this.clearCurrentFocus();
-
     }
 
     /**
