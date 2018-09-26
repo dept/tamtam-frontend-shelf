@@ -1,22 +1,22 @@
-import { html } from "@utilities/dom-elements";
-import ScreenDimensions from "@utilities/screen-dimensions";
-import DetectTouch from "@utilities/detect-touch";
+import { html } from '@utilities/dom-elements';
+import ScreenDimensions from '@utilities/screen-dimensions';
+import DetectTouch from '@utilities/detect-touch';
 
 const DIRECTIONS = {
-    LEFT: "left",
-    RIGHT: "right",
-    TOP: "top",
-    BOTTOM: "bottom"
+    LEFT: 'left',
+    RIGHT: 'right',
+    TOP: 'top',
+    BOTTOM: 'bottom'
 };
-const TRIANGLE = "[js-hook-triangle]";
-const TOOLTIP_TRIGGER = "tooltip--trigger";
-const TOOLTIP_ACTIVE = "tooltip--active";
+const TRIANGLE = '[js-hook-triangle]';
+const TOOLTIP_TRIGGER = 'tooltip--trigger';
+const TOOLTIP_ACTIVE = 'tooltip--active';
 
 // Change to the class of your nav if the nav is fixed
-const NAV_CLASS = ".your-nav-class";
+const NAV_CLASS = '.your-nav-class';
 const CALCULATE_NAV_OFFSET = true;
 
-const TOOLTIP_PREFIX = "tooltip--";
+const TOOLTIP_PREFIX = 'tooltip--';
 const TOOLTIP_PROPS = [
     `${TOOLTIP_PREFIX}left-top`,
     `${TOOLTIP_PREFIX}left-center`,
@@ -46,17 +46,17 @@ class Tooltip {
         this.resetTouchEvent = event => this.resetTouch(event);
 
         if (DetectTouch.isTouchDevice) {
-            this.tooltipTrigger.addEventListener("touchstart", () =>
+            this.tooltipTrigger.addEventListener('touchstart', () =>
                 this._handleTouch()
             );
         } else {
-            this.tooltipTrigger.addEventListener("mouseenter", () =>
+            this.tooltipTrigger.addEventListener('mouseenter', () =>
                 this.inScreen(this.getElementPositions(this.element))
             );
         }
 
         if (ScreenDimensions.isTabletPortraitAndBigger) {
-            this.tooltipTrigger.addEventListener("mouseleave", () =>
+            this.tooltipTrigger.addEventListener('mouseleave', () =>
                 this.resetElement()
             );
         }
@@ -67,7 +67,7 @@ class Tooltip {
 
         /** Add touch event to the whole document. So the user can click
          * everywhere to close the toolbar. */
-        document.addEventListener("touchstart", this.resetTouchEvent, false);
+        document.addEventListener('touchstart', this.resetTouchEvent, false);
         this.inScreen(this.getElementPositions(this.element));
     }
 
@@ -86,7 +86,7 @@ class Tooltip {
         if (event.target.closest(`.tooltip--trigger`) !== this.tooltipTrigger) {
             /** Remove the touch event. If you click on a toolbar again
              * the touch event isn't double. */
-            document.removeEventListener("touchstart", this.resetTouchEvent);
+            document.removeEventListener('touchstart', this.resetTouchEvent);
             this.closeAllOtherTooltips();
         } else {
             this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE);
@@ -102,8 +102,8 @@ class Tooltip {
     }
 
     resetElement() {
-        this.element.removeAttribute("style");
-        this.triangle.removeAttribute("style");
+        this.element.removeAttribute('style');
+        this.triangle.removeAttribute('style');
 
         let oldTipPosition = TOOLTIP_PREFIX + this.element.dataset.position;
 
@@ -199,7 +199,7 @@ class Tooltip {
             So if the position is left-center and the tooltip is outside the topscreen then do this. 
             Not if position is top-center and tooltip is outside the topscreen. 
         */
-        if (classItem.indexOf("center") > 0 && classItem.indexOf(key) === -1) {
+        if (classItem.indexOf('center') > 0 && classItem.indexOf(key) === -1) {
             const margins = this.getDesktopMargins(key, position);
 
             if (key === DIRECTIONS.BOTTOM || key === DIRECTIONS.TOP) {
