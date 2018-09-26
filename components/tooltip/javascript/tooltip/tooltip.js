@@ -9,8 +9,8 @@ const DIRECTIONS = {
     BOTTOM: 'bottom'
 };
 const TRIANGLE = '[js-hook-triangle]';
-const TOOLTIP_TRIGGER = 'tooltip--trigger';
-const TOOLTIP_ACTIVE = 'tooltip--active';
+const TOOLTIP_TRIGGER_CLASS = '.tooltip--trigger';
+const TOOLTIP_ACTIVE_CLASS = 'tooltip--active';
 
 // Change to the class of your nav if the nav is fixed
 const NAV_CLASS = '.your-nav-class';
@@ -39,7 +39,7 @@ class Tooltip {
         this.triangle = this.element.querySelector(TRIANGLE);
         this.nav = document.querySelector(NAV_CLASS);
         this.tooltipTriggers = [
-            ...document.querySelectorAll(`.${TOOLTIP_TRIGGER}`)
+            ...document.querySelectorAll(TOOLTIP_TRIGGER_CLASS)
         ];
         this.tooltipTrigger = this.element.parentNode;
 
@@ -63,7 +63,7 @@ class Tooltip {
     }
 
     _handleTouch() {
-        this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE);
+        this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
 
         /** Add touch event to the whole document. So the user can click
          * everywhere to close the toolbar. */
@@ -83,20 +83,20 @@ class Tooltip {
     }
 
     resetTouch(event) {
-        if (event.target.closest(`.tooltip--trigger`) !== this.tooltipTrigger) {
+        if (event.target.closest(TOOLTIP_TRIGGER_CLASS) !== this.tooltipTrigger) {
             /** Remove the touch event. If you click on a toolbar again
              * the touch event isn't double. */
             document.removeEventListener('touchstart', this.resetTouchEvent);
             this.closeAllOtherTooltips();
         } else {
-            this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE);
+            this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
         }
     }
 
     closeAllOtherTooltips() {
         this.tooltipTriggers.forEach(tooltipTrigger => {
-            if (tooltipTrigger.classList.contains(TOOLTIP_ACTIVE)) {
-                tooltipTrigger.classList.remove(TOOLTIP_ACTIVE);
+            if (tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)) {
+                tooltipTrigger.classList.remove(TOOLTIP_ACTIVE_CLASS);
             }
         });
     }
