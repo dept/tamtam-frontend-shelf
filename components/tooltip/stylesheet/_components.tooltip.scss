@@ -4,17 +4,23 @@ $tooltip-width: 250px;
 $tooltip-padding: 10px;
 $tooltip-triangle: 15px;
 
+@mixin tooltip-active {
+    .c-tooltip {
+        display: block;
+    }
+}
+
 .tooltip--trigger {
     position: relative;
     display: inline-block;
     cursor: pointer;
 
-    // @include hover-focus {
-    &:hover,
-    &:focus {
-        .c-tooltip {
-            display: block;
-        }
+
+    @include hover-focus {
+        @include tooltip-active;
+    }
+    &.tooltip--active{
+        @include tooltip-active;
     }
 }
 
