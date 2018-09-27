@@ -1,5 +1,5 @@
 const LAP_ACTIVE = 'form__item--lap-active';
-const INPUT_QUERY = 'input, textarea';
+const INPUT_QUERY = 'input, textarea, select';
 const FILE = 'file';
 const SELECT = 'SELECT';
 
