@@ -15,11 +15,11 @@ $tooltip-triangle: 15px;
     display: inline-block;
     cursor: pointer;
 
-
     @include hover-focus {
         @include tooltip-active;
     }
-    &.tooltip--active{
+
+    &.tooltip--active {
         @include tooltip-active;
     }
 }
