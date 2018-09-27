@@ -1,5 +1,7 @@
 const LAP_ACTIVE = 'form__item--lap-active';
 const INPUT_QUERY = 'input, textarea';
+const FILE = 'file';
+const SELECT = 'SELECT';
 
 class LabelAsPlaceholder {
 
@@ -19,7 +21,7 @@ class LabelAsPlaceholder {
 
         this.input.addEventListener('change', () => this._toggleLabelClass());
 
-        if (this.input.type !== 'file') {
+        if (this.input.type !== FILE && this.input.tagName !== SELECT) {
             this.input.addEventListener('input', () => this._toggleLabelClass(true));
             this.input.addEventListener('focus', () => this._toggleLabelClass(true));
             this.input.addEventListener('focusout', () => this._toggleLabelClass());

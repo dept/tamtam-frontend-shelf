@@ -5,7 +5,8 @@ $lap-padding-height: 10px;
 
 .form__item--lap {
     .input__label,
-    .textarea__label {
+    .textarea__label,
+    .select__label {
         pointer-events: none;
         position: absolute;
         transform: translate($lap-padding-width, $lap-padding-height);
@@ -29,6 +30,7 @@ $lap-padding-height: 10px;
 .form__item--lap-active {
     .input__label,
     .textarea__label,
+    .select__label,
     &.input--file .input__label {
         transform: translate(0, -25px) scale(0.8);
         max-width: 120%;
