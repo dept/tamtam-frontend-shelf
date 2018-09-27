@@ -11,6 +11,7 @@ const DIRECTIONS = {
 const TRIANGLE = '[js-hook-triangle]';
 const TOOLTIP_TRIGGER_CLASS = '.tooltip--trigger';
 const TOOLTIP_ACTIVE_CLASS = 'tooltip--active';
+const LINK_TAG = 'A';
 
 // Change to the class of your nav if the nav is fixed
 const NAV_CLASS = '.your-nav-class';
@@ -46,8 +47,8 @@ class Tooltip {
         this.resetTouchEvent = event => this.resetTouch(event);
 
         if (DetectTouch.isTouchDevice) {
-            this.tooltipTrigger.addEventListener('touchstart', () =>
-                this._handleTouch()
+            this.tooltipTrigger.addEventListener('touchstart', event =>
+                this._handleTouch(event)
             );
         } else {
             this.tooltipTrigger.addEventListener('mouseenter', () =>
@@ -62,8 +63,12 @@ class Tooltip {
         }
     }
 
-    _handleTouch() {
-        this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
+    _handleTouch(event) {
+        if(!this.tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)){
+            this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
+        }else if(event.target.tagName !== LINK_TAG){
+            this.tooltipTrigger.classList.remove(TOOLTIP_ACTIVE_CLASS);
+        }
 
         /** Add touch event to the whole document. So the user can click
          * everywhere to close the toolbar. */
@@ -88,14 +93,12 @@ class Tooltip {
              * the touch event isn't double. */
             document.removeEventListener('touchstart', this.resetTouchEvent);
             this.closeAllOtherTooltips();
-        } else {
-            this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
         }
     }
 
     closeAllOtherTooltips() {
         this.tooltipTriggers.forEach(tooltipTrigger => {
-            if (tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)) {
+            if (tooltipTrigger === this.tooltipTrigger) {
                 tooltipTrigger.classList.remove(TOOLTIP_ACTIVE_CLASS);
             }
         });
