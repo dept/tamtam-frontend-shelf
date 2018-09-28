@@ -37,7 +37,7 @@ class Events {
             }
         }
 
-        eventEl.addEventListener(event, boundEvents[event]);
+        eventEl.addEventListener(event, boundEvents[event].callbackWrapper);
 
         if (!listenQueue[event]) { listenQueue[event] = {}; }
         listenQueue[event].eventIsBound = true;
@@ -167,8 +167,6 @@ function parseEventString(eventString) {
 
 }
 
-/* eslint-disable */
-
 /* DOM and Event helpers */
 /**
  * Event delegation. Bind clicks on parent, for live elements,
@@ -192,8 +190,6 @@ function _delegate(criteria, callback) {
         }
     }
 }
-
-/* eslint-enable */
 
 /**
  * Treewalker to match elements based on a function
