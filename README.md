@@ -35,6 +35,7 @@ In this repository you find all standardized front-end components and utilities.
 
 # Polyfills
 Various browser polyfills. Easiest way is to copy the whole folder, and include the polyfills you need in the index file.
+
 * [DOM](utilities/polyfills/DOM/README.md)
 * * [Closest](utilities/polyfills/DOM/closest.js)
 * * [Matches](utilities/polyfills/DOM/matches.js) (uses closest)
