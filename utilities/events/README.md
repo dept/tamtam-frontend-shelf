@@ -69,6 +69,13 @@ The next code snippet will look for the video instance with '12' set as instance
 
 ```
 
+### Rebinding new elements when injected into DOM
+```
+
+Events.$trigger('events::dom-reinit');
+
+```
+
 ## Dependencies
 This package doesn't not have any dependencies.
 

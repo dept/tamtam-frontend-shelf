@@ -66,6 +66,8 @@ class Events {
 
 const _Events = new Events();
 
+_Events.$on('events::dom-reinit', () => readAndBindEventsFromDOM());
+
 /*
  * Private methods
  */
@@ -80,12 +82,15 @@ function readAndBindEventsFromDOM() {
     const elements = _domFind(crawlEl, element => element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:'));
 
     elements.map(el => {
-        const attrs = [].slice.call(el.attributes);
-        attrs
-            // Filter attributes (so not elements this time) starting with on:
-            .filter(attr => attr.name.slice(0, 3) === 'on:')
-            // Listen to the native event.
-            .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
+        if (!el._isInitialised) {
+            const attrs = [].slice.call(el.attributes);
+            attrs
+                // Filter attributes (so not elements this time) starting with on:
+                .filter(attr => attr.name.slice(0, 3) === 'on:')
+                // Listen to the native event.
+                .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
+            el._isInitialised = true;
+        }
     });
 
 }
