@@ -4,9 +4,10 @@ import InView from '@utilities/in-view';
 import hasResponsiveImages from './util/detect-responsive-images';
 
 const LAZY_IMAGE_HOOK = '.c-image';
+const LAZY_SHADOW_IMAGE_HOOK = '[js-hook-shadow-image]';
 const LAZY_IMAGE_SRC_HOOK = 'data-src';
 const LAZY_IMAGE_SRCSET_HOOK = 'data-srcset';
-const LAZY_IMAGE_ANIMATE_IN_CLASS = 'u-fade-in';
+const LAZY_IMAGE_ANIMATE_IN_CLASS = 'image--is-loaded';
 
 const SUPPORTS_SRCSET = checkResponsiveImageRequirements();
 
@@ -15,6 +16,7 @@ class LazyImage {
     constructor() {
 
         this.images = getImageNodes(LAZY_IMAGE_HOOK);
+        this.shadowImages = getImageNodes(LAZY_SHADOW_IMAGE_HOOK);
 
         this._bindEvents();
         this._setObserverables();
@@ -26,11 +28,21 @@ class LazyImage {
         Events.$on('lazyimage::load', (e, element) => this._loadImage(element));
         Events.$on('lazyimage::update', () => this._updateImages());
 
+        this.shadowImages.forEach((shadowImage) => LazyImage._removeShadowImage(shadowImage));
+
     }
 
     _setObserverables() {
 
         InView.addElements(this.images, 'lazyimage::load');
+
+    }
+
+    static _removeShadowImage(image) {
+
+        image.addEventListener('transitionend', () => {
+            image.remove();
+        }, false);
 
     }
 
