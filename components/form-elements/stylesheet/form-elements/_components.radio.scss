@@ -23,14 +23,6 @@ $radio-transition-ease: $ease-in-out-quad;
             box-shadow: 0 0 0 $radio-border-width $radio-color inset;
         }
     }
-
-    &:focus {
-        + label {
-            .radio__focus-helper {
-                opacity: 1;
-            }
-        }
-    }
 }
 
 .radio__label {
@@ -68,19 +60,6 @@ $radio-transition-ease: $ease-in-out-quad;
             box-shadow: 0 0 0 $radio-border-width $radio-error-color inset, 0 0 0 $radio-border-width*3 $color-white inset;
         }
     }
-}
-
-.radio__focus-helper {
-    display: block;
-    width: $radio-size;
-    height: $radio-size;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    opacity: 0;
-    z-index: -1;
-    @include focus-state-pulse($round: true);
 }
 
 /**

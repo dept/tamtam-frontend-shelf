@@ -53,3 +53,7 @@ $select-transition-ease: $ease-in-out-quad;
         box-shadow: 0 0 0 $select-border-width $select-error-color inset;
     }
 }
+
+.textarea__wrapper {
+    position: relative;
+}

@@ -41,6 +41,7 @@
                     {%- if data.accept %} accept="{{ data.accept }}"{% endif -%}
                     {%- if data.multiple %} multiple data-multiple-label="{count} files selected"{% endif -%}
                     {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+                <span class="focus-helper"></span>
             </div>
         </div>
         {%- if data.error %}

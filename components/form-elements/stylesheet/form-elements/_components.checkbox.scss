@@ -37,14 +37,6 @@ $checkbox-transition-ease: $ease-in-out-quad;
             box-shadow: 0 0 0 $checkbox-border-width $checkbox-color inset;
         }
     }
-
-    &:focus {
-        + label {
-            .checkbox__focus-helper {
-                opacity: 1;
-            }
-        }
-    }
 }
 
 .checkbox__label {
@@ -68,9 +60,7 @@ $checkbox-transition-ease: $ease-in-out-quad;
     &::before {
         box-shadow: 0 0 0 $checkbox-border-width*3 $color-white inset, 0 0 0 $checkbox-size $checkbox-color inset;
         transform: translateY(-50%) scale(0);
-        transition:
-            $checkbox-transition-time $checkbox-transition-ease,
-            $checkbox-transition-time $checkbox-transition-ease;
+        transition: $checkbox-transition-time $checkbox-transition-ease, $checkbox-transition-time $checkbox-transition-ease;
         transition-property: transform, box-shadow;
     }
 
@@ -84,19 +74,6 @@ $checkbox-transition-ease: $ease-in-out-quad;
             box-shadow: 0 0 0 $checkbox-border-width $checkbox-error-color inset, 0 0 0 $checkbox-border-width*3 $color-white inset;
         }
     }
-}
-
-.checkbox__focus-helper {
-    display: block;
-    width: $checkbox-size;
-    height: $checkbox-size;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    opacity: 0;
-    z-index: -1;
-    @include focus-state-pulse;
 }
 
 /**

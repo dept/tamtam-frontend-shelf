@@ -33,6 +33,7 @@
                 {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}></textarea>
+            <span class="focus-helper"></span>
         </div>
         {%- if data.error %}
             <div class="form__item-error">{{ data.error }}</div>
