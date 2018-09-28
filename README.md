@@ -39,3 +39,4 @@ Various browser polyfills. Easiest way is to copy the whole folder, and include 
 * [DOM](polyfills/DOM/README.md)
 * * [Closest](polyfills/DOM/closest.js)
 * * [Matches](polyfills/DOM/matches.js)
+* * [Remove](polyfills/DOM/remove.js)
