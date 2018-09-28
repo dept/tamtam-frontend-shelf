@@ -1,6 +1,7 @@
 const eventEl = window;
 const crawlEl = document.querySelector('html');
 const listenQueue = {};
+const boundEvents = {};
 
 class Events {
 
@@ -25,12 +26,17 @@ class Events {
 
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
 
+        if (eventIsBoundToEventEl(event)) {
+            eventEl.removeEventListener(event, boundEvents[event], false);
+        } else {
+            boundEvents[event] = ev => {
+                callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
+            }
+        }
 
-        eventEl.addEventListener(event, ev => {
-            callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
-        });
+        eventEl.addEventListener(event, boundEvents[event]);
 
-        if (!listenQueue[event]) {listenQueue[event] = {}; }
+        if (!listenQueue[event]) { listenQueue[event] = {}; }
         listenQueue[event].eventIsBound = true;
 
     }
@@ -109,6 +115,15 @@ function bindEvent(targetEl, attrName, attrValue) {
     if (!listenQueue[eventToTrigger]) { listenQueue[eventToTrigger] = {}; }
     listenQueue[eventToTrigger].eventIsBound = true;
 
+}
+
+/**
+ * Returns if an event is already bound to eventEl.
+ * @param {string} event
+ * @returns {boolean}
+ */
+function eventIsBoundToEventEl(event) {
+    return !!boundEvents[event];
 }
 
 /**
