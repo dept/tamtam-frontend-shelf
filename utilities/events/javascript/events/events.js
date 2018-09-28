@@ -1,7 +1,6 @@
 const eventEl = window;
 const crawlEl = document.querySelector('html');
 const listenQueue = {};
-const boundEvents = {};
 
 class Events {
 
@@ -26,17 +25,12 @@ class Events {
 
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
 
-        if (eventIsBoundToEventEl(event)) {
-            eventEl.removeEventListener(event, boundEvents[event], false);
-        } else {
-            boundEvents[event] = ev => {
-                callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
-            }
-        }
 
-        eventEl.addEventListener(event, boundEvents[event]);
+        eventEl.addEventListener(event, ev => {
+            callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
+        });
 
-        if (!listenQueue[event]) { listenQueue[event] = {}; }
+        if (!listenQueue[event]) {listenQueue[event] = {}; }
         listenQueue[event].eventIsBound = true;
 
     }
@@ -66,8 +60,6 @@ class Events {
 
 const _Events = new Events();
 
-_Events.$on('events::dom-reinit', () => readAndBindEventsFromDOM());
-
 /*
  * Private methods
  */
@@ -82,15 +74,12 @@ function readAndBindEventsFromDOM() {
     const elements = _domFind(crawlEl, element => element.attributes && [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:'));
 
     elements.map(el => {
-        if (!el._isInitialised) {
-            const attrs = [].slice.call(el.attributes);
-            attrs
-                // Filter attributes (so not elements this time) starting with on:
-                .filter(attr => attr.name.slice(0, 3) === 'on:')
-                // Listen to the native event.
-                .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
-            el._isInitialised = true;
-        }
+        const attrs = [].slice.call(el.attributes);
+        attrs
+            // Filter attributes (so not elements this time) starting with on:
+            .filter(attr => attr.name.slice(0, 3) === 'on:')
+            // Listen to the native event.
+            .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
     });
 
 }
@@ -120,15 +109,6 @@ function bindEvent(targetEl, attrName, attrValue) {
     if (!listenQueue[eventToTrigger]) { listenQueue[eventToTrigger] = {}; }
     listenQueue[eventToTrigger].eventIsBound = true;
 
-}
-
-/**
- * Returns if an event is already bound to eventEl.
- * @param {string} event
- * @returns {boolean}
- */
-function eventIsBoundToEventEl(event) {
-    return !!boundEvents[event];
 }
 
 /**
