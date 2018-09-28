@@ -33,11 +33,15 @@ $helper-transition-time: 200ms;
 }
 
 .has--keyboard-focus {
-    .input__input:focus + .focus-helper,
-    .textarea__input:focus + .focus-helper,
-    .select__input:focus + .focus-helper,
-    .u-sr-only:focus + .focus-helper {
-        opacity: 1;
+    .input__input,
+    .textarea__input,
+    .select__input,
+    .u-sr-only {
+        &:focus {
+            .focus-helper {
+                opacity: 1;
+            }
+        }
     }
 
     .checkbox__input {
