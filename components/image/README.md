@@ -59,6 +59,7 @@ If you somehow want to use the polyfill without the image component, it will wor
 
 ## Dependencies
 * [Closest polyfill](/polyfills/DOM/closest.js) (included in FE setup, make sure include it in the polyfills file)
+* [Remove](polyfills/DOM/remove.js) (included in FE setup, make sure include it in the polyfills file)
 * [Intersection Observer](https://www.npmjs.com/package/raf)
 
 
