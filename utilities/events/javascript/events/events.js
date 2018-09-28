@@ -26,11 +26,14 @@ class Events {
 
         if (this.logging) { console.log('Listening to event', '--- Name:', event, '--- Callback:', callback); }
 
-        if (eventIsBoundToEventEl(event)) {
-            eventEl.removeEventListener(event, boundEvents[event], false);
+        if (eventIsBoundToEventEl(event, callback)) {
+            eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false);
         } else {
-            boundEvents[event] = ev => {
-                callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
+            boundEvents[event] = {
+                callbackString: callback.toString(),
+                callbackWrapper: ev => {
+                    callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
+                }
             }
         }
 
@@ -123,12 +126,13 @@ function bindEvent(targetEl, attrName, attrValue) {
 }
 
 /**
- * Returns if an event is already bound to eventEl.
+ * Returns if an event is already bound to eventEl and matches old callback.
  * @param {string} event
+ * @param {function} callback
  * @returns {boolean}
  */
-function eventIsBoundToEventEl(event) {
-    return !!boundEvents[event];
+function eventIsBoundToEventEl(event, callback) {
+    return (boundEvents[event] && boundEvents[event].callbackString === callback.toString());
 }
 
 /**
