@@ -64,9 +64,9 @@ class Tooltip {
     }
 
     _handleTouch(event) {
-        if(!this.tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)){
+        if (!this.tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)) {
             this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
-        }else if(event.target.tagName !== LINK_TAG){
+        } else if (event.target.tagName !== LINK_TAG) {
             this.tooltipTrigger.classList.remove(TOOLTIP_ACTIVE_CLASS);
         }
 
@@ -110,8 +110,8 @@ class Tooltip {
 
         let oldTipPosition = TOOLTIP_PREFIX + this.element.dataset.position;
 
-        const classItem = this.getClassItems();
-        this.element.classList.remove(classItem);
+        const positionProp = this.getPositionProp();
+        this.element.classList.remove(positionProp);
         this.element.classList.add(oldTipPosition);
     }
 
@@ -163,18 +163,18 @@ class Tooltip {
     }
 
     newPosition(key, position) {
-        const classItem = this.getClassItems();
+        const positionProp = this.getPositionProp();
 
         if (ScreenDimensions.isTabletPortraitAndBigger) {
-            this.newDesktopPosition(key, classItem, position);
+            this.newDesktopPosition(key, positionProp, position);
         } else {
-            this.newMobilePosition(key, classItem);
+            this.newMobilePosition(key, positionProp);
         }
     }
 
-    getClassItems() {
+    getPositionProp() {
         return [...this.element.classList]
-            .filter(classItem => TOOLTIP_PROPS.indexOf(classItem) !== -1)
+            .filter(positionProp => TOOLTIP_PROPS.indexOf(positionProp) !== -1)
             .reduce((a, b) => b, {});
     }
 
@@ -197,12 +197,12 @@ class Tooltip {
         }
     }
 
-    newDesktopPosition(key, classItem, position) {
+    newDesktopPosition(key, positionProp, position) {
         /** If the tooltip is outside the screen, then check if the position isn't in the classname.
             So if the position is left-center and the tooltip is outside the topscreen then do this. 
             Not if position is top-center and tooltip is outside the topscreen. 
         */
-        if (classItem.indexOf('center') > 0 && classItem.indexOf(key) === -1) {
+        if (positionProp.indexOf('center') > 0 && positionProp.indexOf(key) === -1) {
             const margins = this.getDesktopMargins(key, position);
 
             if (key === DIRECTIONS.BOTTOM || key === DIRECTIONS.TOP) {
@@ -213,17 +213,17 @@ class Tooltip {
                 this.triangle.style.marginLeft = `${margins.triangle}px`;
             }
         } else {
-            this.element.classList.remove(classItem);
+            this.element.classList.remove(positionProp);
 
-            const newPosition = classItem.replace(key, this.newPositionKey(key));
+            const newPosition = positionProp.replace(key, this.newPositionKey(key));
             this.element.classList.add(newPosition);
         }
     }
 
-    newMobilePosition(key, classItem) {
-        if (classItem.indexOf(key) > 0) {
+    newMobilePosition(key, positionProp) {
+        if (positionProp.indexOf(key) > 0) {
             if (key === DIRECTIONS.LEFT || key === DIRECTIONS.RIGHT) {
-                this.element.classList.remove(classItem);
+                this.element.classList.remove(positionProp);
 
                 // Add class for more dynamic control on mobile
                 this.element.classList.add(
