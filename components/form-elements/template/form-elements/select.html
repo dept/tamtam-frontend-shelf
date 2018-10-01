@@ -43,7 +43,7 @@
                     <option
                         {% if option.default %}hidden selected {% endif -%}
                         value="{{ option.value }}">
-                        {% if option.default and data.labelAsPlaceholder %}&nbsp;{% else %}{{ option.label }}{% endif %}
+                        {% if not(option.default and data.labelAsPlaceholder) %}{{ option.label }}{% endif %}
                     </option>
                 {% endfor %}
 

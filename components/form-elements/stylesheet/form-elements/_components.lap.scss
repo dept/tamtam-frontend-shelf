@@ -21,8 +21,8 @@ $lap-padding-height: 10px;
 
     &.input--file {
         .input__label {
-            transform: translate(calc(#{$lap-padding-width} + 30px), $lap-padding-height);
-            max-width: calc(100% - calc((#{$lap-padding-width} * 2) + 30px));
+            left: 20px;
+            max-width: calc(100% - calc((#{$lap-padding-width} * 2) + 20px));
         }
     }
 }
