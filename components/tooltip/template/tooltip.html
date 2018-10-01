@@ -17,11 +17,11 @@
 {%  macro tooltip(data) %}
 
     <span class="tooltip--trigger">
-        <{%- if data.element %}{{data.element}}{% else %}span{% endif %} aria-describedby="{{ data.id }}">
+        <{{ data.element or 'span' }} aria-describedby="{{ data.id }}">
             {{ data.label }}
-        </{%- if data.element %}{{data.element}}{% else %}span{% endif -%}>
+        </{{ data.element or 'span' }}>
 
-        <{%- if data.tip.element %}{{data.tip.element}}{% else %}span{% endif %} 
+        <{{ data.tip.element or 'span' }} 
         role="tooltip"
         id="{{ data.id }}"
         class="c-tooltip
@@ -35,7 +35,7 @@
             
             {{data.tip.content}}
 
-        </{% if data.tip.element %}{{data.tip.element}}{% else %}span{% endif %}>
+        </{{ data.tip.element or 'span' }}>
     </span>
 
 {% endmacro %}
