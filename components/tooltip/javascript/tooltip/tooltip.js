@@ -52,7 +52,7 @@ class Tooltip {
             );
         } else {
             this.tooltipTrigger.addEventListener('mouseenter', () =>
-                this.inScreen(this.getElementPositions(this.element))
+                this.inScreen(this.constructor.getElementPositions(this.element))
             );
         }
 
@@ -73,10 +73,10 @@ class Tooltip {
         /** Add touch event to the whole document. So the user can click
          * everywhere to close the toolbar. */
         document.addEventListener('touchstart', this.resetTouchEvent, false);
-        this.inScreen(this.getElementPositions(this.element));
+        this.inScreen(this.constructor.getElementPositions(this.element));
     }
 
-    getElementPositions(element) {
+    static getElementPositions(element) {
         const { top, right, bottom, left } = element.getBoundingClientRect();
 
         return {
@@ -108,7 +108,7 @@ class Tooltip {
         this.element.removeAttribute('style');
         this.triangle.removeAttribute('style');
 
-        let oldTipPosition = TOOLTIP_PREFIX + this.element.dataset.position;
+        const oldTipPosition = TOOLTIP_PREFIX + this.element.dataset.position;
 
         const positionProp = this.getPositionProp();
         this.element.classList.remove(positionProp);
@@ -121,13 +121,12 @@ class Tooltip {
         } else {
             this.navHeight = 0;
         }
-
-        for (const key in position) {
+        Object.keys(position).map(key => {
             const positionInScreen = this.oldPosition(key, position[key]);
             if (positionInScreen < 0) {
                 this.newPosition(key, positionInScreen);
             }
-        }
+        });
     }
 
     oldPosition(key, position) {
@@ -143,7 +142,7 @@ class Tooltip {
         }
     }
 
-    newPositionKey(key) {
+    static newPositionKey(key) {
         switch (key) {
             case DIRECTIONS.RIGHT:
                 return DIRECTIONS.LEFT;
@@ -158,7 +157,7 @@ class Tooltip {
         }
     }
 
-    reverseNumber(number) {
+    static reverseNumber(number) {
         return number < 0 ? Math.abs(number) : -Math.abs(number);
     }
 
@@ -178,7 +177,7 @@ class Tooltip {
             .reduce((a, b) => b, {});
     }
 
-    getDesktopMargins(key, position) {
+    static getDesktopMargins(key, position) {
         const positionReverse = this.reverseNumber(position);
 
         switch (key) {
@@ -188,8 +187,7 @@ class Tooltip {
                     element: positionReverse,
                     triangle: position
                 };
-            case DIRECTIONS.BOTTOM:
-            case DIRECTIONS.RIGHT:
+            default:
                 return {
                     element: position,
                     triangle: positionReverse
@@ -203,7 +201,7 @@ class Tooltip {
             Not if position is top-center and tooltip is outside the topscreen. 
         */
         if (positionProp.indexOf('center') > 0 && positionProp.indexOf(key) === -1) {
-            const margins = this.getDesktopMargins(key, position);
+            const margins = this.constructor.getDesktopMargins(key, position);
 
             if (key === DIRECTIONS.BOTTOM || key === DIRECTIONS.TOP) {
                 this.element.style.marginTop = `${margins.element}px`;
@@ -215,7 +213,7 @@ class Tooltip {
         } else {
             this.element.classList.remove(positionProp);
 
-            const newPosition = positionProp.replace(key, this.newPositionKey(key));
+            const newPosition = positionProp.replace(key, this.constructor.newPositionKey(key));
             this.element.classList.add(newPosition);
         }
     }
@@ -231,7 +229,7 @@ class Tooltip {
                     `${TOOLTIP_PREFIX}full-width`
                 );
 
-                const { left } = this.getElementPositions(this.element);
+                const { left } = this.constructor.getElementPositions(this.element);
                 const margins = this.getDesktopMargins(DIRECTIONS.LEFT, left);
 
                 this.element.style.marginLeft = `${margins.element}px`;
