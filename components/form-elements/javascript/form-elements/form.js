@@ -4,3 +4,4 @@
  */
 
 export { CustomFile } from './element/input-file';
+export { Autocomplete } from './element/autocomplete';

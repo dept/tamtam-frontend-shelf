@@ -13,13 +13,21 @@
 * Render form elements
 
 ## Install
-This is currently only needed if you use file input fields.
+This is currently only needed if you use file input fields or autocomplete.
 
-Import module
+Import module for file input
 ```javascript
-import { CustomFile } from '@components/form';
+import { CustomFile } from '@components/form-elements';
 
-moduleInit('[js-hook-input-file]', CustomFile);
+moduleInit.sync('[js-hook-input-file]', CustomFile);
+```
+
+Import module for autocomplete
+```javascript
+import { Autocomplete } from '@components/form-elements';
+
+moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
+
 ```
 
 ```htmlmixed
@@ -60,6 +68,28 @@ See the [input](/components/form-elements/template/form-elements/input.html) mac
     label: 'Input',
     placeholder: 'Input'
 }) }}
+```
+
+### Autocomplete
+See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
+
+HTML:
+```htmlmixed
+{{ form.autocomplete({
+    name: 'query',
+    label: 'Autocomplete',
+    hook: 'form-autocomplete',
+    attr: 'data-api="https://jsonplaceholder.typicode.com/users" autocomplete="off"',
+    placeholder: 'Autocomplete'
+}) }}
+```
+
+API:
+```json
+[
+  { "id":"1", "name":"Dylan Vens" },
+  { "id":"2", "name":"Anne van den Hoogen" }
+]
 ```
 
 ### Input - file upload
@@ -163,7 +193,12 @@ See the [input](/components/form-elements/template/form-elements/textarea.html) 
 ```
 
 ## Dependencies
-This package doesn't have any dependencies.
+
+Autocomplete uses 
+* [RAF](https://www.npmjs.com/package/raf)
+* [Raf throttle utility](/utilities/raf-throttle/)
+* [Events utility](/utilities/events/)
+* [API utility](/utilities/api/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
