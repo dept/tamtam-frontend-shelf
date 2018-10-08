@@ -11,25 +11,25 @@ class LabelAsPlaceholder {
         this.input = this.formItem.querySelector(INPUT_QUERY);
 
         if (this.formItem) {
-            this._toggleLabelClass();
-            this._bindEvents();
+            this.toggleLabelClass();
+            this.bindEvents();
         }
 
     }
 
-    _bindEvents() {
+    bindEvents() {
 
-        this.input.addEventListener('change', () => this._toggleLabelClass());
+        this.input.addEventListener('change', () => this.toggleLabelClass());
 
         if (this.input.type !== FILE && this.input.tagName !== SELECT) {
-            this.input.addEventListener('input', () => this._toggleLabelClass(true));
-            this.input.addEventListener('focus', () => this._toggleLabelClass(true));
-            this.input.addEventListener('focusout', () => this._toggleLabelClass());
+            this.input.addEventListener('input', () => this.toggleLabelClass(true));
+            this.input.addEventListener('focus', () => this.toggleLabelClass(true));
+            this.input.addEventListener('focusout', () => this.toggleLabelClass());
         }
 
     }
 
-    _toggleLabelClass(forceAnimateLabel) {
+    toggleLabelClass(forceAnimateLabel) {
 
         const action = forceAnimateLabel || this.input.value ? 'add' : 'remove';
         this.formItem.classList[action](LAP_ACTIVE);
