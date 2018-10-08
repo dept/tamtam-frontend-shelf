@@ -121,7 +121,7 @@ class Tooltip {
         } else {
             this.navHeight = 0;
         }
-        Object.keys(position).map(key => {
+        Object.keys(position).forEach(key => {
             const positionInScreen = this.oldPosition(key, position[key]);
             if (positionInScreen < 0) {
                 this.newPosition(key, positionInScreen);
