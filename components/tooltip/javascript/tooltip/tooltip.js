@@ -48,7 +48,7 @@ class Tooltip {
 
         if (DetectTouch.isTouchDevice) {
             this.tooltipTrigger.addEventListener('touchstart', event =>
-                this._handleTouch(event)
+                this.handleTouch(event)
             );
         } else {
             this.tooltipTrigger.addEventListener('mouseenter', () =>
@@ -63,7 +63,7 @@ class Tooltip {
         }
     }
 
-    _handleTouch(event) {
+    handleTouch(event) {
         if (!this.tooltipTrigger.classList.contains(TOOLTIP_ACTIVE_CLASS)) {
             this.tooltipTrigger.classList.add(TOOLTIP_ACTIVE_CLASS);
         } else if (event.target.tagName !== LINK_TAG) {
