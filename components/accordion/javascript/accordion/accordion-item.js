@@ -2,9 +2,9 @@
  * Accordion item class
  * Will be created for each item inside an accordion
  */
-import Events from "@utilities/events";
+import Events from '@utilities/events';
 
-const ACCORDION_OPEN_CLASS = "accordion__item--is-active";
+const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
 
 class AccordionItem {
     constructor(element) {
@@ -12,8 +12,8 @@ class AccordionItem {
         this.isOpen = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
         this.isAnimating = false;
 
-        this.button = this.item.querySelector("[js-hook-accordion-button]");
-        this.content = this.item.querySelector("[js-hook-accordion-content]");
+        this.button = this.item.querySelector('[js-hook-accordion-button]');
+        this.content = this.item.querySelector('[js-hook-accordion-content]');
 
         this.id = this.content.id;
     }
@@ -73,8 +73,8 @@ class AccordionItem {
      * Sets correct aria-* values
      */
     _setAriaState() {
-        this.button.setAttribute("aria-expanded", this.isOpen);
-        this.content.setAttribute("aria-hidden", !this.isOpen);
+        this.button.setAttribute('aria-expanded', this.isOpen);
+        this.content.setAttribute('aria-hidden', !this.isOpen);
     }
 
     /**
@@ -85,15 +85,15 @@ class AccordionItem {
 
         this.heightTransitionEvent = e => this._heightTransitionEnd(e);
 
-        this.content.style.height = this.isOpen ? "0" : height;
+        this.content.style.height = this.isOpen ? '0' : height;
 
         // The line below triggers a repaint and is necessary for the accordion to work.
         // https://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
         this.content.offsetHeight; // eslint-disable-line
 
-        this.content.style.height = this.isOpen ? height : "0";
+        this.content.style.height = this.isOpen ? height : '0';
 
-        this.content.addEventListener("transitionend", this.heightTransitionEvent, false);
+        this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
     }
 
     /**
@@ -101,19 +101,19 @@ class AccordionItem {
      * @param {Event} event
      */
     _heightTransitionEnd(event) {
-        if (event.propertyName === "height") {
+        if (event.propertyName === 'height') {
             if (this.isOpen) {
-                this.content.style.height = "auto";
+                this.content.style.height = 'auto';
             }
 
-            this.content.removeEventListener("transitionend", this.heightTransitionEvent, false);
+            this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
             this._triggerAnimatingEvent(false);
 
-            Events.$trigger(`accordion::${this.isOpen ? "opened" : "closed"}`, {
+            Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
                 data: {
                     element: this.item,
-                    id: this.id
-                }
+                    id: this.id,
+                },
             });
 
             Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
@@ -129,8 +129,8 @@ class AccordionItem {
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
-                animating: this.isAnimating
-            }
+                animating: this.isAnimating,
+            },
         });
     }
 }
@@ -145,8 +145,8 @@ function getElementHeight(element) {
     old.height = element.style.height;
     old.visibility = element.style.visibility;
 
-    element.style.height = "auto";
-    element.style.visibility = "visible";
+    element.style.height = 'auto';
+    element.style.visibility = 'visible';
 
     const { height } = element.getBoundingClientRect();
 

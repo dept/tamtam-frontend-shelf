@@ -1,7 +1,7 @@
-import Events from "@utilities/events";
-import AccordionItem from "./accordion-item";
+import Events from '@utilities/events';
+import AccordionItem from './accordion-item';
 
-const ACCORDION_ITEM_HOOK = "[js-hook-accordion-item]";
+const ACCORDION_ITEM_HOOK = '[js-hook-accordion-item]';
 
 class Accordion {
     constructor(element) {
@@ -12,7 +12,7 @@ class Accordion {
             return;
         }
 
-        this.autoClose = this.element.dataset.autoclose !== "false";
+        this.autoClose = this.element.dataset.autoclose !== 'false';
         this.accordionItems = {};
         this._initItems();
     }
