@@ -4,135 +4,155 @@
  */
 import Events from '@utilities/events';
 
-const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
+const ACCORDIONOPENCLASS = 'accordion__item--is-active';
 
 class AccordionItem {
+
     constructor(element) {
+
         this.item = element;
-        this.isOpen = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
+        this.openAccordion = this.item.className.indexOf(ACCORDIONOPENCLASS) !== -1;
         this.isAnimating = false;
 
         this.button = this.item.querySelector('[js-hook-accordion-button]');
         this.content = this.item.querySelector('[js-hook-accordion-content]');
 
         this.id = this.content.id;
+
     }
 
-    set isOpen(boolean) {
-        this._isOpen = boolean;
+    set openAccordion(boolean) {
+
+        this.isOpenAccordion = boolean;
+
     }
 
-    get isOpen() {
-        return this._isOpen;
+    get openAccordion() {
+
+        return this.isOpenAccordion;
+
     }
 
     /**
      * Toggles the accordion item
      */
     toggle() {
-        if (this.isOpen) {
+
+        if (this.openAccordion) {
             this.close();
         } else {
             this.open();
         }
+
     }
 
     /**
      * Opens the accordion item
      */
     open() {
-        if (this.isOpen || this.isAnimating) {
-            return;
-        }
-        this.isOpen = true;
-        this._triggerAnimatingEvent(true);
 
-        this.item.classList.add(ACCORDION_OPEN_CLASS);
+        if (this.openAccordion || this.isAnimating) { return; }
+        this.openAccordion = true;
+        this.triggerAnimatingEvent(true);
 
-        this._setHeight();
-        this._setAriaState();
+        this.item.classList.add(ACCORDIONOPENCLASS);
+
+        this.setHeight();
+        this.setAriaState();
+
     }
 
     /**
      * Closes the accordion item
      */
     close() {
-        if (!this.isOpen || this.isAnimating) {
-            return;
-        }
-        this.isOpen = false;
-        this._triggerAnimatingEvent(true);
 
-        this.item.classList.remove(ACCORDION_OPEN_CLASS);
+        if (!this.openAccordion || this.isAnimating) { return; }
+        this.openAccordion = false;
+        this.triggerAnimatingEvent(true);
 
-        this._setHeight();
-        this._setAriaState();
+        this.item.classList.remove(ACCORDIONOPENCLASS);
+
+        this.setHeight();
+        this.setAriaState();
+
     }
 
     /**
      * Sets correct aria-* values
      */
-    _setAriaState() {
-        this.button.setAttribute('aria-expanded', this.isOpen);
-        this.content.setAttribute('aria-hidden', !this.isOpen);
+    setAriaState() {
+
+        this.button.setAttribute('aria-expanded', this.openAccordion);
+        this.content.setAttribute('aria-hidden', !this.openAccordion);
+
     }
 
     /**
-     * Sets the height based on the this.isOpen
+     * Sets the height based on the this.openAccordion
      */
-    _setHeight() {
+    setHeight() {
+
         const height = getElementHeight(this.content);
 
-        this.heightTransitionEvent = e => this._heightTransitionEnd(e);
+        this.heightTransitionEvent = e => this.heightTransitionEnd(e);
 
-        this.content.style.height = this.isOpen ? '0' : height;
+        this.content.style.height = this.openAccordion ? '0' : height;
 
         // The line below triggers a repaint and is necessary for the accordion to work.
         // https://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
         this.content.offsetHeight; // eslint-disable-line
 
-        this.content.style.height = this.isOpen ? height : '0';
+        this.content.style.height = this.openAccordion ? height : '0';
 
         this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
+
     }
 
     /**
      * Triggers when transitionend is fired
      * @param {Event} event
      */
-    _heightTransitionEnd(event) {
+    heightTransitionEnd(event) {
+
         if (event.propertyName === 'height') {
-            if (this.isOpen) {
+
+            if (this.openAccordion) {
                 this.content.style.height = 'auto';
             }
 
             this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
-            this._triggerAnimatingEvent(false);
+            this.triggerAnimatingEvent(false);
 
-            Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
+            Events.$trigger(`accordion::${this.openAccordion ? 'opened' : 'closed'}`, {
                 data: {
                     element: this.item,
-                    id: this.id,
-                },
+                    id: this.id
+                }
             });
 
-            Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
+            Events.$trigger(`accordion[${this.id}]::${this.openAccordion ? `opened` : `closed`}`);
+
         }
+
     }
 
     /**
      * Triggers the animating event for the accordion holder
      * @param {Boolean} bool
      */
-    _triggerAnimatingEvent(bool) {
+    triggerAnimatingEvent(bool) {
+
         this.isAnimating = bool;
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
-                animating: this.isAnimating,
-            },
+                animating: this.isAnimating
+            }
         });
+
     }
+
 }
 
 /**
@@ -141,19 +161,21 @@ class AccordionItem {
  * @returns {String} height in pixels
  */
 function getElementHeight(element) {
+    const el = element;
     const old = {};
-    old.height = element.style.height;
-    old.visibility = element.style.visibility;
+    old.height = el.style.height;
+    old.visibility = el.style.visibility;
 
-    element.style.height = 'auto';
-    element.style.visibility = 'visible';
+    el.style.height = 'auto';
+    el.style.visibility = 'visible';
 
-    const { height } = element.getBoundingClientRect();
+    const { height } = el.getBoundingClientRect();
 
-    element.style.height = old.height;
-    element.style.visibility = old.visibility;
+    el.style.height = old.height;
+    el.style.visibility = old.visibility;
 
     return `${height}px`;
+
 }
 
 export default AccordionItem;

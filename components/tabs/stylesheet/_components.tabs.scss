@@ -1,0 +1,21 @@
+$tab-color: $color-white;
+$tab-active-color: $color-off-white;
+$tab-padding: 5px 10px;
+
+.c-tabs {
+    display: flex;
+    width: 100%;
+}
+
+.tabs__item {
+    list-style: none;
+}
+
+.tabs__tab {
+    background: $tab-color;
+    padding: $tab-padding;
+
+    &.tabs__tab--is-active {
+        background: $tab-active-color;
+    }
+}
