@@ -38,7 +38,7 @@ $helper-transition-time: 200ms;
     .select__input,
     .u-sr-only {
         &:focus {
-            .focus-helper {
+            + .focus-helper {
                 opacity: 1;
             }
         }
