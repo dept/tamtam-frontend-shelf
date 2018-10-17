@@ -140,7 +140,7 @@ class Modal {
         }
 
         // Add tabindex and add visible class
-        modal.el.setAttribute('tabindex', 1);
+        modal.el.tabIndex = 1;
         setTabIndex(modal.el, 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = true;
@@ -184,7 +184,7 @@ class Modal {
         }
 
         // Remove tabindex and remove visible class
-        modal.el.setAttribute('tabindex', -1);
+        modal.el.tabIndex = -1;
         setTabIndex(modal.el, -1);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = false;
