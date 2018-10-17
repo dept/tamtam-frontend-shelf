@@ -1,40 +1,50 @@
-$teaser-content-spacing  : $global-spacing-sm;
-$teaser-margin           : $global-spacing-md;
+$teaser-content-spacing: $global-spacing-sm;
+$teaser-margin: $global-spacing-md;
 
 .c-teaser {
     margin-bottom: $teaser-margin;
-    background-color: #f3f3f3;
+    background-color: $color-off-white;
 }
 
-    .teaser__wrapper {
-        display: flex;
-        align-items: center;
+.teaser__wrapper {
+    display: flex;
+    align-items: center;
 
-        // Reset link styles.
-        text-decoration: inherit;
-        color: inherit;
+    // Reset link styles.
+    text-decoration: inherit;
+    color: inherit;
 
-        .teaser--align-top & {
-            align-items: flex-start;
+    .teaser--align-top & {
+        align-items: flex-start;
+    }
+
+    &[href] {
+        @include hover-focus {
+            background-color: darken($color-off-white, 5%);
+        }
+
+        @include keyboard-focus {
+            background-color: darken($color-off-white, 10%);
         }
     }
+}
 
-    .teaser__aside {
-        height: 100%;
+.teaser__aside {
+    height: 100%;
+}
+
+.teaser__figure {
+    img {
+        width: 100%;
+        height: auto;
     }
+}
 
-    .teaser__figure {
-        img {
-            width: 100%;
-            height: auto;
-        }
+.teaser__content {
+    padding: $teaser-content-spacing $teaser-content-spacing $teaser-content-spacing 0;
+    margin-left: $teaser-content-spacing;
+
+    .teaser--align-top & {
+        padding-top: $teaser-content-spacing;
     }
-
-    .teaser__content {
-        padding: $teaser-content-spacing $teaser-content-spacing $teaser-content-spacing 0;
-        margin-left: $teaser-content-spacing;
-
-        .teaser--align-top & {
-            padding-top: $teaser-content-spacing;
-        }
-    }
+}

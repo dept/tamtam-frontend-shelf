@@ -150,6 +150,12 @@ $video-button-transition-ease: $ease-in-quad;
             color: darken($video-button-icon-color, 20%);
         }
     }
+
+    @include keyboard-focus {
+        .video__button-icon {
+            color: darken($video-button-icon-color, 100%);
+        }
+    }
 }
 
 .video__button-icon {
@@ -183,6 +189,12 @@ $video-button-transition-ease: $ease-in-quad;
     @include hover-focus {
         .video__button-icon {
             border-left-color: darken($video-button-icon-color, 20%);
+        }
+    }
+
+    @include keyboard-focus {
+        .video__button-icon {
+            border-left-color: darken($video-button-icon-color, 100%);
         }
     }
 }
