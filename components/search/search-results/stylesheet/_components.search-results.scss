@@ -8,13 +8,10 @@ $search-result-spacing: $global-spacing-md;
 }
 
 .search-results__teaser {
-    transition: background-color 400ms ease-in-out;
-}
-
-.search-results__teaser {
+    display: block;
     color: inherit;
     text-decoration: none;
-    display: block;
+    transition: background-color 400ms ease-in-out;
 }
 
 .search-results__button {
