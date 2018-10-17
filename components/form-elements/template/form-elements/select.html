@@ -24,7 +24,8 @@
     <div class="c-select form__item
         {%- if data.class %} {{ data.class }}{% endif -%}
         {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.labelAsPlaceholder %} form__item--lap{% endif -%}"
+        {%- if data.labelAsPlaceholder %} js-hook-lap{% endif -%}>
 
         <div class="select__wrapper">
             <label class="select__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
@@ -42,7 +43,7 @@
                     <option
                         {% if option.default %}hidden selected {% endif -%}
                         value="{{ option.value }}">
-                        {{ option.label }}
+                        {% if not(option.default and data.labelAsPlaceholder) %}{{ option.label }}{% endif %}
                     </option>
                 {% endfor %}
 

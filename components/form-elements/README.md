@@ -17,9 +17,10 @@ This is currently only needed if you use file input fields.
 
 Import module
 ```javascript
-import { CustomFile } from '@components/form';
+import { CustomFile, LabelAsPlaceholder } from '@components/form-elements';
 
-moduleInit('[js-hook-input-file]', CustomFile);
+moduleInit.sync('[js-hook-input-file]', CustomFile);
+moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder);
 ```
 
 ```htmlmixed
@@ -70,6 +71,17 @@ See the [file](/components/form-elements/template/form-elements/file.html) macro
     id: 'input-file',
     label: 'Input - file',
     multiple: 'files selected'
+}) }}
+```
+
+### Input - label as placeholder
+Works on input, file and textarea
+```htmlmixed
+{{ form.input({
+    labelAsPlaceholder: true,
+    name: 'input-text',
+    id: 'input-text',
+    label: 'Input'
 }) }}
 ```
 
