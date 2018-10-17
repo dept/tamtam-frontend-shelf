@@ -31,7 +31,7 @@
         js-hook-accordion-item>
 
         <button type="button" class="accordion__item-header"
-            on:click.prevent="accordion::toggle({{ data.id }})"
+            on:click.prevent="accordion[{{ data.id }}]::toggle"
             aria-expanded="{% if data.open %}true{% else %}false{% endif %}"
             aria-controls="{{ data.id }}"
             js-hook-accordion-button>
