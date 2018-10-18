@@ -17,6 +17,8 @@ class Autocomplete {
     this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE);
     this.input = document.querySelector(`[js-hook-${this.type}]`);
     this.apiUrl = this.input.getAttribute('data-api');
+    this.listID = this.input.getAttribute('data-list');
+    this.listData = this.listID ? this._getListData() : null;
 
     this.bindEvents();
 
@@ -148,6 +150,16 @@ class Autocomplete {
 
   }
 
+  _getListData() {
+    return JSON.parse( document.getElementById(this.listID).innerHTML );
+  }
+
+  _filterLocalList(value) {
+
+    const data = this.listData.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+    this._createList(data, value);
+  }
+
   _getList(e) {
 
     const target = e.target;
@@ -155,7 +167,11 @@ class Autocomplete {
 
     this.input.setAttribute(INPUT_VALUE_ID, '');
 
-    Api.get(`${this.apiUrl}?query=${ value }`).then(res => this._createList(res.data, value));
+    if( this.listData ) {
+      this._filterLocalList(value);
+    } else {
+      Api.get(`${this.apiUrl}?query=${ value }`).then(res => this._createList(res.data, value));
+    }
 
   }
 

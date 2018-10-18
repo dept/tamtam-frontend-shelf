@@ -92,6 +92,23 @@ API:
 ]
 ```
 
+If no API call after each keypress is wanted, an inline json can be used. HTML:
+```htmlmixed
+<script id="autocomplete-list">
+    [
+        {
+            "id": 1,
+            "name": "name 1"
+        },
+        {
+            "id": 2,
+            "name": "name 2"
+        }
+    ]
+</script>
+```
+Add data-list="autocomplete-list" to the attributes 
+
 ### Input - file upload
 See the [file](/components/form-elements/template/form-elements/file.html) macro for all available options.
 ```htmlmixed
