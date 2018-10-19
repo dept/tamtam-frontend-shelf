@@ -196,6 +196,7 @@ Works on input, file and textarea
 ### Autocomplete
 See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
 
+#### With API endpoint
 HTML:
 ```htmlmixed
 {{ form.autocomplete({
@@ -207,12 +208,30 @@ HTML:
 }) }}
 ```
 
-API:
+API response:
 ```json
 [
   { "id":"1", "name":"Dylan Vens" },
   { "id":"2", "name":"Anne van den Hoogen" }
 ]
+```
+
+#### No API endpoint
+Add data-list="autocomplete-list" to the attributes 
+If no API call after each keypress is wanted, an inline json can be used. HTML:
+```htmlmixed
+<script id="autocomplete-list">
+    [
+        {
+            "id": 1,
+            "name": "name 1"
+        },
+        {
+            "id": 2,
+            "name": "name 2"
+        }
+    ]
+</script>
 ```
 
 ## Dependencies
