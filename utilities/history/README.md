@@ -55,5 +55,4 @@ Events.$on('history::update', (e, state) => {
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

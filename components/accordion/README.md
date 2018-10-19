@@ -77,7 +77,7 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
-* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/utilities/module-init.js) from the TamTam Frontend Setup
+* [moduleInit utility](/utilities/module-init.js) from the Dept Frontend Setup
 * [Events utility](/utilities/events/)
 
 ## Developers

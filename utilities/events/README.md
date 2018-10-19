@@ -73,5 +73,4 @@ The next code snippet will look for the video instance with '12' set as instance
 This package doesn't not have any dependencies.
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
