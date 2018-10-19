@@ -17,6 +17,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Sticky](components/sticky/README.md)
 * [Teaser](components/teaser/README.md)
 * [Toggle](components/toggle/README.md)
+* [Tooltip](components/tooltip/README.md)
 * [Video](components/video/README.md)
 * [Image](components/image/README.md)
 
