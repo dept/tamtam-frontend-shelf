@@ -1,5 +1,5 @@
 const html = document.documentElement;
-const body = document.querySelector('body');
+const body = document.body;
 
 export {
     html,
