@@ -250,4 +250,5 @@ If no API call after each keypress is wanted, an inline json can be used. HTML:
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
-* [Arnout Jansen (co-author)](mailto:arnout.jansen@tamtam.nl)
+* [Anne van den Hoogen](mailto:anne.vandenhoogen@deptagency.com)
+* [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)
