@@ -31,6 +31,12 @@ $checkbox-transition-ease: $ease-in-out-quad;
             }
         }
     }
+
+    &:hover {
+        + label::after {
+            box-shadow: 0 0 0 $checkbox-border-width $checkbox-color inset;
+        }
+    }
 }
 
 .checkbox__label {
@@ -54,12 +60,14 @@ $checkbox-transition-ease: $ease-in-out-quad;
     &::before {
         box-shadow: 0 0 0 $checkbox-border-width*3 $color-white inset, 0 0 0 $checkbox-size $checkbox-color inset;
         transform: translateY(-50%) scale(0);
-        transition: $checkbox-transition-time $checkbox-transition-ease;
-        transition-property: transform;
+        transition: $checkbox-transition-time $checkbox-transition-ease, $checkbox-transition-time $checkbox-transition-ease;
+        transition-property: transform, box-shadow;
     }
 
     &::after {
         transform: translateY(-50%);
+        transition: $checkbox-transition-time $checkbox-transition-ease;
+        transition-property: box-shadow;
         box-shadow: 0 0 0 $checkbox-border-width $checkbox-color inset, 0 0 0 $checkbox-border-width*3 $color-white inset;
 
         .form__item--error & {

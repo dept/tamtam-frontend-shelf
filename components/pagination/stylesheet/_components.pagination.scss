@@ -1,6 +1,5 @@
 $pagination-margin-top: 20px;
 $pagination-margin-bottom: 20px;
-
 $pagination-item-margin-left: 10px;
 $pagination-item-margin-right: $pagination-item-margin-left;
 
@@ -67,6 +66,10 @@ $pagination-item-margin-right: $pagination-item-margin-left;
     @include hover-focus {
         color: $color-black;
     }
+
+    @include keyboard-focus {
+        color: $color-grey;
+    }
 }
 
 .pagination__arrow {
@@ -75,6 +78,10 @@ $pagination-item-margin-right: $pagination-item-margin-left;
 
     @include hover-focus {
         color: $color-black;
+    }
+
+    @include keyboard-focus {
+        color: $color-grey;
     }
 }
 

@@ -25,39 +25,40 @@
      {% if data.classes %}{{data.classes}}{% endif %}
      {% if data.align %}teaser--align-{{data.align}}{% endif %}">
         {% if data.url %}
-        <a href="{{ data.url }}" class="o-grid teaser__wrapper">
+        <a href="{{ data.url }}" class="teaser__wrapper">
         {% else %}
-        <span class="o-grid teaser__wrapper">
+        <div class="teaser__wrapper">
         {% endif %}
+            <div class="o-grid">
 
-            {% if data.image %}
-                <div class="o-col-3 teaser__aside">
-                    {{ image({
-                        classes: 'teaser__figure',
-                        preload: data.image.preload,
-                        image: data.image.image,
-                        srcset: data.image.srcset
-                    }) }}
+                {% if data.image %}
+                    <div class="o-col-3 teaser__aside">
+                        {{ image({
+                            classes: 'teaser__figure',
+                            preload: data.image.preload,
+                            image: data.image.image,
+                            srcset: data.image.srcset
+                        }) }}
+                    </div>
+                {% endif %}
+
+                {% if data.image %}
+                    {% set contentWidthClass = "o-col-9" %}
+                {% else %}
+                    {% set contentWidthClass = "o-col-12" %}
+                {% endif %}
+
+                <div class="{{ contentWidthClass }} teaser__content">
+                    <h3>{{ data.title }}</h3>
+                    {% if caller %}
+                        {{ caller() }}
+                    {%endif %}
                 </div>
-            {% endif %}
-
-            {% if data.image %}
-                {% set contentWidthClass = "o-col-9" %}
-            {% else %}
-                {% set contentWidthClass = "o-col-12" %}
-            {% endif %}
-
-            <div class="{{ contentWidthClass }} teaser__content">
-                <h3>{{ data.title }}</h3>
-                {% if caller %}
-                    {{ caller() }}
-                {%endif %}
             </div>
-
         {% if data.url %}
         </a>
         {% else %}
-        </span>
+        </div>
         {% endif %}
 
     </article>

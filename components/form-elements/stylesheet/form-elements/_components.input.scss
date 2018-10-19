@@ -46,6 +46,10 @@ $input-transition-ease: $ease-in-out-quad;
     }
 }
 
+.input__wrapper {
+    position: relative;
+}
+
 /**
  * File
  */
