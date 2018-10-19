@@ -1,0 +1,41 @@
+{#
+    Tooltip
+
+    Options:
+        label {string}              (required) - Adds the text where tooltip wil show.
+        element {string}            (optional) - Adds own element around label.
+        id {string}                 (required) - Used for WCAG
+
+        tip.position {string}       (required) - Choose which position the label will shown. Options: 'top-left', 'top-right', 'top-center', 'bottom-left', 'bottom-right', 'bottom-center', 'left-top', 'left-bottom', 'left-center', 'right-top', 'right-bottom', 'right-center'
+        tip.content {string}        (required) - The content inside the tooltip.
+        tip.element {string}        (optional) - Adds own element around tooltip.
+        tip.classes {string}        (optional) - Adds own classes around tooltip.
+        tip.pionterEvents {boolean} (optional) - Adds 'pionter events none' on tooltip.
+        tip.noWrap {boolean}        (optional) - All tooltip text wil be on one line.
+#}
+
+{%  macro tooltip(data) %}
+
+    <span class="tooltip--trigger">
+        <{{ data.element or 'span' }} aria-describedby="{{ data.id }}">
+            {{ data.label }}
+        </{{ data.element or 'span' }}>
+
+        <{{ data.tip.element or 'span' }} 
+        role="tooltip"
+        id="{{ data.id }}"
+        class="c-tooltip
+        {%- if data.tip.classes %} {{data.tip.classes}}{% endif -%}
+        {%- if data.tip.pointerEvents %} tooltip--pointer{% endif -%}
+        {%- if data.tip.position %} tooltip--{{data.tip.position}}{% endif -%}
+        {%- if data.tip.noWrap %} tooltip--nowrap{% endif -%}" 
+        {%- if data.tip.position %}data-position="{{data.tip.position}}"{% endif -%}
+        js-hook-tooltip>
+            <span class="tooltip__triangle" js-hook-triangle></span>
+            
+            {{data.tip.content}}
+
+        </{{ data.tip.element or 'span' }}>
+    </span>
+
+{% endmacro %}

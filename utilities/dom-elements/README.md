@@ -10,31 +10,28 @@
 
 
 ## What does it do
-* Caches the most common DOM elements as jQUery objects such as; document, window, body, etc. This way you only need to bind them once.
+* Caches the most common DOM elements such as; html, body, etc. This way you only need to bind them once.
 
 ## Install
-Install npm package dependency
-```node
-npm install jquery@3.2.1 --save
-```
 
 ## How to use
 ### Import cached DOM elements in Javascript.
 ```javascript
 
-// Load all DOM elements.
+// Load all imports
 import * from '@utilities/dom-elements';
 
-// Load only the window element
-import { $window } from '@utilities/dom-elements';
+// Load only the html element
+import { html } from '@utilities/dom-elements';
+
+// Load multiple imports
+import { html, body } from '@utilities/dom-elements';
 
 ```
 
 ## Dependencies
-```
-jquery
-```
+This package doesn't have any dependencies.
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
-* [Adrian Klingen (co author)](mailto:adrian.klingen@deptagency.com)
+* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+* [Robin Treur (co author)](mailto:robin.treur@deptagency.com)
