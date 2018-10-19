@@ -234,8 +234,6 @@ If no API call after each keypress is wanted, an inline json can be used. HTML:
 ```
 
 ## Dependencies
-
-Autocomplete uses 
 * [RAF](https://www.npmjs.com/package/raf)
 * [Raf throttle utility](/utilities/raf-throttle/)
 * [Events utility](/utilities/events/)

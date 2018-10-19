@@ -10,231 +10,230 @@ const ITEM_ACTIVE_CLASS = 'is--active';
 
 class Autocomplete {
 
-  constructor(element) {
+    constructor(element) {
 
-    this.element = element;
-    this.list = this.element.querySelector(HOOK_INPUT_LIST);
-    this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE);
-    this.input = document.querySelector(`[js-hook-${this.type}]`);
-    this.apiUrl = this.input.getAttribute('data-api');
-    this.listID = this.input.getAttribute('data-list');
-    this.listData = this.listID ? this._getListData() : null;
+        this.element = element;
+        this.list = this.element.querySelector(HOOK_INPUT_LIST);
+        this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE);
+        this.input = document.querySelector(`[js-hook-${this.type}]`);
+        this.apiUrl = this.input.getAttribute('data-api');
+        this.listID = this.input.getAttribute('data-list');
+        this.listData = this.listID ? this.getListData() : null;
 
-    this.bindEvents();
-
-  }
-
-  bindEvents() {
-
-    this.input.addEventListener('focusout', () => this._closeList());
-
-    this.input.addEventListener('keydown', (e) => this._tryToSubmit(e));
-
-    RafThrottle.set([
-      {
-        element: this.input,
-        event: 'keyup',
-        namespace: `autocomplete-key-up-${this.type}`,
-        fn: (e) => this._keyUp(e),
-        delay: 200
-      }
-    ]);
-
-  }
-
-  _setFocus() {
-
-    Events.$trigger('autocomplete::focusin');
-
-  }
-
-  _removeFocus() {
-
-    Events.$trigger('autocomplete::focusout');
-
-  }
-
-  _tryToSubmit(e) {
-
-    if (e.which === 13 && this.element.classList.contains(INPUT_ACTIVE_CLASS)) {
-
-      e.preventDefault();
-      this._closeList();
+        this.bindEvents();
 
     }
 
-  }
+    bindEvents() {
 
-  _keyUp(e) {
+        this.input.addEventListener('focusout', () => this.closeList());
 
-    const key = window.event ? e.keyCode : e.which;
+        this.input.addEventListener('keydown', event => this.tryToSubmit(event));
 
-    switch (key) {
-      case 40:
-        //arrow down
-        this._setListItem('next');
-        break;
-
-      case 38:
-        //arrow up
-        this._setListItem('prev');
-        break;
-
-      case 27:
-        //esc
-        this._closeList();
-        break;
-
-      case 13:
-        //enter
-        break;
-
-      default:
-
-        this._getList(e);
-
-        break;
+        RafThrottle.set([
+            {
+                element: this.input,
+                event: 'keyup',
+                namespace: `autocomplete-key-up-${this.type}`,
+                fn: event => this.keyUp(event),
+                delay: 200
+            }
+        ]);
 
     }
 
+    setFocus() {
 
-  }
-
-  _closeList() {
-
-    this._removeFocus();
-
-    this.element.classList.remove(INPUT_ACTIVE_CLASS);
-
-    if(this.input.getAttribute(INPUT_VALUE_ID) === '') this.input.setAttribute(INPUT_VALUE_ID, this.input.value);
-
-    Events.$trigger('autocomplete::selected', {
-      type: this.type,
-      name: this.input.name,
-      value: this.input.value,
-      valueId: this.input.getAttribute(INPUT_VALUE_ID)
-    });
-
-  }
-
-  _showList() {
-
-    this.element.classList.add(INPUT_ACTIVE_CLASS);
-
-  }
-
-  _setListItem(direction) {
-
-    let totalItems = this.list.childElementCount;
-
-    if (totalItems === 0) return;
-
-    let currentItem = this.list.querySelector(`.${ITEM_ACTIVE_CLASS}`);
-    let currentIndex = Array.prototype.indexOf.call(this.list.children, currentItem);
-    let nextIndex = (currentIndex + 1 === totalItems) ? totalItems - 1 : currentIndex + 1;
-    let prevIndex = (currentIndex - 1 <= 0) ? 0 : currentIndex - 1;
-
-    if (currentItem) currentItem.classList.remove(ITEM_ACTIVE_CLASS);
-
-    if (direction === 'next') {
-
-      this.list.children[nextIndex].classList.add(ITEM_ACTIVE_CLASS);
-      this._updateField(this.list.children[nextIndex]);
-
-    } else {
-
-      this.list.children[prevIndex].classList.add(ITEM_ACTIVE_CLASS);
-      this._updateField(this.list.children[prevIndex]);
+        Events.$trigger('autocomplete::focusin');
 
     }
 
-  }
+    _removeFocus() {
 
-  _getListData() {
-    return JSON.parse( document.getElementById(this.listID).innerHTML );
-  }
-
-  _filterLocalList(value) {
-
-    const data = this.listData.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
-    this._createList(data, value);
-  }
-
-  _getList(e) {
-
-    const target = e.target;
-    const value = target.value;
-
-    this.input.setAttribute(INPUT_VALUE_ID, '');
-
-    if( this.listData ) {
-      this._filterLocalList(value);
-    } else {
-      Api.get(`${this.apiUrl}?query=${ value }`).then(res => this._createList(res.data, value));
-    }
-
-  }
-
-  _updateList(items, value) {
-
-    if (items && value !== '') {
-
-      this.list.innerHTML = items;
-      this.list.scrollTop = 0;
-
-      this._showList();
-      this._setFocus();
-      this._bindElementListeners();
-
-    } else {
-
-      this._closeList();
+        Events.$trigger('autocomplete::focusout');
 
     }
 
-  }
+    tryToSubmit(event) {
 
-  _createList(data, value) {
+        if (event.which === 13 && this.element.classList.contains(INPUT_ACTIVE_CLASS)) {
 
-    const list = ( data ) ? data.map((item) => `<li class="autocomplete__list-item" data-id="${ item.id }" data-value="${ item.name }">${ item.name }</li>`).join('') : false;
+            event.preventDefault();
+            this.closeList();
 
-    this._updateList(list, value);
+        }
 
-  }
+    }
 
-  _updateField(element) {
+    keyUp(event) {
 
-    this.input.setAttribute(INPUT_VALUE_ID, element.getAttribute('data-id'));
-    this.input.value = element.getAttribute('data-value');
+        const key = window.event ? event.keyCode : event.which;
 
-  }
+        switch (key) {
+            // Arrow down
+            case 40:
+                this.setListItem('next');
+                break;
 
-  _bindElementListeners() {
+            // Arrow up
+            case 38:
+                this.setListItem('prev');
+                break;
 
-    const elements = [...this.list.querySelectorAll('li')];
+            // Escape
+            case 27:
+                this.closeList();
+                break;
 
-    elements.map((element) => {
+            // Enter
+            case 13:
+                break;
 
-      element.addEventListener('mouseover', (e) => {
+            default:
+                this.getList(event);
+                break;
 
-        e.currentTarget.classList.add(ITEM_ACTIVE_CLASS);
-        this._updateField(e.currentTarget);
+        }
 
-      });
 
-      element.addEventListener('mouseout', () => {
+    }
 
-        elements.map((item) => {
+    closeList() {
 
-          item.classList.remove(ITEM_ACTIVE_CLASS);
+        this._removeFocus();
+
+        this.element.classList.remove(INPUT_ACTIVE_CLASS);
+
+        if (this.input.getAttribute(INPUT_VALUE_ID) === '') this.input.setAttribute(INPUT_VALUE_ID, this.input.value);
+
+        Events.$trigger('autocomplete::selected', {
+            type: this.type,
+            name: this.input.name,
+            value: this.input.value,
+            valueId: this.input.getAttribute(INPUT_VALUE_ID)
+        });
+
+    }
+
+    showList() {
+
+        this.element.classList.add(INPUT_ACTIVE_CLASS);
+
+    }
+
+    setListItem(direction) {
+
+        let totalItems = this.list.childElementCount;
+
+        if (totalItems === 0) return;
+
+        const currentItem = this.list.querySelector(`.${ITEM_ACTIVE_CLASS}`);
+        const currentIndex = Array.prototype.indexOf.call(this.list.children, currentItem);
+        const nextIndex = (currentIndex + 1 === totalItems) ? totalItems - 1 : currentIndex + 1;
+        const prevIndex = (currentIndex - 1 <= 0) ? 0 : currentIndex - 1;
+
+        if (currentItem) currentItem.classList.remove(ITEM_ACTIVE_CLASS);
+
+        if (direction === 'next') {
+
+            this.list.children[nextIndex].classList.add(ITEM_ACTIVE_CLASS);
+            this.updateField(this.list.children[nextIndex]);
+
+        } else {
+
+            this.list.children[prevIndex].classList.add(ITEM_ACTIVE_CLASS);
+            this.updateField(this.list.children[prevIndex]);
+
+        }
+
+    }
+
+    getListData() {
+        return JSON.parse(document.getElementById(this.listID).innerHTML);
+    }
+
+    filterLocalList(value) {
+
+        const data = this.listData.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+        this.createList(data, value);
+    }
+
+    getList(event) {
+
+        const target = event.target;
+        const value = target.value;
+
+        this.input.setAttribute(INPUT_VALUE_ID, '');
+
+        if (this.listData) {
+            this.filterLocalList(value);
+        } else {
+            Api.get(`${this.apiUrl}?query=${value}`)
+                .then(response => this.createList(response.data, value));
+        }
+
+    }
+
+    updateList(items, value) {
+
+        if (items && value !== '') {
+
+            this.list.innerHTML = items;
+            this.list.scrollTop = 0;
+
+            this.showList();
+            this.setFocus();
+            this.bindElementListeners();
+
+        } else {
+
+            this.closeList();
+
+        }
+
+    }
+
+    createList(data, value) {
+
+        const list = (data) ? data.map((item) => `<li class="autocomplete__list-item" data-id="${item.id}" data-value="${item.name}">${item.name}</li>`).join('') : false;
+
+        this.updateList(list, value);
+
+    }
+
+    updateField(element) {
+
+        this.input.setAttribute(INPUT_VALUE_ID, element.getAttribute('data-id'));
+        this.input.value = element.getAttribute('data-value');
+
+    }
+
+    bindElementListeners() {
+
+        const elements = [...this.list.querySelectorAll('li')];
+
+        elements.map(element => {
+
+            element.addEventListener('mouseover', event => {
+
+                event.currentTarget.classList.add(ITEM_ACTIVE_CLASS);
+                this.updateField(event.currentTarget);
+
+            });
+
+            element.addEventListener('mouseout', () => {
+
+                elements.map(item => {
+
+                    item.classList.remove(ITEM_ACTIVE_CLASS);
+
+                });
+
+            });
 
         });
 
-      });
-
-    });
-
-  }
+    }
 
 }
 
