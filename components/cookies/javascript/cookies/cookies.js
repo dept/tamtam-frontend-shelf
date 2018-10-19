@@ -216,6 +216,7 @@ class Cookies {
         if (this.cookiebar) {
             this.cookiebar.classList.add(SHOW_CLASS);
             this.cookiebar.tabIndex = 0;
+            this.setTabIndex(0);
         }
 
     }
@@ -258,7 +259,12 @@ class Cookies {
     cookieIsValid(name) {
         return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === '1';
     }
-}
 
+    setTabIndex(value) {
+        [...this.cookiebar.querySelectorAll('a, button')].forEach(element => {
+            element.tabIndex = value;
+        });
+    }
+}
 
 export default new Cookies();
