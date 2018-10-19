@@ -6,6 +6,7 @@
 {% from 'form-elements/form.html' import form as formElement %}
 {% from 'form-elements/fieldset.html' import fieldset as fieldsetElement %}
 {% from 'form-elements/input.html' import input as inputElement %}
+{% from 'form-elements/autocomplete.html' import autocomplete as autocompleteElement %}
 {% from 'form-elements/file.html' import file as fileElement %}
 {% from 'form-elements/radio.html' import radio as radioElement %}
 {% from 'form-elements/checkbox.html' import checkbox as checkboxElement %}
@@ -43,6 +44,13 @@
 {% macro input(data) %}
 
     {{ inputElement(data) }}
+
+{% endmacro %}
+
+
+{% macro autocomplete(data) %}
+
+  {{ autocompleteElement(data) }}
 
 {% endmacro %}
 
