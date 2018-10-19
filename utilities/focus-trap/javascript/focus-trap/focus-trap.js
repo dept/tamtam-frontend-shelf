@@ -7,6 +7,8 @@ class FocusTrap {
         this.activated = null;
         this.focusTrapElement = null;
         this.originalFocus = null;
+        this.autoFocus = false;
+
         this.bindEvents();
 
     }
@@ -25,7 +27,7 @@ class FocusTrap {
          */
         document.addEventListener('focus', event => {
 
-            if (this.activated && this.focusTrapElement) {
+            if (this.activated && this.focusTrapElement && this.autoFocus) {
                 Events.$trigger('focustrap::trap', { data: event.target });
             }
 
@@ -57,8 +59,9 @@ class FocusTrap {
         this.activated = true;
         this.focusTrapElement = data.element;
         this.originalFocus = document.activeElement;
+        this.autoFocus = data.autoFocus;
 
-        if (data.autoFocus) {
+        if (this.autoFocus) {
             this.focusClosestFocusTarget();
         }
 
@@ -81,6 +84,8 @@ class FocusTrap {
 
         this.activated = false;
         this.focusTrapElement = false;
+        this.autoFocus = false;
+
         if (this.originalFocus) {
             this.originalFocus.focus();
         }

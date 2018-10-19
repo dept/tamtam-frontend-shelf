@@ -29,12 +29,15 @@ In this repository you find all standardized front-end components and utilities.
 * [History](utilities/history/README.md)
 * [Inview](utilities/in-view/README.md)
 * [RAF throttle](utilities/raf-throttle/README.md)
+* [Screen dimensions](utilities/screen-dimensions/README.md)
 * [Scroll to](utilities/scroll-to/README.md)
 * [Storage](utilities/storage/README.md)
 * [Validation](utilities/validation/README.md)
 
 # Polyfills
 Various browser polyfills. Easiest way is to copy the whole folder, and include the polyfills you need in the index file.
-* [DOM](polyfills/DOM/README.md)
-* * [Closest](polyfills/DOM/closest.js)
-* * [Matches](polyfills/DOM/matches.js)
+
+* [DOM](utilities/polyfills/DOM/README.md)
+    * [Closest](utilities/polyfills/DOM/closest.js)
+    * [Matches](utilities/polyfills/DOM/matches.js) (uses closest)
+    * [Remove](utilities/polyfills/DOM/remove.js)

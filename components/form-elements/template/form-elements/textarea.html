@@ -12,6 +12,7 @@
         pattern {string}           (optional) - Adds attributes to the input
         disabled {boolean}       (optional) - Add disabled property to the input
         error {string}           (optional) - Add error state and message
+        labelAsPlaceholder {boolean}       (optional) - Adds label as placeholder
 
 #}
 {% macro textarea(data) %}
@@ -19,9 +20,10 @@
     <div class="c-textarea form__item
         {%- if data.class %} {{ data.class }}{% endif -%}
         {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.labelAsPlaceholder %} form__item--lap{% endif -%}"
+        {%- if data.labelAsPlaceholder %} js-hook-lap{% endif -%}>
 
-        <div class="textarea__wrapper">
+        <div class="textarea__wrapper" title="{{ data.label }}">
             <label class="textarea__label {%- if data.sronly %} u-sr-only{% endif -%}" for="{{ data.id }}">
                 {{ data.label|safe }}
             </label>
@@ -30,7 +32,7 @@
                 value="{{ data.value }}"
                 id="{{ data.id }}"
                 {%- if data.disabled %} disabled="disabled"{% endif -%}
-                {%- if data.placeholder %} placeholder="{{ data.placeholder }}"{% endif -%}
+                {%- if data.placeholder and not data.labelAsPlaceholder %} placeholder="{{ data.placeholder }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}></textarea>
         </div>

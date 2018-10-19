@@ -13,13 +13,29 @@
 * Render form elements
 
 ## Install
-This is currently only needed if you use file input fields.
 
-Import module
+### File input
+Import module for file input
 ```javascript
-import { CustomFile } from '@components/form';
+import { CustomFile } from '@components/form-elements';
 
-moduleInit('[js-hook-input-file]', CustomFile);
+moduleInit.sync('[js-hook-input-file]', CustomFile);
+```
+
+### Label as placeholder
+Import module for label as placeholder
+```javascript
+import { LabelAsPlaceholder } from '@components/form-elements';
+
+moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder);
+```
+
+### Autocomplete
+Import module for autocomplete
+```javascript
+import { Autocomplete } from '@components/form-elements';
+
+moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
 ```
 
 ```htmlmixed
@@ -162,9 +178,77 @@ See the [input](/components/form-elements/template/form-elements/textarea.html) 
 }) }}
 ```
 
+
+### Label as placeholder
+Works on input, file and textarea
+
+```htmlmixed
+{{ form.input({
+    labelAsPlaceholder: true,
+    name: 'input-text',
+    id: 'input-text',
+    label: 'Input'
+}) }}
+```
+
+
+### Autocomplete
+See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
+
+#### With API endpoint
+HTML:
+```htmlmixed
+{{ form.autocomplete({
+    name: 'query',
+    label: 'Autocomplete',
+    hook: 'form-autocomplete',
+    attr: 'data-api="https://jsonplaceholder.typicode.com/users" autocomplete="off"',
+    placeholder: 'Autocomplete'
+}) }}
+```
+
+API response:
+```json
+[
+  { "id":"1", "name":"Dylan Vens" },
+  { "id":"2", "name":"Anne van den Hoogen" }
+]
+```
+
+#### No API endpoint
+Add data-list="autocomplete-list" to the attributes 
+If no API call after each keypress is wanted, an inline json can be used. HTML:
+```htmlmixed
+
+{{ form.autocomplete({
+    name: 'query',
+    label: 'Autocomplete',
+    hook: 'form-autocomplete',
+    attr: 'data-list="autocomplete-list" autocomplete="off"',
+    placeholder: 'Autocomplete'
+}) }}
+
+<script id="autocomplete-list">
+    [
+        {
+            "id": 1,
+            "name": "name 1"
+        },
+        {
+            "id": 2,
+            "name": "name 2"
+        }
+    ]
+</script>
+```
+
 ## Dependencies
-This package doesn't have any dependencies.
+* [RAF](https://www.npmjs.com/package/raf)
+* [Raf throttle utility](/utilities/raf-throttle/)
+* [Events utility](/utilities/events/)
+* [API utility](/utilities/api/)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
-* [Arnout Jansen (co-author)](mailto:arnout.jansen@tamtam.nl)
+* [Anne van den Hoogen](mailto:anne.vandenhoogen@deptagency.com)
+* [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)

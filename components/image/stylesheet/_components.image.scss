@@ -29,3 +29,24 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.image__default {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+
+    .image--is-loaded & {
+        opacity: 1;
+    }
+}
+
+.image__ghost {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity 200ms ease-out 50ms;
+
+    .image--is-loaded & {
+        opacity: 0;
+    }
+}

@@ -6,4 +6,9 @@ The `Element.closest()` method returns the closest ancestor of the current eleme
 
 ## element.matches
 [Documentation on Devdocs](http://devdocs.io/dom/element/matches)
-The `Element.matches()z method returns true if the element would be selected by the specified selector string; otherwise, returns `false`.
+The `Element.matches()` method returns true if the element would be selected by the specified selector string; otherwise, returns `false`.
+
+
+## element.remove
+[Documentation on Devdocs](http://devdocs.io/dom/childnode/remove)
+The `ChildNode.remove()` method removes the object from the tree it belongs to.
