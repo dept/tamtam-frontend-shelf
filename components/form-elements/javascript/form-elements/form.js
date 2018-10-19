@@ -3,5 +3,7 @@
  * Form utility
  */
 
-export { CustomFile } from './element/input-file';
-export { Autocomplete } from './element/autocomplete';
+import CustomFile from './element/input-file';
+import LabelAsPlaceholder from './element/label-as-placeholder';
+
+export { CustomFile, LabelAsPlaceholder };

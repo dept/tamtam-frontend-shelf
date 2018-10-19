@@ -15,6 +15,7 @@
 ## Install
 This is currently only needed if you use file input fields or autocomplete.
 
+### File input
 Import module for file input
 ```javascript
 import { CustomFile } from '@components/form-elements';
@@ -22,12 +23,20 @@ import { CustomFile } from '@components/form-elements';
 moduleInit.sync('[js-hook-input-file]', CustomFile);
 ```
 
+### Label as placeholder
+Import module for label as placeholder
+```javascript
+import { LabelAsPlaceholder } from '@components/form-elements';
+
+moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder);
+```
+
+### Autocomplete
 Import module for autocomplete
 ```javascript
 import { Autocomplete } from '@components/form-elements';
 
 moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
-
 ```
 
 ```htmlmixed
@@ -68,28 +77,6 @@ See the [input](/components/form-elements/template/form-elements/input.html) mac
     label: 'Input',
     placeholder: 'Input'
 }) }}
-```
-
-### Autocomplete
-See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
-
-HTML:
-```htmlmixed
-{{ form.autocomplete({
-    name: 'query',
-    label: 'Autocomplete',
-    hook: 'form-autocomplete',
-    attr: 'data-api="https://jsonplaceholder.typicode.com/users" autocomplete="off"',
-    placeholder: 'Autocomplete'
-}) }}
-```
-
-API:
-```json
-[
-  { "id":"1", "name":"Dylan Vens" },
-  { "id":"2", "name":"Anne van den Hoogen" }
-]
 ```
 
 ### Input - file upload
@@ -190,6 +177,42 @@ See the [input](/components/form-elements/template/form-elements/textarea.html) 
     label: 'Textarea',
     placeholder: 'Textarea'
 }) }}
+```
+
+
+### Label as placeholder
+Works on input, file and textarea
+
+```htmlmixed
+{{ form.input({
+    labelAsPlaceholder: true,
+    name: 'input-text',
+    id: 'input-text',
+    label: 'Input'
+}) }}
+```
+
+
+### Autocomplete
+See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
+
+HTML:
+```htmlmixed
+{{ form.autocomplete({
+    name: 'query',
+    label: 'Autocomplete',
+    hook: 'form-autocomplete',
+    attr: 'data-api="https://jsonplaceholder.typicode.com/users" autocomplete="off"',
+    placeholder: 'Autocomplete'
+}) }}
+```
+
+API:
+```json
+[
+  { "id":"1", "name":"Dylan Vens" },
+  { "id":"2", "name":"Anne van den Hoogen" }
+]
 ```
 
 ## Dependencies

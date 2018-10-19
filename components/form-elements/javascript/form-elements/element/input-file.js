@@ -9,29 +9,31 @@ class CustomFile {
         this.label.element = this.element.parentNode.querySelector(FILE_LABEL_HOOK);
         this.label.text = this.label.element.innerHTML;
 
-        this._bindEvents();
+        this.bindEvents();
 
     }
 
-    _bindEvents() {
+    bindEvents() {
 
-        this.element.addEventListener('change', () => this._handleChange());
+        this.element.addEventListener('change', () => this.handleChange());
 
     }
 
-    _handleChange() {
+    handleChange() {
 
         let label = false;
+        let count = 0;
 
         if (this.element.files && this.element.files.length > 1) {
             label = (this.element.getAttribute('data-multiple-label') || '').replace('{count}', this.element.files.length);
-        } else {
+        } else if (typeof this.element.value !== `undefined`) {
+            count += 1;
             label = this.element.value.split('\\').pop();
         }
 
         if (label) {
             this.label.element.innerHTML = label;
-        } else {
+        } else if (count > 0) {
             this.label.element.innerHTML = this.label.text;
         }
 
@@ -39,4 +41,4 @@ class CustomFile {
 
 }
 
-export { CustomFile };
+export default CustomFile;

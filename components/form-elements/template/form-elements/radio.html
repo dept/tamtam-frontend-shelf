@@ -23,8 +23,7 @@
     <div class="c-radio form__item
         {%- if data.horizontal %} radio--horizontal{% endif %}
         {%- if data.class %} {{ data.class }}{% endif -%}
-        {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.disabled %} form__item--disabled{% endif -%}">
 
         <div class="radio__wrapper">
         {% for option in data.options %}
