@@ -13,7 +13,6 @@
 ## Install
 Import module
 ```javascript
-
 moduleInit.async('[js-hook-tooltip]', () => import('@components/tooltip'));
 ```
 
@@ -66,12 +65,11 @@ You can read
 
 ### Different positions
 You can choose different tooltip positions.
-```htmlmixed
-'top-left', 'top-right', 'top-center',
-'bottom-left', 'bottom-right', 'bottom-center',
-'left-top', 'left-bottom', 'left-center',
-'right-top', 'right-bottom', 'right-center'
-```
+Top           | Bottom           | Left             | Right
+------------- | ---------------- | ---------------- | ----------------
+`top-left`    | `bottom-left`    | `left-top`       | `right-top`
+`top-right`   | `bottom-right`   | `left-bottom`    | `right-bottom`
+`top-center`  | `bottom-center`  | `left-center`    | `right-center`
 
 ## Developers
 * [Robin Treur](mailto:robin.treur@deptagency.com)
