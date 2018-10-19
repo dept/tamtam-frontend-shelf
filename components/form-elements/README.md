@@ -219,6 +219,15 @@ API response:
 Add data-list="autocomplete-list" to the attributes 
 If no API call after each keypress is wanted, an inline json can be used. HTML:
 ```htmlmixed
+
+{{ form.autocomplete({
+    name: 'query',
+    label: 'Autocomplete',
+    hook: 'form-autocomplete',
+    attr: 'data-list="autocomplete-list" autocomplete="off"',
+    placeholder: 'Autocomplete'
+}) }}
+
 <script id="autocomplete-list">
     [
         {

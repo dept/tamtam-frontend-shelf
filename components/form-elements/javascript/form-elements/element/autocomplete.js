@@ -5,8 +5,8 @@ import Api from '@utilities/api';
 const HOOK_AUTOCOMPLETE = 'js-hook-autocomplete';
 const HOOK_INPUT_LIST = '[js-hook-autocomplete-list]';
 const INPUT_VALUE_ID = 'data-value-id';
-const INPUT_ACTIVE_CLASS = 'is--active';
-const ITEM_ACTIVE_CLASS = 'is--active';
+const INPUT_ACTIVE_CLASS = 'autocomplete__element--is-active';
+const ITEM_ACTIVE_CLASS = 'autocomplete__list-item--is-active';
 
 class Autocomplete {
 
@@ -16,6 +16,9 @@ class Autocomplete {
         this.list = this.element.querySelector(HOOK_INPUT_LIST);
         this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE);
         this.input = document.querySelector(`[js-hook-${this.type}]`);
+
+        if (!this.list || !this.input) return;
+
         this.apiUrl = this.input.getAttribute('data-api');
         this.listID = this.input.getAttribute('data-list');
         this.listData = this.listID ? this.getListData() : null;
@@ -48,7 +51,7 @@ class Autocomplete {
 
     }
 
-    _removeFocus() {
+    removeFocus() {
 
         Events.$trigger('autocomplete::focusout');
 
@@ -100,7 +103,7 @@ class Autocomplete {
 
     closeList() {
 
-        this._removeFocus();
+        this.removeFocus();
 
         this.element.classList.remove(INPUT_ACTIVE_CLASS);
 
@@ -149,7 +152,8 @@ class Autocomplete {
     }
 
     getListData() {
-        return JSON.parse(document.getElementById(this.listID).innerHTML);
+        const listDataTag = document.getElementById(this.listID);
+        return listDataTag ? JSON.parse(listDataTag.innerHTML) : undefined;
     }
 
     filterLocalList(value) {
@@ -237,4 +241,4 @@ class Autocomplete {
 
 }
 
-export { Autocomplete };
+export default Autocomplete;
