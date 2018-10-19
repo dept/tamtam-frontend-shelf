@@ -13,7 +13,6 @@
 * Render form elements
 
 ## Install
-This is currently only needed if you use file input fields or autocomplete.
 
 ### File input
 Import module for file input
