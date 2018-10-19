@@ -66,6 +66,7 @@ You can read
 
 ### Different positions
 You can choose different tooltip positions.
+
 Top           | Bottom           | Left             | Right
 ------------- | ---------------- | ---------------- | ----------------
 `top-left`    | `bottom-left`    | `left-top`       | `right-top`
