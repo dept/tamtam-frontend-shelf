@@ -197,8 +197,8 @@ class Tooltip {
 
     newDesktopPosition(key, positionProp, position) {
         /** If the tooltip is outside the screen, then check if the position isn't in the classname.
-            So if the position is left-center and the tooltip is outside the topscreen then do this. 
-            Not if position is top-center and tooltip is outside the topscreen. 
+            So if the position is left-center and the tooltip is outside the topscreen then do this.
+            Not if position is top-center and tooltip is outside the topscreen.
         */
         if (positionProp.indexOf('center') > 0 && positionProp.indexOf(key) === -1) {
             const margins = this.constructor.getDesktopMargins(key, position);

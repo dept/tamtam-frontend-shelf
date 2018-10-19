@@ -4,7 +4,8 @@
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
-4. [Developers](#markdown-header-developers)
+4. [Dependencies](#markdown-header-dependencies)
+5. [Developers](#markdown-header-developers)
 
 ## What does it do
 * Creates a tooltip.
@@ -71,6 +72,9 @@ Top           | Bottom           | Left             | Right
 `top-right`   | `bottom-right`   | `left-bottom`    | `right-bottom`
 `top-center`  | `bottom-center`  | `left-center`    | `right-center`
 
+## Dependencies
+* [DOM elements](/utilities/dom-elements/README.md)
+
 ## Developers
 * [Robin Treur](mailto:robin.treur@deptagency.com)
-* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+* [Adrian Klingen (co-author)](mailto:adrian.klingen@deptagency.com)
