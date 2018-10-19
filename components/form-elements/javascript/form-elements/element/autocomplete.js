@@ -199,7 +199,7 @@ class Autocomplete {
 
     createList(data, value) {
 
-        const list = (data) ? data.map((item) => `<li class="autocomplete__list-item" data-id="${item.id}" data-value="${item.name}">${item.name}</li>`).join('') : false;
+        const list = data ? data.map(item => `<li class="autocomplete__list-item" data-id="${item.id}" data-value="${item.name}">${item.name}</li>`).join('') : false;
 
         this.updateList(list, value);
 
