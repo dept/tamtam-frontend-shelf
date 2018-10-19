@@ -215,6 +215,7 @@ class Cookies {
 
         if (this.cookiebar) {
             this.cookiebar.classList.add(SHOW_CLASS);
+            this.cookiebar.tabIndex = 0;
         }
 
     }
