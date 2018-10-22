@@ -28,12 +28,12 @@ class Events {
 
         if (eventIsBoundToEventEl(event, callback)) {
             eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false);
-        } else {
-            boundEvents[event] = {
-                callbackString: callback.toString(),
-                callbackWrapper: ev => {
-                    callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
-                }
+        }
+
+        boundEvents[event] = {
+            callbackString: callback.toString(),
+            callbackWrapper: ev => {
+                callback(ev, extractPropFromObject(ev.detail, 'data'), extractPropFromObject(ev.detail, 'currentTarget'));
             }
         }
 
