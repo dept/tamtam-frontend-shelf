@@ -11,11 +11,13 @@ $cookie-transition-ease: $ease-in-out-quad !default;
     padding: $global-spacing*2 0;
     background-color: rgba($color-black, 0.85);
     color: $color-white;
+    visibility: hidden;
     transform: translateY(100%);
     transition: $cookie-transition-time $cookie-transition-ease;
     transition-property: transform;
 
     &.cookie-bar--is-visible {
+        visibility: visible;
         transform: translateY(0);
     }
 }
