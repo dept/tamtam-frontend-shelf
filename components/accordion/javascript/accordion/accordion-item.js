@@ -154,7 +154,7 @@ class AccordionItem {
 
     static setTabIndex(accordionItem, value) {
         [...accordionItem.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]):not([js-hook-accordion-button]), iframe, video')].forEach(element => {
-            element.tabIndex = value
+            element.tabIndex = value;
         });
     }
 }
