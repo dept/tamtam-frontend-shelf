@@ -4,9 +4,12 @@ $helper-transition-time: 200ms;
 
 .focus-helper {
     @include focus-state-input($height: $helper-border-height);
-    opacity: 0;
-    transition: $helper-transition-time $helper-transition-ease;
-    transition-property: opacity;
+
+    &::before {
+        opacity: 0;
+        transition: $helper-transition-time $helper-transition-ease;
+        transition-property: opacity;
+    }
 }
 
 .checkbox__focus-helper,
@@ -39,7 +42,9 @@ $helper-transition-time: 200ms;
     .u-sr-only {
         &:focus {
             + .focus-helper {
-                opacity: 1;
+                &::before {
+                    opacity: 1;
+                }
             }
         }
     }
@@ -58,7 +63,9 @@ $helper-transition-time: 200ms;
         &:focus {
             + label {
                 .radio__focus-helper {
-                    opacity: 1;
+                    &::before {
+                        opacity: 1;
+                    }
                 }
             }
         }
