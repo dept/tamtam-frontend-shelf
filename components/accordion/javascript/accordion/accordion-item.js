@@ -5,6 +5,7 @@
 import Events from '@utilities/events';
 
 const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
+const ACCORDION_ANIMATING_CLASS = 'accordion__item--is-animating';
 
 class AccordionItem {
     constructor(element) {
@@ -16,6 +17,12 @@ class AccordionItem {
         this.content = this.item.querySelector('[js-hook-accordion-content]');
 
         this.id = this.content.id;
+
+        if (this.isOpen) {
+            AccordionItem.setTabIndex(this.item, 0);
+        } else {
+            AccordionItem.setTabIndex(this.item, -1);
+        }
     }
 
     set isOpen(boolean) {
@@ -51,6 +58,8 @@ class AccordionItem {
 
         this._setHeight();
         this._setAriaState();
+
+        AccordionItem.setTabIndex(this.item, 0);
     }
 
     /**
@@ -67,6 +76,8 @@ class AccordionItem {
 
         this._setHeight();
         this._setAriaState();
+
+        AccordionItem.setTabIndex(this.item, -1);
     }
 
     /**
@@ -126,11 +137,24 @@ class AccordionItem {
      */
     _triggerAnimatingEvent(bool) {
         this.isAnimating = bool;
+
+        if (this.isAnimating) {
+            this.item.classList.add(ACCORDION_ANIMATING_CLASS);
+        } else {
+            this.item.classList.remove(ACCORDION_ANIMATING_CLASS);
+        }
+
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
                 animating: this.isAnimating,
             },
+        });
+    }
+
+    static setTabIndex(accordionItem, value) {
+        [...accordionItem.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]):not([js-hook-accordion-button]), iframe, video')].forEach(element => {
+            element.tabIndex = value;
         });
     }
 }
