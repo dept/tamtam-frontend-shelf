@@ -80,7 +80,7 @@ $modal-max-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0
     transition: $modal-transition-time $modal-transition-ease, $modal-transition-time $modal-transition-ease;
     transition-property: transform, opacity;
 
-    @media only screen and ( min-width: #{em($modal-max-width-media-query)} ) {
+    @include screen-min-width( $modal-max-width-media-query ) {
         max-width: calc( #{$modal-max-width} - #{$modal-gutter-small * 2} );
         margin: $modal-gutter-small auto;
     }
