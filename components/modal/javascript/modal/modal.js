@@ -14,9 +14,9 @@ class Modal {
 
         this.registeredModals = {};
 
-        const modals = document.querySelectorAll(MODAL_HOOK);
+        const modals = [...document.querySelectorAll(MODAL_HOOK)];
 
-        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
+        modals.forEach(modal => this.setupModalRegistry(modal));
 
         this.bindEvents();
 
@@ -29,10 +29,10 @@ class Modal {
      */
     customBind(data) {
 
-        const modals = document.querySelectorAll(data.hook);
+        const modals = [...document.querySelectorAll(data.hook)];
 
         // Loop trough all found modals based on hook
-        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
+        modals.forEach(modal => this.setupModalRegistry(modal));
 
     }
 
@@ -42,10 +42,12 @@ class Modal {
      */
     setupModalRegistry(el) {
 
+        if (el._modalIsInitialised) return;
+
         const id = el.getAttribute('id');
 
-        const triggerBtn = document.querySelectorAll(`[aria-controls=${id}]`);
-        const closeBtn = el.querySelectorAll(MODAL_CLOSE_HOOK);
+        const triggerBtn = [...document.querySelectorAll(`[aria-controls=${id}]`)];
+        const closeBtn = [...el.querySelectorAll(MODAL_CLOSE_HOOK)];
 
         const modal = {
             el,
@@ -58,6 +60,8 @@ class Modal {
         this.registeredModals[`modal-${id}`] = modal;
 
         this.bindModalEvents(modal);
+
+        el._modalIsInitialised = true;
     }
 
     /**
@@ -65,10 +69,10 @@ class Modal {
      */
     bindEvents() {
 
-        Events.$on('modal::close', (data) => this.closeModal(data));
-        Events.$on('modal::open', (data) => this.openModal(data));
+        Events.$on('modal::close', (event, data) => this.closeModal(data));
+        Events.$on('modal::open', (event, data) => this.openModal(data));
 
-        Events.$on('modal::bind', (data) => this.customBind(data));
+        Events.$on('modal::bind', (event, data) => this.customBind(data));
 
     }
 
@@ -80,7 +84,7 @@ class Modal {
      */
     bindModalEvents({ el, id, triggerBtn, closeBtn }) {
 
-        Array.from(triggerBtn).forEach(triggerEl => triggerEl.addEventListener('click', () => {
+        triggerBtn.forEach(triggerEl => triggerEl.addEventListener('click', () => {
             if (el.modalIsOpen) {
                 Events.$trigger('modal::close', { data: { id } });
                 Events.$trigger(`modal[${id}]::close`, { data: { id } });
@@ -90,10 +94,10 @@ class Modal {
             }
         }));
 
-        Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }) );
-        Events.$on(`modal[${id}]::open`, () => this.openModal({ id }) );
+        Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }));
+        Events.$on(`modal[${id}]::open`, () => this.openModal({ id }));
 
-        Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
+        closeBtn.forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
             Events.$trigger(`modal[${id}]::close`, { data: { id } });
         }));
@@ -201,7 +205,7 @@ class Modal {
 
 }
 
-function setTabIndex(modal, value){
+function setTabIndex(modal, value) {
     [...modal.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video')].forEach(element => element.tabIndex = value);
 }
 
