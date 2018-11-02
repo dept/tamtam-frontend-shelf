@@ -4,7 +4,7 @@ $modal-gutter: $global-spacing * 2 !default;
 $modal-gutter-small: $global-spacing * 2 !default;
 $modal-transition-time: 400ms !default;
 $modal-transition-ease: $ease-in-out-quad !default;
-$modal-max-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0.5;
+$modal-min-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0.5;
 
 .is--modal-open {
     body {
@@ -80,7 +80,7 @@ $modal-max-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0
     transition: $modal-transition-time $modal-transition-ease, $modal-transition-time $modal-transition-ease;
     transition-property: transform, opacity;
 
-    @include screen-min-width( $modal-max-width-media-query ) {
+    @include screen-min-width( $modal-min-width-media-query ) {
         max-width: calc( #{$modal-max-width} - #{$modal-gutter-small * 2} );
         margin: $modal-gutter-small auto;
     }
