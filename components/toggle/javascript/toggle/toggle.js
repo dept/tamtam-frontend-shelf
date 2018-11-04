@@ -40,6 +40,8 @@ class Toggle {
             this.toggleState();
             event.preventDefault();
         });
+
+        Events.$on(`toggle::checkTabIndex`, () => this.checkTabIndex());
     }
 
     /**
@@ -54,11 +56,7 @@ class Toggle {
         this.setARIAAttributeValues();
         this.triggerExternalEvents();
 
-        if (this._isActive) {
-            Toggle.setTabIndex(this.interactiveElements, 0);
-        } else {
-            Toggle.setTabIndex(this.interactiveElements, -1);
-        }
+        Events.$trigger('toggle::checkTabIndex');
     }
 
     /**
@@ -69,8 +67,8 @@ class Toggle {
             this.toggleState();
         }
 
-        Toggle.setTabIndex(this.interactiveElements, -1);
         this.setARIAAttributeValues();
+        Events.$trigger('toggle::checkTabIndex');
     }
 
     /**
@@ -129,6 +127,17 @@ class Toggle {
             .join(', ');
 
         return Array.from(document.querySelectorAll(LINKS_SELECTOR));
+    }
+
+    /**
+     * Set initial tab index
+     */
+    checkTabIndex() {
+        if (this._isActive) {
+            Toggle.setTabIndex(this.interactiveElements, 0);
+        } else {
+            Toggle.setTabIndex(this.interactiveElements, -1);
+        }
     }
 
     /**
