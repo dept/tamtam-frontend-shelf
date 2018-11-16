@@ -127,11 +127,6 @@ class Modal {
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
         const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true';
 
-        // Add modal open class to html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.add(MODAL_HTML_CLASS);
-        }
-
         if (closeAllOthers) {
             Object.keys(this.registeredModals)
                 .filter(key => this.registeredModals[key].id !== data.id)
@@ -141,6 +136,11 @@ class Modal {
                         Events.$trigger(`modal[${_modal.id}]::close`, { data: { id: _modal.id } });
                     }
                 });
+        }
+
+        // Add modal open class to html element if noBodyClass is false
+        if (!noBodyClass) {
+            html.classList.add(MODAL_HTML_CLASS);
         }
 
         // Add tabindex and add visible class
