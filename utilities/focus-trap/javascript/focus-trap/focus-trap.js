@@ -100,7 +100,7 @@ class FocusTrap {
  * @return { Object }
  */
 function findClosestFocusTarget(el) {
-    const elements = el.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe');
+    const elements = el.querySelectorAll('a:not([tabindex="-1"]), area:not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), iframe:not([tabindex="-1"])');
     return (elements.length) ? elements[0] : el;
 }
 
