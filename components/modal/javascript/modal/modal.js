@@ -1,4 +1,5 @@
 import Events from '@utilities/events';
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 
 const html = document.documentElement;
 
@@ -56,7 +57,7 @@ class Modal {
             closeBtn
         };
 
-        setTabIndex(modal.el, -1);
+        setTabIndexOfChildren(modal.el, -1);
         this.registeredModals[`modal-${id}`] = modal;
 
         this.bindModalEvents(modal);
@@ -145,7 +146,7 @@ class Modal {
 
         // Add tabindex and add visible class
         modal.el.tabIndex = 1;
-        setTabIndex(modal.el, 1);
+        setTabIndexOfChildren(modal.el, 1);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = true;
 
@@ -189,7 +190,7 @@ class Modal {
 
         // Remove tabindex and remove visible class
         modal.el.tabIndex = -1;
-        setTabIndex(modal.el, -1);
+        setTabIndexOfChildren(modal.el, -1);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = false;
 
@@ -203,10 +204,6 @@ class Modal {
         if (document.activeElement != document.body) document.activeElement.blur();
     }
 
-}
-
-function setTabIndex(modal, value) {
-    [...modal.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video')].forEach(element => element.tabIndex = value);
 }
 
 export default new Modal();

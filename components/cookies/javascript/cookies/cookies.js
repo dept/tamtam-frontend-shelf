@@ -1,5 +1,6 @@
 import cookies from 'js-cookie';
 import Events from '@utilities/events';
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
 const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]';
@@ -216,7 +217,7 @@ class Cookies {
         if (this.cookiebar) {
             this.cookiebar.classList.add(SHOW_CLASS);
             this.cookiebar.tabIndex = 0;
-            this.setTabIndex(0);
+            setTabIndexOfChildren(this.cookiebarm, 0);
         }
 
     }
@@ -260,11 +261,6 @@ class Cookies {
         return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === '1';
     }
 
-    setTabIndex(value) {
-        [...this.cookiebar.querySelectorAll('a, button')].forEach(element => {
-            element.tabIndex = value;
-        });
-    }
 }
 
 export default new Cookies();

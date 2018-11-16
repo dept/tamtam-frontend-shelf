@@ -19,13 +19,22 @@ import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 ```
 
 ## How to use
-### Bind and listen to events in Javascript
+### Use default selector values
 ```javascript
-
-import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
-setTabIndexOfChildren(element, -1);
-
+setTabIndexOfChildren(HTMLElement, -1);
 ```
+
+### Extend the default values
+```javascript
+setTabIndexOfChildren(HTMLElement, -1, 'element:not([disabled])');
+```
+
+
+### Overwrite the default values
+```javascript
+setTabIndexOfChildren(HTMLElement, -1, 'element:not([disabled])', true);
+```
+
 
 ## Dependencies
 This package doesn't not have any dependencies.

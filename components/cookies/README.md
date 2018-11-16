@@ -53,6 +53,7 @@ Add cookie form template to page
 ## Dependencies
 * [Form elements component](/components/form-elements/)
 * [Events utility](/utilities/events/)
+* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
