@@ -49,7 +49,17 @@ class Sticky {
      */
     _setScrollElementSize() {
 
+        const isSticked = this.scrollElement.classList.contains(STICKY_STICKED_CLASS);
+
+        if (isSticked) this.scrollElement.classList.remove(STICKY_STICKED_CLASS);
+
+        this.scrollElement.style.width = '';
         this.scrollElement.position = this.scrollElement.getBoundingClientRect();
+
+        if (isSticked) this.scrollElement.classList.add(STICKY_STICKED_CLASS);
+
+        this.scrollElement.style.width = `${this.scrollElement.position.width}px`;
+
         this.element.position = this.element.getBoundingClientRect();
         this.windowHeight = window.innerHeight;
 
