@@ -6,8 +6,8 @@ import Events from '@utilities/events';
 import RafThrottle from '@utilities/raf-throttle';
 
 const STICKY_SCROLL_ELEMENT_HOOK = '[js-hook-sticky-scroll-element]';
-const STICKY_STICKED_CLASS = 'sticky--is-sticked';
-const STICKY_UNSTICKED_CLASS = 'sticky--is-unsticked';
+const STICKY_STUCK_CLASS = 'sticky--is-stuck';
+const STICKY_UNSTUCK_CLASS = 'sticky--is-unstuck';
 
 class Sticky {
 
@@ -49,14 +49,14 @@ class Sticky {
      */
     _setScrollElementSize() {
 
-        const isStuck = this.scrollElement.classList.contains(STICKY_STICKED_CLASS);
+        const isStuck = this.scrollElement.classList.contains(STICKY_STUCK_CLASS);
 
-        if (isStuck) this.scrollElement.classList.remove(STICKY_STICKED_CLASS);
+        if (isStuck) this.scrollElement.classList.remove(STICKY_STUCK_CLASS);
 
         this.scrollElement.style.width = '';
         this.scrollElement.position = this.scrollElement.getBoundingClientRect();
 
-        if (isStuck) this.scrollElement.classList.add(STICKY_STICKED_CLASS);
+        if (isStuck) this.scrollElement.classList.add(STICKY_STUCK_CLASS);
 
         this.scrollElement.style.width = `${this.scrollElement.position.width}px`;
 
@@ -103,24 +103,24 @@ function setStickyValues(element, scrollElement, threshold, windowHeight) {
 function setStickyClasses(scrollElement, threshold) {
 
     scrollElement.style.top = `${threshold}px`;
-    scrollElement.classList.add(STICKY_STICKED_CLASS);
-    scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
+    scrollElement.classList.add(STICKY_STUCK_CLASS);
+    scrollElement.classList.remove(STICKY_UNSTUCK_CLASS);
 
 }
 
 function setUnStickyClasses(scrollElement) {
 
     scrollElement.style.top = '';
-    scrollElement.classList.add(STICKY_UNSTICKED_CLASS);
-    scrollElement.classList.remove(STICKY_STICKED_CLASS);
+    scrollElement.classList.add(STICKY_UNSTUCK_CLASS);
+    scrollElement.classList.remove(STICKY_STUCK_CLASS);
 
 }
 
 function resetStickyClasses(scrollElement) {
 
     scrollElement.style.top = '';
-    scrollElement.classList.remove(STICKY_STICKED_CLASS);
-    scrollElement.classList.remove(STICKY_UNSTICKED_CLASS);
+    scrollElement.classList.remove(STICKY_STUCK_CLASS);
+    scrollElement.classList.remove(STICKY_UNSTUCK_CLASS);
 
 }
 

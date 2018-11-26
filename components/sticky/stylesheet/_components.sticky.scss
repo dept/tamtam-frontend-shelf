@@ -9,13 +9,13 @@ $sticky-transition-ease: $ease-in-out-quad !default;
     height: 100%;
 }
 
-.sticky--is-sticked {
+.sticky--is-stuck {
     @include screen-tablet-portrait-and-bigger {
         position: fixed !important;
     }
 }
 
-.sticky--is-unsticked {
+.sticky--is-unstuck {
     @include screen-tablet-portrait-and-bigger {
         position: absolute;
         bottom: 0;
