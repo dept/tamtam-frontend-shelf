@@ -23,7 +23,7 @@ class ScrollTo {
         Events.$on('scroll-to::scroll', (event, data) => {
 
             const { target, scrollElement, offset, duration } = data;
-            this.scrollTo(target, scrollElement, offset, duration);
+            this.scrollTo(target, duration, offset, scrollElement);
 
         });
 
