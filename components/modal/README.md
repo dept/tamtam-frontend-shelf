@@ -81,6 +81,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ## Dependencies
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
+* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

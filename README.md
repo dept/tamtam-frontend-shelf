@@ -32,6 +32,7 @@ In this repository you find all standardized front-end components and utilities.
 * [RAF throttle](utilities/raf-throttle/README.md)
 * [Screen dimensions](utilities/screen-dimensions/README.md)
 * [Scroll to](utilities/scroll-to/README.md)
+* [Set tabindex of children](/utilities/set-tabindex-of-children)
 * [Storage](utilities/storage/README.md)
 * [Validation](utilities/validation/README.md)
 
