@@ -60,6 +60,13 @@ class AccordionItem {
         this._setAriaState();
 
         AccordionItem.setTabIndex(this.item, 0);
+
+        Events.$trigger('scroll-to::scroll', {
+            data: {
+                target: this.item,
+                offset: 100,
+            }
+        });
     }
 
     /**
