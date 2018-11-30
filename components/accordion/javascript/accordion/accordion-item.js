@@ -3,26 +3,29 @@
  * Will be created for each item inside an accordion
  */
 import Events from '@utilities/events';
+import setTabindexOfChildren from '@utilities/set-tabindex-of-children';
+
+const ACCORDION_BUTTON_HOOK = '[js-hook-accordion-button]';
+const ACCORDION_CONTENT_HOOK = '[js-hook-accordion-content]';
 
 const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
 const ACCORDION_ANIMATING_CLASS = 'accordion__item--is-animating';
 
 class AccordionItem {
+
     constructor(element) {
+
         this.item = element;
-        this.isOpen = this.item.className.indexOf(ACCORDION_OPEN_CLASS) !== -1;
+        this.isOpen = this.item.classList.contains(ACCORDION_OPEN_CLASS);
         this.isAnimating = false;
 
-        this.button = this.item.querySelector('[js-hook-accordion-button]');
-        this.content = this.item.querySelector('[js-hook-accordion-content]');
+        this.button = this.item.querySelector(ACCORDION_BUTTON_HOOK);
+        this.content = this.item.querySelector(ACCORDION_CONTENT_HOOK);
 
         this.id = this.content.id;
 
-        if (this.isOpen) {
-            AccordionItem.setTabIndex(this.item, 0);
-        } else {
-            AccordionItem.setTabIndex(this.item, -1);
-        }
+        setTabindexOfChildren(this.content, this.isOpen ? 0 : -1);
+
     }
 
     set isOpen(boolean) {
@@ -37,34 +40,33 @@ class AccordionItem {
      * Toggles the accordion item
      */
     toggle() {
+
         if (this.isOpen) {
             this.close();
         } else {
             this.open();
         }
+
     }
 
     /**
      * Opens the accordion item
      */
     open() {
-        if (this.isOpen || this.isAnimating) {
-            return;
-        }
+
+        if (this.isOpen || this.isAnimating) return;
+
         this.isOpen = true;
-        this._triggerAnimatingEvent(true);
+        this.triggerAnimatingEvent(true);
 
         this.item.classList.add(ACCORDION_OPEN_CLASS);
 
-        this._setHeight();
-        this._setAriaState();
-
-        AccordionItem.setTabIndex(this.item, 0);
+        this.setHeight();
+        this.setAccessibilityState();
 
         Events.$trigger('scroll-to::scroll', {
             data: {
-                target: this.item,
-                offset: 100,
+                target: this.item
             }
         });
     }
@@ -77,31 +79,34 @@ class AccordionItem {
             return;
         }
         this.isOpen = false;
-        this._triggerAnimatingEvent(true);
+        this.triggerAnimatingEvent(true);
 
         this.item.classList.remove(ACCORDION_OPEN_CLASS);
 
-        this._setHeight();
-        this._setAriaState();
+        this.setHeight();
+        this.setAccessibilityState();
 
-        AccordionItem.setTabIndex(this.item, -1);
     }
 
     /**
      * Sets correct aria-* values
      */
-    _setAriaState() {
+    setAccessibilityState() {
+
         this.button.setAttribute('aria-expanded', this.isOpen);
         this.content.setAttribute('aria-hidden', !this.isOpen);
+        setTabindexOfChildren(this.content, this.isOpen ? 0 : -1);
+
     }
 
     /**
      * Sets the height based on the this.isOpen
      */
-    _setHeight() {
+    setHeight() {
+
         const height = getElementHeight(this.content);
 
-        this.heightTransitionEvent = e => this._heightTransitionEnd(e);
+        this.heightTransitionEvent = e => this.heightTransitionEnd(e);
 
         this.content.style.height = this.isOpen ? '0' : height;
 
@@ -112,37 +117,38 @@ class AccordionItem {
         this.content.style.height = this.isOpen ? height : '0';
 
         this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
+
     }
 
     /**
      * Triggers when transitionend is fired
      * @param {Event} event
      */
-    _heightTransitionEnd(event) {
-        if (event.propertyName === 'height') {
-            if (this.isOpen) {
-                this.content.style.height = 'auto';
-            }
+    heightTransitionEnd(event) {
 
-            this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
-            this._triggerAnimatingEvent(false);
+        if (event.propertyName !== 'height') return;
+        if (this.isOpen) this.content.style.height = 'auto';
 
-            Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
-                data: {
-                    element: this.item,
-                    id: this.id,
-                },
-            });
+        this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
+        this.triggerAnimatingEvent(false);
 
-            Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
-        }
+        Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
+            data: {
+                element: this.item,
+                id: this.id,
+            },
+        });
+
+        Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
+
     }
 
     /**
      * Triggers the animating event for the accordion holder
      * @param {Boolean} bool
      */
-    _triggerAnimatingEvent(bool) {
+    triggerAnimatingEvent(bool) {
+
         this.isAnimating = bool;
 
         if (this.isAnimating) {
@@ -157,13 +163,9 @@ class AccordionItem {
                 animating: this.isAnimating,
             },
         });
+
     }
 
-    static setTabIndex(accordionItem, value) {
-        [...accordionItem.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]):not([js-hook-accordion-button]), iframe, video')].forEach(element => {
-            element.tabIndex = value;
-        });
-    }
 }
 
 /**
@@ -172,19 +174,19 @@ class AccordionItem {
  * @returns {String} height in pixels
  */
 function getElementHeight(element) {
-    const old = {};
-    old.height = element.style.height;
-    old.visibility = element.style.visibility;
+
+    const { oldHeight, oldVisibility } = element.style;
 
     element.style.height = 'auto';
     element.style.visibility = 'visible';
 
     const { height } = element.getBoundingClientRect();
 
-    element.style.height = old.height;
-    element.style.visibility = old.visibility;
+    element.style.height = oldHeight;
+    element.style.visibility = oldVisibility;
 
     return `${height}px`;
+
 }
 
 export default AccordionItem;

@@ -108,6 +108,7 @@ $accordion-transition-ease: $ease-in-out-quad;
 .accordion__item-content-holder {
     height: 0;
     overflow: hidden;
+    visibility: hidden;
     background-color: $accordion-item-content-color;
     @include content-hidden;
     transition: $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease $accordion-transition-time, $accordion-transition-time $accordion-transition-ease $accordion-transition-time;
@@ -116,6 +117,7 @@ $accordion-transition-ease: $ease-in-out-quad;
     .accordion__item--is-active & {
         @include content-visible;
         overflow: visible;
+        visibility: visible;
         height: auto;
         border-radius: 0 0 $accordion-item-border-radius $accordion-item-border-radius;
         transition: $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease;
@@ -123,6 +125,7 @@ $accordion-transition-ease: $ease-in-out-quad;
 
     .accordion__item--is-animating & {
         overflow: hidden;
+        visibility: visible;
     }
 }
 
