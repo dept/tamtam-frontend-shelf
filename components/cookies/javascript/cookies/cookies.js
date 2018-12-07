@@ -28,12 +28,14 @@ class Cookies {
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
-        this.cookiePrefix = 'default';
-        this.cookieNameFunctional = 'functional';
-        this.cookieNameAnalytics = 'analytics';
-        this.cookieNameSocial = 'social';
-        this.cookieNameAdvertising = 'advertising';
-        this.cookieNameOther = 'other';
+        this.cookieName = {
+            prefix: 'default',
+            functional: 'functional',
+            analytics: 'analytics',
+            social: 'social',
+            advertising: 'advertising',
+            other: 'other',
+        };
 
         if (this.form.element) {
             this.form.url = this.form.element.getAttribute('action');
@@ -42,27 +44,27 @@ class Cookies {
         }
 
         this.config = {
-            cookiePrefix: this.cookiePrefix,
+            cookiePrefix: this.cookieName.prefix,
             version: this.cookiebarVersion,
             cookies: [
                 {
-                    name: this.cookieNameFunctional,
+                    name: this.cookieName.functional,
                     default: COOKIE_DEFAULT_VALUE,
                 },
                 {
-                    name: this.cookieNameAnalytics,
+                    name: this.cookieName.analytics,
                     default: COOKIE_DEFAULT_VALUE,
                 },
                 {
-                    name: this.cookieNameSocial,
+                    name: this.cookieName.social,
                     default: COOKIE_DECLINED_VALUE
                 },
                 {
-                    name: this.cookieNameAdvertising,
+                    name: this.cookieName.advertising,
                     default: COOKIE_DECLINED_VALUE
                 },
                 {
-                    name: this.cookieNameOther,
+                    name: this.cookieName.other,
                     default: COOKIE_DECLINED_VALUE
                 }
             ]

@@ -8,7 +8,7 @@ class VimeoVideo {
 
         this.options = options;
 
-        if (!Cookies.cookieIsValid(Cookies.cookieNameAdvertising)) {
+        if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
             Events.$trigger('video::cookie-invalid', { data: this.options.element });
             return;
         }
