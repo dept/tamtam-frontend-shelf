@@ -76,8 +76,6 @@ class Cookies {
 
     init() {
 
-        this._setConfig(config);
-
         if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version) {
             this._removeInvalidatedCookies();
         }
@@ -96,14 +94,6 @@ class Cookies {
 
         if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version && !this.form.element || this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE && !this.form.element) {
             this._show();
-        }
-
-    }
-
-    _setConfig(config) {
-
-        if (config) {
-            Object.assign(this.config, config);
         }
 
     }
