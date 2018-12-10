@@ -70,9 +70,11 @@ class Cookies {
             ]
         };
 
+        this.init();
+
     }
 
-    init(config) {
+    init() {
 
         this._setConfig(config);
 

@@ -35,13 +35,6 @@ Add cookie bar template to page
 {% include "cookie-bar.html" %}
 ```
 
-```javascript
-Cookiebar.init({
-    cookiePrefix: 'client-name', // optional - recommended to change
-    version: '1' // optional - recommended to update. MUST BE STRING
-});
-```
-
 ### Default cookie form
 Add cookie form template to page
 
