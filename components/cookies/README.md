@@ -9,7 +9,7 @@
 5. [Developers](#markdown-header-developers)
 
 
-__NOTE: The video module has been updated aswell__
+__NOTE: The video module has been updated as well__
 
 ## What does it do
 * GDPR proof cookie bar and cookie form
@@ -21,9 +21,9 @@ Install npm package dependency
 ```node
 npm i js-cookie@2.1.4 --save
 ```
-Import module
+Import singleton
 ```javascript
-import Cookiebar from '@components/cookies';
+import '@components/cookies';
 ```
 
 ## How to use
