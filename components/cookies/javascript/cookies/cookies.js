@@ -28,8 +28,9 @@ class Cookies {
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
+        this.cookiePrefix = 'default';
+
         this.cookieName = {
-            prefix: 'default',
             functional: 'functional',
             analytics: 'analytics',
             social: 'social',
@@ -44,7 +45,7 @@ class Cookies {
         }
 
         this.config = {
-            cookiePrefix: this.cookieName.prefix,
+            cookiePrefix: this.cookiePrefix,
             version: this.cookiebarVersion,
             cookies: [
                 {
