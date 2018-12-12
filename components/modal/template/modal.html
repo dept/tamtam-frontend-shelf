@@ -5,11 +5,15 @@
 
     Options:
         Required
-        id {string|int}     - Adds an id to the modal
+        id {string|int}          - Adds an id to the modal
 
         Optional
-        size {string}       - Adds a modifier to the component
-        noClose {boolean}   - Hides the close button (esc. key is still bound)
+        size {string}            - Adds a modifier to the component
+        mobileOnly {boolean}     - Will only set tabindex initially on tablet portrait and smaller.
+        autoFocus {boolean}      - Enable or disable auto focus when opening the modal
+        noBodyClass {boolean}    - Prevents setting the body class when modal is open
+        closeAllOthers {boolean} - Forces all other modalboxes to close when this one opens
+        noClose {boolean}        - Hides the close button (esc. key is still bound)
 #}
 
 {% macro modal(data) %}

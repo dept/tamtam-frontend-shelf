@@ -32,6 +32,7 @@ Create modalbox in HTML.
 {% from 'modal.html' import modal  %}
 
 You can add the following options:
+* `mobileOnly` must be a boolean. If true, the modal will not set initial tabindex properties on tablet and bigger. Default false.
 * `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.
 * `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal
 
