@@ -81,6 +81,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ## Dependencies
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
+* [Screen Dimensions](/utilities/screen-dimensions/README.md)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
