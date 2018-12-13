@@ -1,5 +1,6 @@
 import Events from '@utilities/events';
 import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
+import ScreenDimensions from '@utilities/screen-dimensions';
 
 const html = document.documentElement;
 
@@ -49,6 +50,7 @@ class Modal {
 
         const triggerBtn = [...document.querySelectorAll(`[aria-controls=${id}]`)];
         const closeBtn = [...el.querySelectorAll(MODAL_CLOSE_HOOK)];
+        const mobileOnly = el.dataset.modalMobileOnly === 'true';
 
         const modal = {
             el,
@@ -57,8 +59,10 @@ class Modal {
             closeBtn
         };
 
-        setTabIndexOfChildren(modal.el, -1);
-        this.registeredModals[`modal-${id}`] = modal;
+        if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger){
+            setTabIndex(modal.el, -1);
+            this.registeredModals[`modal-${id}`] = modal;
+        }
 
         this.bindModalEvents(modal);
 

@@ -75,6 +75,7 @@ Top           | Bottom           | Left             | Right
 
 ## Dependencies
 * [DOM elements](/utilities/dom-elements/README.md)
+* [Screen Dimensions](/utilities/screen-dimensions/README.md)
 
 ## Developers
 * [Robin Treur](mailto:robin.treur@deptagency.com)
