@@ -32,14 +32,22 @@ Create modalbox in HTML.
 {% from 'modal.html' import modal  %}
 
 You can add the following options:
+* `size` must be a string. Allows for custom width overrides.
+* `mobileOnly` must be a boolean. If true, the modal will not set initial tabindex properties on tablet and bigger. Default false.
 * `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.
-* `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal
+* `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal. Default false.
+* `closeAllOthers` must be a boolean. If true, forces all other modalboxes to close when this one opens. Default false.
+* `noClose` must be a boolean. If true, will not render a close button allowing for custom close buttons. Default false.
 
 {% call modal({
     id : 'modal-example',
+    size           : 'string',
+    mobileOnly     : 'true',
     autoFocus      : 'true',
     closeAllOthers : 'true',
-    noBodyClass    : 'false'
+    noBodyClass    : 'false',
+    closeAllOthers : 'false',
+    noClose        : 'false'
 }) %}
 
     Your content here.
@@ -81,6 +89,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 ## Dependencies
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
+* [Screen Dimensions](/utilities/screen-dimensions/README.md)
 * [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 
 ## Developers

@@ -3,7 +3,9 @@ import Events from '@utilities/events';
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';
 
 class Toggle {
+
     constructor(element) {
+
         this.element = element;
         this.controls = element.getAttribute('aria-controls');
         this.id = element.id || this.controls;
@@ -14,6 +16,7 @@ class Toggle {
 
         this.bindEvents();
         this.setDefaultState();
+
     }
 
     set isActive(boolean) {
@@ -41,103 +44,115 @@ class Toggle {
             event.preventDefault();
         });
 
-        Events.$on(`toggle::checkTabIndex`, () => this.checkTabIndex());
+        Events.$on(`toggle::check-tabindex`, () => this.checkTabIndex());
     }
 
     /**
      * Toggles the entire UI state of the toggle component
      */
     toggleState() {
+
         if (this.element.dataset.toggleLive === 'true') {
             this.links = this.getToggleLinks();
         }
 
         this.toggleActiveClassNames();
-        this.setARIAAttributeValues();
+        this.setAccesibilityState();
         this.triggerExternalEvents();
 
-        Events.$trigger('toggle::checkTabIndex');
+        Events.$trigger('toggle::check-tabindex');
+
     }
 
     /**
      * Sets default ARIA, tabIndex and classname roles based on config
      */
     setDefaultState() {
+
         if (this.element.dataset.toggleDefaultActive === 'true') {
             this.toggleState();
         }
 
-        this.setARIAAttributeValues();
-        Events.$trigger('toggle::checkTabIndex');
+        this.setAccesibilityState();
+        Events.$trigger('toggle::check-tabindex');
+
     }
 
     /**
      * Toggles all element class names
      */
     toggleActiveClassNames() {
+
         this.toggleToggleElementActiveState();
         this.toggleLinksClassNames();
+
     }
 
     /**
      * Toggles the active classname of the toggle component and toggles aria attribute
      */
     toggleToggleElementActiveState() {
+
         this.element.classList.toggle(this.activeClass);
         this.isActive = this.element.classList.contains(this.activeClass);
+
     }
 
     /**
      * Toggles the active classname of the toggle components links
      */
     toggleLinksClassNames() {
+
         const toggleAction = this.isActive ? 'add' : 'remove';
         this.links.forEach(link => link.classList[toggleAction](this.activeClass));
+
     }
 
     /**
      * Toggles the ARIA attributes
      */
-    setARIAAttributeValues() {
+    setAccesibilityState() {
+
         this.element.setAttribute('aria-expanded', this.isActive.toString());
         this.links.forEach(link => link.setAttribute('aria-hidden', (!this.isActive).toString()));
+
     }
 
     /**
      * Triggers external events based on new state
      */
     triggerExternalEvents() {
+
         const newState = this.isActive ? 'opened' : 'closed';
         Events.$trigger(`toggle[${this.element.id}]::${newState}`);
         Events.$trigger(`toggle[${this.element.id}]::toggled`, { data: this.isActive });
+
     }
 
     /**
      * Get all the external link elements from the toggle component
      */
     getToggleLinks() {
+
         const ariaControls = this.controls;
-        if (!ariaControls) {
-            return [];
-        }
+        if (!ariaControls) return [];
 
         const LINKS_SELECTOR = ariaControls
             .split(/[ ,]+/)
             .map(id => `#${id}`)
             .join(', ');
 
-        return Array.from(document.querySelectorAll(LINKS_SELECTOR));
+        return [...document.querySelectorAll(LINKS_SELECTOR)];
+
     }
 
     /**
      * Set initial tab index
      */
     checkTabIndex() {
-        if (this._isActive) {
-            Toggle.setTabIndex(this.interactiveElements, 0);
-        } else {
-            Toggle.setTabIndex(this.interactiveElements, -1);
-        }
+
+        Toggle.setTabIndex(this.interactiveElements, this._isActive ? 0 : -1);
+
     }
 
     /**
@@ -145,6 +160,7 @@ class Toggle {
      * @param elementsToToggle, array with all elements controlled by the toggle
      */
     static getInteractiveElements(elementsToToggle) {
+
         const itemsBelowToggle = [];
 
         elementsToToggle.forEach(element => {
@@ -158,6 +174,7 @@ class Toggle {
         });
 
         return itemsBelowToggle;
+
     }
 
     /**
@@ -170,6 +187,7 @@ class Toggle {
             element.tabIndex = value
         });
     }
+
 }
 
 export default Toggle;
