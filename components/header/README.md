@@ -20,11 +20,6 @@
 
 ## Install
 
-Install npm package dependency
-```node
-npm i raf-throttle --save
-```
-
 Import module
 
 ```javascript

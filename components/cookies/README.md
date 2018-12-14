@@ -17,10 +17,6 @@ __NOTE: The video module has been updated aswell__
 
 ## Install
 
-Install npm package dependency
-```node
-npm i js-cookie@2.1.4 --save
-```
 Import module
 ```javascript
 import Cookiebar from '@components/cookies';
