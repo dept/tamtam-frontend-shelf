@@ -25,14 +25,14 @@ class YoutubeVideo {
         import(/* webpackChunkName: "Youtube-Player" */'youtube-player')
             .then(Player => {
 
-                this._initPlayer(Player);
-                this._bindEvents();
+                this.initPlayer(Player);
+                this.bindEvents();
 
             });
 
     }
 
-    _initPlayer(Player) {
+    initPlayer(Player) {
 
         this.player = new Player(this.options.player, {
             videoId: this.options.videoId,
@@ -47,7 +47,7 @@ class YoutubeVideo {
 
     }
 
-    _bindEvents() {
+    bindEvents() {
 
         Events.$trigger('video::bind-player-events', { data: this.options });
 

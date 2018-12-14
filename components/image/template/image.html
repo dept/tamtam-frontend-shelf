@@ -25,10 +25,9 @@
         {%- if data.attr %} {{ data.attr|safe }}{% endif -%}
     >
 
-    <img
-        {% if data.preload %} src="{{ data.preload }}"{% endif %}
+    <img class="{%- if not data.disableCrossFade %} image__default{% endif -%}"
         data-src="{{ data.image }}"
-        class="{%- if not data.disableCrossFade %} image__default{% endif -%}"
+        {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
         {%- if data.srcset %} data-srcset="{{ data.srcset }}"{% endif -%}
         {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
         {%- if data.hidden %} aria-hidden="true"{% endif %}
@@ -37,10 +36,8 @@
     >
 
     {%- if not data.disableCrossFade %}
-        <img
-            class="image__ghost"
-            aria-hidden="true"
-            {% if data.preload %} src="{{ data.preload }}"{% endif %}
+        <img class="image__ghost" aria-hidden="true"
+            {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
             {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
             alt="{{ data.alt or 'Image' }}"
             js-hook-shadow-image>

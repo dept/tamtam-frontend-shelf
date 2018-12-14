@@ -1,5 +1,6 @@
 import Events from '@utilities/events';
 import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
+import ScreenDimensions from '@utilities/screen-dimensions';
 
 const html = document.documentElement;
 
@@ -49,6 +50,7 @@ class Modal {
 
         const triggerBtn = [...document.querySelectorAll(`[aria-controls=${id}]`)];
         const closeBtn = [...el.querySelectorAll(MODAL_CLOSE_HOOK)];
+        const mobileOnly = el.dataset.modalMobileOnly === 'true';
 
         const modal = {
             el,
@@ -57,8 +59,10 @@ class Modal {
             closeBtn
         };
 
-        setTabIndexOfChildren(modal.el, -1);
-        this.registeredModals[`modal-${id}`] = modal;
+        if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger){
+            setTabIndex(modal.el, -1);
+            this.registeredModals[`modal-${id}`] = modal;
+        }
 
         this.bindModalEvents(modal);
 
@@ -122,7 +126,7 @@ class Modal {
 
         const modal = this.registeredModals[`modal-${data.id}`];
 
-        if (!modal) { return; }
+        if (!modal) return;
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
@@ -140,13 +144,11 @@ class Modal {
         }
 
         // Add modal open class to html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.add(MODAL_HTML_CLASS);
-        }
+        if (!noBodyClass) html.classList.add(MODAL_HTML_CLASS);
 
         // Add tabindex and add visible class
-        modal.el.tabIndex = 1;
-        setTabIndexOfChildren(modal.el, 1);
+        modal.el.tabIndex = 0;
+        setTabIndexOfChildren(modal.el, 0);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = true;
 
@@ -179,14 +181,12 @@ class Modal {
         const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
-        if (!modal) { return; }
+        if (!modal) return;
 
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
         // Remove modal open class off html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.remove(MODAL_HTML_CLASS);
-        }
+        if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS);
 
         // Remove tabindex and remove visible class
         modal.el.tabIndex = -1;

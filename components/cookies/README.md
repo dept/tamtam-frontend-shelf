@@ -16,12 +16,7 @@ __NOTE: The video module has been updated as well__
 * Will set cookies based for all types of cookies.
 
 ## Install
-
-Install npm package dependency
-```node
-npm i js-cookie@2.1.4 --save
-```
-Import singleton
+Import module
 ```javascript
 import '@components/cookies';
 ```

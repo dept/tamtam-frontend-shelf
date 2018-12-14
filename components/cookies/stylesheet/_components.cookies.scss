@@ -12,13 +12,14 @@ $cookie-transition-ease: $ease-in-out-quad !default;
     background-color: rgba($color-black, 0.85);
     color: $color-white;
     visibility: hidden;
-    transform: translateY(100%);
-    transition: $cookie-transition-time $cookie-transition-ease;
-    transition-property: transform;
+    transform: translate3d(0, 100%, 0);
+    transition: $cookie-transition-time $cookie-transition-ease, 0ms $cookie-transition-time;
+    transition-property: transform, visibility;
 
     &.cookie-bar--is-visible {
         visibility: visible;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
+        transition: $cookie-transition-time $cookie-transition-ease, 0ms;
     }
 }
 
