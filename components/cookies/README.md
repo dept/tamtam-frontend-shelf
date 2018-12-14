@@ -9,17 +9,16 @@
 5. [Developers](#markdown-header-developers)
 
 
-__NOTE: The video module has been updated aswell__
+__NOTE: The video module has been updated as well__
 
 ## What does it do
 * GDPR proof cookie bar and cookie form
 * Will set cookies based for all types of cookies.
 
 ## Install
-
 Import module
 ```javascript
-import Cookiebar from '@components/cookies';
+import '@components/cookies';
 ```
 
 ## How to use
@@ -29,13 +28,6 @@ Add cookie bar template to page
 
 ```htmlmixed
 {% include "cookie-bar.html" %}
-```
-
-```javascript
-Cookiebar.init({
-    cookiePrefix: 'client-name', // optional - recommended to change
-    version: '1' // optional - recommended to update. MUST BE STRING
-});
 ```
 
 ### Default cookie form
