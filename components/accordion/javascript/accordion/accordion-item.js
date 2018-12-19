@@ -63,7 +63,7 @@ class AccordionItem {
         this.isOpen = true;
         this.triggerAnimatingEvent(true);
 
-        this.item.classList.add(ACCORDIONOPENCLASS);
+        this.item.classList.add(ACCORDION_OPEN_CLASS);
 
         this.setHeight();
         this.setAccessibilityState();
@@ -85,7 +85,7 @@ class AccordionItem {
         this.isOpen = false;
         this.triggerAnimatingEvent(true);
 
-        this.item.classList.remove(ACCORDIONOPENCLASS);
+        this.item.classList.remove(ACCORDION_OPEN_CLASS);
 
         this.setHeight();
         this.setAccessibilityState();
@@ -181,10 +181,10 @@ function getElementHeight(element) {
 
     const { oldHeight, oldVisibility } = element.style;
 
-    el.style.height = 'auto';
-    el.style.visibility = 'visible';
+    element.style.height = 'auto';
+    element.style.visibility = 'visible';
 
-    const { height } = el.getBoundingClientRect();
+    const { height } = element.getBoundingClientRect();
 
     element.style.height = oldHeight;
     element.style.visibility = oldVisibility;
