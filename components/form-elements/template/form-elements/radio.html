@@ -23,8 +23,7 @@
     <div class="c-radio form__item
         {%- if data.horizontal %} radio--horizontal{% endif %}
         {%- if data.class %} {{ data.class }}{% endif -%}
-        {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.disabled %} form__item--disabled{% endif -%}">
 
         <div class="radio__wrapper">
         {% for option in data.options %}
@@ -40,6 +39,7 @@
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="radio__label" for="{{ option.id }}" role="button">
                 {{ option.label|safe }}
+                <span class="radio__focus-helper"></span>
             </label>
         {% endfor %}
         </div>

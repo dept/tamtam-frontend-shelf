@@ -3,21 +3,28 @@
  * Will be created for each item inside an accordion
  */
 import Events from '@utilities/events';
+import setTabindexOfChildren from '@utilities/set-tabindex-of-children';
 
-const ACCORDIONOPENCLASS = 'accordion__item--is-active';
+const ACCORDION_BUTTON_HOOK = '[js-hook-accordion-button]';
+const ACCORDION_CONTENT_HOOK = '[js-hook-accordion-content]';
+
+const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
+const ACCORDION_ANIMATING_CLASS = 'accordion__item--is-animating';
 
 class AccordionItem {
 
     constructor(element) {
 
         this.item = element;
-        this.openAccordion = this.item.className.indexOf(ACCORDIONOPENCLASS) !== -1;
+        this.isOpen = this.item.classList.contains(ACCORDION_OPEN_CLASS);
         this.isAnimating = false;
 
-        this.button = this.item.querySelector('[js-hook-accordion-button]');
-        this.content = this.item.querySelector('[js-hook-accordion-content]');
+        this.button = this.item.querySelector(ACCORDION_BUTTON_HOOK);
+        this.content = this.item.querySelector(ACCORDION_CONTENT_HOOK);
 
         this.id = this.content.id;
+
+        setTabindexOfChildren(this.content, this.isOpen ? 0 : -1);
 
     }
 
@@ -38,7 +45,7 @@ class AccordionItem {
      */
     toggle() {
 
-        if (this.openAccordion) {
+        if (this.isOpen) {
             this.close();
         } else {
             this.open();
@@ -51,15 +58,21 @@ class AccordionItem {
      */
     open() {
 
-        if (this.openAccordion || this.isAnimating) { return; }
-        this.openAccordion = true;
+        if (this.isOpen || this.isAnimating) return;
+
+        this.isOpen = true;
         this.triggerAnimatingEvent(true);
 
         this.item.classList.add(ACCORDIONOPENCLASS);
 
         this.setHeight();
-        this.setAriaState();
+        this.setAccessibilityState();
 
+        Events.$trigger('scroll-to::scroll', {
+            data: {
+                target: this.item
+            }
+        });
     }
 
     /**
@@ -67,24 +80,26 @@ class AccordionItem {
      */
     close() {
 
-        if (!this.openAccordion || this.isAnimating) { return; }
-        this.openAccordion = false;
+        if (!this.isOpen || this.isAnimating) return;
+
+        this.isOpen = false;
         this.triggerAnimatingEvent(true);
 
         this.item.classList.remove(ACCORDIONOPENCLASS);
 
         this.setHeight();
-        this.setAriaState();
+        this.setAccessibilityState();
 
     }
 
     /**
      * Sets correct aria-* values
      */
-    setAriaState() {
+    setAccessibilityState() {
 
-        this.button.setAttribute('aria-expanded', this.openAccordion);
-        this.content.setAttribute('aria-hidden', !this.openAccordion);
+        this.button.setAttribute('aria-expanded', this.isOpen);
+        this.content.setAttribute('aria-hidden', !this.isOpen);
+        setTabindexOfChildren(this.content, this.isOpen ? 0 : -1);
 
     }
 
@@ -115,25 +130,20 @@ class AccordionItem {
      */
     heightTransitionEnd(event) {
 
-        if (event.propertyName === 'height') {
+        if (event.propertyName !== 'height') return;
+        if (this.isOpen) this.content.style.height = 'auto';
 
-            if (this.openAccordion) {
-                this.content.style.height = 'auto';
-            }
+        this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
+        this.triggerAnimatingEvent(false);
 
-            this.content.removeEventListener('transitionend', this.heightTransitionEvent, false);
-            this.triggerAnimatingEvent(false);
+        Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
+            data: {
+                element: this.item,
+                id: this.id,
+            },
+        });
 
-            Events.$trigger(`accordion::${this.openAccordion ? 'opened' : 'closed'}`, {
-                data: {
-                    element: this.item,
-                    id: this.id
-                }
-            });
-
-            Events.$trigger(`accordion[${this.id}]::${this.openAccordion ? `opened` : `closed`}`);
-
-        }
+        Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
 
     }
 
@@ -144,6 +154,13 @@ class AccordionItem {
     triggerAnimatingEvent(bool) {
 
         this.isAnimating = bool;
+
+        if (this.isAnimating) {
+            this.item.classList.add(ACCORDION_ANIMATING_CLASS);
+        } else {
+            this.item.classList.remove(ACCORDION_ANIMATING_CLASS);
+        }
+
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
@@ -161,18 +178,16 @@ class AccordionItem {
  * @returns {String} height in pixels
  */
 function getElementHeight(element) {
-    const el = element;
-    const old = {};
-    old.height = el.style.height;
-    old.visibility = el.style.visibility;
+
+    const { oldHeight, oldVisibility } = element.style;
 
     el.style.height = 'auto';
     el.style.visibility = 'visible';
 
     const { height } = el.getBoundingClientRect();
 
-    el.style.height = old.height;
-    el.style.visibility = old.visibility;
+    element.style.height = oldHeight;
+    element.style.visibility = oldVisibility;
 
     return `${height}px`;
 

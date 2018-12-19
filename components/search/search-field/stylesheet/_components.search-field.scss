@@ -19,7 +19,7 @@ $search-transition: .4s $ease-in-out-cubic;
     transition: background-color $search-transition;
 
     &:focus {
-        background-color: lighten($color-grey, 18);
+        background-color: lighten($color-grey, 18%);
         box-shadow: none;
     }
 }
@@ -33,8 +33,10 @@ $search-transition: .4s $ease-in-out-cubic;
     right: 0;
     top: 0;
 
-    &:hover,
-    &:focus {
-        background-color: darken($color-primary, 10);
+    @include hover-focus {
+        background-color: darken($color-primary, 10%);
+    }
+    @include keyboard-focus {
+        background-color: darken($color-primary, 20%);
     }
 }

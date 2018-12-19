@@ -77,8 +77,9 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
-* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/master/source/utilities/module-init.js) from the TamTam Frontend Setup
+* [moduleInit utility](/utilities/module-init.js) from the Dept Frontend Setup
 * [Events utility](/utilities/events/)
+* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

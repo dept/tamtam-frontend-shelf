@@ -17,6 +17,12 @@ $radio-transition-ease: $ease-in-out-quad;
             }
         }
     }
+
+    &:hover {
+        + label::after {
+            box-shadow: 0 0 0 $radio-border-width $radio-color inset;
+        }
+    }
 }
 
 .radio__label {
@@ -46,6 +52,8 @@ $radio-transition-ease: $ease-in-out-quad;
 
     &::after {
         transform: translateY(-50%);
+        transition: $checkbox-transition-time $checkbox-transition-ease;
+        transition-property: box-shadow;
         box-shadow: 0 0 0 $radio-border-width $radio-color inset, 0 0 0 $radio-border-width*3 $color-white inset;
 
         .form__item--error & {

@@ -5,7 +5,7 @@
 
 {% from 'button.html' import button %}
 
-<div class="c-cookie-bar" js-hook-cookies-bar>
+<div class="c-cookie-bar" tabindex="-1" js-hook-cookies-bar data-policy-version="1">
 
     <div class="o-container">
 
@@ -21,7 +21,8 @@
                     url: '/cookie-settings.html',
                     class: 'cookie-bar__button',
                     size: 'small',
-                    hook: 'cookies-settings-button'
+                    hook: 'cookies-settings-button',
+                    attr: 'tabindex="-1"'
                 } ) }}
 
                 {{ button( {
@@ -30,7 +31,7 @@
                     variant: 'primary',
                     label: 'I agree',
                     class: 'cookie-bar__button',
-                    attr: 'on:click="cookies::dismiss"',
+                    attr: 'on:click="cookies::dismiss" tabindex="-1"',
                     size: 'small',
                     hook: 'cookies-dismiss'
                 } ) }}

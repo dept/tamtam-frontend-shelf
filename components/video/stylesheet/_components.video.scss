@@ -6,8 +6,12 @@ $video-loader-color: $color-primary;
 $video-button-size: 75px;
 $video-button-color: $color-white;
 $video-button-icon-color: $color-primary;
-$video-button-transition-time: 250ms;
+$video-button-transition-time: 250ms * 2;
 $video-button-transition-ease: $ease-in-quad;
+
+@mixin video-button-show-props {
+    transition: $video-button-transition-time $video-button-transition-ease, $video-button-transition-time $video-button-transition-ease, $video-button-transition-time;
+}
 
 .c-video {
     position: relative;
@@ -129,7 +133,7 @@ $video-button-transition-ease: $ease-in-quad;
 
 .video__button {
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
     position: absolute;
     width: $video-button-size;
     height: $video-button-size;
@@ -140,14 +144,20 @@ $video-button-transition-ease: $ease-in-quad;
     z-index: 1;
     background-color: $video-button-color;
     box-shadow: 0 2px 10px 0 rgba($color-black, 0.3);
-    transition: $video-button-transition-time $video-button-transition-ease;
-    transition-property: box-shadow, opacity;
+    transition: $video-button-transition-time $video-button-transition-ease, $video-button-transition-time $video-button-transition-ease, 0ms $video-button-transition-time;
+    transition-property: box-shadow, opacity, visibility;
 
     @include hover-focus {
         box-shadow: 0 0 0 0 rgba($color-black, 0);
 
         .video__button-icon {
             color: darken($video-button-icon-color, 20%);
+        }
+    }
+
+    @include keyboard-focus {
+        .video__button-icon {
+            color: darken($video-button-icon-color, 100%);
         }
     }
 }
@@ -177,12 +187,19 @@ $video-button-transition-ease: $ease-in-quad;
 
     .video--is-paused & {
         opacity: 1;
-        pointer-events: all;
+        visibility: visible;
+        @include video-button-show-props;
     }
 
     @include hover-focus {
         .video__button-icon {
             border-left-color: darken($video-button-icon-color, 20%);
+        }
+    }
+
+    @include keyboard-focus {
+        .video__button-icon {
+            border-left-color: darken($video-button-icon-color, 100%);
         }
     }
 }
@@ -193,7 +210,8 @@ $video-button-transition-ease: $ease-in-quad;
     }
 
     .video--is-playing & {
-        pointer-events: all;
+        visibility: visible;
+        @include video-button-show-props;
     }
 
     html:not(.is-touch) .video--is-playing:hover & {
@@ -208,6 +226,7 @@ $video-button-transition-ease: $ease-in-quad;
 
     .video--is-ended & {
         opacity: 1;
-        pointer-events: all;
+        visibility: visible;
+        @include video-button-show-props;
     }
 }

@@ -13,11 +13,6 @@
 * Creates a googlemaps single view
 
 ## Install
-Install npm packages dependency
-```node
-npm i raf@3.4.0 --save
-npm i js-cookie@2.1.4 --save
-```
 Import modules
 ```javascript
 import Cookiebar from '@components/cookies';

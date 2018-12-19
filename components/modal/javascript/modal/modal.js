@@ -1,4 +1,6 @@
 import Events from '@utilities/events';
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
+import ScreenDimensions from '@utilities/screen-dimensions';
 
 const html = document.documentElement;
 
@@ -14,9 +16,9 @@ class Modal {
 
         this.registeredModals = {};
 
-        const modals = document.querySelectorAll(MODAL_HOOK);
+        const modals = [...document.querySelectorAll(MODAL_HOOK)];
 
-        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
+        modals.forEach(modal => this.setupModalRegistry(modal));
 
         this.bindEvents();
 
@@ -29,10 +31,10 @@ class Modal {
      */
     customBind(data) {
 
-        const modals = document.querySelectorAll(data.hook);
+        const modals = [...document.querySelectorAll(data.hook)];
 
         // Loop trough all found modals based on hook
-        Array.from(modals).forEach(modal => this.setupModalRegistry(modal));
+        modals.forEach(modal => this.setupModalRegistry(modal));
 
     }
 
@@ -42,10 +44,13 @@ class Modal {
      */
     setupModalRegistry(el) {
 
+        if (el._modalIsInitialised) return;
+
         const id = el.getAttribute('id');
 
-        const triggerBtn = document.querySelectorAll(`[aria-controls=${id}]`);
-        const closeBtn = el.querySelectorAll(MODAL_CLOSE_HOOK);
+        const triggerBtn = [...document.querySelectorAll(`[aria-controls=${id}]`)];
+        const closeBtn = [...el.querySelectorAll(MODAL_CLOSE_HOOK)];
+        const mobileOnly = el.dataset.modalMobileOnly === 'true';
 
         const modal = {
             el,
@@ -54,9 +59,14 @@ class Modal {
             closeBtn
         };
 
-        this.registeredModals[`modal-${id}`] = modal;
+        if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger){
+            setTabIndex(modal.el, -1);
+            this.registeredModals[`modal-${id}`] = modal;
+        }
 
         this.bindModalEvents(modal);
+
+        el._modalIsInitialised = true;
     }
 
     /**
@@ -64,10 +74,10 @@ class Modal {
      */
     bindEvents() {
 
-        Events.$on('modal::close', (data) => this.closeModal(data));
-        Events.$on('modal::open', (data) => this.openModal(data));
+        Events.$on('modal::close', (event, data) => this.closeModal(data));
+        Events.$on('modal::open', (event, data) => this.openModal(data));
 
-        Events.$on('modal::bind', (data) => this.customBind(data));
+        Events.$on('modal::bind', (event, data) => this.customBind(data));
 
     }
 
@@ -79,7 +89,7 @@ class Modal {
      */
     bindModalEvents({ el, id, triggerBtn, closeBtn }) {
 
-        Array.from(triggerBtn).forEach(triggerEl => triggerEl.addEventListener('click', () => {
+        triggerBtn.forEach(triggerEl => triggerEl.addEventListener('click', () => {
             if (el.modalIsOpen) {
                 Events.$trigger('modal::close', { data: { id } });
                 Events.$trigger(`modal[${id}]::close`, { data: { id } });
@@ -89,10 +99,10 @@ class Modal {
             }
         }));
 
-        Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }) );
-        Events.$on(`modal[${id}]::open`, () => this.openModal({ id }) );
+        Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }));
+        Events.$on(`modal[${id}]::open`, () => this.openModal({ id }));
 
-        Array.from(closeBtn).forEach(el => el.addEventListener('click', () => {
+        closeBtn.forEach(el => el.addEventListener('click', () => {
             Events.$trigger('modal::close', { data: { id } });
             Events.$trigger(`modal[${id}]::close`, { data: { id } });
         }));
@@ -116,16 +126,11 @@ class Modal {
 
         const modal = this.registeredModals[`modal-${data.id}`];
 
-        if (!modal) { return; }
+        if (!modal) return;
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
         const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true';
-
-        // Add modal open class to html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.add(MODAL_HTML_CLASS);
-        }
 
         if (closeAllOthers) {
             Object.keys(this.registeredModals)
@@ -138,8 +143,12 @@ class Modal {
                 });
         }
 
+        // Add modal open class to html element if noBodyClass is false
+        if (!noBodyClass) html.classList.add(MODAL_HTML_CLASS);
+
         // Add tabindex and add visible class
-        modal.el.setAttribute('tabindex', 1);
+        modal.el.tabIndex = 0;
+        setTabIndexOfChildren(modal.el, 0);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = true;
 
@@ -172,17 +181,16 @@ class Modal {
         const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
-        if (!modal) { return; }
+        if (!modal) return;
 
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
         // Remove modal open class off html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.remove(MODAL_HTML_CLASS);
-        }
+        if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS);
 
         // Remove tabindex and remove visible class
-        modal.el.setAttribute('tabindex', 0);
+        modal.el.tabIndex = -1;
+        setTabIndexOfChildren(modal.el, -1);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = false;
 

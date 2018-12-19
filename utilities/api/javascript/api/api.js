@@ -22,7 +22,7 @@ class API {
 
     }
 
-    get(path, data = {} , json, options = {}) {
+    get(path, data = {}, json, options = {}) {
 
         let config = {
             url: getEndpoint(path, json, 'get'),
@@ -30,9 +30,9 @@ class API {
             method: getMethod('GET', json),
         };
 
-        config =  { config, ...options };
+        config = { ...config, ...options };
 
-        return axios( config );
+        return axios(config);
 
     }
 
@@ -49,9 +49,9 @@ class API {
             config.headers[this.antiForgeryToken.name] = this.antiForgeryToken.value;
         }
 
-        config =  { config, ...options };
+        config = { ...config, ...options };
 
-        return axios( config );
+        return axios(config);
 
     }
 
@@ -64,9 +64,9 @@ class API {
             method: getMethod('PUT', json),
         };
 
-        config =  { config, ...options };
+        config = { ...config, ...options };
 
-        return axios( config );
+        return axios(config);
 
     }
 
@@ -78,9 +78,9 @@ class API {
             method: getMethod('DELETE', json),
         };
 
-        config =  { config, ...options };
+        config = { ...config, ...options };
 
-        return axios( config );
+        return axios(config);
 
     }
 
@@ -94,7 +94,7 @@ class API {
  */
 function getEndpoint(path, json, method) {
 
-    if ( path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?' ) {
+    if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
         return path;
     }
 

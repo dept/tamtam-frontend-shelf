@@ -13,6 +13,7 @@
         objectFit: boolean, (optional)
         attr: 'string, (optional)
         customDataSrc: 'string', (optional)
+        disableCrossFade: boolean, (optional)
     }
  #}
 
@@ -24,15 +25,23 @@
         {%- if data.attr %} {{ data.attr|safe }}{% endif -%}
     >
 
-    <img
-        {% if data.preload %} src="{{ data.preload }}"{% endif %}
+    <img class="{%- if not data.disableCrossFade %} image__default{% endif -%}"
         data-src="{{ data.image }}"
+        {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
         {%- if data.srcset %} data-srcset="{{ data.srcset }}"{% endif -%}
         {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
         {%- if data.hidden %} aria-hidden="true"{% endif %}
         {%- if data.customDataSrc %} {{ data.customDataSrc|safe }}{% endif %}
-        alt="{{ data.alt or 'Image'  }}"
+        alt="{{ data.alt or 'Image' }}"
     >
+
+    {%- if not data.disableCrossFade %}
+        <img class="image__ghost" aria-hidden="true"
+            {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
+            {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
+            alt="{{ data.alt or 'Image' }}"
+            js-hook-shadow-image>
+    {% endif -%}
 
     {%- if data.caption %}
     <figcaption class="c-image__caption">

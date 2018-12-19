@@ -8,9 +8,9 @@ class Accordion {
     constructor(element) {
 
         this.element = element;
-        this.items = this.element.querySelectorAll(ACCORDION_ITEM_HOOK);
+        this.items = [...this.element.querySelectorAll(ACCORDION_ITEM_HOOK)];
 
-        if (!this.items) { return; }
+        if (!this.items) return;
 
         this.autoClose = this.element.dataset.autoclose !== 'false';
         this.accordionItems = {};
@@ -23,6 +23,7 @@ class Accordion {
      * @param {HTMLElement} item  | accordion item
      */
     bindAccordionEvents({ id }) {
+
         Events.$on(`accordion[${id}]::close`, () => {
             if (id) {
                 if (this.accordionItems[id] && !this.isAnimating) {
@@ -62,8 +63,7 @@ class Accordion {
      */
     initItems() {
 
-        Array.from(this.items).forEach(el => {
-
+        this.items.forEach(el => {
             const item = new AccordionItem(el);
             this.accordionItems[item.id] = item;
             this.bindAccordionEvents(this.accordionItems[item.id]);
@@ -77,10 +77,10 @@ class Accordion {
      */
     closeAllChildren(skipId) {
 
-        if (!this.autoClose) { return; }
+        if (!this.autoClose) return;
 
         Object.keys(this.accordionItems).forEach(id => {
-            if (skipId === id) { return; }
+            if (skipId === id) return;
             this.accordionItems[id].close();
         });
 

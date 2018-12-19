@@ -20,15 +20,16 @@
     <div class="c-input form__item input--file
         {%- if data.class %} {{ data.class }}{% endif -%}
         {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.labelAsPlaceholder %} form__item--lap{% endif -%}"
+        {%- if data.labelAsPlaceholder %} js-hook-lap{% endif -%}>
 
-        <div class="input__wrapper">
+        <div class="input__wrapper" title="{{ data.label }}">
             <span class="input__label{%- if data.sronly %} u-sr-only{% endif -%}">
                 {{ data.label|safe }}
             </span>
             <div class="input__file-wrapper">
                 <label class="input__input" for="{{ data.id }}" js-hook-file-label>
-                    Choose file(s)
+                    {%- if not data.labelAsPlaceholder %}Choose file(s){%- else %}&nbsp;{% endif %}
                 </label>
                 <input class="u-sr-only"
                     type="file"
@@ -41,6 +42,7 @@
                     {%- if data.accept %} accept="{{ data.accept }}"{% endif -%}
                     {%- if data.multiple %} multiple data-multiple-label="{count} files selected"{% endif -%}
                     {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
+                <span class="focus-helper"></span>
             </div>
         </div>
         {%- if data.error %}

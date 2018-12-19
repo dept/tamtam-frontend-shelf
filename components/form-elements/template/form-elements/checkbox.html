@@ -23,8 +23,7 @@
     <div class="c-checkbox form__item
         {%- if data.horizontal %} checkbox--horizontal{% endif %}
         {%- if data.class %} {{ data.class }}{% endif -%}
-        {%- if data.disabled %} form__item--disabled{% endif -%}
-        {%- if data.error %} form__item--error{% endif -%}">
+        {%- if data.disabled %} form__item--disabled{% endif -%}">
 
         <div class="checkbox__wrapper">
         {% for option in data.options %}
@@ -40,6 +39,7 @@
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="checkbox__label" for="{{ option.id }}" role="button">
                 {{ option.label|safe }}
+                <span class="checkbox__focus-helper"></span>
             </label>
         {% endfor %}
         </div>

@@ -1,13 +1,11 @@
 // @shelf-version 1.0.0
 $accordion-spacing: 2rem;
-
 $accordion-item-border-radius: 3px;
 $accordion-item-header-color: $color-grey;
 $accordion-item-header-padding: $global-spacing $global-spacing * 2;
 $accordion-item-content-padding: $global-spacing * 2;
 $accordion-item-content-color: $color-off-white;
 $accordion-item-spacing: 2px;
-
 $accordion-transition-time: 450ms;
 $accordion-transition-ease: $ease-in-out-quad;
 
@@ -50,6 +48,13 @@ $accordion-transition-ease: $ease-in-out-quad;
         transition-property: border-radius;
     }
 
+    @include keyboard-focus {
+        background-color: darken($accordion-item-header-color, 50%);
+        color: $color-white;
+    }
+}
+
+.accordion__item-icon {
     &::after,
     &::before {
         position: absolute;
@@ -105,6 +110,7 @@ $accordion-transition-ease: $ease-in-out-quad;
 .accordion__item-content-holder {
     height: 0;
     overflow: hidden;
+    visibility: hidden;
     background-color: $accordion-item-content-color;
     @include content-hidden;
     transition: $accordion-transition-time $accordion-transition-ease,
@@ -116,12 +122,19 @@ $accordion-transition-ease: $ease-in-out-quad;
 
     .accordion__item--is-active & {
         @include content-visible;
+        overflow: visible;
+        visibility: visible;
         height: auto;
         border-radius: 0 0 $accordion-item-border-radius
             $accordion-item-border-radius;
         transition: $accordion-transition-time $accordion-transition-ease,
             $accordion-transition-time $accordion-transition-ease,
             $accordion-transition-time $accordion-transition-ease;
+    }
+
+    .accordion__item--is-animating & {
+        overflow: hidden;
+        visibility: visible;
     }
 }
 

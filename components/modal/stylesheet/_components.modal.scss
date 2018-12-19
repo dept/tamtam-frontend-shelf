@@ -4,6 +4,7 @@ $modal-gutter: $global-spacing * 2 !default;
 $modal-gutter-small: $global-spacing * 2 !default;
 $modal-transition-time: 400ms !default;
 $modal-transition-ease: $ease-in-out-quad !default;
+$modal-min-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0.5;
 
 .is--modal-open {
     body {
@@ -20,7 +21,6 @@ $modal-transition-ease: $ease-in-out-quad !default;
     opacity: 0;
     z-index: 9999;
     display: flex;
-    overflow: auto;
     pointer-events: none;
     transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
     transition-property: opacity, visibility;
@@ -58,18 +58,21 @@ $modal-transition-ease: $ease-in-out-quad !default;
 
 .modal__container {
     z-index: 1;
-    margin: auto;
-    padding: 0 $modal-gutter-small;
-    @include screen-tablet-portrait-and-bigger {
-        padding: $modal-gutter;
-    }
+    left: 50%;
+    max-height: 100%;
+    overflow: auto;
+    position: absolute;
+    transform: translate3d( -50%, -50% , 0 );
+    top: 50%;
+    width: 100%;
 }
 
 .modal__content {
     position: relative;
     z-index: 1;
     max-width: $modal-max-width;
-    width: 100%;
+    margin: $modal-gutter-small;
+    width: auto;
     height: auto;
     opacity: 0;
     padding: $modal-gutter;
@@ -77,10 +80,11 @@ $modal-transition-ease: $ease-in-out-quad !default;
     transition: $modal-transition-time $modal-transition-ease, $modal-transition-time $modal-transition-ease;
     transition-property: transform, opacity;
 
-    @include screen-mobile-plus-and-smaller {
-        margin-top: 60px;
-        margin-bottom: 20px;
+    @include screen-min-width( $modal-min-width-media-query ) {
+        max-width: calc( #{$modal-max-width} - #{$modal-gutter-small * 2} );
+        margin: $modal-gutter-small auto;
     }
+
 }
 
 .modal__background {

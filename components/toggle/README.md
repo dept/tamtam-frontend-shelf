@@ -96,8 +96,8 @@ or inline with HTML attributes
 
 
 ## Dependencies
-* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/f72e7190b6827d8c14bdce8ff0c1c79658b0bbf7/source/javascript/src/modules/util/module-init.js) from the TamTam Frontend Setup
+* [moduleInit utility](https://bitbucket.org/tamtam-nl/tamtam-frontend-setup/src/source/javascript/src/modules/util/module-init.js) from the Dept Frontend Setup
 * [Events utility](/utilities/events/)
 
 ## Developers
-* [Kees van Lierop](mailto:kees@tamtam.nl)
+* [Kees van Lierop](mailto:kees.vanlierop@deptagency.com)
