@@ -154,8 +154,8 @@ function calculateInviewProperties(entry) {
     const { top, bottom, left, right } = getElementOffset(entry);
     const position = { top, bottom, left, right };
 
-    const rootHeight = entry.rootBounds.height;
-    const rootWidth = entry.rootBounds.width;
+    const rootHeight = entry.rootBounds ? entry.rootBounds.height : 0;
+    const rootWidth = entry.rootBounds ? entry.rootBounds.width : 0;
 
     const inViewDirections = getInViewDirections({
         entry,
