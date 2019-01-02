@@ -97,6 +97,7 @@ class Tooltip {
              * the touch event isn't double. */
             document.removeEventListener('touchstart', this.resetTouchEvent);
             this.closeAllOtherTooltips();
+            this.resetElement();
         }
     }
 
@@ -223,22 +224,20 @@ class Tooltip {
     }
 
     newMobilePosition(key, positionProp) {
-        if (positionProp.indexOf(key) > 0) {
-            if (key === DIRECTIONS.LEFT || key === DIRECTIONS.RIGHT) {
-                this.element.classList.remove(positionProp);
+        if (key === DIRECTIONS.LEFT || key === DIRECTIONS.RIGHT) {
+            this.element.classList.remove(positionProp);
 
-                // Add class for more dynamic control on mobile
-                this.element.classList.add(
-                    `${TOOLTIP_PREFIX}top-center`,
-                    `${TOOLTIP_PREFIX}full-width`
-                );
+            // Add class for more dynamic control on mobile
+            this.element.classList.add(
+                `${TOOLTIP_PREFIX}top-center`,
+                `${TOOLTIP_PREFIX}full-width`
+            );
 
-                const { left } = this.constructor.getElementPositions(this.element);
-                const margins = this.getDesktopMargins(DIRECTIONS.LEFT, left);
+            const { left } = this.constructor.getElementPositions(this.element);
+            const margins = this.getDesktopMargins(DIRECTIONS.LEFT, left);
 
-                this.element.style.marginLeft = `${margins.element}px`;
-                this.triangle.style.marginLeft = `${margins.triangle}px`;
-            }
+            this.element.style.marginLeft = `${margins.element}px`;
+            this.triangle.style.marginLeft = `${margins.triangle}px`;
         }
     }
 }
