@@ -112,16 +112,16 @@ class Cookies {
         }
 
         if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
-            Array.from(document.querySelectorAll('a'))
+            [...document.querySelectorAll('a')]
                 .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
                     link.addEventListener('click', event => {
                         const url = event.currentTarget.href;
-                        const newTab = event.currentTarget.getAttribute('target') === '_blank';
+                        const newTab = event.currentTarget.target === '_blank';
                         const isSameDomain = this.hostname === link.hostname;
 
                         if (isSameDomain) {
-                            this._acceptAllCookies(true);
+                            this._acceptAllCookies();
 
                             if (url && !newTab) {
                                 window.location = url;
