@@ -22,6 +22,8 @@ class Cookies {
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
+        this.hostname = window.location.hostname;
+
         if (this.form.element) {
             this.form.url = this.form.element.getAttribute('action');
             this.form.options = [...this.form.element.querySelectorAll(COOKIE_OPTION_HOOK)];
@@ -102,15 +104,21 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === '0') {
-            Array.from(document.querySelectorAll('a, input[type="submit"], button[type="submit"]'))
-                .filter(link => link !== this.cookiebarOptionsButton && link !== this.form.submit)
+        if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
+            [...document.querySelectorAll('a')]
+                .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
                     link.addEventListener('click', event => {
-                        this._acceptAllCookies();
                         const url = event.currentTarget.href;
-                        if (url) {
-                            window.location = url;
+                        const newTab = event.currentTarget.target === '_blank';
+                        const isSameDomain = this.hostname === link.hostname;
+
+                        if (isSameDomain) {
+                            this._acceptAllCookies();
+
+                            if (url && !newTab) {
+                                window.location = url;
+                            }
                         }
                     });
                 });
