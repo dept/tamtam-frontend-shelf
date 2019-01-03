@@ -29,6 +29,7 @@ class Cookies {
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
         this.cookiePrefix = 'default';
+        this.hostname = window.location.hostname;
 
         this.cookieName = {
             functional: 'functional',
@@ -110,15 +111,21 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE) {
-            Array.from(document.querySelectorAll('a, input[type="submit"], button[type="submit"]'))
-                .filter(link => link !== this.cookiebarOptionsButton && link !== this.form.submit)
+        if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
+            Array.from(document.querySelectorAll('a'))
+                .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
                     link.addEventListener('click', event => {
-                        this._acceptAllCookies();
                         const url = event.currentTarget.href;
-                        if (url) {
-                            window.location = url;
+                        const newTab = event.currentTarget.getAttribute('target') === '_blank';
+                        const isSameDomain = this.hostname === link.hostname;
+
+                        if (isSameDomain) {
+                            this._acceptAllCookies(true);
+
+                            if (url && !newTab) {
+                                window.location = url;
+                            }
                         }
                     });
                 });
