@@ -3,17 +3,17 @@ const TAB_ACTIVE_CLASS = 'tabs__tab--is-active';
 const TABPANEL_ACTIVE_CLASS = 'tabpanel--is-active';
 const TABS_CLASS = '.c-tabs';
 
-const ARIA_CONTROLS = 'aria-controls'
-const ARIA_SELECTED = 'aria-selected'
-const ARIA_HIDDEN = 'aria-hidden'
+const ARIA_CONTROLS = 'aria-controls';
+const ARIA_SELECTED = 'aria-selected';
+const ARIA_HIDDEN = 'aria-hidden';
+const TAB_BUTTON_HOOK = '[js-hook-tab]';
 
 class Tabs {
     constructor(element) {
         this.element = element;
         this.controls = element.getAttribute(ARIA_CONTROLS);
-        this.activeClass = TAB_ACTIVE_CLASS;
         this.tabComponent = this.element.closest(TABS_CLASS);
-        this.tabs = [...this.tabComponent.querySelectorAll('a[role=tab]')];
+        this.tabs = [...this.tabComponent.querySelectorAll(TAB_BUTTON_HOOK)];
 
         this.content = document.querySelector(`#${this.controls}`);
 

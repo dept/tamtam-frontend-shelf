@@ -1,6 +1,6 @@
 $tab-color: $color-white;
 $tab-active-color: $color-off-white;
-$tab-padding: 5px 10px;
+$tab-padding: $global-spacing / 2 $global-spacing;
 
 .c-tabs {
     display: flex;
@@ -12,10 +12,10 @@ $tab-padding: 5px 10px;
 }
 
 .tabs__tab {
-    background: $tab-color;
+    background-color: $tab-color;
     padding: $tab-padding;
 
     &.tabs__tab--is-active {
-        background: $tab-active-color;
+        background-color: $tab-active-color;
     }
 }
