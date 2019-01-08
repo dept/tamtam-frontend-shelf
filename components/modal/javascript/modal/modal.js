@@ -60,7 +60,7 @@ class Modal {
         };
 
         if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger){
-            setTabIndex(modal.el, -1);
+            setTabIndexOfChildren(modal.el, -1);
             this.registeredModals[`modal-${id}`] = modal;
         }
 
