@@ -28,16 +28,12 @@ class AccordionItem {
 
     }
 
-    set openAccordion(boolean) {
-
-        this.isOpenAccordion = boolean;
-
+    set isOpen(boolean) {
+        this._isOpen = boolean;
     }
 
-    get openAccordion() {
-
-        return this.isOpenAccordion;
-
+    get isOpen() {
+        return this._isOpen;
     }
 
     /**
@@ -79,9 +75,9 @@ class AccordionItem {
      * Closes the accordion item
      */
     close() {
-
-        if (!this.isOpen || this.isAnimating) return;
-
+        if (!this.isOpen || this.isAnimating) {
+            return;
+        }
         this.isOpen = false;
         this.triggerAnimatingEvent(true);
 
@@ -104,7 +100,7 @@ class AccordionItem {
     }
 
     /**
-     * Sets the height based on the this.openAccordion
+     * Sets the height based on the this.isOpen
      */
     setHeight() {
 
@@ -112,13 +108,13 @@ class AccordionItem {
 
         this.heightTransitionEvent = e => this.heightTransitionEnd(e);
 
-        this.content.style.height = this.openAccordion ? '0' : height;
+        this.content.style.height = this.isOpen ? '0' : height;
 
         // The line below triggers a repaint and is necessary for the accordion to work.
         // https://stackoverflow.com/questions/3485365/how-can-i-force-webkit-to-redraw-repaint-to-propagate-style-changes
         this.content.offsetHeight; // eslint-disable-line
 
-        this.content.style.height = this.openAccordion ? height : '0';
+        this.content.style.height = this.isOpen ? height : '0';
 
         this.content.addEventListener('transitionend', this.heightTransitionEvent, false);
 
@@ -164,8 +160,8 @@ class AccordionItem {
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
-                animating: this.isAnimating
-            }
+                animating: this.isAnimating,
+            },
         });
 
     }
