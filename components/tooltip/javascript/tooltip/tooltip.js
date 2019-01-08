@@ -50,10 +50,10 @@ class Tooltip {
             );
         } else {
             this.tooltipTrigger.addEventListener('mouseenter', () =>
-                this.inScreen(this.constructor.getElementPositions(this.element))
+                this.inScreen(Tooltip.getElementPositions(this.element))
             );
             this.tooltipTrigger.addEventListener('focus', () =>
-                this.inScreen(this.constructor.getElementPositions(this.element))
+                this.inScreen(Tooltip.getElementPositions(this.element))
             );
         }
 
@@ -77,7 +77,7 @@ class Tooltip {
         /** Add touch event to the whole document. So the user can click
          * everywhere to close the toolbar. */
         document.addEventListener('touchstart', this.resetTouchEvent, false);
-        this.inScreen(this.constructor.getElementPositions(this.element));
+        this.inScreen(Tooltip.getElementPositions(this.element));
     }
 
     static getElementPositions(element) {
@@ -206,7 +206,7 @@ class Tooltip {
          Not if position is top-center and tooltip is outside the topscreen.
          */
         if (positionProp.indexOf('center') > 0 && positionProp.indexOf(key) === -1) {
-            const margins = this.constructor.getDesktopMargins(key, position);
+            const margins = Tooltip.getDesktopMargins(key, position);
 
             if (key === DIRECTIONS.BOTTOM || key === DIRECTIONS.TOP) {
                 this.element.style.marginTop = `${margins.element}px`;
@@ -218,7 +218,7 @@ class Tooltip {
         } else {
             this.element.classList.remove(positionProp);
 
-            const newPosition = positionProp.replace(key, this.constructor.newPositionKey(key));
+            const newPosition = positionProp.replace(key, Tooltip.newPositionKey(key));
             this.element.classList.add(newPosition);
         }
     }
@@ -233,7 +233,7 @@ class Tooltip {
                 `${TOOLTIP_PREFIX}full-width`
             );
 
-            const { left } = this.constructor.getElementPositions(this.element);
+            const { left } = Tooltip.getElementPositions(this.element);
             const margins = this.getDesktopMargins(DIRECTIONS.LEFT, left);
 
             this.element.style.marginLeft = `${margins.element}px`;
