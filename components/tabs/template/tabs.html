@@ -11,14 +11,14 @@
     <ul role="tablist" class="c-tabs">
     {% for item in data.items %}
         <li role="presentation" class="tabs__item">
-            <a role="tab"
+            <button role="tab"
                 id="{{ item.id }}-tab"
                 aria-controls="{{ item.id }}"
                 aria-selected="{% if item.open %}true{% else %}false{% endif %}"
                 class="tabs__tab{% if item.open %} tabs__tab--is-active{% endif %}"
                 js-hook-tab>
                 {{ item.title.tab }}
-            </a>
+            </button>
         </li>
     {% endfor %}
     </ul>
