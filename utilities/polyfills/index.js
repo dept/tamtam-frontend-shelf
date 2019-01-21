@@ -1,2 +1,2 @@
-import './DOM/matches';
+import './DOM/closest';
 import './DOM/remove';
