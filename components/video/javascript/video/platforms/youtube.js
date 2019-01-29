@@ -25,7 +25,7 @@ class YoutubeVideo {
         import(/* webpackChunkName: "Youtube-Player" */'youtube-player')
             .then(Player => {
 
-                this.initPlayer(Player);
+                this.initPlayer(Player.default);
                 this.bindEvents();
 
             });
