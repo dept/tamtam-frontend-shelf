@@ -9,21 +9,16 @@
 5. [Developers](#markdown-header-developers)
 
 
-__NOTE: The video module has been updated aswell__
+__NOTE: The video module has been updated as well__
 
 ## What does it do
 * GDPR proof cookie bar and cookie form
 * Will set cookies based for all types of cookies.
 
 ## Install
-
-Install npm package dependency
-```node
-npm i js-cookie@2.1.4 --save
-```
 Import module
 ```javascript
-import Cookiebar from '@components/cookies';
+import '@components/cookies';
 ```
 
 ## How to use
@@ -33,13 +28,6 @@ Add cookie bar template to page
 
 ```htmlmixed
 {% include "cookie-bar.html" %}
-```
-
-```javascript
-Cookiebar.init({
-    cookiePrefix: 'client-name', // optional - recommended to change
-    version: '1' // optional - recommended to update. MUST BE STRING
-});
 ```
 
 ### Default cookie form
@@ -53,6 +41,7 @@ Add cookie form template to page
 ## Dependencies
 * [Form elements component](/components/form-elements/)
 * [Events utility](/utilities/events/)
+* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 * [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers

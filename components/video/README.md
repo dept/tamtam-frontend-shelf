@@ -15,13 +15,6 @@
 * Fires generic video ready, play & pause events.
 
 ## Install
-Install npm package dependency
-```node
-npm i intersection-observer@0.5.0 --save
-npm i youtube-player@5.5.0 --save
-npm i @vimeo/player@2.6.3 --save
-npm i js-cookie@2.1.4 --save
-```
 Import module
 ```javascript
 import '@utilities/in-view';
@@ -214,12 +207,11 @@ VideoLoader
 
 ## Dependencies
 * [Image component](/components/image/)
+* [Cookie component](/components/cookies/)
 * [Events utility](/utilities/events/)
 * [In-view utility](/utilities/in-view/)
-* [Intersection Observer](https://www.npmjs.com/package/raf)
 * [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
-* [js-cookie](https://www.npmjs.com/package/js-cookie)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

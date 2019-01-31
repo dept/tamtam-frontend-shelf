@@ -13,11 +13,6 @@
 * Trigger when element enters viewport
 
 ## Install
-Install npm package dependency
-```node
-npm i intersection-observer@0.5.0 --save
-```
-
 Import module
 ```javascript
 import '@utilities/in-view';

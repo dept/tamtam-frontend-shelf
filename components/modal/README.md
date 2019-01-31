@@ -90,6 +90,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 * [Screen Dimensions](/utilities/screen-dimensions/README.md)
+* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

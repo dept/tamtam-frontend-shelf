@@ -8,7 +8,7 @@ class VimeoVideo {
 
         this.options = options;
 
-        if (!Cookies.cookieIsValid('advertising')) {
+        if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
             Events.$trigger('video::cookie-invalid', { data: this.options.element });
             return;
         }
@@ -16,14 +16,14 @@ class VimeoVideo {
         import(/* webpackChunkName: "Vimeo-Player" */'@vimeo/player')
             .then(Player => {
 
-                this._initPlayer(Player.default);
-                this._bindEvents();
+                this.initPlayer(Player.default);
+                this.bindEvents();
 
             });
 
     }
 
-    _initPlayer(Player) {
+    initPlayer(Player) {
 
         this.player = new Player(this.options.player, {
             id: this.options.videoId,
@@ -33,7 +33,7 @@ class VimeoVideo {
 
     }
 
-    _bindEvents() {
+    bindEvents() {
 
         Events.$trigger('video::bind-player-events', { data: this.options });
 

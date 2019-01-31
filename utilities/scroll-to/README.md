@@ -13,7 +13,6 @@
 * Scrolls to any given element id
 
 ## Install
-
 ```javascript
 import '@utilities/scroll-to';
 ```

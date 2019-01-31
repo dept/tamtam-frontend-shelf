@@ -14,10 +14,6 @@
 * Provides JSON fallback for local testing
 
 ## Install
-Install npm package dependency
-```node
-npm i axios@0.17.1 --save
-```
 Import module
 ```javascript
 import API from '@utilities/api';

@@ -10,9 +10,9 @@ class NativeVideo {
 
         this.options = options;
 
-        if (this._parseSources()) {
-            this._initPlayer();
-            this._bindEvents();
+        if (this.parseSources()) {
+            this.initPlayer();
+            this.bindEvents();
         }
 
     }
@@ -20,7 +20,7 @@ class NativeVideo {
     /**
      * Init the player instance
      */
-    _initPlayer() {
+    initPlayer() {
 
         this.sourceData = getClosestVideoSource(this.sources);
         this.player = document.createElement('video');
@@ -67,7 +67,7 @@ class NativeVideo {
     /**
      * Bind events
      */
-    _bindEvents() {
+    bindEvents() {
 
         Events.$trigger('video::bind-player-events', { data: this.options });
 
@@ -93,7 +93,7 @@ class NativeVideo {
 
     }
 
-    _parseSources() {
+    parseSources() {
 
         try {
 

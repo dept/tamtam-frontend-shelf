@@ -1,5 +1,6 @@
 import cookies from 'js-cookie';
 import Events from '@utilities/events';
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]';
 const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]';
@@ -12,6 +13,9 @@ const COOKIEBAR_COOKIE_NAME = 'accepted';
 const COOKIEBAR_COOKIE_VERSION = 'version';
 const SHOW_CLASS = 'cookie-bar--is-visible';
 
+const COOKIE_DEFAULT_VALUE = '1';
+const COOKIE_DECLINED_VALUE = '0';
+
 class Cookies {
 
     constructor() {
@@ -19,10 +23,21 @@ class Cookies {
         this.cookiebar = document.querySelector(COOKIE_BAR_HOOK);
         this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK);
 
+        this.cookiebarVersion = this.cookiebar.dataset.policyVersion || COOKIE_DEFAULT_VALUE;
+
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
         this.hostname = window.location.hostname;
+        this.cookiePrefix = 'default';
+
+        this.cookieName = {
+            functional: 'functional',
+            analytics: 'analytics',
+            social: 'social',
+            advertising: 'advertising',
+            other: 'other',
+        };
 
         if (this.form.element) {
             this.form.url = this.form.element.getAttribute('action');
@@ -31,37 +46,37 @@ class Cookies {
         }
 
         this.config = {
-            cookiePrefix: 'default',
-            version: '1',
+            cookiePrefix: this.cookiePrefix,
+            version: this.cookiebarVersion,
             cookies: [
                 {
-                    name: 'functional',
-                    default: 1
+                    name: this.cookieName.functional,
+                    default: COOKIE_DEFAULT_VALUE,
                 },
                 {
-                    name: 'analytics',
-                    default: 1
+                    name: this.cookieName.analytics,
+                    default: COOKIE_DEFAULT_VALUE,
                 },
                 {
-                    name: 'social',
-                    default: 0
+                    name: this.cookieName.social,
+                    default: COOKIE_DECLINED_VALUE
                 },
                 {
-                    name: 'advertising',
-                    default: 0
+                    name: this.cookieName.advertising,
+                    default: COOKIE_DECLINED_VALUE
                 },
                 {
-                    name: 'other',
-                    default: 0
+                    name: this.cookieName.other,
+                    default: COOKIE_DECLINED_VALUE
                 }
             ]
         };
 
+        this.init();
+
     }
 
-    init(config) {
-
-        this._setConfig(config);
+    init() {
 
         if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version) {
             this._removeInvalidatedCookies();
@@ -76,19 +91,11 @@ class Cookies {
         }
 
         if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
-            this.setCookie(COOKIEBAR_COOKIE_NAME, '0');
+            this.setCookie(COOKIEBAR_COOKIE_NAME, COOKIE_DECLINED_VALUE);
         }
 
-        if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version && !this.form.element || this.getCookie(COOKIEBAR_COOKIE_NAME) === '0' && !this.form.element) {
+        if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version && !this.form.element || this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE && !this.form.element) {
             this._show();
-        }
-
-    }
-
-    _setConfig(config) {
-
-        if (config) {
-            Object.assign(this.config, config);
         }
 
     }
@@ -104,7 +111,7 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
+        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE) {
             [...document.querySelectorAll('a')]
                 .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
@@ -129,7 +136,7 @@ class Cookies {
     _setDefaultCookies() {
 
         this.config.cookies.forEach(cookie => {
-            if (!this.getCookie(cookie.name) && cookie.default === 1) {
+            if (!this.getCookie(cookie.name) && cookie.default === COOKIE_DEFAULT_VALUE) {
                 this.setCookie(cookie.name, cookie.default);
             }
         });
@@ -141,8 +148,8 @@ class Cookies {
         const acceptedCookies = {};
 
         this.config.cookies.forEach(cookie => {
-            this.setCookie(cookie.name, '1');
-            acceptedCookies[this.prefixCookieName(cookie.name)] = '1';
+            this.setCookie(cookie.name, this.config.version);
+            acceptedCookies[this.prefixCookieName(cookie.name)] = this.config.version;
         });
 
         this._addGlobalCookies(acceptedCookies);
@@ -165,9 +172,9 @@ class Cookies {
 
         this.form.options.forEach(option => {
 
-            if (this.getCookie(option.value) === '1') {
+            if (this.getCookie(option.value) === this.config.version) {
                 option.setAttribute('checked', 'checked');
-            } else if (this.getCookie(option.value) === '0') {
+            } else if (this.getCookie(option.value) === COOKIE_DECLINED_VALUE) {
                 option.removeAttribute('checked');
             } else {
                 option.setAttribute('checked', 'checked');
@@ -198,7 +205,7 @@ class Cookies {
             const { value } = option;
             this.config.cookies.forEach(cookie => {
                 if (cookie.name.indexOf(value) !== -1) {
-                    const state = option.checked ? '1' : '0';
+                    const state = option.checked ? this.config.version : COOKIE_DECLINED_VALUE;
                     this.setCookie(value, state);
                     acceptedCookies[this.prefixCookieName(value)] = state;
                 }
@@ -224,7 +231,7 @@ class Cookies {
         if (this.cookiebar) {
             this.cookiebar.classList.add(SHOW_CLASS);
             this.cookiebar.tabIndex = 0;
-            this.setTabIndex(0);
+            setTabIndexOfChildren(this.cookiebar, 0);
         }
 
     }
@@ -265,14 +272,9 @@ class Cookies {
      * @returns {Boolean}
      */
     cookieIsValid(name) {
-        return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === '1';
+        return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === this.config.version;
     }
 
-    setTabIndex(value) {
-        [...this.cookiebar.querySelectorAll('a, button')].forEach(element => {
-            element.tabIndex = value;
-        });
-    }
 }
 
 export default new Cookies();

@@ -27,7 +27,7 @@ class Video {
 
     registerPlatforms(platforms) {
 
-        if (typeof platforms !== 'object') { return; }
+        if (typeof platforms !== 'object') return;
         this.registeredPlatforms = platforms;
 
         this._bindEvent();
@@ -45,8 +45,8 @@ class Video {
                 Events.$trigger(`video[${element.id}]::pause`);
             }
 
-            if (!element._initialised && element.inviewProperties.scrolledPastViewport.bottom) {
-                this._initVideo(element);
+            if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
+                this.initVideo(element);
             }
 
         });
@@ -54,9 +54,9 @@ class Video {
         Events.$on('video::update', (event, element) => {
 
             if (!element) {
-                this._iterateVideos();
+                this.iterateVideos();
             } else {
-                this._initVideo(element);
+                this.initVideo(element);
             }
 
         });
@@ -91,15 +91,11 @@ class Video {
         });
 
         Events.$on('video::bind-player-events', (event, data) => {
-            if (data) {
-                bindPlayerEvents(data);
-            }
+            if (data) bindPlayerEvents(data);
         });
 
         Events.$on('video::cookie-invalid', (event, element) => {
-            if (element) {
-                element.classList.add(VIDEO_COOKIE_INVALID_CLASS);
-            }
+            if (element) element.classList.add(VIDEO_COOKIE_INVALID_CLASS);
         });
 
     }
@@ -107,12 +103,12 @@ class Video {
     /**
      * Iterate over platform types
      */
-    _iterateVideos() {
+    iterateVideos() {
 
         this.videos = this.videos.concat(getVideos(this.registeredPlatforms));
 
         this.videos.forEach(video => {
-            this._initVideo(video);
+            this.initVideo(video);
         });
 
     }
@@ -121,11 +117,9 @@ class Video {
      * Init all videos
      * @param {Array} videos
      */
-    _initVideo(video) {
+    initVideo(video) {
 
-        if (video._initialised) {
-            return;
-        }
+        if (video._videoIsInitialised) return;
 
         const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = constructVideoOptions(video);
@@ -145,7 +139,7 @@ class Video {
  */
 function getVideos(platforms) {
 
-    return VIDEOS.filter(video => Object.prototype.hasOwnProperty.call(platforms, video.dataset.videoPlatform) && !video._initialised ? video : false);
+    return VIDEOS.filter(video => Object.prototype.hasOwnProperty.call(platforms, video.dataset.videoPlatform) && !video._videoIsInitialised ? video : false);
 
 }
 
@@ -173,9 +167,9 @@ function constructVideoOptions(element) {
     const instanceId = element.id;
     const player = element.querySelector(PLAYER_HOOK);
 
-    if (!videoPlatform || !videoId || element._initialised) { return {}; }
+    if (!videoPlatform || !videoId || element._videoIsInitialised) return {};
 
-    element._initialised = true;
+    element._videoIsInitialised = true;
 
     return {
         element,

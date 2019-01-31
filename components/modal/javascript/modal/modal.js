@@ -1,4 +1,5 @@
 import Events from '@utilities/events';
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 import ScreenDimensions from '@utilities/screen-dimensions';
 
 const html = document.documentElement;
@@ -59,7 +60,7 @@ class Modal {
         };
 
         if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger){
-            setTabIndex(modal.el, -1);
+            setTabIndexOfChildren(modal.el, -1);
             this.registeredModals[`modal-${id}`] = modal;
         }
 
@@ -125,7 +126,7 @@ class Modal {
 
         const modal = this.registeredModals[`modal-${data.id}`];
 
-        if (!modal) { return; }
+        if (!modal) return;
 
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
@@ -143,13 +144,11 @@ class Modal {
         }
 
         // Add modal open class to html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.add(MODAL_HTML_CLASS);
-        }
+        if (!noBodyClass) html.classList.add(MODAL_HTML_CLASS);
 
         // Add tabindex and add visible class
-        modal.el.tabIndex = 1;
-        setTabIndex(modal.el, 1);
+        modal.el.tabIndex = 0;
+        setTabIndexOfChildren(modal.el, 0);
         modal.el.classList.add(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = true;
 
@@ -182,18 +181,16 @@ class Modal {
         const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
-        if (!modal) { return; }
+        if (!modal) return;
 
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 
         // Remove modal open class off html element if noBodyClass is false
-        if (!noBodyClass) {
-            html.classList.remove(MODAL_HTML_CLASS);
-        }
+        if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS);
 
         // Remove tabindex and remove visible class
         modal.el.tabIndex = -1;
-        setTabIndex(modal.el, -1);
+        setTabIndexOfChildren(modal.el, -1);
         modal.el.classList.remove(MODAL_VISIBLE_CLASS);
         modal.el.modalIsOpen = false;
 
@@ -207,10 +204,6 @@ class Modal {
         if (document.activeElement != document.body) document.activeElement.blur();
     }
 
-}
-
-function setTabIndex(modal, value) {
-    [...modal.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video')].forEach(element => element.tabIndex = value);
 }
 
 export default new Modal();
