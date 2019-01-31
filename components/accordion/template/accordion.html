@@ -43,9 +43,11 @@
 
         </button>
 
-        <div class="accordion__item-content-holder"
+        <div class="accordion__item-content-holder {% if data.tabAccordion %}tabpanel{% if data.open %} tabpanel--is-active{% endif %}{% endif %}"
             aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
             id="{{ data.id }}"
+            {% if data.tabAccordion %}role="tabpanel"
+            aria-labelledby="{{ data.id }}-tab"{% endif %}
             js-hook-accordion-content>
 
             <div class="accordion__item-content">

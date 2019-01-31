@@ -1,0 +1,26 @@
+{#
+    Tabs
+
+    Options:
+        items.id {string}            (required)
+        items.title.tab {string}     (required)
+        items.open: {boolean}
+#}
+
+{% macro tabs(data) %}
+    <ul role="tablist" class="c-tabs">
+    {% for item in data.items %}
+        <li role="presentation" class="tabs__item">
+            <button role="tab"
+                id="{{ item.id }}-tab"
+                aria-controls="{{ item.id }}"
+                aria-selected="{% if item.open %}true{% else %}false{% endif %}"
+                class="tabs__tab{% if item.open %} tabs__tab--is-active{% endif %}"
+                js-hook-tab>
+                {{ item.title.tab }}
+            </button>
+        </li>
+    {% endfor %}
+    </ul>
+
+{% endmacro %}

@@ -1,0 +1,43 @@
+@mixin accordion-to-tabs {
+    .c-tabs {
+        display: flex;
+    }
+
+    .tabpanel {
+        display: none;
+
+        &.tabpanel--is-active {
+            display: block;
+        }
+    }
+
+    .c-accordion {
+        .accordion__item-header {
+            display: none;
+        }
+
+        .accordion__item-content-holder {
+            height: auto !important; // Overrides the inline styling added by javascript
+            transition: none;
+            visibility: visible;
+        }
+
+        .accordion__item {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.c-tab-accordion {
+    .c-tabs {
+        display: none;
+    }
+
+    .tabpanel {
+        display: block;
+    }
+
+    @include screen-tablet-portrait-and-bigger {
+        @include accordion-to-tabs;
+    }
+}

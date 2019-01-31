@@ -37,11 +37,13 @@ $accordion-transition-ease: $ease-in-out-quad;
     text-align: left;
     padding: $accordion-item-header-padding;
     border-radius: $accordion-item-border-radius;
-    transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time / 2;
+    transition: $accordion-transition-time $accordion-transition-ease
+        $accordion-transition-time / 2;
     transition-property: border-radius;
 
     .accordion__item--is-active & {
-        border-radius: $accordion-item-border-radius $accordion-item-border-radius 0 0;
+        border-radius: $accordion-item-border-radius
+            $accordion-item-border-radius 0 0;
         transition: $accordion-transition-time $accordion-transition-ease;
         transition-property: border-radius;
     }
@@ -111,7 +113,11 @@ $accordion-transition-ease: $ease-in-out-quad;
     visibility: hidden;
     background-color: $accordion-item-content-color;
     @include content-hidden;
-    transition: $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease $accordion-transition-time, $accordion-transition-time $accordion-transition-ease $accordion-transition-time;
+    transition: $accordion-transition-time $accordion-transition-ease,
+        $accordion-transition-time $accordion-transition-ease
+            $accordion-transition-time,
+        $accordion-transition-time $accordion-transition-ease
+            $accordion-transition-time;
     transition-property: height, visibility, border-radius;
 
     .accordion__item--is-active & {
@@ -119,8 +125,11 @@ $accordion-transition-ease: $ease-in-out-quad;
         overflow: visible;
         visibility: visible;
         height: auto;
-        border-radius: 0 0 $accordion-item-border-radius $accordion-item-border-radius;
-        transition: $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease, $accordion-transition-time $accordion-transition-ease;
+        border-radius: 0 0 $accordion-item-border-radius
+            $accordion-item-border-radius;
+        transition: $accordion-transition-time $accordion-transition-ease,
+            $accordion-transition-time $accordion-transition-ease,
+            $accordion-transition-time $accordion-transition-ease;
     }
 
     .accordion__item--is-animating & {
