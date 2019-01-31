@@ -28,6 +28,7 @@ class Cookies {
         this.form = {};
         this.form.element = document.querySelector(COOKIE_FORM_HOOK);
 
+        this.hostname = window.location.hostname;
         this.cookiePrefix = 'default';
         this.hostname = window.location.hostname;
 
@@ -111,7 +112,7 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME)) {
+        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE) {
             [...document.querySelectorAll('a')]
                 .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
