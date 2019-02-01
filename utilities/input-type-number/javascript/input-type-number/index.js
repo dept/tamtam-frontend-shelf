@@ -10,7 +10,6 @@ class NumberInput {
     /**
      * Catch non-numeric values and prevent them
      * @param event - keypress event
-     * @returns {boolean} - true/false based on numeric value regex match
      */
     static preventNonNumericValue(event) {
         const key = event.key || event.keyCode;
