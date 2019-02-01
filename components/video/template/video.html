@@ -52,7 +52,6 @@
         {% endif %}
         js-hook-video>
 
-        {% if data.noschema != false %}
             {% if data.title %}<meta itemprop="name" content="{{ data.title }}" />{% endif %}
             {% if data.description %}<meta itemprop="description" content="{{ data.description }}" />{% endif %}
             {% if data.totalTime %}<meta itemprop="duration" content="{{ data.totalTime }}" />{% endif %}
