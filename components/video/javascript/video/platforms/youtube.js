@@ -16,12 +16,14 @@ class YoutubeVideo {
         this.options = options;
         this.playerOptions = {
             videoId: this.options.videoId,
+            host: 'https://www.youtube.com',
             playerVars: {
                 start: this.options.videoTime,
                 modestbranding: 0,
                 showinfo: 0,
                 controls: this.options.videoControls || 0,
-                rel: 0
+                rel: 0,
+                origin: window.location.href
             },
             events: {
                 onReady: this.onReady.bind(this),
@@ -43,7 +45,7 @@ class YoutubeVideo {
             return;
         }
 
-        this.initPlayer();
+        this.checkAPIReady();
     }
 
     static loadAPI() {
@@ -55,10 +57,7 @@ class YoutubeVideo {
     }
 
     initPlayer() {
-        this.player = new window.YT.Player(
-            this.options.player,
-            this.playerOptions
-        );
+        this.player = new window.YT.Player(this.options.player, this.playerOptions);
     }
 
     checkAPIReady() {
