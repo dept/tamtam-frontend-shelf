@@ -1,0 +1,55 @@
+@import './variables/variables.loading-indicator';
+@import './mixins/mixins.indicator';
+@import './mixins/mixins.spinnert';
+
+.c-loading-indicator {
+    @include indicator;
+    display: flex;
+}
+
+.loading-indicator--fixed {
+    position: fixed;
+}
+
+.loading-indicator--dark-theme {
+    background-color: rgba($color-black, 0.7);
+
+    .loading-indicator__spinner {
+        border-top: $loader-thickness solid rgba($color-white, 0.2);
+        border-right: $loader-thickness solid rgba($color-white, 0.2);
+        border-bottom: $loader-thickness solid rgba($color-white, 0.2);
+        border-left: $loader-thickness solid rgba($color-white, 1);
+    }
+
+}
+
+@mixin make-loaders($colours) {
+
+    @each $name, $color in $colours {
+        .loading-indicator--#{$name} {
+            .loading-indicator__spinner {
+                border-top: $loader-thickness solid rgba($color, 0.2);
+                border-right: $loader-thickness solid rgba($color, 0.2);
+                border-bottom: $loader-thickness solid rgba($color, 0.2);
+                border-left: $loader-thickness solid rgba($color, 1);
+            }
+        }
+    }
+}
+
+@include make-loaders($color-primaries-map);
+
+
+.loading-indicator__spinner {
+    @include spinnert;
+}
+
+@keyframes loaderReveal {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

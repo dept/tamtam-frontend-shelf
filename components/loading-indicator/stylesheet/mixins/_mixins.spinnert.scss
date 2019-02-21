@@ -1,0 +1,30 @@
+@mixin spinnert {
+  backface-visibility: hidden;
+  transform:  translateZ(0);
+  width: $loader-size;
+  min-width: $loader-size;
+  height: $loader-size;
+  min-height: $loader-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  border-radius: 50%;
+  border-top: $loader-thickness solid rgba($loader-color, 0.2);
+  border-right: $loader-thickness solid rgba($loader-color, 0.2);
+  border-bottom: $loader-thickness solid rgba($loader-color, 0.2);
+  border-left: $loader-thickness solid rgba($loader-color, 1);
+  animation: circle-loader-spin 1s infinite linear;
+}
+
+@keyframes circle-loader-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
