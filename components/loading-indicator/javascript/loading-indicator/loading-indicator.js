@@ -22,16 +22,16 @@ class LoadingIndicator {
      * Build the template fragment which gets appended to the DOM
      * @param darkTheme (boolean) - Set to true for dark theme
      * @param targetElement (string, selector) - Pass a selector, to append the loader to a different element
-     * @param modifier (string) - pass a string to add a modifier class to the loader
+     * @param classes (string) - add additional classes to the loader
      * @returns {DocumentFragment}
      */
-    static buildTemplateFragment(darkTheme, targetElement, modifier) {
-        const darkThemeClass = darkTheme ? DARK_THEME_CLASS : '';
-        const modifierClass = modifier ? ` .loading-indicator--${modifier}` : '';
+    static buildTemplateFragment(darkTheme, targetElement, classes) {
+        const darkThemeClass = darkTheme ? ` ${DARK_THEME_CLASS}` : '';
+        const additionalClasses = classes ? ` ${classes}` : '';
         const fixedClass = !targetElement ? ` ${FIXED_POSITION_CLASS}` : '';
 
         return document.createRange().createContextualFragment(`
-      <div class="c-loading-indicator ${darkThemeClass}${modifierClass}${fixedClass}" ${LOADING_INDICATOR_HOOK}>
+      <div class="c-loading-indicator${darkThemeClass}${additionalClasses}${fixedClass}" ${LOADING_INDICATOR_HOOK}>
         <div class="loading-indicator__spinner"></div>
       </div>
     `);
@@ -43,16 +43,16 @@ class LoadingIndicator {
      * @param options
      * darkTheme (boolean) - Set to true for dark theme
      * targetElement (string, selector) - Pass a selector debounceChan, to append the loader to a different element
-     * modifier (string) - Add a modifier class to the loader
+     * classes (string) - Add additional classes to the loader
      */
     showLoader(options) {
         if (this.loaderActive) return;
 
-        const { darkTheme, targetElement, modifier } = options || {};
+        const { darkTheme, targetElement, classes } = options || {};
         const loadingIndicatorTemplate = LoadingIndicator.buildTemplateFragment(
             darkTheme,
             targetElement,
-            modifier,
+            classes,
         );
 
         if (targetElement) {
