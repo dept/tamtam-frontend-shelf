@@ -20,7 +20,7 @@ import '@components/loading-indicator';
 
 ## How to use
 
-In the component, call the loader::activate event to append and active the full page loader.
+In the component, call the loader::show event to append and active the full page loader.
 
 ```javascript
 Events.$trigger('loader::show');
