@@ -27,12 +27,13 @@ Events.$trigger('loader::show');
 ```
 <br/>
 
-Options can also be passed to the event to toggle a light themed loader, or to append the loader to an element as alternative to the full page loader.
+Options can also be passed to the event to toggle a light themed loader, or to append the loader to an element as alternative to the full page loader. A string can be passed to add a modifier to the loader 
 
 ```javascript
 Events.$trigger('loader::show', {
   data: {
     targetElement: foo,
+    modifier: bar,
     lightTheme: true,
   },
 });

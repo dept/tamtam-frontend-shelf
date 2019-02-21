@@ -22,16 +22,16 @@ class LoadingIndicator {
      * Build the template fragment which gets appended to the DOM
      * @param darkTheme (boolean) - Set to true for dark theme
      * @param targetElement (string, selector) - Pass a selector, to append the loader to a different element
-     * @param color (string) - pass a color name from color palette
+     * @param modifier (string) - pass a string to add a modifier class to the loader
      * @returns {DocumentFragment}
      */
-    static buildTemplateFragment(darkTheme, targetElement, color) {
+    static buildTemplateFragment(darkTheme, targetElement, modifier) {
         const darkThemeClass = darkTheme ? DARK_THEME_CLASS : '';
-        const colorClass = color ? ` .loading-indicator--${color}` : '';
-        const fixedClass = !targetElement ? FIXED_POSITION_CLASS : '';
+        const modifierClass = modifier ? ` .loading-indicator--${modifier}` : '';
+        const fixedClass = !targetElement ? ` ${FIXED_POSITION_CLASS}` : '';
 
         return document.createRange().createContextualFragment(`
-      <div class="c-loading-indicator ${darkThemeClass}${colorClass} ${fixedClass} " ${LOADING_INDICATOR_HOOK}>
+      <div class="c-loading-indicator ${darkThemeClass}${modifierClass}${fixedClass}" ${LOADING_INDICATOR_HOOK}>
         <div class="loading-indicator__spinner"></div>
       </div>
     `);
@@ -41,17 +41,18 @@ class LoadingIndicator {
      * Shows the loader
      *
      * @param options
-     * - darkTheme (boolean) - Set to true for dark theme
-     * - targetElement (string, selector) - Pass a selector debounceChan, to append the loader to a different element
+     * darkTheme (boolean) - Set to true for dark theme
+     * targetElement (string, selector) - Pass a selector debounceChan, to append the loader to a different element
+     * modifier (string) - Add a modifier class to the loader
      */
     showLoader(options) {
         if (this.loaderActive) return;
 
-        const { color, darkTheme, targetElement } = options || {};
+        const { darkTheme, targetElement, modifier } = options || {};
         const loadingIndicatorTemplate = LoadingIndicator.buildTemplateFragment(
             darkTheme,
             targetElement,
-            color,
+            modifier,
         );
 
         if (targetElement) {
