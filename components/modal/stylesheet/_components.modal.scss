@@ -7,11 +7,15 @@ $modal-transition-ease: $ease-in-out-quad !default;
 $modal-min-width-media-query: ( $modal-max-width + $modal-gutter-small * 2 ) - 0.5;
 
 .is--modal-open {
+    overflow: hidden;
+
     body {
         overflow: hidden;
     }
+}
 
-    &.is-touch body {
+.is--modal-open.is-touch {
+    body {
         position: fixed;
     }
 }
