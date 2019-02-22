@@ -1,8 +1,7 @@
 import Events from '@utilities/events';
 import setTabIndexOfChildren from '@utilities/set-tabindex-of-children';
 import ScreenDimensions from '@utilities/screen-dimensions';
-
-const html = document.documentElement;
+import { body, html } from '@utilities/dom-elements';
 
 const MODAL_HOOK = '[js-hook-modal]';
 const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]';
@@ -15,6 +14,8 @@ class Modal {
     constructor() {
 
         this.registeredModals = {};
+        this.scrollElement = document.scrollingElement || html;
+        this.scrollTop = 0;
 
         const modals = [...document.querySelectorAll(MODAL_HOOK)];
 
@@ -131,6 +132,10 @@ class Modal {
         const autoFocus = modal.el.dataset.modalAutoFocus === 'true';
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
         const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true';
+        const keepScrollPosition =  modal.el.dataset.modalKeepScrollPosition === 'true';
+
+        // Set scroll position for fixed body on mobile
+        if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger) this.setScrollPosition();
 
         if (closeAllOthers) {
             Object.keys(this.registeredModals)
@@ -188,6 +193,11 @@ class Modal {
         // Remove modal open class off html element if noBodyClass is false
         if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS);
 
+        const keepScrollPosition =  modal.el.dataset.modalKeepScrollPosition === 'true';
+
+        // Scroll to original position
+        if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger) this.removeScrollPosition();
+
         // Remove tabindex and remove visible class
         modal.el.tabIndex = -1;
         setTabIndexOfChildren(modal.el, -1);
@@ -196,11 +206,27 @@ class Modal {
 
         Events.$trigger('focustrap::deactivate');
 
-        this.clearCurrentFocus();
+        Modal.clearCurrentFocus();
 
     }
 
-    clearCurrentFocus() {
+    /**
+     * Sets scrollposition to prevent body scrolling to top when position is fixed
+     */
+    setScrollPosition() {
+        this.scrollTop = this.scrollElement.scrollTop;
+        body.style.top = `-${this.scrollTop}px`;
+    }
+
+    /**
+     * Removes scroll position from body and scrolls to original position
+     */
+    removeScrollPosition() {
+        this.scrollElement.scrollTop = this.scrollTop;
+        body.style.removeProperty('top');
+    }
+
+    static clearCurrentFocus() {
         if (document.activeElement != document.body) document.activeElement.blur();
     }
 
