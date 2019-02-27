@@ -38,7 +38,7 @@
     {%- if not data.disableCrossFade %}
         <img class="image__ghost" aria-hidden="true"
             {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
-            {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
+            {%- if data.objectFit %} js-hook-objectfit-img {% endif -%}
             alt="{{ data.alt or 'Image' }}"
             js-hook-shadow-image>
     {% endif -%}
