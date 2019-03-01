@@ -12,8 +12,11 @@ import Events from '@utilities/events';
  *  5: 'video cued'
  */
 class YoutubeVideo {
+
     constructor(options) {
+
         this.options = options;
+
         this.playerOptions = {
             videoId: this.options.videoId,
             host: 'https://www.youtube.com',
@@ -36,9 +39,11 @@ class YoutubeVideo {
         }
 
         this.init();
+
     }
 
     init() {
+
         if (!window.YT) {
             YoutubeVideo.loadAPI();
             this.checkAPIReady();
