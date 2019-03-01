@@ -46,11 +46,14 @@
         <div class="accordion__item-content-holder {% if data.tabAccordion %}tabpanel{% if data.open %} tabpanel--is-active{% endif %}{% endif %}"
             aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
             id="{{ data.id }}"
-            {% if data.tabAccordion %}role="tabpanel"
-            aria-labelledby="{{ data.id }}-tab"{% endif %}
-            js-hook-accordion-content>
+            {%- if data.tabAccordion %}
+                role="tabpanel"
+                aria-labelledby="{{ data.id }}-tab"
+            {% endif -%}
+            {%- if data.open %} style="height:auto;" {% endif -%}
+            js-hook-accordion-content-holder>
 
-            <div class="accordion__item-content">
+            <div class="accordion__item-content" js-hook-accordion-content>
                 {{ caller() }}
             </div>
 
