@@ -8,6 +8,7 @@ In this repository you find all standardized front-end components and utilities.
 * [Form elements](components/form-elements/README.md)
 * [Google Maps](components/google-maps/README.md)
 * [Header](components/header/README.md)
+* [Loading indicator](components/loading-indicator/README.md)
 * [Modal](components/modal/README.md)
 * [Newsletter](components/newsletter/simple/README.md)
 * [Pagination](components/pagination/README.md)
