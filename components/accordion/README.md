@@ -78,6 +78,8 @@ Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 
 ## Dependencies
 * [moduleInit utility](/utilities/module-init.js) from the Dept Frontend Setup
+* [Screen Dimensions utility](/utilities/screen-dimensions/)
+* [Scroll to utility](/utilities/scroll-to/)
 * [Events utility](/utilities/events/)
 * [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 

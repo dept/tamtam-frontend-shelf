@@ -38,16 +38,18 @@ You can add the following options:
 * `noBodyClass` must be a boolean. If true, there will be no body class set on activation of the modal. Default false.
 * `closeAllOthers` must be a boolean. If true, forces all other modalboxes to close when this one opens. Default false.
 * `noClose` must be a boolean. If true, will not render a close button allowing for custom close buttons. Default false.
+* `keepScrollPosition` must be a boolean. If true, scroll position of body will be kept in place on mobile breakpoints. Especially handy for mobile menu's. Default false.
 
 {% call modal({
     id : 'modal-example',
-    size           : 'string',
-    mobileOnly     : 'true',
-    autoFocus      : 'true',
-    closeAllOthers : 'true',
-    noBodyClass    : 'false',
-    closeAllOthers : 'false',
-    noClose        : 'false'
+    size                : 'string',
+    mobileOnly          : 'true',
+    autoFocus           : 'true',
+    closeAllOthers      : 'true',
+    noBodyClass         : 'false',
+    closeAllOthers      : 'false',
+    noClose             : 'false',
+    keepScrollPosition  : 'false'
 }) %}
 
     Your content here.
@@ -67,7 +69,8 @@ Custom html element
 <div id="modal-custom"
     data-modal-auto-focus="true"
     data-modal-close-all-others="true"
-    data-modal-no-body-class="false">
+    data-modal-no-body-class="false"
+    data-modal-keep-scroll-position="true">
     I am a custom modalbox
 
     <button type="button" js-hook-button-modal-close aria-label="Close modalbox">
@@ -91,6 +94,7 @@ Events.$trigger('modal::bind', { data: { hook: '#modal-custom' } });
 * [Focus trap utility](/utilities/focus-trap/)
 * [Screen Dimensions](/utilities/screen-dimensions/README.md)
 * [Set tabindex of children utility](/utilities/set-tabindex-of-children)
+* [Dom elements utility](/utilities/dom-elements)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

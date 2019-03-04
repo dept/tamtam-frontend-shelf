@@ -6,5 +6,6 @@
 import Autocomplete from './element/autocomplete';
 import CustomFile from './element/input-file';
 import LabelAsPlaceholder from './element/label-as-placeholder';
+import NumberInput from './element/input-number';
 
-export { Autocomplete, CustomFile, LabelAsPlaceholder };
+export { Autocomplete, CustomFile, LabelAsPlaceholder, NumberInput };

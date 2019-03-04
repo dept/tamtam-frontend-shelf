@@ -42,6 +42,21 @@ moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
 {% import 'form-elements.html' as form %}
 ```
 
+### Input type number sanitization
+Sanitize all input type number fields from anything other than numeric values
+```javascript
+import { NumberInput } from '@components/form-elements';
+
+moduleInit.sync('input[type="number"]', NumberInput);
+```
+
+Or call it asynchronously
+```javascript
+moduleInit.async('input[type="number"]', () =>
+  import(/* webpackChunkName: "js/NumberInput" */ '@components/form-elements/input-number'),
+);
+```
+
 ## How to use
 There are multiple macros available
 

@@ -30,6 +30,7 @@ class Cookies {
 
         this.hostname = window.location.hostname;
         this.cookiePrefix = 'default';
+        this.hostname = window.location.hostname;
 
         this.cookieName = {
             functional: 'functional',
