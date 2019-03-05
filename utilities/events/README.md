@@ -70,7 +70,7 @@ The next code snippet will look for the video instance with '12' set as instance
 ```
 
 ## Dependencies
-This package doesn't not have any dependencies.
+* [Custom event polyfill](utilities/polyfills/custom-event.js)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)

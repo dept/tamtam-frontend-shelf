@@ -44,3 +44,4 @@ Various browser polyfills. Easiest way is to copy the whole folder, and include 
     * [Closest](utilities/polyfills/DOM/closest.js)
     * [Matches](utilities/polyfills/DOM/matches.js) (uses closest)
     * [Remove](utilities/polyfills/DOM/remove.js)
+    * [Custom event](utilities/polyfills/custom-event.js)
