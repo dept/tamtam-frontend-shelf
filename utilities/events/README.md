@@ -17,6 +17,7 @@
 Import module
 ```javascript
 // Without enabling logging
+import '@utilities/polyfills';
 import '@utilities/events';
 
 // Optionally enable logging
