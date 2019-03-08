@@ -56,10 +56,6 @@ class NativeVideo {
             this.player.muted = true;
         }
 
-        if (this.options.videoTime) {
-            this.player.currentTime = this.options.videoTime;
-        }
-
         this.options.player.appendChild(this.player);
 
     }
@@ -72,6 +68,11 @@ class NativeVideo {
         Events.$trigger('video::bind-player-events', { data: this.options });
 
         this.player.addEventListener('loadedmetadata', () => {
+
+            if (this.options.videoTime) {
+                this.player.currentTime = this.options.videoTime;
+            }
+
             Events.$trigger('video::ready', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::ready`, { data: this.options });
         });
