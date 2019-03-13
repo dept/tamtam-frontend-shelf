@@ -15,8 +15,6 @@ class Events {
 
     constructor() {
 
-        polyfillCustomEvent();
-
         this._logging = false;
         readAndBindEventsFromDOM();
 
@@ -223,28 +221,6 @@ function _domFind(element, predicate, results = []) {
  */
 function extractPropFromObject(object, propName) {
     return (object && object[propName]) ? object[propName] : null;
-}
-
-/**
- * Polyfill for customEvent
- */
-function polyfillCustomEvent() {
-
-    if (typeof window.CustomEvent !== 'function') {
-
-        const CustomEvent = (event, params) => {
-            const newParams = params || { bubbles: false, cancelable: false, detail: undefined };
-            const evt = document.createEvent('CustomEvent');
-            evt.initCustomEvent(event, newParams.bubbles, newParams.cancelable, newParams.detail);
-            return evt;
-        }
-
-        CustomEvent.prototype = window.Event.prototype;
-
-        window.CustomEvent = CustomEvent;
-
-    }
-
 }
 
 export default _Events;
