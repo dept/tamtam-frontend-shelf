@@ -12,8 +12,13 @@ class NumberInput {
      * @param event - keypress event
      */
     static preventNonNumericValue(event) {
-        const key = event.key || event.keyCode;
-        if (!/^[0-9]$/i.test(key)) event.preventDefault();
+        const EventKey = event.key;
+        const EventKeyCode = event.keyCode;
+
+        const IsNumberModern = /^[0-9]$/i.test(EventKey) || false;
+        const IsNumberLegacy = EventKeyCode >= 47 && EventKeyCode <= 58 || false; // Fallback for browsers that don't support event.key. Range is numeric keys.
+
+        if (!IsNumberModern && !IsNumberLegacy) event.preventDefault();
     }
 
     /**
