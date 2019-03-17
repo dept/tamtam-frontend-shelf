@@ -69,7 +69,7 @@ Call EmojiKiller() and pass a single DOM element or array of elements.
 ```javascript
 Examples:
 
-this.elements = document.querySelectorAll('.input-class');
+this.elements = [...document.querySelectorAll('.input-class')];
 EmojiKiller(this.elements);
 
 or
