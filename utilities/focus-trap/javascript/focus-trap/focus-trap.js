@@ -27,7 +27,7 @@ class FocusTrap {
          */
         document.addEventListener('focus', event => {
 
-            if (this.activated && this.focusTrapElement && this.autoFocus) {
+            if (this.activated && this.focusTrapElement) {
                 Events.$trigger('focustrap::trap', { data: event.target });
             }
 
