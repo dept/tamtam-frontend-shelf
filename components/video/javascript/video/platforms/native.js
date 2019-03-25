@@ -32,7 +32,7 @@ class NativeVideo {
         }
 
         if (this.options.videoControls) {
-            this.player.setAttribute('controls', true);
+            this.player.setAttribute('controls', 'controls');
         }
 
         if (this.options.videoLoop) {
@@ -69,20 +69,25 @@ class NativeVideo {
 
         this.player.addEventListener('loadedmetadata', () => {
 
-            if (this.options.videoTime) {
-                this.player.currentTime = this.options.videoTime;
-            }
+            if (this.options.videoTime) this.player.currentTime = this.options.videoTime;
+            if (this.options.videoControls) this.player.controls = 0;
 
             Events.$trigger('video::ready', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::ready`, { data: this.options });
         });
 
         this.player.addEventListener('playing', () => {
+
+            if (this.options.videoControls) this.player.controls = 1;
+
             Events.$trigger('video::playing', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options });
         });
 
         this.player.addEventListener('pause', () => {
+
+            if (this.options.videoControls) this.player.controls = 0;
+
             Events.$trigger('video::paused', { data: this.options });
             Events.$trigger(`video[${this.options.instanceId}]::paused`, { data: this.options });
         });
@@ -149,10 +154,6 @@ class NativeVideo {
      */
     play() {
 
-        if (this.options.videoControls) {
-            this.player.controls = 1;
-        }
-
         this.player.play();
 
     }
@@ -161,10 +162,6 @@ class NativeVideo {
      * Bind generic pause event
      */
     pause() {
-
-        if (this.options.videoControls) {
-            this.player.controls = 0;
-        }
 
         this.player.pause();
 
