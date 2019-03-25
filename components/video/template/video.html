@@ -45,11 +45,13 @@
         {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
         {% if data.sources %}data-video-sources="{{ data.sources|dump|escape }}"{% endif %}
         {% if data.closedcaptions %}data-video-closedcaptions="{{ data.closedcaptions|dump|escape }}"{% endif %}
+        {% if data.title %}aria-label="{{ data.title }}"{% endif %}
         {% if data.inview != false %}
             js-hook-inview
             data-inview-persistent="true"
             data-inview-trigger="video::inview"
         {% endif %}
+        role="application"
         js-hook-video>
 
         {% if data.noschema != false %}
@@ -89,6 +91,7 @@
                 preload: data.image.preload,
                 image: data.image.image,
                 srcset: data.image.srcset,
+                attr: 'aria-hidden="true"'
                 objectFit: true
             }) }}
         {% endif %}
