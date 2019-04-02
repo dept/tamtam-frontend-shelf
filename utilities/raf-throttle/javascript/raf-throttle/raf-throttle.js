@@ -108,47 +108,53 @@ class RafThrottle {
      * @param {string} bind[].event Event type we are binding ie. scroll
      * @param {string} bind[].namespace Namepace of the event
      * @param {Function} bind[].fn Function we want to execute
-     * @param {Event} event Event object
      * @param {Number} [bind[].delay] Amount of delay
+     * @param {Event} event Event object
      */
     _trigger(bind, event) {
 
         const eventNamespace = generateNamespace(bind.event, bind.namespace);
 
-        if (this.runningList[eventNamespace]) { return; }
-
-        if (bind.delay && bind.delay !== 0) {
+        if (bind.delay) {
 
             if (this.timeoutList[eventNamespace]) {
+                this.runningList[eventNamespace] = false;
                 clearTimeout(this.timeoutList[eventNamespace]);
             }
 
-            this.timeoutList[eventNamespace] = setTimeout(() => {
-
-                raf(() => {
-
-                    bind.fn(event);
-                    bind.element = false;
-
-                    this.runningList[eventNamespace] = false;
-
-                });
-
-            }, bind.delay);
+            this.timeoutList[eventNamespace] = setTimeout(() => this.createRafInstance(bind, event, eventNamespace), bind.delay);
 
         } else {
 
-            raf(() => {
-
-                bind.fn(event);
-                this.runningList[eventNamespace] = false;
-
-            });
+            this.createRafInstance(bind, eventNamespace);
 
         }
 
-        this.runningList[eventNamespace] = true;
+    }
 
+    /**
+     *
+     * @param {Object[]} bind
+     * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
+     * @param {string} bind[].event Event type we are binding ie. scroll
+     * @param {string} bind[].namespace Namepace of the event
+     * @param {Function} bind[].fn Function we want to execute
+     * @param {Event} event Event object
+     * @param {Number} [bind[].delay] Amount of delay
+     * @param {Event} event Event object
+     * @param eventNamespace {string} - Name of event space
+     */
+    createRafInstance(bind, event, eventNamespace) {
+        if (this.runningList[eventNamespace]) return;
+
+        raf(() => {
+
+            bind.fn(event);
+            this.runningList[eventNamespace] = false;
+
+        });
+
+        this.runningList[eventNamespace] = true;
     }
 
     /**
