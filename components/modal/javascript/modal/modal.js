@@ -186,7 +186,7 @@ class Modal {
         const modal = this.registeredModals[`modal-${data.id}`];
 
         // If there is no modal do nothing
-        if (!modal) return;
+        if (!modal || !modal.el.modalIsOpen) return;
 
         const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true';
 

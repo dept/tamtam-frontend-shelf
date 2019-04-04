@@ -48,7 +48,7 @@ Events.$trigger('focustrap::deactivate');
 
 You can add the following options:
 * `autoFocus` must be a boolean. If true, on activation the first focusable element will be auto focussed. Default true.
-
+To ignore an item to gain focus as the first element in the trapped element use 'data-focus-trap-ignore' as an attribute.
 ```javascript
 
 Events.$trigger('focustrap::activate', {
