@@ -252,7 +252,8 @@ API response:
 ```json
 [
   { "id":"1", "name":"Dylan Vens" },
-  { "id":"2", "name":"Anne van den Hoogen" }
+  { "id":"2", "name":"Anne van den Hoogen" },
+  { "id":"3", "name":"Matt van Voorst", "keywords": "Sexy man, with, amazing hair" }
 ]
 ```
 
@@ -273,11 +274,13 @@ If no API call after each keypress is wanted, an inline json can be used. HTML:
     [
         {
             "id": 1,
-            "name": "name 1"
+            "name": "name 1",
+            "keywords:", "foo, bar"
         },
         {
             "id": 2,
-            "name": "name 2"
+            "name": "name 2",
+            "keywords:", "foo, bar"
         }
     ]
 </script>
