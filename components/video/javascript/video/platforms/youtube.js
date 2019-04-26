@@ -62,11 +62,20 @@ class YoutubeVideo {
     }
 
     initPlayer() {
+        window.youtubeIsReady = true;
+        if (this.videoInterval) clearInterval(this.videoInterval);
         this.player = new window.YT.Player(this.options.player, this.playerOptions);
     }
 
     checkAPIReady() {
         window.onYouTubeIframeAPIReady = () => this.initPlayer();
+
+        this.videoInterval = setInterval(() => {
+            if (window.youtubeIsReady) {
+                this.initPlayer();
+                clearInterval(this.videoInterval);
+            }
+        }, 200);
     }
 
     onReady() {
