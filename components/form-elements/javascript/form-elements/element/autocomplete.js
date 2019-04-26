@@ -158,8 +158,16 @@ class Autocomplete {
 
     filterLocalList(value) {
 
-        const data = this.listData.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+        const values = value.trim().split(' ');
+
+        const data = this.listData.filter(item => {
+            return values.some(value => {
+                return item.name.toLowerCase().includes(value.toLowerCase()) || item.keywords.toLowerCase().includes(value.toLowerCase())
+            });
+        });
+
         this.createList(data, value);
+
     }
 
     getList(event) {
@@ -199,7 +207,7 @@ class Autocomplete {
 
     createList(data, value) {
 
-        const list = data ? data.map(item => `<li class="autocomplete__list-item" data-id="${item.id}" data-value="${item.name}">${item.name}</li>`).join('') : false;
+        const list = data ? data.map(item => `<li class="autocomplete__list-item" data-id="${item.id}" data-value="${item.name}" data-keywords="${item.keywords}">${item.name}</li>`).join('') : false;
 
         this.updateList(list, value);
 
