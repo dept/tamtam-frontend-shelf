@@ -70,29 +70,37 @@ class MyComponent extends Component {
         this.element.innerHTML = html;
     }
 
-    /**
-     * React to state changes and render the component's HTML
+     /**
+     * Render the state changes
      *
+     * @params {Object} state - the store state
      * @returns {void}
      */
-    render() {
+    render(state) {
         // If there are no items to show, render a little status instead
-        if (store.state.items.length === 0) {
+        if (state.items.length === 0) {
             return this.updateElement(`<p>You've done nothing yet 😢</p>`);
         }
 
         // Loop the items and generate a list of elements
         return this.updateElement(`
             <ul>
-                ${store.state.items
-                    .map(item => {
-                        return `
-                        <li>${item} <button aria-label="Delete this item">×</button></li>
-                    `;
-                    })
+                ${state.items
+                    .map(item => `<li>${item} <button aria-label="Delete this item">×</button></li>`);
                     .join('')}
             </ul>
         `);
+    }
+
+    /**
+     * React to state changes
+     *
+     * @returns {void}
+     */
+    stateChanged() {
+        const { state } = store;
+        this.renderItems(state);
+        this.bindEvents();
     }
 }
 

@@ -5,10 +5,7 @@ class Component {
         this.render = this.render || function() {};
 
         if (props.store instanceof Store) {
-            props.store.events.subscribe('stateChange', () => {
-                this.render();
-                this.bindEvents();
-            });
+            props.store.events.subscribe('stateChange', () => this.stateChanged());
         }
 
         if (props.element) {
