@@ -2,15 +2,11 @@ import Store from '../store/store';
 
 class Component {
   constructor(props = {}) {
-    this.render = this.render || function() {};
+    this.stateChanged = this.stateChanged || function() {};
 
     if (props.store instanceof Store) {
       // This fires every time the state updates
-      props.store.subscribe(state => {
-        if (typeof this.stateChanged === 'function') {
-          this.stateChanged(state);
-        }
-      });
+      props.store.subscribe(state => this.stateChanged(state));
     }
 
     if (props.element) {
