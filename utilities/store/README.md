@@ -15,6 +15,21 @@ Inspired by this [css tricks article](https://css-tricks.com/build-a-state-manag
 
 ## Install
 
+## Add polyfill
+This store utility makes use of the [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) Class which is not supported in IE11.
+If you want to use the store in IE11 make sure you install the [Polyfill](https://github.com/GoogleChrome/proxy-polyfill)
+
+1. Install proxy polyfill: ```$ npm install proxy-polyfill```
+2. In store/store.js import the proxy polyfill and replace ```new Proxy()``` by ```new ProxyPolyfill()```
+
+```javascript
+import ProxyPolyfill from 'proxy-polyfill/src/proxy';
+// Then use...
+const myProxy = new ProxyPolyfill(...);
+```
+
+## Import the utilities
+
 Import modules in your component/class
 
 ```javascript
@@ -87,17 +102,22 @@ export default MyComponent;
 ### Adding an action
 
 You can mutate the state by dispatching an action and create a mutation in mutations.js.
+Example use case:
+You want to add an item to the list from an input in HTML.
 
--   add an action in actions.js
--   add a mutation in mutations.js
+-   add an 'addItem' action in actions.js
+-   add an 'addItem' mutation in mutations.js
+-   On form submit dispatch the action with the value of the input.
+-   TADA! you will see the list of items updated in the above component.
 
 ```javascript
-store.dispatch('nameOfAction', value);
+store.dispatch('addItem', value);
 ```
 
 ## Dependencies
 
-This package doest not have any dependencies.
+Optional:
+[Proxy Polyfill](https://github.com/GoogleChrome/proxy-polyfill)
 
 ## Developers
 
