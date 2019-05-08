@@ -15,10 +15,9 @@ Inspired by this [css tricks article](https://css-tricks.com/build-a-state-manag
 
 ## Install
 
-Import module
+Import modules in your component/class
 
 ```javascript
-// Import all exports
 import Component from '@utilities/store/lib/component';
 import store from '@utilities/store';
 ```
@@ -52,6 +51,10 @@ class MyComponent extends Component {
         });
     }
 
+    updateElement(html) {
+        this.element.innerHTML = html;
+    }
+
     /**
      * React to state changes and render the component's HTML
      *
@@ -60,12 +63,11 @@ class MyComponent extends Component {
     render() {
         // If there are no items to show, render a little status instead
         if (store.state.items.length === 0) {
-            this.element.innerHTML = `<p>You've done nothing yet 😢</p>`;
-            return;
+            return this.updateElement(`<p>You've done nothing yet 😢</p>`);
         }
 
         // Loop the items and generate a list of elements
-        this.element.innerHTML = `
+        return this.updateElement(`
             <ul>
                 ${store.state.items
                     .map(item => {
@@ -75,7 +77,7 @@ class MyComponent extends Component {
                     })
                     .join('')}
             </ul>
-        `;
+        `);
     }
 }
 
