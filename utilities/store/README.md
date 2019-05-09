@@ -23,8 +23,10 @@ If you want to use the store in IE11 make sure you install the [Polyfill](https:
 2. In store/store.js import the proxy polyfill and replace ```new Proxy()``` by ```new ProxyPolyfill()```
 
 ```javascript
-import ProxyPolyfill from 'proxy-polyfill/src/proxy';
-// Then use...
+import ProxyPolyfillFunc from 'proxy-polyfill/src/proxy';
+const ProxyPolyfill = ProxyPolyfillFunc();
+
+// Then use..
 const myProxy = new ProxyPolyfill(...);
 ```
 
