@@ -6,6 +6,7 @@ class Store {
         this.actions = params.actions || {};
         this.mutations = params.mutations || {};
         this.state = {};
+        this.prevState = {};
 
         // A status enum to set during actions and mutations
         this.status = 'resting';
@@ -26,7 +27,7 @@ class Store {
 
                 // Fire off our callback processor because if there's listeners,
                 // they're going to want to know that something has changed
-                self.processCallbacks(self.state);
+                self.processCallbacks(self.state, self.prevState);
 
                 if (self.status !== 'mutation') {
                     console.warn(`You should use a mutation to set ${key}`);
@@ -87,6 +88,8 @@ class Store {
         // Let anything that's watching the status know that we're mutating state
         this.status = 'mutation';
 
+        this.prevState = Object.assign({},this.state);
+
         // Get a new version of the state by running the mutation and storing the result of it
         const newState = this.mutations[mutationKey](this.state, payload);
 
@@ -101,16 +104,17 @@ class Store {
      * We pass in some data as the one and only parameter.
      * Returns a boolean depending if callbacks were found or not
      *
-     * @param {object} data
+     * @param {object} state
+     * @param {object} prevState
      * @returns {boolean}
      */
-    processCallbacks(data) {
+    processCallbacks(state, prevState) {
         if (!this.callbacks.length) {
             return false;
         }
 
         // We've got callbacks, so loop each one and fire it off
-        this.callbacks.forEach(callback => callback(data));
+        this.callbacks.forEach(callback => callback(state, prevState));
 
         return true;
     }

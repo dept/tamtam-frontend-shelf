@@ -100,7 +100,7 @@ class MyComponent extends Component {
      * @returns {void}
      */
     stateChanged() {
-        const { state } = store;
+        const { state, prevState } = store;
         this.renderItems(state);
         this.bindEvents();
     }
