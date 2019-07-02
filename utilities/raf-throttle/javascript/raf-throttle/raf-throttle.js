@@ -126,7 +126,7 @@ class RafThrottle {
 
         } else {
 
-            this.createRafInstance(bind, eventNamespace);
+            this.createRafInstance(bind, event, eventNamespace);
 
         }
 
