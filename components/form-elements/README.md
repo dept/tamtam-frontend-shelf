@@ -57,6 +57,32 @@ moduleInit.async('input[type="number"]', () =>
 );
 ```
 
+### Emoji killer
+(Optionally) remove all emoji's from an input field
+```javascript
+import EmojiKiller from "@form-elements/element/emoji-killer";
+```
+
+<br>
+
+Call EmojiKiller() and pass a single DOM element, array of elements or NodeList. Spreading the elements is not required.
+```javascript
+Examples:
+
+this.elements = [...document.querySelectorAll('.input-class')];
+EmojiKiller(this.elements);
+
+or
+
+this.elements = document.getElementsByTagName('input');
+EmojiKiller(this.elements);
+
+or
+
+const element = document.querySelector('input[type="password"]');
+EmojiKiller(element);
+```
+
 ## How to use
 There are multiple macros available
 
@@ -226,7 +252,8 @@ API response:
 ```json
 [
   { "id":"1", "name":"Dylan Vens" },
-  { "id":"2", "name":"Anne van den Hoogen" }
+  { "id":"2", "name":"Anne van den Hoogen" },
+  { "id":"3", "name":"Matt van Voorst", "keywords": "Sexy man, with, amazing hair" }
 ]
 ```
 
@@ -247,11 +274,13 @@ If no API call after each keypress is wanted, an inline json can be used. HTML:
     [
         {
             "id": 1,
-            "name": "name 1"
+            "name": "name 1",
+            "keywords:", "foo, bar"
         },
         {
             "id": 2,
-            "name": "name 2"
+            "name": "name 2",
+            "keywords:", "foo, bar"
         }
     ]
 </script>
