@@ -1,0 +1,9 @@
+{% macro threeJs(data) %}
+
+    <div class="c-threejs" data-loaded="false" js-hook-threejs>
+        {% if data.useCanvasElement %}
+            <canvas class="threejs__canvas"></canvas>
+        {% endif %}
+    </div>
+
+{% endmacro %}
