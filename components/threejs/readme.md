@@ -25,6 +25,8 @@ moduleInit.async('[js-hook-threejs]', () => import(/* webpackChunkName: "ThreeJs
 #### Config overrides
 Because the example uses models and textures that are called from the assets folder, the default config should be overridden with the possibility to copy these files to the build folder.
 
+Look for the following files in the `build-config` folder.
+
 Add the following object to your override-config.js:
 ```javascript
 const overrideConfig = {
