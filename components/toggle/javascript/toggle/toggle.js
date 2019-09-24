@@ -39,7 +39,7 @@ class Toggle {
             }
         });
 
-        Events.$on(`toggle[${this.element.id}]::toggle`, event => {
+        Events.$on(`toggle[${this.id}]::toggle`, event => {
             this.toggleState();
             event.preventDefault();
         });
