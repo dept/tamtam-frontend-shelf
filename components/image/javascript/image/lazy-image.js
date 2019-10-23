@@ -64,13 +64,13 @@ class LazyImage {
             return;
         }
 
+        image.src = '';
+        image.onload = () => this._renderImage(element);
+        image.src = src;
+
         if (SUPPORTS_SRCSET && srcset) {
             image.srcset = srcset;
         }
-
-        image.src = src;
-        image.onload = () => this._renderImage(element);
-
 
     }
 
