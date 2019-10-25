@@ -133,13 +133,13 @@ function constructVideoOptions(element) {
     videoId,
     videoSources,
     videoClosedcaptions,
-    videoTime,
-    videoInfo,
-    videoControls,
-    videoMuted,
-    videoAutoplay,
-    videoLoop,
-    videoPlaysinline,
+    videoTime = 0,
+    videoInfo = 0,
+    videoControls = 0,
+    videoMuted = 0,
+    videoAutoplay = 0,
+    videoLoop = 0,
+    videoPlaysinline = 0,
   } = element.dataset;
 
   const instanceId = element.id;

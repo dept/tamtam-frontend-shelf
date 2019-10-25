@@ -6,7 +6,9 @@ class VimeoVideo {
     this.options = options;
 
     if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
-      Events.$trigger('video::cookie-invalid', { data: this.options.element });
+      Events.$trigger('video::cookie-invalid', {
+        data: this.options.element,
+      });
       return;
     }
 
@@ -17,10 +19,24 @@ class VimeoVideo {
   }
 
   initPlayer(Player) {
+    const {
+      videoId: id,
+      videoAutoplay: autoplay,
+      videoLoop: loop,
+      videoPlaysinline: playsinline,
+      videoMuted: muted,
+      videoControls: controls,
+    } = this.options;
+
     this.player = new Player(this.options.player, {
-      id: this.options.videoId,
+      id,
       title: false,
       portrait: false,
+      autoplay,
+      loop,
+      playsinline: autoplay ? true : playsinline,
+      muted: autoplay ? true : muted,
+      controls,
     });
   }
 
@@ -33,22 +49,30 @@ class VimeoVideo {
       }
 
       Events.$trigger('video::ready', { data: this.options });
-      Events.$trigger(`video[${this.options.instanceId}]::ready`, { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
+        data: this.options,
+      });
     });
 
     this.player.on('play', () => {
       Events.$trigger('video::playing', { data: this.options });
-      Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+        data: this.options,
+      });
     });
 
     this.player.on('pause', () => {
       Events.$trigger('video::paused', { data: this.options });
-      Events.$trigger(`video[${this.options.instanceId}]::paused`, { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+        data: this.options,
+      });
     });
 
     this.player.on('ended', () => {
       Events.$trigger('video::ended', { data: this.options });
-      Events.$trigger(`video[${this.options.instanceId}]::ended`, { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+        data: this.options,
+      });
     });
   }
 
@@ -80,7 +104,9 @@ class VimeoVideo {
   setStartTime(seconds) {
     this.player
       .setCurrentTime(seconds)
-      .then(() => (this.initialPlay = true))
+      .then(() => {
+        this.initialPlay = true;
+      })
       .catch(() => {
         this.initialPlay = false;
         console.error('Unable to set start time for video', this.options.id);

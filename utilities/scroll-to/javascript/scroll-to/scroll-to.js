@@ -16,11 +16,17 @@ class ScrollTo {
    */
   _bindEvents() {
     Events.$on('scroll-to::scroll', (event, data) => {
+      if (!data) return;
+
+      const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement = false } = data;
+
+      if (!target) return;
+
       const scrollConfig = {
         position: target.getBoundingClientRect(),
-        duration: duration ? parseInt(duration, 10) : ST_DURATION,
-        offset: offset ? parseInt(offset, 10) : ST_OFFSET,
-        scrollElement: scrollElement,
+        duration,
+        offset: parseInt(offset, 10),
+        scrollElement,
       };
 
       scrollTo(scrollConfig);
@@ -31,9 +37,7 @@ class ScrollTo {
     this.elements = getElements();
 
     Array.from(this.elements).forEach(element => {
-      if (element.scrollToisInitialised) {
-        return;
-      }
+      if (element.scrollToisInitialised) return;
 
       element.addEventListener('click', event => {
         const target = element.getAttribute('href').split('#');
