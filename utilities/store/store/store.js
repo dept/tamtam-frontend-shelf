@@ -36,7 +36,7 @@ class Store {
                 self.status = 'resting';
 
                 return true;
-            }
+            },
         });
     }
 
@@ -88,7 +88,7 @@ class Store {
         // Let anything that's watching the status know that we're mutating state
         this.status = 'mutation';
 
-        this.prevState = Object.assign({},this.state);
+        this.prevState = Object.assign({}, this.state);
 
         // Get a new version of the state by running the mutation and storing the result of it
         const newState = this.mutations[mutationKey](this.state, payload);

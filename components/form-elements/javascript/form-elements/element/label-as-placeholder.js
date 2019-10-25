@@ -4,9 +4,7 @@ const FILE = 'file';
 const SELECT = 'SELECT';
 
 class LabelAsPlaceholder {
-
     constructor(element) {
-
         this.formItem = element;
         this.input = this.formItem.querySelector(INPUT_QUERY);
 
@@ -14,11 +12,9 @@ class LabelAsPlaceholder {
             this.toggleLabelClass();
             this.bindEvents();
         }
-
     }
 
     bindEvents() {
-
         this.input.addEventListener('change', () => this.toggleLabelClass());
 
         if (this.input.type !== FILE && this.input.tagName !== SELECT) {
@@ -26,16 +22,12 @@ class LabelAsPlaceholder {
             this.input.addEventListener('focus', () => this.toggleLabelClass(true));
             this.input.addEventListener('focusout', () => this.toggleLabelClass());
         }
-
     }
 
     toggleLabelClass(forceAnimateLabel) {
-
         const action = forceAnimateLabel || this.input.value ? 'add' : 'remove';
         this.formItem.classList[action](LAP_ACTIVE);
-
     }
-
 }
 
 export default LabelAsPlaceholder;

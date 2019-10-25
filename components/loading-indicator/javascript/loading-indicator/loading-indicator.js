@@ -52,7 +52,7 @@ class LoadingIndicator {
         const loadingIndicatorTemplate = LoadingIndicator.buildTemplateFragment(
             darkTheme,
             targetElement,
-            classes,
+            classes
         );
 
         if (targetElement) {

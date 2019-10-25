@@ -16,7 +16,7 @@ class NumberInput {
         const EventKeyCode = event.keyCode;
 
         const IsNumberModern = /^[0-9]$/i.test(EventKey) || false;
-        const IsNumberLegacy = EventKeyCode >= 47 && EventKeyCode <= 58 || false; // Fallback for browsers that don't support event.key. Range is numeric keys.
+        const IsNumberLegacy = (EventKeyCode >= 47 && EventKeyCode <= 58) || false; // Fallback for browsers that don't support event.key. Range is numeric keys.
 
         if (!IsNumberModern && !IsNumberLegacy) event.preventDefault();
     }
@@ -53,9 +53,7 @@ class NumberInput {
             NumberInput.preventNonNumericValue(event)
         );
 
-        this.element.addEventListener('paste', event =>
-            this.stripNonNumericValue(event)
-        );
+        this.element.addEventListener('paste', event => this.stripNonNumericValue(event));
     }
 }
 

@@ -15,59 +15,57 @@ const INVIEW_PERSISTENT_HOOK = 'data-inview-persistent';
 
 const CONFIG = {
     rootMargin: `${OBSERVER_DEFAULT_OFFSET_Y}px ${OBSERVER_DEFAULT_OFFSET_X}px`,
-    threshold: OBSERVER_DEFAULT_THRESHOLD
+    threshold: OBSERVER_DEFAULT_THRESHOLD,
 };
 
 class InView {
-
     constructor() {
-
         this.nodes = getNodes();
         this.observer = null;
         this.setObserver();
         this.bindEvents();
-
     }
 
     bindEvents() {
-
         Events.$on('in-view::update', (event, data) => {
             const elements = data && data.elements ? data.elements : undefined;
             const hook = data && data.hook ? data.hook : undefined;
             this.addElements(elements, hook);
         });
-
     }
 
     setObserver() {
-
         this.observer = new IntersectionObserver(this.onObserve.bind(this), CONFIG);
         this.bindObservedNodes();
-
     }
 
     bindObservedNodes() {
-
         this.nodes.forEach(node => {
-
-            if (!node.__inviewTriggerHook) { node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK); }
-            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'; }
-            if (!node.__inviewThreshold) { node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK) ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false : false; }
-            if (!node.__inviewInitialized) { this.observer.observe(node); }
-            if (!node.__inviewInitialized) { node.__inviewInitialized = true; }
-
+            if (!node.__inviewTriggerHook) {
+                node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK);
+            }
+            if (!node.__inviewPersistent) {
+                node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true';
+            }
+            if (!node.__inviewThreshold) {
+                node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK)
+                    ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false
+                    : false;
+            }
+            if (!node.__inviewInitialized) {
+                this.observer.observe(node);
+            }
+            if (!node.__inviewInitialized) {
+                node.__inviewInitialized = true;
+            }
         });
-
     }
 
     onObserve(entries) {
-
         entries.forEach(entry => this.whenElementInViewport(entry, this.observer));
-
     }
 
     whenElementInViewport(entry, observer) {
-
         const triggers = entry.target.__inviewTriggerHook;
         const element = entry.target;
 
@@ -75,71 +73,54 @@ class InView {
 
         if (
             // Element is past bottom of the screen
-            element.inviewProperties.scrolledPastViewport.bottom
-            &&
-            (
-                // Element does not have a threshold or it has a threshold and the threshold is met
-                !element.__inviewThreshold
-                || element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio
-            )
+            element.inviewProperties.scrolledPastViewport.bottom &&
+            // Element does not have a threshold or it has a threshold and the threshold is met
+            (!element.__inviewThreshold ||
+                (element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio))
         ) {
-
             element.classList.remove(INVIEW_OUTVIEW_CLASS);
             triggerEvents(getTriggers(triggers), element);
-
 
             if (!element.__inviewPersistent) {
                 observer.unobserve(entry.target);
             }
-
         } else {
-
             element.classList.add(INVIEW_OUTVIEW_CLASS);
 
             if (element.__inviewPersistent) {
                 triggerEvents(getTriggers(triggers), element);
             }
-
-
         }
-
     }
 
     addElements(elements = getNodes(), hook = false) {
-
         elements.forEach(element => {
-
-            if (element.__inviewInitialized) { return; }
-            if (hook) { element.__inviewTriggerHook = hook; }
+            if (element.__inviewInitialized) {
+                return;
+            }
+            if (hook) {
+                element.__inviewTriggerHook = hook;
+            }
 
             this.nodes.push(element);
 
             this.bindObservedNodes();
-
         });
-
     }
-
 }
 
 function triggerEvents(triggers, data) {
-
     triggers.forEach(trigger => {
-        Events.$trigger(trigger, { data })
+        Events.$trigger(trigger, { data });
     });
-
 }
 
 function getTriggers(triggers) {
-
-    return (triggers) ? triggers.split(',') : [];
-
+    return triggers ? triggers.split(',') : [];
 }
 
 function getNodes() {
-
     return [...document.querySelectorAll(INVIEW_JS_HOOK)];
-
 }
 
 /**
@@ -147,9 +128,14 @@ function getNodes() {
  * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-
-    const scrollTop = SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop;
-    const scrollLeft = SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft;
+    const scrollTop =
+        SCROLL_ELEMENT.pageYOffset ||
+        SCROLL_ELEMENT.scrollTop ||
+        document.documentElement.scrollTop;
+    const scrollLeft =
+        SCROLL_ELEMENT.pageXOffset ||
+        SCROLL_ELEMENT.scrollLeft ||
+        document.documentElement.scrollLeft;
 
     const { top, bottom, left, right } = getElementOffset(entry);
     const position = { top, bottom, left, right };
@@ -167,7 +153,6 @@ function calculateInviewProperties(entry) {
     });
 
     return inViewDirections;
-
 }
 
 /**
@@ -176,7 +161,6 @@ function calculateInviewProperties(entry) {
  * @returns {Object} Object of top, bottom, left and right position
  */
 function getElementOffset(entry) {
-
     let targetElement = entry.target;
     const elementStyles = window.getComputedStyle(targetElement);
 
@@ -199,7 +183,7 @@ function getElementOffset(entry) {
         top,
         left,
         right: left + entry.boundingClientRect.width,
-        bottom: top + entry.boundingClientRect.height
+        bottom: top + entry.boundingClientRect.height,
     };
 }
 
@@ -209,7 +193,6 @@ function getElementOffset(entry) {
  * @returns {Object} matches
  */
 function getInViewDirections(options) {
-
     const { width, height } = options.entry.boundingClientRect;
 
     const topPosition = options.entry.boundingClientRect.top;
@@ -227,8 +210,12 @@ function getInViewDirections(options) {
     scrolledPastViewport.left = leftPosition <= 0 && isVisible;
 
     const isInViewport = {
-        horizontal: options.entry.isIntersecting && (scrolledPastViewport.left || scrolledPastViewport.right),
-        vertical: options.entry.isIntersecting && (scrolledPastViewport.top || scrolledPastViewport.bottom),
+        horizontal:
+            options.entry.isIntersecting &&
+            (scrolledPastViewport.left || scrolledPastViewport.right),
+        vertical:
+            options.entry.isIntersecting &&
+            (scrolledPastViewport.top || scrolledPastViewport.bottom),
     };
 
     return {
@@ -236,7 +223,7 @@ function getInViewDirections(options) {
             top: topPosition,
             right: rightPosition,
             bottom: bottomPosition,
-            left: leftPosition
+            left: leftPosition,
         },
         scrolledPastViewport,
         isInViewport,
@@ -248,7 +235,6 @@ function getInViewDirections(options) {
 }
 
 function buildThresholdList() {
-
     const numSteps = 1000;
     const thresholds = [];
 

@@ -3,9 +3,7 @@ import Events from '@utilities/events';
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active';
 
 class Toggle {
-
     constructor(element) {
-
         this.element = element;
         this.controls = element.getAttribute('aria-controls');
         this.id = element.id || this.controls;
@@ -16,7 +14,6 @@ class Toggle {
 
         this.bindEvents();
         this.setDefaultState();
-
     }
 
     set isActive(boolean) {
@@ -51,7 +48,6 @@ class Toggle {
      * Toggles the entire UI state of the toggle component
      */
     toggleState() {
-
         if (this.element.dataset.toggleLive === 'true') {
             this.links = this.getToggleLinks();
         }
@@ -61,79 +57,67 @@ class Toggle {
         this.triggerExternalEvents();
 
         Events.$trigger('toggle::check-tabindex');
-
     }
 
     /**
      * Sets default ARIA, tabIndex and classname roles based on config
      */
     setDefaultState() {
-
         if (this.element.dataset.toggleDefaultActive === 'true') {
             this.toggleState();
         }
 
         this.setAccesibilityState();
         Events.$trigger('toggle::check-tabindex');
-
     }
 
     /**
      * Toggles all element class names
      */
     toggleActiveClassNames() {
-
         this.toggleToggleElementActiveState();
         this.toggleLinksClassNames();
-
     }
 
     /**
      * Toggles the active classname of the toggle component and toggles aria attribute
      */
     toggleToggleElementActiveState() {
-
         this.element.classList.toggle(this.activeClass);
         this.isActive = this.element.classList.contains(this.activeClass);
-
     }
 
     /**
      * Toggles the active classname of the toggle components links
      */
     toggleLinksClassNames() {
-
         const toggleAction = this.isActive ? 'add' : 'remove';
         this.links.forEach(link => link.classList[toggleAction](this.activeClass));
-
     }
 
     /**
      * Toggles the ARIA attributes
      */
     setAccesibilityState() {
-
         this.element.setAttribute('aria-expanded', this.isActive.toString());
         this.links.forEach(link => link.setAttribute('aria-hidden', (!this.isActive).toString()));
-
     }
 
     /**
      * Triggers external events based on new state
      */
     triggerExternalEvents() {
-
         const newState = this.isActive ? 'opened' : 'closed';
         Events.$trigger(`toggle[${this.element.id}]::${newState}`);
-        Events.$trigger(`toggle[${this.element.id}]::toggled`, { data: this.isActive });
-
+        Events.$trigger(`toggle[${this.element.id}]::toggled`, {
+            data: this.isActive,
+        });
     }
 
     /**
      * Get all the external link elements from the toggle component
      */
     getToggleLinks() {
-
         const ariaControls = this.controls;
         if (!ariaControls) return [];
 
@@ -143,16 +127,13 @@ class Toggle {
             .join(', ');
 
         return [...document.querySelectorAll(LINKS_SELECTOR)];
-
     }
 
     /**
      * Set initial tab index
      */
     checkTabIndex() {
-
         Toggle.setTabIndex(this.interactiveElements, this._isActive ? 0 : -1);
-
     }
 
     /**
@@ -160,21 +141,23 @@ class Toggle {
      * @param elementsToToggle, array with all elements controlled by the toggle
      */
     static getInteractiveElements(elementsToToggle) {
-
         const itemsBelowToggle = [];
 
         elementsToToggle.forEach(element => {
             const parentHeight = element.clientHeight;
             const parentOffsetTop = element.offsetTop; // In case parent isn't relatively positioned
-            const interactiveChildren = element.querySelectorAll('a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video');
+            const interactiveChildren = element.querySelectorAll(
+                'a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video'
+            );
 
-            const hiddenElements = [...interactiveChildren].filter(childElement => (childElement.offsetTop - parentOffsetTop) >= parentHeight);
+            const hiddenElements = [...interactiveChildren].filter(
+                childElement => childElement.offsetTop - parentOffsetTop >= parentHeight
+            );
 
             itemsBelowToggle.push(...hiddenElements);
         });
 
         return itemsBelowToggle;
-
     }
 
     /**
@@ -184,10 +167,9 @@ class Toggle {
      */
     static setTabIndex(elements, value) {
         elements.forEach(element => {
-            element.tabIndex = value
+            element.tabIndex = value;
         });
     }
-
 }
 
 export default Toggle;

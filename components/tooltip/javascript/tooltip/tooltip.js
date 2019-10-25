@@ -6,7 +6,7 @@ const DIRECTIONS = {
     LEFT: 'left',
     RIGHT: 'right',
     TOP: 'top',
-    BOTTOM: 'bottom'
+    BOTTOM: 'bottom',
 };
 const TRIANGLE = '[js-hook-triangle]';
 const TOOLTIP_TRIGGER_CLASS = 'tooltip--trigger';
@@ -30,11 +30,10 @@ const TOOLTIP_PROPS = [
     `${TOOLTIP_PREFIX}top-right`,
     `${TOOLTIP_PREFIX}bottom-left`,
     `${TOOLTIP_PREFIX}bottom-center`,
-    `${TOOLTIP_PREFIX}bottom-right`
+    `${TOOLTIP_PREFIX}bottom-right`,
 ];
 
 class Tooltip {
-
     constructor(element) {
         this.element = element;
         this.triangle = this.element.querySelector(TRIANGLE);
@@ -45,9 +44,7 @@ class Tooltip {
         this.resetTouchEvent = event => this.resetTouch(event);
 
         if (DetectTouch.isTouchDevice) {
-            this.tooltipTrigger.addEventListener('touchstart', event =>
-                this.handleTouch(event)
-            );
+            this.tooltipTrigger.addEventListener('touchstart', event => this.handleTouch(event));
         } else {
             this.tooltipTrigger.addEventListener('mouseenter', () =>
                 this.inScreen(Tooltip.getElementPositions(this.element))
@@ -58,12 +55,8 @@ class Tooltip {
         }
 
         if (ScreenDimensions.isTabletPortraitAndBigger) {
-            this.tooltipTrigger.addEventListener('mouseleave', () =>
-                this.resetElement()
-            );
-            this.tooltipTrigger.addEventListener('blur', () =>
-                this.resetElement()
-            );
+            this.tooltipTrigger.addEventListener('mouseleave', () => this.resetElement());
+            this.tooltipTrigger.addEventListener('blur', () => this.resetElement());
         }
     }
 
@@ -87,12 +80,15 @@ class Tooltip {
             top,
             right,
             bottom,
-            left
+            left,
         };
     }
 
     resetTouch(event) {
-        if (!event.target.classList.contains(TOOLTIP_TRIGGER_CLASS) || event.target.closest(`.${TOOLTIP_TRIGGER_CLASS}`) !== this.tooltipTrigger) {
+        if (
+            !event.target.classList.contains(TOOLTIP_TRIGGER_CLASS) ||
+            event.target.closest(`.${TOOLTIP_TRIGGER_CLASS}`) !== this.tooltipTrigger
+        ) {
             /** Remove the touch event. If you click on a toolbar again
              * the touch event isn't double. */
             document.removeEventListener('touchstart', this.resetTouchEvent);
@@ -190,12 +186,12 @@ class Tooltip {
             case DIRECTIONS.LEFT:
                 return {
                     element: positionReverse,
-                    triangle: position
+                    triangle: position,
                 };
             default:
                 return {
                     element: position,
-                    triangle: positionReverse
+                    triangle: positionReverse,
                 };
         }
     }

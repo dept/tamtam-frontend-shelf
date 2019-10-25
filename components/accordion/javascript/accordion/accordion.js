@@ -4,9 +4,7 @@ import AccordionItem from './accordion-item';
 const ACCORDION_ITEM_HOOK = '[js-hook-accordion-item]';
 
 class Accordion {
-
     constructor(element) {
-
         this.element = element;
         this.items = [...this.element.querySelectorAll(ACCORDION_ITEM_HOOK)];
 
@@ -15,7 +13,6 @@ class Accordion {
         this.autoClose = this.element.dataset.autoclose !== 'false';
         this.accordionItems = {};
         this.initItems();
-
     }
 
     /**
@@ -23,7 +20,6 @@ class Accordion {
      * @param {HTMLElement} item  | accordion item
      */
     bindAccordionEvents({ id }) {
-
         Events.$on(`accordion[${id}]::close`, () => {
             if (id) {
                 if (this.accordionItems[id] && !this.isAnimating) {
@@ -55,20 +51,17 @@ class Accordion {
                 this.isAnimating = data.animating;
             }
         });
-
     }
 
     /**
      * Iterate over each item inside the accordion
      */
     initItems() {
-
         this.items.forEach(el => {
             const item = new AccordionItem(el);
             this.accordionItems[item.id] = item;
             this.bindAccordionEvents(this.accordionItems[item.id]);
         });
-
     }
 
     /**
@@ -76,16 +69,13 @@ class Accordion {
      * @param {String} skipId Identifier which should be skipped
      */
     closeAllChildren(skipId) {
-
         if (!this.autoClose) return;
 
         Object.keys(this.accordionItems).forEach(id => {
             if (skipId === id) return;
             this.accordionItems[id].close();
         });
-
     }
-
 }
 
 export default Accordion;

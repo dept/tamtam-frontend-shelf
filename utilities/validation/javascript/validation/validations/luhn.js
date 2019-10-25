@@ -9,6 +9,4 @@ function isValidLuhnNumber(number) {
     return luhn.validate(number);
 }
 
-export {
-    isValidLuhnNumber
-};
+export { isValidLuhnNumber };

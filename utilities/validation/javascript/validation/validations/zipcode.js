@@ -8,6 +8,4 @@ function isValidZipcode(zipcode, regex = /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/
     return regex.test(zipcode);
 }
 
-export {
-    isValidZipcode
-};
+export { isValidZipcode };

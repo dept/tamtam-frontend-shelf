@@ -1,13 +1,10 @@
 import raf from 'raf';
 
 class RafThrottle {
-
     constructor() {
-
         this.namespaces = {};
         this.timeoutList = {};
         this.runningList = {};
-
     }
 
     /**
@@ -20,9 +17,7 @@ class RafThrottle {
      * @param {Function} bind[].fn Function we want to execute
      */
     set(binds) {
-
         this._addEvents(binds);
-
     }
 
     /**
@@ -34,11 +29,9 @@ class RafThrottle {
      * @param {string} bind[].namespace Namepace of the event
      */
     remove(binds) {
-
         if (binds) {
             this._removeEvents(binds);
         }
-
     }
 
     /*
@@ -56,25 +49,21 @@ class RafThrottle {
      * @param {Number} [bind[].delay] Amount of delay
      */
     _addEvents(binds) {
-
         binds.forEach(bind => {
-
             const eventOptions = {
                 element: bind.element,
                 event: bind.event,
                 namespace: generateNamespace(bind.event, bind.namespace),
                 callback: event => this._trigger(bind, event),
                 eventOptions: { passive: true },
-                delay: bind.delay
+                delay: bind.delay,
             };
 
             this.timeoutList[eventOptions.namespace] = null;
             this.runningList[eventOptions.namespace] = false;
 
             this._addThrottledEvent(eventOptions);
-
         });
-
     }
 
     /**
@@ -86,19 +75,15 @@ class RafThrottle {
      * @param {string} bind[].namespace Namepace of the event
      */
     _removeEvents(binds) {
-
         binds.forEach(bind => {
-
             const eventOptions = {
                 element: bind.element,
                 event: bind.event,
-                namespace: generateNamespace(bind.event, bind.namespace)
+                namespace: generateNamespace(bind.event, bind.namespace),
             };
 
             this._removeThrottledEvent(eventOptions);
-
         });
-
     }
 
     /**
@@ -112,24 +97,21 @@ class RafThrottle {
      * @param {Event} event Event object
      */
     _trigger(bind, event) {
-
         const eventNamespace = generateNamespace(bind.event, bind.namespace);
 
         if (bind.delay) {
-
             if (this.timeoutList[eventNamespace]) {
                 this.runningList[eventNamespace] = false;
                 clearTimeout(this.timeoutList[eventNamespace]);
             }
 
-            this.timeoutList[eventNamespace] = setTimeout(() => this.createRafInstance(bind, event, eventNamespace), bind.delay);
-
+            this.timeoutList[eventNamespace] = setTimeout(
+                () => this.createRafInstance(bind, event, eventNamespace),
+                bind.delay
+            );
         } else {
-
             this.createRafInstance(bind, event, eventNamespace);
-
         }
-
     }
 
     /**
@@ -148,10 +130,8 @@ class RafThrottle {
         if (this.runningList[eventNamespace]) return;
 
         raf(() => {
-
             bind.fn(event);
             this.runningList[eventNamespace] = false;
-
         });
 
         this.runningList[eventNamespace] = true;
@@ -167,7 +147,6 @@ class RafThrottle {
      * @param {object} [options[].eventOptions] Give options to your event
      */
     _addThrottledEvent(options) {
-
         const { element, event, namespace, callback } = options;
         let { eventOptions } = options;
 
@@ -175,7 +154,6 @@ class RafThrottle {
         eventOptions = eventOptions || false;
 
         element.addEventListener(event, callback, eventOptions);
-
     }
 
     /**
@@ -186,15 +164,12 @@ class RafThrottle {
      * @param {string} options[].namespace Namepace of the event we are removing
      */
     _removeThrottledEvent(options) {
-
         const { element, event, namespace } = options;
         if (this.namespaces[namespace]) {
             element.removeEventListener(event, this.namespaces[namespace]);
             delete this.namespaces[namespace];
         }
-
     }
-
 }
 
 /**
@@ -203,9 +178,7 @@ class RafThrottle {
  * @param {string} namespace
  */
 function generateNamespace(eventName, namespace) {
-
     return `${eventName}.${namespace}`;
-
 }
 
 export default new RafThrottle();

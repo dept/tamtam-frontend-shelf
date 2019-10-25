@@ -8,7 +8,11 @@
     if (typeof window.CustomEvent === 'function') return false; // If not IE
 
     function CustomEvent(event, params) {
-        const newParams = params || { bubbles: false, cancelable: false, detail: undefined };
+        const newParams = params || {
+            bubbles: false,
+            cancelable: false,
+            detail: undefined,
+        };
         const evt = document.createEvent('CustomEvent');
         evt.initCustomEvent(event, newParams.bubbles, newParams.cancelable, newParams.detail);
         return evt;

@@ -4,5 +4,5 @@ export default {
     },
     clearItem(context, payload) {
         context.commit('clearItem', payload);
-    }
+    },
 };

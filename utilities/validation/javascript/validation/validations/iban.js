@@ -9,6 +9,4 @@ function isValidIBAN(IBAN) {
     return iban.isValid(IBAN);
 }
 
-export {
-    isValidIBAN
-};
+export { isValidIBAN };

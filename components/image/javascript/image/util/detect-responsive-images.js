@@ -1,10 +1,9 @@
-const hasResponsiveImages = function () {
-
+const hasResponsiveImages = function() {
     const supports = {
         srcset: false,
         currentSrc: false,
         sizes: false,
-        picture: false
+        picture: false,
     };
 
     const img = new Image();
@@ -26,8 +25,6 @@ const hasResponsiveImages = function () {
     }
 
     return supports;
-
 };
-
 
 export default hasResponsiveImages();

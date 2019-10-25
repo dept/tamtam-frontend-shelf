@@ -12,9 +12,7 @@ import Events from '@utilities/events';
  *  5: 'video cued'
  */
 class YoutubeVideo {
-
     constructor(options) {
-
         this.options = options;
 
         this.playerOptions = {
@@ -26,12 +24,12 @@ class YoutubeVideo {
                 showinfo: 0,
                 controls: this.options.videoControls || 0,
                 rel: 0,
-                origin: window.location.href
+                origin: window.location.href,
             },
             events: {
                 onReady: this.onReady.bind(this),
-                onStateChange: this.onStateChange.bind(this)
-            }
+                onStateChange: this.onStateChange.bind(this),
+            },
         };
 
         if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
@@ -39,11 +37,9 @@ class YoutubeVideo {
         }
 
         this.init();
-
     }
 
     init() {
-
         if (!window.YT) {
             YoutubeVideo.loadAPI();
             this.checkAPIReady();
@@ -81,7 +77,7 @@ class YoutubeVideo {
     onReady() {
         Events.$trigger('video::ready', { data: this.options });
         Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-            data: this.options
+            data: this.options,
         });
 
         Events.$trigger('video::bind-player-events', { data: this.options });
@@ -93,7 +89,7 @@ class YoutubeVideo {
             case 0:
                 Events.$trigger('video::ended', { data: this.options });
                 Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-                    data: this.options
+                    data: this.options,
                 });
                 break;
 
@@ -101,7 +97,7 @@ class YoutubeVideo {
             case 1:
                 Events.$trigger('video::playing', { data: this.options });
                 Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-                    data: this.options
+                    data: this.options,
                 });
                 break;
 
@@ -109,7 +105,7 @@ class YoutubeVideo {
             case 2:
                 Events.$trigger('video::paused', { data: this.options });
                 Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-                    data: this.options
+                    data: this.options,
                 });
                 break;
 

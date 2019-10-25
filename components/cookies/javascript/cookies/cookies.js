@@ -17,9 +17,7 @@ const COOKIE_DEFAULT_VALUE = '1';
 const COOKIE_DECLINED_VALUE = '0';
 
 class Cookies {
-
     constructor() {
-
         this.cookiebar = document.querySelector(COOKIE_BAR_HOOK);
         this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK);
 
@@ -60,25 +58,23 @@ class Cookies {
                 },
                 {
                     name: this.cookieName.social,
-                    default: COOKIE_DECLINED_VALUE
+                    default: COOKIE_DECLINED_VALUE,
                 },
                 {
                     name: this.cookieName.advertising,
-                    default: COOKIE_DECLINED_VALUE
+                    default: COOKIE_DECLINED_VALUE,
                 },
                 {
                     name: this.cookieName.other,
-                    default: COOKIE_DECLINED_VALUE
-                }
-            ]
+                    default: COOKIE_DECLINED_VALUE,
+                },
+            ],
         };
 
         this.init();
-
     }
 
     init() {
-
         if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version) {
             this._removeInvalidatedCookies();
         }
@@ -95,14 +91,16 @@ class Cookies {
             this.setCookie(COOKIEBAR_COOKIE_NAME, COOKIE_DECLINED_VALUE);
         }
 
-        if (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version && !this.form.element || this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE && !this.form.element) {
+        if (
+            (this.getCookie(COOKIEBAR_COOKIE_VERSION) !== this.config.version &&
+                !this.form.element) ||
+            (this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE && !this.form.element)
+        ) {
             this._show();
         }
-
     }
 
     _bindEvents() {
-
         if (this.cookiebar) {
             Events.$on('cookies::dismiss', () => this._acceptAllCookies());
         }
@@ -112,7 +110,10 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE) {
+        if (
+            !this.getCookie(COOKIEBAR_COOKIE_NAME) ||
+            !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE
+        ) {
             [...document.querySelectorAll('a')]
                 .filter(link => link !== this.cookiebarOptionsButton)
                 .forEach(link => {
@@ -131,21 +132,17 @@ class Cookies {
                     });
                 });
         }
-
     }
 
     _setDefaultCookies() {
-
         this.config.cookies.forEach(cookie => {
             if (!this.getCookie(cookie.name) && cookie.default === COOKIE_DEFAULT_VALUE) {
                 this.setCookie(cookie.name, cookie.default);
             }
         });
-
     }
 
     _acceptAllCookies() {
-
         const acceptedCookies = {};
 
         this.config.cookies.forEach(cookie => {
@@ -156,23 +153,18 @@ class Cookies {
         this._addGlobalCookies(acceptedCookies);
 
         window.location.reload();
-
     }
 
     _addGlobalCookies(_cookies) {
-
         _cookies.date = Date(Date.now());
         _cookies.version = this.config.version;
 
         this.setCookie(COOKIEBAR_COOKIE_NAME, _cookies);
         this.setCookie(COOKIEBAR_COOKIE_VERSION, this.config.version);
-
     }
 
     _prefillFormCookies() {
-
         this.form.options.forEach(option => {
-
             if (this.getCookie(option.value) === this.config.version) {
                 option.setAttribute('checked', 'checked');
             } else if (this.getCookie(option.value) === COOKIE_DECLINED_VALUE) {
@@ -180,24 +172,19 @@ class Cookies {
             } else {
                 option.setAttribute('checked', 'checked');
             }
-
         });
-
     }
 
     _removeInvalidatedCookies() {
-
         this.config.cookies.forEach(cookie => {
             this.removeCookie(cookie.name);
         });
 
         this.removeCookie(COOKIEBAR_COOKIE_NAME);
         this.removeCookie(COOKIEBAR_COOKIE_VERSION);
-
     }
 
     _submitFormCookies(event) {
-
         event.preventDefault();
 
         const acceptedCookies = {};
@@ -216,19 +203,15 @@ class Cookies {
         this._addGlobalCookies(acceptedCookies);
 
         window.location = this.form.url;
-
     }
 
     _setDefaultPreferences() {
-
         this.form.options.forEach(option => {
             option.setAttribute('checked', 'checked');
         });
-
     }
 
     _show() {
-
         if (this.cookiebar) {
             this.cookiebar.classList.add(SHOW_CLASS);
             this.cookiebar.tabIndex = 0;
@@ -237,11 +220,10 @@ class Cookies {
             this.cookiebar.focus();
             Events.$trigger('focustrap::activate', {
                 data: {
-                    element: this.cookiebar
-                }
+                    element: this.cookiebar,
+                },
             });
         }
-
     }
 
     /**
@@ -270,7 +252,6 @@ class Cookies {
         return cookies.get(this.prefixCookieName(name));
     }
 
-
     prefixCookieName(name) {
         return `${this.config.cookiePrefix}-cookie-${name}`;
     }
@@ -280,9 +261,11 @@ class Cookies {
      * @returns {Boolean}
      */
     cookieIsValid(name) {
-        return this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version && cookies.get(this.prefixCookieName(name)) === this.config.version;
+        return (
+            this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version &&
+            cookies.get(this.prefixCookieName(name)) === this.config.version
+        );
     }
-
 }
 
 export default new Cookies();

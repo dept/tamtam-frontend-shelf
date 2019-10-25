@@ -1,0 +1,24 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "jquery": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "allowImportExportEverywhere": true,
+        "codeFrame": false,
+        "ecmaFeatures": {
+            "modules": true
+        }
+    },
+    "globals": {
+        "google": true,
+        "dataLayer": true
+    },
+    "rules": {
+        "no-console": 0
+    }
+}

@@ -15,9 +15,7 @@ const ACCORDION_OPEN_CLASS = 'accordion__item--is-active';
 const ACCORDION_ANIMATING_CLASS = 'accordion__item--is-animating';
 
 class AccordionItem {
-
     constructor(element) {
-
         this.item = element;
         this.isOpen = this.item.classList.contains(ACCORDION_OPEN_CLASS);
         this.isAnimating = false;
@@ -31,13 +29,12 @@ class AccordionItem {
         setTabindexOfChildren(this.contentHolder, this.isOpen ? 0 : -1);
 
         this.bindEvents();
-
     }
 
     bindEvents() {
-
-        this.contentHolder.addEventListener('transitionend', event => this.heightTransitionEnd(event));
-
+        this.contentHolder.addEventListener('transitionend', event =>
+            this.heightTransitionEnd(event)
+        );
     }
 
     set isOpen(boolean) {
@@ -52,20 +49,17 @@ class AccordionItem {
      * Toggles the accordion item
      */
     toggle() {
-
         if (this.isOpen) {
             this.close();
         } else {
             this.open();
         }
-
     }
 
     /**
      * Opens the accordion item
      */
     open() {
-
         if (this.isOpen || this.isAnimating) return;
 
         this.isOpen = true;
@@ -75,14 +69,12 @@ class AccordionItem {
 
         this.setHeight();
         this.setAccessibilityState();
-
     }
 
     /**
      * Closes the accordion item
      */
     close() {
-
         if (!this.isOpen || this.isAnimating) return;
 
         this.isOpen = false;
@@ -92,25 +84,21 @@ class AccordionItem {
 
         this.setHeight();
         this.setAccessibilityState();
-
     }
 
     /**
      * Sets correct aria-* values
      */
     setAccessibilityState() {
-
         this.button.setAttribute('aria-expanded', this.isOpen);
         this.contentHolder.setAttribute('aria-hidden', !this.isOpen);
         setTabindexOfChildren(this.content, this.isOpen ? 0 : -1);
-
     }
 
     /**
      * Sets the height based on the this.isOpen
      */
     setHeight() {
-
         const { height } = this.content.getBoundingClientRect();
 
         if (!this.isOpen) this.contentHolder.style.height = `${height}px`;
@@ -120,7 +108,6 @@ class AccordionItem {
         this.contentHolder.offsetHeight; // eslint-disable-line
 
         this.contentHolder.style.height = this.isOpen ? `${height}px` : '0';
-
     }
 
     /**
@@ -128,7 +115,6 @@ class AccordionItem {
      * @param {Event} event
      */
     heightTransitionEnd(event) {
-
         if (event.propertyName !== 'height') return;
         if (this.isOpen) this.contentHolder.style.height = 'auto';
 
@@ -144,12 +130,11 @@ class AccordionItem {
         Events.$trigger(`accordion::${this.isOpen ? 'opened' : 'closed'}`, {
             data: {
                 element: this.item,
-                id: this.id
-            }
+                id: this.id,
+            },
         });
 
         Events.$trigger(`accordion[${this.id}]::${this.isOpen ? `opened` : `closed`}`);
-
     }
 
     /**
@@ -157,7 +142,6 @@ class AccordionItem {
      * @param {Boolean} bool
      */
     triggerAnimatingEvent(bool) {
-
         this.isAnimating = bool;
 
         this.item.classList[this.isAnimating ? 'add' : 'remove'](ACCORDION_ANIMATING_CLASS);
@@ -165,12 +149,10 @@ class AccordionItem {
         Events.$trigger(`accordion[${this.id}]::animating`, {
             data: {
                 id: this.id,
-                animating: this.isAnimating
-            }
+                animating: this.isAnimating,
+            },
         });
-
     }
-
 }
 
 export default AccordionItem;

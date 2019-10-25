@@ -8,5 +8,5 @@ export default {
         state.items.splice(payload.index, 1);
 
         return state;
-    }
+    },
 };

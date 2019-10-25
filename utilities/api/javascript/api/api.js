@@ -6,24 +6,20 @@ import Environment from '@utilities/environment';
 
 import axios from 'axios';
 
-const endpointBase = window.EnvironmentSettings.endpoint
+const endpointBase = window.EnvironmentSettings.endpoint;
 
 class API {
-
     /**
      * Set an anti forgery token to make AJAX requests to the backend
      * @param {string} name
      * @param {string} value
      */
     setAntiForgeryToken(name, value) {
-
         this.antiForgeryToken = {};
         this.antiForgeryToken = { name, value };
-
     }
 
     get(path, data = {}, json, options = {}) {
-
         let config = {
             url: getEndpoint(path, json, 'get'),
             params: data,
@@ -33,16 +29,14 @@ class API {
         config = { ...config, ...options };
 
         return axios(config);
-
     }
 
     post(path, data = {}, json, options = {}) {
-
         let config = {
             url: getEndpoint(path, json, 'post'),
             data,
             method: getMethod('POST', json),
-        }
+        };
 
         if (this.antiForgeryToken) {
             config.headers = {};
@@ -52,12 +46,9 @@ class API {
         config = { ...config, ...options };
 
         return axios(config);
-
     }
 
-
     put(path, data = {}, json, options = {}) {
-
         let config = {
             url: getEndpoint(path, json, 'put'),
             data,
@@ -67,11 +58,9 @@ class API {
         config = { ...config, ...options };
 
         return axios(config);
-
     }
 
     delete(path, data = {}, json, options = {}) {
-
         let config = {
             url: getEndpoint(path, json, 'delete'),
             data,
@@ -81,9 +70,7 @@ class API {
         config = { ...config, ...options };
 
         return axios(config);
-
     }
-
 }
 
 /**
@@ -93,7 +80,6 @@ class API {
  * @param {string} method
  */
 function getEndpoint(path, json, method) {
-
     if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
         return path;
     }
@@ -103,9 +89,7 @@ function getEndpoint(path, json, method) {
     } else {
         return endpointBase + path;
     }
-
 }
-
 
 /**
  * Will transform the method to GET if we require static json file
@@ -113,9 +97,7 @@ function getEndpoint(path, json, method) {
  * @param {string|boolean} json To check if we need to transform the method
  */
 function getMethod(method, json) {
-
-    return (json === true || (json === 'local' && Environment.isLocal)) ? 'GET' : method;
-
+    return json === true || (json === 'local' && Environment.isLocal) ? 'GET' : method;
 }
 
 export default new API();

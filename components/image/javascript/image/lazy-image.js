@@ -12,46 +12,40 @@ const LAZY_IMAGE_ANIMATE_IN_CLASS = 'image--is-loaded';
 const SUPPORTS_SRCSET = checkResponsiveImageRequirements();
 
 class LazyImage {
-
     constructor() {
-
         this.images = getImageNodes(LAZY_IMAGE_HOOK);
         this.shadowImages = getImageNodes(LAZY_SHADOW_IMAGE_HOOK);
 
         this._bindEvents();
         this._setObserverables();
-
     }
 
     _bindEvents() {
-
         Events.$on('lazyimage::load', (e, element) => this._loadImage(element));
         Events.$on('lazyimage::update', () => this._updateImages());
 
-        this.shadowImages.forEach((shadowImage) => LazyImage._removeShadowImage(shadowImage));
-
+        this.shadowImages.forEach(shadowImage => LazyImage._removeShadowImage(shadowImage));
     }
 
     _setObserverables() {
-
         InView.addElements(this.images, 'lazyimage::load');
-
     }
 
     static _removeShadowImage(image) {
-
-        image.addEventListener('transitionend', () => {
-            image.remove();
-        }, false);
-
+        image.addEventListener(
+            'transitionend',
+            () => {
+                image.remove();
+            },
+            false
+        );
     }
 
     /**
      * Load the image
-    * @param {HTMLElement} element Figure element
+     * @param {HTMLElement} element Figure element
      */
     _loadImage(element) {
-
         const image = element.querySelector('img');
         if (!image) return;
 
@@ -71,7 +65,6 @@ class LazyImage {
         if (SUPPORTS_SRCSET && srcset) {
             image.srcset = srcset;
         }
-
     }
 
     /**
@@ -79,7 +72,6 @@ class LazyImage {
      * @param {HTMLElement} element Figure element
      */
     _renderImage(element) {
-
         const image = element.querySelector('img');
 
         element.classList.add(LAZY_IMAGE_ANIMATE_IN_CLASS);
@@ -91,19 +83,15 @@ class LazyImage {
         }
 
         Events.$trigger('image::object-fit', { data: image });
-
     }
 
     /**
      * Update new images
      */
     _updateImages() {
-
         this.images = getImageNodes(LAZY_IMAGE_HOOK);
         this._setObserverables();
-
     }
-
 }
 
 /**
