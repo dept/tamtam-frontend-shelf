@@ -12,133 +12,133 @@ import Events from '@utilities/events';
  *  5: 'video cued'
  */
 class YoutubeVideo {
-    constructor(options) {
-        this.options = options;
+  constructor(options) {
+    this.options = options;
 
-        this.playerOptions = {
-            videoId: this.options.videoId,
-            host: 'https://www.youtube.com',
-            playerVars: {
-                start: this.options.videoTime,
-                modestbranding: 0,
-                showinfo: 0,
-                controls: this.options.videoControls || 0,
-                rel: 0,
-                origin: window.location.href,
-            },
-            events: {
-                onReady: this.onReady.bind(this),
-                onStateChange: this.onStateChange.bind(this),
-            },
-        };
+    this.playerOptions = {
+      videoId: this.options.videoId,
+      host: 'https://www.youtube.com',
+      playerVars: {
+        start: this.options.videoTime,
+        modestbranding: 0,
+        showinfo: 0,
+        controls: this.options.videoControls || 0,
+        rel: 0,
+        origin: window.location.href,
+      },
+      events: {
+        onReady: this.onReady.bind(this),
+        onStateChange: this.onStateChange.bind(this),
+      },
+    };
 
-        if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
-            this.playerOptions.host = 'https://www.youtube-nocookie.com';
-        }
-
-        this.init();
+    if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
+      this.playerOptions.host = 'https://www.youtube-nocookie.com';
     }
 
-    init() {
-        if (!window.YT) {
-            YoutubeVideo.loadAPI();
-            this.checkAPIReady();
-            return;
-        }
+    this.init();
+  }
 
-        this.checkAPIReady();
+  init() {
+    if (!window.YT) {
+      YoutubeVideo.loadAPI();
+      this.checkAPIReady();
+      return;
     }
 
-    static loadAPI() {
-        // This code loads the IFrame Player API code asynchronously.
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    }
+    this.checkAPIReady();
+  }
 
-    initPlayer() {
-        window.youtubeIsReady = true;
-        if (this.videoInterval) clearInterval(this.videoInterval);
-        this.player = new window.YT.Player(this.options.player, this.playerOptions);
-    }
+  static loadAPI() {
+    // This code loads the IFrame Player API code asynchronously.
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
 
-    checkAPIReady() {
-        window.onYouTubeIframeAPIReady = () => this.initPlayer();
+  initPlayer() {
+    window.youtubeIsReady = true;
+    if (this.videoInterval) clearInterval(this.videoInterval);
+    this.player = new window.YT.Player(this.options.player, this.playerOptions);
+  }
 
-        this.videoInterval = setInterval(() => {
-            if (window.youtubeIsReady) {
-                this.initPlayer();
-                clearInterval(this.videoInterval);
-            }
-        }, 200);
-    }
+  checkAPIReady() {
+    window.onYouTubeIframeAPIReady = () => this.initPlayer();
 
-    onReady() {
-        Events.$trigger('video::ready', { data: this.options });
-        Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-            data: this.options,
+    this.videoInterval = setInterval(() => {
+      if (window.youtubeIsReady) {
+        this.initPlayer();
+        clearInterval(this.videoInterval);
+      }
+    }, 200);
+  }
+
+  onReady() {
+    Events.$trigger('video::ready', { data: this.options });
+    Events.$trigger(`video[${this.options.instanceId}]::ready`, {
+      data: this.options,
+    });
+
+    Events.$trigger('video::bind-player-events', { data: this.options });
+  }
+
+  onStateChange(event) {
+    switch (event.data) {
+      // finished
+      case 0:
+        Events.$trigger('video::ended', { data: this.options });
+        Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+          data: this.options,
         });
+        break;
 
-        Events.$trigger('video::bind-player-events', { data: this.options });
+      // playing
+      case 1:
+        Events.$trigger('video::playing', { data: this.options });
+        Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+          data: this.options,
+        });
+        break;
+
+      // paused
+      case 2:
+        Events.$trigger('video::paused', { data: this.options });
+        Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+          data: this.options,
+        });
+        break;
+
+      // do nothing
+      default:
+        break;
     }
+  }
 
-    onStateChange(event) {
-        switch (event.data) {
-            // finished
-            case 0:
-                Events.$trigger('video::ended', { data: this.options });
-                Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-                    data: this.options,
-                });
-                break;
+  play() {
+    this.player.playVideo();
+  }
 
-            // playing
-            case 1:
-                Events.$trigger('video::playing', { data: this.options });
-                Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-                    data: this.options,
-                });
-                break;
+  pause() {
+    this.player.pauseVideo();
+  }
 
-            // paused
-            case 2:
-                Events.$trigger('video::paused', { data: this.options });
-                Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-                    data: this.options,
-                });
-                break;
+  replay() {
+    this.player.stopVideo();
+    this.player.playVideo();
+  }
 
-            // do nothing
-            default:
-                break;
-        }
-    }
+  mute() {
+    this.player.mute();
+  }
 
-    play() {
-        this.player.playVideo();
-    }
+  unMute() {
+    this.player.unMute();
+  }
 
-    pause() {
-        this.player.pauseVideo();
-    }
-
-    replay() {
-        this.player.stopVideo();
-        this.player.playVideo();
-    }
-
-    mute() {
-        this.player.mute();
-    }
-
-    unMute() {
-        this.player.unMute();
-    }
-
-    setVolume(value) {
-        this.player.setVolume(value);
-    }
+  setVolume(value) {
+    this.player.setVolume(value);
+  }
 }
 
 export default YoutubeVideo;

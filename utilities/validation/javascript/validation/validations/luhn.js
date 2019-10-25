@@ -6,7 +6,7 @@ import luhn from 'luhn';
  * @return {Boolean} TRUE if provided argument is a valid Luhn number, FALSE if not
  */
 function isValidLuhnNumber(number) {
-    return luhn.validate(number);
+  return luhn.validate(number);
 }
 
 export { isValidLuhnNumber };

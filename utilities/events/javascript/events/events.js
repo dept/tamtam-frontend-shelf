@@ -4,79 +4,79 @@ const listenQueue = {};
 const boundEvents = {};
 
 class Events {
-    get logging() {
-        return this._logging;
+  get logging() {
+    return this._logging;
+  }
+
+  set logging(boolean) {
+    this._logging = boolean;
+  }
+
+  constructor() {
+    this._logging = false;
+    readAndBindEventsFromDOM();
+  }
+
+  $on(event, callback) {
+    if (this.logging) {
+      console.log('Listening to event', '--- Name:', event, '--- Callback:', callback);
     }
 
-    set logging(boolean) {
-        this._logging = boolean;
+    if (eventIsBoundToEventEl(event, callback)) {
+      eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false);
     }
 
-    constructor() {
-        this._logging = false;
-        readAndBindEventsFromDOM();
+    boundEvents[event] = {
+      callbackString: callback.toString(),
+      callbackWrapper: ev => {
+        callback(
+          ev,
+          extractPropFromObject(ev.detail, 'data'),
+          extractPropFromObject(ev.detail, 'currentTarget')
+        );
+      },
+    };
+
+    eventEl.addEventListener(event, boundEvents[event].callbackWrapper);
+
+    if (!listenQueue[event]) {
+      listenQueue[event] = {};
+    }
+    listenQueue[event].eventIsBound = true;
+  }
+
+  $trigger(event, data, currentTarget) {
+    if (this.logging) {
+      console.log(
+        'Event triggered',
+        '--- Name:',
+        event,
+        '--- Params:',
+        data,
+        '--- currentTarget',
+        currentTarget
+      );
     }
 
-    $on(event, callback) {
-        if (this.logging) {
-            console.log('Listening to event', '--- Name:', event, '--- Callback:', callback);
-        }
+    if (listenQueue[event] && listenQueue[event].interval)
+      clearInterval(listenQueue[event].interval);
 
-        if (eventIsBoundToEventEl(event, callback)) {
-            eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false);
-        }
+    const _data = currentTarget ? { currentTarget, data } : data;
+    const _event = new CustomEvent(event, { detail: _data });
 
-        boundEvents[event] = {
-            callbackString: callback.toString(),
-            callbackWrapper: ev => {
-                callback(
-                    ev,
-                    extractPropFromObject(ev.detail, 'data'),
-                    extractPropFromObject(ev.detail, 'currentTarget')
-                );
-            },
-        };
-
-        eventEl.addEventListener(event, boundEvents[event].callbackWrapper);
-
-        if (!listenQueue[event]) {
-            listenQueue[event] = {};
-        }
-        listenQueue[event].eventIsBound = true;
+    if (typeof listenQueue[event] === 'undefined') {
+      listenQueue[event] = { eventIsBound: false };
     }
 
-    $trigger(event, data, currentTarget) {
-        if (this.logging) {
-            console.log(
-                'Event triggered',
-                '--- Name:',
-                event,
-                '--- Params:',
-                data,
-                '--- currentTarget',
-                currentTarget
-            );
-        }
-
-        if (listenQueue[event] && listenQueue[event].interval)
-            clearInterval(listenQueue[event].interval);
-
-        const _data = currentTarget ? { currentTarget, data } : data;
-        const _event = new CustomEvent(event, { detail: _data });
-
-        if (typeof listenQueue[event] === 'undefined') {
-            listenQueue[event] = { eventIsBound: false };
-        }
-
-        if (listenQueue[event].eventIsBound === false) {
-            listenQueue[event].interval = setInterval(
-                () => this.$trigger(event, data, currentTarget),
-                1000
-            );
-        } else {
-            eventEl.dispatchEvent(_event);
-        }
+    if (listenQueue[event].eventIsBound === false) {
+      listenQueue[event].interval = setInterval(
+        () => this.$trigger(event, data, currentTarget),
+        1000
+      );
+    } else {
+      eventEl.dispatchEvent(_event);
     }
+  }
 }
 
 const _Events = new Events();
@@ -92,25 +92,25 @@ _Events.$on('events::dom-reinit', () => readAndBindEventsFromDOM());
  * These are than passed to bindEvent.
  */
 function readAndBindEventsFromDOM() {
-    // Elements that have attributes starting with on:
-    const elements = _domFind(
-        crawlEl,
-        element =>
-            element.attributes &&
-            [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:')
-    );
+  // Elements that have attributes starting with on:
+  const elements = _domFind(
+    crawlEl,
+    element =>
+      element.attributes &&
+      [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:')
+  );
 
-    elements.map(el => {
-        if (!el._isInitialised) {
-            const attrs = [].slice.call(el.attributes);
-            attrs
-                // Filter attributes (so not elements this time) starting with on:
-                .filter(attr => attr.name.slice(0, 3) === 'on:')
-                // Listen to the native event.
-                .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
-            el._isInitialised = true;
-        }
-    });
+  elements.map(el => {
+    if (!el._isInitialised) {
+      const attrs = [].slice.call(el.attributes);
+      attrs
+        // Filter attributes (so not elements this time) starting with on:
+        .filter(attr => attr.name.slice(0, 3) === 'on:')
+        // Listen to the native event.
+        .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value));
+      el._isInitialised = true;
+    }
+  });
 }
 
 /**
@@ -120,27 +120,27 @@ function readAndBindEventsFromDOM() {
  * @param {string} attrValue value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
  */
 function bindEvent(targetEl, attrName, attrValue) {
-    // Split on dot and colon.
-    const attrs = attrName.split(/on:|\./);
-    const nativeEvent = attrs[1];
-    const modifiers = attrs.splice(1);
-    const [eventToTrigger, eventData] = parseEventString(attrValue);
+  // Split on dot and colon.
+  const attrs = attrName.split(/on:|\./);
+  const nativeEvent = attrs[1];
+  const modifiers = attrs.splice(1);
+  const [eventToTrigger, eventData] = parseEventString(attrValue);
 
-    // Filters out only the clicked element, based on event attribute.
-    const delegateFilter = el => el === targetEl;
+  // Filters out only the clicked element, based on event attribute.
+  const delegateFilter = el => el === targetEl;
 
-    eventEl.addEventListener(
-        nativeEvent,
-        _delegate(delegateFilter, e => {
-            runModifiers(modifiers, e);
-            _Events.$trigger(eventToTrigger, eventData, targetEl);
-        })
-    );
+  eventEl.addEventListener(
+    nativeEvent,
+    _delegate(delegateFilter, e => {
+      runModifiers(modifiers, e);
+      _Events.$trigger(eventToTrigger, eventData, targetEl);
+    })
+  );
 
-    if (!listenQueue[eventToTrigger]) {
-        listenQueue[eventToTrigger] = {};
-    }
-    listenQueue[eventToTrigger].eventIsBound = true;
+  if (!listenQueue[eventToTrigger]) {
+    listenQueue[eventToTrigger] = {};
+  }
+  listenQueue[eventToTrigger].eventIsBound = true;
 }
 
 /**
@@ -150,7 +150,7 @@ function bindEvent(targetEl, attrName, attrValue) {
  * @returns {boolean}
  */
 function eventIsBoundToEventEl(event, callback) {
-    return boundEvents[event] && boundEvents[event].callbackString === callback.toString();
+  return boundEvents[event] && boundEvents[event].callbackString === callback.toString();
 }
 
 /**
@@ -159,14 +159,14 @@ function eventIsBoundToEventEl(event, callback) {
  * @param {Event} e
  */
 function runModifiers(modifiers, e) {
-    modifiers.map(modifier => {
-        if (modifier === 'prevent' || modifier === 'preventDefault') {
-            e.preventDefault();
-        }
-        if (modifier === 'stop' || modifier === 'stopPropagation') {
-            e.stopPropagation();
-        }
-    });
+  modifiers.map(modifier => {
+    if (modifier === 'prevent' || modifier === 'preventDefault') {
+      e.preventDefault();
+    }
+    if (modifier === 'stop' || modifier === 'stopPropagation') {
+      e.stopPropagation();
+    }
+  });
 }
 
 /**
@@ -177,8 +177,8 @@ function runModifiers(modifiers, e) {
  * @returns {[*,*]}
  */
 function parseEventString(eventString) {
-    const eventStringSplitted = eventString.split(new RegExp(/\(|\)/g));
-    return [eventStringSplitted[0], eventStringSplitted[1]];
+  const eventStringSplitted = eventString.split(new RegExp(/\(|\)/g));
+  return [eventStringSplitted[0], eventStringSplitted[1]];
 }
 
 /* DOM and Event helpers */
@@ -190,19 +190,19 @@ function parseEventString(eventString) {
  * @returns {Function}
  */
 function _delegate(criteria, callback) {
-    return function(e) {
-        let el = e.target;
-        if (criteria(el)) {
-            callback.apply(this, arguments);
-        }
-        while ((el = el.parentNode)) {
-            if (criteria(el)) {
-                e.delegateTarget = el;
-                callback.apply(this, arguments);
-                return;
-            }
-        }
-    };
+  return function(e) {
+    let el = e.target;
+    if (criteria(el)) {
+      callback.apply(this, arguments);
+    }
+    while ((el = el.parentNode)) {
+      if (criteria(el)) {
+        e.delegateTarget = el;
+        callback.apply(this, arguments);
+        return;
+      }
+    }
+  };
 }
 
 /**
@@ -213,18 +213,18 @@ function _delegate(criteria, callback) {
  * @returns {Array}
  */
 function _domFind(element, predicate, results = []) {
-    if (!element.children) {
-        return results;
-    }
-    if (predicate(element)) {
-        results.push(element);
-    }
-    if (element.children && element.children.length) {
-        [].slice.call(element.children).map(child => {
-            _domFind(child, predicate, results);
-        });
-    }
+  if (!element.children) {
     return results;
+  }
+  if (predicate(element)) {
+    results.push(element);
+  }
+  if (element.children && element.children.length) {
+    [].slice.call(element.children).map(child => {
+      _domFind(child, predicate, results);
+    });
+  }
+  return results;
 }
 
 /**
@@ -234,7 +234,7 @@ function _domFind(element, predicate, results = []) {
  * @returns {Object}
  */
 function extractPropFromObject(object, propName) {
-    return object && object[propName] ? object[propName] : null;
+  return object && object[propName] ? object[propName] : null;
 }
 
 export default _Events;
