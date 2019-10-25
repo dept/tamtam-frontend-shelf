@@ -6,9 +6,7 @@ import iban from 'iban';
  * @return {Boolean} TRUE if provided argument is a valid IBAN number, FALSE if not
  */
 function isValidIBAN(IBAN) {
-    return iban.isValid(IBAN);
+  return iban.isValid(IBAN);
 }
 
-export {
-    isValidIBAN
-};
+export { isValidIBAN };

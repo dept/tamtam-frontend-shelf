@@ -2,121 +2,116 @@ import Cookies from '@components/cookies';
 import Events from '@utilities/events';
 
 class VimeoVideo {
-    constructor(options) {
-        this.options = options;
+  constructor(options) {
+    this.options = options;
 
-        if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
-            Events.$trigger('video::cookie-invalid', {
-                data: this.options.element
-            });
-            return;
-        }
-
-        import(/* webpackChunkName: "Vimeo-Player" */ '@vimeo/player').then(
-            Player => {
-                this.initPlayer(Player.default);
-                this.bindEvents();
-            }
-        );
+    if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
+      Events.$trigger('video::cookie-invalid', {
+        data: this.options.element,
+      });
+      return;
     }
 
-    initPlayer(Player) {
-        const {
-            videoId: id,
-            videoAutoplay: autoplay,
-            videoLoop: loop,
-            videoPlaysinline: playsinline,
-            videoMuted: muted,
-            videoControls: controls
-        } = this.options;
+    import(/* webpackChunkName: "Vimeo-Player" */ '@vimeo/player').then(Player => {
+      this.initPlayer(Player.default);
+      this.bindEvents();
+    });
+  }
 
-        this.player = new Player(this.options.player, {
-            id,
-            title: false,
-            portrait: false,
-            autoplay,
-            loop,
-            playsinline: autoplay ? true : playsinline,
-            muted: autoplay ? true : muted,
-            controls
-        });
-    }
+  initPlayer(Player) {
+    const {
+      videoId: id,
+      videoAutoplay: autoplay,
+      videoLoop: loop,
+      videoPlaysinline: playsinline,
+      videoMuted: muted,
+      videoControls: controls,
+    } = this.options;
 
-    bindEvents() {
-        Events.$trigger('video::bind-player-events', { data: this.options });
+    this.player = new Player(this.options.player, {
+      id,
+      title: false,
+      portrait: false,
+      autoplay,
+      loop,
+      playsinline: autoplay ? true : playsinline,
+      muted: autoplay ? true : muted,
+      controls,
+    });
+  }
 
-        this.player.ready().then(() => {
-            if (this.options.videoTime && !this.initialPlay) {
-                this.setStartTime(this.options.videoTime);
-            }
+  bindEvents() {
+    Events.$trigger('video::bind-player-events', { data: this.options });
 
-            Events.$trigger('video::ready', { data: this.options });
-            Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-                data: this.options
-            });
-        });
+    this.player.ready().then(() => {
+      if (this.options.videoTime && !this.initialPlay) {
+        this.setStartTime(this.options.videoTime);
+      }
 
-        this.player.on('play', () => {
-            Events.$trigger('video::playing', { data: this.options });
-            Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-                data: this.options
-            });
-        });
+      Events.$trigger('video::ready', { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
+        data: this.options,
+      });
+    });
 
-        this.player.on('pause', () => {
-            Events.$trigger('video::paused', { data: this.options });
-            Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-                data: this.options
-            });
-        });
+    this.player.on('play', () => {
+      Events.$trigger('video::playing', { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+        data: this.options,
+      });
+    });
 
-        this.player.on('ended', () => {
-            Events.$trigger('video::ended', { data: this.options });
-            Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-                data: this.options
-            });
-        });
-    }
+    this.player.on('pause', () => {
+      Events.$trigger('video::paused', { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+        data: this.options,
+      });
+    });
 
-    play() {
-        this.player.play();
-    }
+    this.player.on('ended', () => {
+      Events.$trigger('video::ended', { data: this.options });
+      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+        data: this.options,
+      });
+    });
+  }
 
-    pause() {
-        this.player.pause();
-    }
+  play() {
+    this.player.play();
+  }
 
-    replay() {
-        this.player.unload();
-        this.player.play();
-    }
+  pause() {
+    this.player.pause();
+  }
 
-    mute() {
-        this.player.setVolume(0);
-    }
+  replay() {
+    this.player.unload();
+    this.player.play();
+  }
 
-    unMute() {
-        this.player.setVolume(1);
-    }
+  mute() {
+    this.player.setVolume(0);
+  }
 
-    setVolume(value) {
-        this.player.setVolume(value);
-    }
+  unMute() {
+    this.player.setVolume(1);
+  }
 
-    setStartTime(seconds) {
-        this.player
-            .setCurrentTime(seconds)
-            .then(() => {
-                this.initialPlay = true;
-            })
-            .catch(() => {
-                this.initialPlay = false;
-                console.error(
-                    'Unable to set start time for video',
-                    this.options.id
-                );
-            });
-    }
+  setVolume(value) {
+    this.player.setVolume(value);
+  }
+
+  setStartTime(seconds) {
+    this.player
+      .setCurrentTime(seconds)
+      .then(() => {
+        this.initialPlay = true;
+      })
+      .catch(() => {
+        this.initialPlay = false;
+        console.error('Unable to set start time for video', this.options.id);
+      });
+  }
 }
 
 export default VimeoVideo;

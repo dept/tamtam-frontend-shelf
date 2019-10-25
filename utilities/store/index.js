@@ -6,5 +6,5 @@ import Store from './store/store';
 export default new Store({
   actions,
   mutations,
-  initialState
+  initialState,
 });
