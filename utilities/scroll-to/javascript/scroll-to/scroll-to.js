@@ -22,7 +22,7 @@ class ScrollTo {
                 target,
                 duration = ST_DURATION,
                 offset = ST_OFFSET,
-                scrollElement = false
+                scrollElement = false,
             } = data;
 
             if (!target) return;
@@ -31,7 +31,7 @@ class ScrollTo {
                 position: target.getBoundingClientRect(),
                 duration,
                 offset: parseInt(offset, 10),
-                scrollElement
+                scrollElement,
             };
 
             scrollTo(scrollConfig);
@@ -46,10 +46,7 @@ class ScrollTo {
 
             element.addEventListener('click', event => {
                 const target = element.getAttribute('href').split('#');
-                const targetEl =
-                    target[1] !== ''
-                        ? document.querySelector(`#${target[1]}`)
-                        : false;
+                const targetEl = target[1] !== '' ? document.querySelector(`#${target[1]}`) : false;
                 if (targetEl) {
                     event.preventDefault();
                     const scrollConfig = {
@@ -60,7 +57,7 @@ class ScrollTo {
                         offset: element.dataset.scrollOffset
                             ? parseInt(element.dataset.scrollOffset, 10)
                             : ST_OFFSET,
-                        scrollElement: element.dataset.scrollElement
+                        scrollElement: element.dataset.scrollElement,
                     };
                     scrollTo(scrollConfig);
                 }
@@ -73,15 +70,9 @@ class ScrollTo {
     scrollTo(target, duration, offset, scrollElement) {
         const scrollConfig = {
             position: target.getBoundingClientRect(),
-            duration:
-                typeof duration !== 'undefined'
-                    ? parseInt(duration, 10)
-                    : ST_DURATION,
-            offset:
-                typeof offset !== 'undefined'
-                    ? parseInt(offset, 10)
-                    : ST_OFFSET,
-            scrollElement: scrollElement
+            duration: typeof duration !== 'undefined' ? parseInt(duration, 10) : ST_DURATION,
+            offset: typeof offset !== 'undefined' ? parseInt(offset, 10) : ST_OFFSET,
+            scrollElement: scrollElement,
         };
 
         return scrollTo(scrollConfig);
@@ -104,16 +95,10 @@ function scrollTo({ position, duration, offset, scrollElement }) {
         const scrollPosition = scrollElement
             ? scrollElement.scrollTop
             : window.scrollY || window.pageYOffset;
-        const to = parseInt(
-            (position.top + scrollPosition - offset).toFixed(0),
-            10
-        );
+        const to = parseInt((position.top + scrollPosition - offset).toFixed(0), 10);
         const start = scrollElement
             ? scrollElement.scrollTop
-            : Math.max(
-                  document.body.scrollTop,
-                  document.documentElement.scrollTop
-              );
+            : Math.max(document.body.scrollTop, document.documentElement.scrollTop);
         const change = to - start;
         let currentTime = 0;
         const increment = 10;
@@ -133,10 +118,7 @@ function scrollTo({ position, duration, offset, scrollElement }) {
                 document.documentElement.scrollTop = val;
             }
 
-            if (
-                (val >= to && direction === 1) ||
-                (val <= to && direction === 0)
-            ) {
+            if ((val >= to && direction === 1) || (val <= to && direction === 0)) {
                 resolve();
             } else {
                 raf(animate);

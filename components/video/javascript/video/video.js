@@ -34,10 +34,7 @@ class Video {
      */
     _bindEvent() {
         Events.$on('video::inview', (event, element) => {
-            if (
-                !element.inviewProperties.isInViewport.vertical &&
-                !element.dataset.videoLoop
-            ) {
+            if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
                 Events.$trigger(`video[${element.id}]::pause`);
             }
 
@@ -105,9 +102,7 @@ class Video {
     initVideo(video) {
         if (video._videoIsInitialised) return;
 
-        const platformClass = this.registeredPlatforms[
-            video.dataset.videoPlatform
-        ];
+        const platformClass = this.registeredPlatforms[video.dataset.videoPlatform];
         const options = constructVideoOptions(video);
 
         if (Object.keys(options).length) {
@@ -123,10 +118,8 @@ class Video {
  */
 function getVideos(platforms) {
     return VIDEOS.filter(video =>
-        Object.prototype.hasOwnProperty.call(
-            platforms,
-            video.dataset.videoPlatform
-        ) && !video._videoIsInitialised
+        Object.prototype.hasOwnProperty.call(platforms, video.dataset.videoPlatform) &&
+        !video._videoIsInitialised
             ? video
             : false
     );
@@ -149,7 +142,7 @@ function constructVideoOptions(element) {
         videoMuted = 0,
         videoAutoplay = 0,
         videoLoop = 0,
-        videoPlaysinline = 0
+        videoPlaysinline = 0,
     } = element.dataset;
 
     const instanceId = element.id;
@@ -174,7 +167,7 @@ function constructVideoOptions(element) {
         videoMuted: parseInt(videoMuted, 10),
         videoAutoplay: parseInt(videoAutoplay, 10),
         videoPlaysinline: parseInt(videoPlaysinline, 10),
-        videoLoop: parseInt(videoLoop, 10)
+        videoLoop: parseInt(videoLoop, 10),
     };
 }
 
