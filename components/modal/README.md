@@ -70,7 +70,8 @@ Custom html element
     data-modal-auto-focus="true"
     data-modal-close-all-others="true"
     data-modal-no-body-class="false"
-    data-modal-keep-scroll-position="true">
+    data-modal-keep-scroll-position="true"
+    js-hook-modal>
     I am a custom modalbox
 
     <button type="button" js-hook-button-modal-close aria-label="Close modalbox">
