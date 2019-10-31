@@ -112,26 +112,6 @@ class Cookies {
             this.form.element.addEventListener('submit', event => this._submitFormCookies(event));
         }
 
-        if (!this.getCookie(COOKIEBAR_COOKIE_NAME) || !this.getCookie(COOKIEBAR_COOKIE_NAME) === COOKIE_DECLINED_VALUE) {
-            [...document.querySelectorAll('a')]
-                .filter(link => link !== this.cookiebarOptionsButton)
-                .forEach(link => {
-                    link.addEventListener('click', event => {
-                        const url = event.currentTarget.href;
-                        const newTab = event.currentTarget.target === '_blank';
-                        const isSameDomain = this.hostname === link.hostname;
-
-                        if (isSameDomain) {
-                            this._acceptAllCookies();
-
-                            if (url && !newTab) {
-                                window.location = url;
-                            }
-                        }
-                    });
-                });
-        }
-
     }
 
     _setDefaultCookies() {
@@ -173,12 +153,10 @@ class Cookies {
 
         this.form.options.forEach(option => {
 
-            if (this.getCookie(option.value) === this.config.version) {
+            if (this.getCookie(option.value) === '1') {
                 option.setAttribute('checked', 'checked');
-            } else if (this.getCookie(option.value) === COOKIE_DECLINED_VALUE) {
-                option.removeAttribute('checked');
             } else {
-                option.setAttribute('checked', 'checked');
+                option.removeAttribute('checked');
             }
 
         });
