@@ -153,7 +153,7 @@ class Cookies {
 
         this.form.options.forEach(option => {
 
-            if (this.getCookie(option.value) === '1') {
+            if (this.getCookie(option.value) === COOKIE_DEFAULT_VALUE) {
                 option.setAttribute('checked', 'checked');
             } else {
                 option.removeAttribute('checked');
