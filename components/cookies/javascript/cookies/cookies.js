@@ -200,7 +200,11 @@ class Cookies {
     _setDefaultPreferences() {
 
         this.form.options.forEach(option => {
-            option.setAttribute('checked', 'checked');
+            if (this.getCookie(option.value) === COOKIE_DEFAULT_VALUE) {
+                option.setAttribute('checked', 'checked');
+            } else {
+                option.removeAttribute('checked');
+            }
         });
 
     }
