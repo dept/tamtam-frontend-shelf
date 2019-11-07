@@ -317,7 +317,11 @@ class Viewer360 {
 
         if (responsive) {
             // TODO: handle responsiveness
+            // Add the size attribute to your backend image sizing mechanism
+            // for example `https://via.placeholder.com/${size}`
             // const imageOffsetWidth = element.offsetWidth;
+            // const imageSize = getSizeAccordingToPixelRatio(getResponsiveWidthOfContainer(imageOffsetWidth));
+            src = `${folder}${filename}`;
         }
 
         return src;

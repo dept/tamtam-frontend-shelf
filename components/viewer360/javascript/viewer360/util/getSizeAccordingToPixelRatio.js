@@ -2,7 +2,7 @@ export const getSizeAccordingToPixelRatio = size => {
     const splittedSizes = size.toString().split('x');
     const result = [];
 
-    [].forEach.call(splittedSizes, sizing => {
+    splittedSizes.map(sizing => {
         result.push(sizing * Math.round(window.devicePixelRatio || 1));
     });
 
