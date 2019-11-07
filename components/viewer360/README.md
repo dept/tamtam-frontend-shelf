@@ -38,7 +38,8 @@ Create 360 viewer in html:
 ```
 
 ## Dependencies
-No dependencies! 🎉
+* [Events utility](/utilities/events/)
+* [Loading indicator](components/loading-indicator/)
 
 ## Developers
 * [Daphne Smit](mailto:daphne.smit@deptagency.com)

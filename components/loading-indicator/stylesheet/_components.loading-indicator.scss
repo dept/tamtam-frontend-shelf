@@ -1,10 +1,22 @@
 @import './variables/variables.loading-indicator';
 @import './mixins/mixins.indicator';
 @import './mixins/mixins.spinnert';
+@import './mixins/mixins.text';
 
 .c-loading-indicator {
     @include indicator;
     display: flex;
+}
+
+.loading-indicator__text {
+    @include text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 1rem;
+    font-weight: $font-weight-bold;
+    color: $loader-color;
 }
 
 .loading-indicator--fixed {
@@ -20,7 +32,6 @@
         border-bottom: $loader-thickness solid rgba($color-white, 0.2);
         border-left: $loader-thickness solid rgba($color-white, 1);
     }
-
 }
 
 .loading-indicator__spinner {

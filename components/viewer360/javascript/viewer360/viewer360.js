@@ -1,8 +1,9 @@
+import Events from '@utilities/events';
 import { createElementFromString, getViewer360Props } from './util';
 
 const JS_HOOK_PREV_BUTTON = '[js-hook-viewer-360-prev]';
 const JS_HOOK_NEXT_BUTTON = '[js-hook-viewer-360-next]';
-const JS_HOOK_LOADING_TEXT = '[js-hook-viewer-360-loader-text]';
+const JS_HOOK_LOADING_TEXT = '[js-hook-loading-indicator-text]';
 
 class Viewer360 {
     constructor(element, ratio) {
@@ -279,26 +280,31 @@ class Viewer360 {
 
     updatePercentageInLoader(percentage) {
         if (this.loader) {
-            this.loader.querySelector(JS_HOOK_LOADING_TEXT).innerHTML = `${percentage}%`;
+            const textElement = this.loader.querySelector(JS_HOOK_LOADING_TEXT);
+            if (textElement) textElement.innerHTML = `${percentage}%`;
         }
     }
 
     addLoader() {
-        const loader = createElementFromString(`
-            <div class="viewer-360__loading">
-                <div class="viewer-360__loading-spinner"></div>
-                <span class="viewer-360__loading-percentage" js-hook-viewer-360-loader-text></span>
-            </div>
-        `);
-
+        Events.$trigger('loader::show', {
+            data: {
+                targetElement: '[js-hook-viewer-360-container]',
+                lightTheme: true
+            }
+        });
+        // Add a text div to our loader to add the percentage to
+        const loader = this.element.querySelector('[js-hook-loading-indicator]');
+        const loaderText = createElementFromString(
+            `<div class="loading-indicator__text" js-hook-loading-indicator-text></div>`
+        );
+        loader.appendChild(loaderText);
         this.loader = loader;
-        this.innerContainer.appendChild(loader);
     }
 
     removeLoader() {
         if (!this.loader) return;
 
-        this.innerContainer.removeChild(this.loader);
+        Events.$trigger('loader::hide');
         this.loader = null;
     }
 
@@ -426,7 +432,9 @@ class Viewer360 {
     }
 
     addInnerContainer() {
-        this.innerContainer = createElementFromString('<div class="viewer-360__container"/>');
+        this.innerContainer = createElementFromString(
+            '<div class="viewer-360__container" js-hook-viewer-360-container />'
+        );
         this.element.appendChild(this.innerContainer);
     }
 
