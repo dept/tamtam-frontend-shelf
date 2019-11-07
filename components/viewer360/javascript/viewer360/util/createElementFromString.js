@@ -6,10 +6,9 @@
  */
 export const createElementFromString = str => {
     const div = document.createElement('div');
-    let res;
     div.innerHTML = str;
-    if (div.children.length) {
-        res = div.children[0]; // eslint-disable-line prefer-destructuring
+    if (!div.children.length) {
+        return undefined;
     }
-    return res;
+    return div.children[0]; // eslint-disable-line prefer-destructuring
 };

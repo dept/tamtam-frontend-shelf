@@ -133,29 +133,29 @@ class Viewer360 {
     moveActiveIndexUp(itemsSkipped) {
         const isReverse = this.controlReverse ? !this.spinReverse : this.spinReverse;
 
-        if (this.stopAtEdges) {
-            if (this.activeImage + itemsSkipped >= this.amount) {
-                this.activeImage = this.amount;
-
-                if (isReverse ? this.prevElem : this.nextElem) {
-                    const element = isReverse ? this.prevElem : this.nextElem;
-                    element.classList.add('disabled');
-                }
-            } else {
-                this.activeImage += itemsSkipped;
-
-                if (this.nextElem) {
-                    this.nextElem.classList.remove('disabled');
-                }
-
-                if (this.prevElem) {
-                    this.prevElem.classList.remove('disabled');
-                }
-            }
+        if (!this.stopAtEdges) {
+            this.activeImage = (this.activeImage + itemsSkipped) % this.amount || 1;
             return;
         }
 
-        this.activeImage = (this.activeImage + itemsSkipped) % this.amount || 1;
+        if (this.activeImage + itemsSkipped >= this.amount) {
+            this.activeImage = this.amount;
+
+            if (isReverse ? this.prevElem : this.nextElem) {
+                const element = isReverse ? this.prevElem : this.nextElem;
+                element.setAttribute('disabled', '');
+            }
+        } else {
+            this.activeImage += itemsSkipped;
+
+            if (this.nextElem) {
+                this.nextElem.removeAttribute('disabled');
+            }
+
+            if (this.prevElem) {
+                this.prevElem.removeAttribute('disabled');
+            }
+        }
     }
 
     moveActiveIndexDown(itemsSkipped) {
@@ -167,16 +167,16 @@ class Viewer360 {
 
                 if (isReverse ? this.nextElem : this.prevElem) {
                     const element = isReverse ? this.nextElem : this.prevElem;
-                    element.classList.add('disabled');
+                    element.setAttribute('disabled', '');
                 }
             } else {
                 this.activeImage -= itemsSkipped;
 
                 if (this.prevElem) {
-                    this.prevElem.classList.remove('disabled');
+                    this.prevElem.removeAttribute('disabled');
                 }
                 if (this.nextElem) {
-                    this.nextElem.classList.remove('disabled');
+                    this.nextElem.removeAttribute('disabled');
                 }
             }
         } else if (this.activeImage - itemsSkipped < 1) {
@@ -416,7 +416,7 @@ class Viewer360 {
         if (isReverse ? next : prev) {
             if (this.stopAtEdges) {
                 const element = isReverse ? next : prev;
-                element.classList.add('disabled');
+                element.setAttribute('disabled', '');
             }
         }
     }
