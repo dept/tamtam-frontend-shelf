@@ -1,0 +1,71 @@
+
+{#
+    @shelf-version: 2.0.0
+    360viewer macro
+
+    data {
+        classes: 'string' (optional)
+        folder: 'string' - Your images folder on server.
+        filename: 'string' (optional) -  Default: image-{index}.jpg - The filename pattern for your 360 image. Must include {index}, which the library will replace with a number between 1 and data-amount.
+        amount: 'number' (optional) - Default: 36 - Amount of images to load for 360 view.
+        keys: 'bool' (optional) - Default: false - Support for 360 spin by pressing arrow keys on keyboard.
+        autoplay: 'bool' (optional) - Default: false - Autoplay 360 spin view on load.
+        ratio: 'number' (optional) - Default: none - Prevents page from jumping.
+        autoplayReverse: 'bool' (optional) - Default: false - Autoplay 360 spin view on load.
+        speed: 'number' (optional) - Default: 150 - Speed of changing frames for autoplay in milliseconds.
+        dragSpeed: 'number' (optional) - Default: 150 - Speed Factor of changing frames on drag event.
+        spinReverse: 'bool' (optional) - Default: false - Spin direction, by default it uses counterclockwise (image indexes from 1 to data-amount).
+        controlReverse: 'bool' (optional) - Default: false - Spin direction using controls, by default it uses counterclockwise (image indexes from 1 to data-amount).
+        stopAtEdges: 'bool' (optional) - Default: false - Blocks repeating images after reaching last image (or first image in oposite direction)
+        lazyload: 'bool' (optional) - Default: false - Only 360 view images close to the client's viewport will be loaded, hence accelerating the page loading time. If set to true, an additional script must be included, see Lazy loading
+        lazyloadSelector: 'string' (optional) - Default: 'lazyload' - Helper class to apply lazy-loading depending on library you choose, see Lazy loading
+        responsive: 'bool' (optional) - Default: false - Do responsive resizing
+    }
+ #}
+
+{% from 'button.html' import button %}
+{% macro viewer360(data) %}
+
+    <div class="c-viewer-360
+        {%- if data.classes %} {{ data.classes }}{% endif -%}"
+        data-folder="{{ data.folder }}"
+        {%- if data.filename %} data-filename="{{ data.filename }}"{% endif -%}
+        {%- if data.amount %} data-filename="{{ data.amount }}"{% endif -%}
+        {%- if data.keys %} data-keys="{{ data.keys }}"{% endif -%}
+        {%- if data.autoplay %} data-autoplay="{{ data.autoplay }}"{% endif -%}
+        {%- if data.ratio %} data-ratio="{{ data.ratio }}"{% endif -%}
+        {%- if data.autoplayReverse %} data-autoplay-reverse="{{ data.autoplayReverse }}"{% endif -%}
+        {%- if data.speed %} data-speed="{{ data.speed }}"{% endif -%}
+        {%- if data.dragSpeed %} data-drag-speed="{{ data.dragSpeed }}"{% endif -%}
+        {%- if data.spinReverse %} data-spin-reverse="{{ data.spinReverse }}"{% endif -%}
+        {%- if data.controlReverse %} data-control-reverse="{{ data.controlReverse }}"{% endif -%}
+        {%- if data.stopAtEdges %} data-stop-at-edges="{{ data.stopAtEdges }}"{% endif -%}
+        {%- if data.lazyload %} data-lazyload="{{ data.lazyload }}"{% endif -%}
+        {%- if data.lazyloadSelector %} data-lazyload-selector="{{ data.lazyloadSelector }}"{% endif -%}
+        {%- if data.responsive %} data-responsive="{{ data.responsive }}"{% endif -%}
+        js-hook-viewer-360>
+
+        {%- if data.controls %}
+            {{ button( {
+                element: 'button',
+                type: 'button',
+                variant: 'primary',
+                label: 'Prev',
+                class: 'viewer-360__control viewer-360__control--prev',
+                size: 'small',
+                hook: 'viewer-360-prev'
+            } ) }}
+            {{ button( {
+                element: 'button',
+                type: 'button',
+                variant: 'primary',
+                label: 'Next',
+                class: 'viewer-360__control viewer-360__control--next',
+                size: 'small',
+                hook: 'viewer-360-next'
+            } ) }}
+        {% endif -%}
+
+    </div>
+
+{% endmacro %}
