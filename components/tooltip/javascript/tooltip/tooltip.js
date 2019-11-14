@@ -37,8 +37,9 @@ class Tooltip {
   constructor(element) {
     this.element = element
     this.triangle = this.element.querySelector(TRIANGLE)
+    /** @type {HTMLElement} */
     this.nav = document.querySelector(NAV_CLASS)
-    this.tooltipTriggers = [...document.querySelectorAll(`.${TOOLTIP_TRIGGER_CLASS}`)]
+    this.tooltipTriggers = Array.from(document.querySelectorAll(`.${TOOLTIP_TRIGGER_CLASS}`))
     this.tooltipTrigger = this.element.parentNode
 
     this.resetTouchEvent = event => this.resetTouch(event)
@@ -175,7 +176,7 @@ class Tooltip {
   getPositionProp() {
     return [...this.element.classList]
       .filter(positionProp => TOOLTIP_PROPS.indexOf(positionProp) !== -1)
-      .reduce((a, b) => b, {})
+      .reduce((_a, b) => b, {})
   }
 
   static getDesktopMargins(key, position) {
@@ -227,7 +228,7 @@ class Tooltip {
       this.element.classList.add(`${TOOLTIP_PREFIX}top-center`, `${TOOLTIP_PREFIX}full-width`)
 
       const { left } = Tooltip.getElementPositions(this.element)
-      const margins = this.getDesktopMargins(DIRECTIONS.LEFT, left)
+      const margins = Tooltip.getDesktopMargins(DIRECTIONS.LEFT, left)
 
       this.element.style.marginLeft = `${margins.element}px`
       this.triangle.style.marginLeft = `${margins.triangle}px`

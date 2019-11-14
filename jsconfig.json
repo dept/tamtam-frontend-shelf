@@ -21,7 +21,7 @@
     "sourceMap": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitThis": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noEmitOnError": true,
     "baseUrl": ".",
     "paths": {

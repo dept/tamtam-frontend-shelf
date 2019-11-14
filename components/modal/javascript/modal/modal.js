@@ -14,7 +14,8 @@ class Modal {
     this.scrollElement = document.scrollingElement || html
     this.scrollTop = 0
 
-    const modals = [...document.querySelectorAll(MODAL_HOOK)]
+    /** @type {HTMLElement[]} */
+    const modals = Array.from(document.querySelectorAll(MODAL_HOOK))
 
     modals.forEach(modal => this.setupModalRegistry(modal))
 
@@ -27,7 +28,7 @@ class Modal {
    * @param {string} data[].id
    */
   customBind(data) {
-    const modals = [...document.querySelectorAll(data.hook)]
+    const modals = Array.from(document.querySelectorAll(data.hook))
 
     // Loop trough all found modals based on hook
     modals.forEach(modal => this.setupModalRegistry(modal))
@@ -67,17 +68,21 @@ class Modal {
    * Bind all general events
    */
   bindEvents() {
-    Events.$on('modal::close', (event, data) => this.closeModal(data))
-    Events.$on('modal::open', (event, data) => this.openModal(data))
+    Events.$on('modal::close', (_event, data) => this.closeModal(data))
+    Events.$on('modal::open', (_event, data) => this.openModal(data))
 
-    Events.$on('modal::bind', (event, data) => this.customBind(data))
+    Events.$on('modal::bind', (_event, data) => this.customBind(data))
   }
 
   /**
    * Bind all modal specific events
-   * @param {string} id Modal id
-   * @param {HTMLElement} triggerBtn Button to open modal
-   * @param {HTMLElement} closeBtn Button to close modal
+   * @typedef {Object} BindOptions
+   * @property {Element & {modalIsOpen: boolean}} el Modal id
+   * @property {string} id Modal id
+   * @property {HTMLElement[]} triggerBtn Button to open modal
+   * @property {HTMLElement[]} closeBtn Button to close modal
+   *
+   * @param {BindOptions}
    */
   bindModalEvents({ el, id, triggerBtn, closeBtn }) {
     triggerBtn.forEach(triggerEl =>
@@ -113,8 +118,7 @@ class Modal {
 
   /**
    * Open modal by given id
-   * @param {Object[]} data
-   * @param {string} data[].id
+   * @param {{ id: string }} data
    */
   openModal(data) {
     const modal = this.registeredModals[`modal-${data.id}`]
@@ -160,9 +164,8 @@ class Modal {
   }
 
   /**
-   * Close modal by id, if none gives it will close all
-   * @param {Object[]} data
-   * @param {string} data[].id
+   * Open modal by given id
+   * @param {{ id: string }} data
    */
   closeModal(data) {
     // If no ID is given we will close all modals
@@ -219,7 +222,8 @@ class Modal {
   }
 
   static clearCurrentFocus() {
-    if (document.activeElement != document.body) document.activeElement.blur()
+    if (document.activeElement != document.body && document.activeElement instanceof HTMLElement)
+      document.activeElement.blur()
   }
 }
 
