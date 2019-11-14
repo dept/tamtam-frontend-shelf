@@ -1,6 +1,9 @@
 import 'intersection-observer'
 import Events from '@utilities/events'
 
+/**
+ * @type {Window|Element}
+ */
 const SCROLL_ELEMENT = window
 
 const OBSERVER_DEFAULT_OFFSET_Y = 0
@@ -27,7 +30,7 @@ class InView {
   }
 
   bindEvents() {
-    Events.$on('in-view::update', (event, data) => {
+    Events.$on('in-view::update', (_event, data) => {
       const elements = data && data.elements ? data.elements : undefined
       const hook = data && data.hook ? data.hook : undefined
       this.addElements(elements, hook)
@@ -48,9 +51,8 @@ class InView {
         node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'
       }
       if (!node.__inviewThreshold) {
-        node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK)
-          ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false
-          : false
+        const attribute = node.getAttribute(INVIEW_THRESHOLD_HOOK)
+        node.__inviewThreshold = attribute ? parseFloat(attribute) || false : false
       }
       if (!node.__inviewInitialized && this.observer) {
         this.observer.observe(node)
@@ -119,8 +121,17 @@ function getTriggers(triggers) {
   return triggers ? triggers.split(',') : []
 }
 
+/**
+ * @typedef {Element & {
+ *  __inviewTriggerHook: any
+ *  __inviewPersistent: any
+ *  __inviewThreshold: any
+ *  __inviewInitialized: any
+ * }} InViewElement
+ * @return {InViewElement[]}
+ */
 function getNodes() {
-  return [...document.querySelectorAll(INVIEW_JS_HOOK)]
+  return Array.from(document.querySelectorAll(INVIEW_JS_HOOK))
 }
 
 /**
@@ -128,10 +139,16 @@ function getNodes() {
  * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-  const scrollTop =
-    SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop
-  const scrollLeft =
-    SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft
+  let scrollTop
+  let scrollLeft
+
+  if (SCROLL_ELEMENT instanceof Window) {
+    scrollTop = SCROLL_ELEMENT.pageYOffset || document.documentElement.scrollTop
+    scrollLeft = SCROLL_ELEMENT.pageXOffset || document.documentElement.scrollLeft
+  } else {
+    scrollTop = SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop
+    scrollLeft = SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft
+  }
 
   const { top, bottom, left, right } = getElementOffset(entry)
   const position = { top, bottom, left, right }
