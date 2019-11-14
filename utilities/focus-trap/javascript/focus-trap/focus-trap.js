@@ -1,21 +1,21 @@
-import Events from '@utilities/events';
+import Events from '@utilities/events'
 
 class FocusTrap {
   constructor() {
-    this.activated = null;
-    this.focusTrapElement = null;
-    this.originalFocus = null;
-    this.autoFocus = false;
+    this.activated = null
+    this.focusTrapElement = null
+    this.originalFocus = null
+    this.autoFocus = false
 
-    this.bindEvents();
+    this.bindEvents()
   }
 
   bindEvents() {
     /**
      *  Bind event listeners so other function can invoke the trap.
      */
-    Events.$on('focustrap::activate', (event, data) => this.activate(data));
-    Events.$on('focustrap::deactivate', () => this.deactivate());
+    Events.$on('focustrap::activate', (event, data) => this.activate(data))
+    Events.$on('focustrap::deactivate', () => this.deactivate())
 
     /**
      * The document has an event handler to check the focus
@@ -25,11 +25,11 @@ class FocusTrap {
       'focus',
       event => {
         if (this.activated && this.focusTrapElement) {
-          Events.$trigger('focustrap::trap', { data: event.target });
+          Events.$trigger('focustrap::trap', { data: event.target })
         }
       },
-      true
-    );
+      true,
+    )
 
     /**
      * The document also has a trap event which is only called when the trap is active
@@ -38,9 +38,9 @@ class FocusTrap {
      */
     Events.$on('focustrap::trap', (event, data) => {
       if (!this.focusTrapElement.contains(data)) {
-        this.focusClosestFocusTarget();
+        this.focusClosestFocusTarget()
       }
-    });
+    })
   }
 
   /**
@@ -50,13 +50,13 @@ class FocusTrap {
    * @param {Boolean} [data[].autoFocus] If true, on activation the element finds and auto focuses the first focusable element
    */
   activate(data) {
-    this.activated = true;
-    this.focusTrapElement = data.element;
-    this.originalFocus = document.activeElement;
-    this.autoFocus = data.autoFocus;
+    this.activated = true
+    this.focusTrapElement = data.element
+    this.originalFocus = document.activeElement
+    this.autoFocus = data.autoFocus
 
     if (this.autoFocus) {
-      this.focusClosestFocusTarget();
+      this.focusClosestFocusTarget()
     }
   }
 
@@ -64,20 +64,20 @@ class FocusTrap {
    * Finds and focuses the first focusable element inside the trap
    */
   focusClosestFocusTarget() {
-    const focusTarget = findClosestFocusTarget(this.focusTrapElement);
-    focusTarget.focus();
+    const focusTarget = findClosestFocusTarget(this.focusTrapElement)
+    focusTarget.focus()
   }
 
   /**
    * Public method to cancel the trap
    */
   deactivate() {
-    this.activated = false;
-    this.focusTrapElement = false;
-    this.autoFocus = false;
+    this.activated = false
+    this.focusTrapElement = false
+    this.autoFocus = false
 
     if (this.originalFocus) {
-      this.originalFocus.focus();
+      this.originalFocus.focus()
     }
   }
 }
@@ -89,9 +89,9 @@ class FocusTrap {
  */
 function findClosestFocusTarget(el) {
   const elements = el.querySelectorAll(
-    'a:not([tabindex="-1"]):not([data-focus-trap-ignore]), area:not([tabindex="-1"]):not([data-focus-trap-ignore]), input:not([disabled]):not([tabindex="-1"]):not([type="hidden"]):not([data-focus-trap-ignore]), select:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), textarea:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), button:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), iframe:not([tabindex="-1"]):not([data-focus-trap-ignore])'
-  );
-  return elements.length ? elements[0] : el;
+    'a:not([tabindex="-1"]):not([data-focus-trap-ignore]), area:not([tabindex="-1"]):not([data-focus-trap-ignore]), input:not([disabled]):not([tabindex="-1"]):not([type="hidden"]):not([data-focus-trap-ignore]), select:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), textarea:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), button:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), iframe:not([tabindex="-1"]):not([data-focus-trap-ignore])',
+  )
+  return elements.length ? elements[0] : el
 }
 
-export default new FocusTrap();
+export default new FocusTrap()

@@ -2,25 +2,25 @@
  *  @shelf-version: 1.1.0
  */
 
-import Events from '@utilities/events';
-import RafThrottle from '@utilities/raf-throttle';
+import Events from '@utilities/events'
+import RafThrottle from '@utilities/raf-throttle'
 
-const STICKY_SCROLL_ELEMENT_HOOK = '[js-hook-sticky-scroll-element]';
-const STICKY_STUCK_CLASS = 'sticky--is-stuck';
-const STICKY_UNSTUCK_CLASS = 'sticky--is-unstuck';
+const STICKY_SCROLL_ELEMENT_HOOK = '[js-hook-sticky-scroll-element]'
+const STICKY_STUCK_CLASS = 'sticky--is-stuck'
+const STICKY_UNSTUCK_CLASS = 'sticky--is-unstuck'
 
 class Sticky {
   constructor(element) {
-    this.element = element;
-    this.id = element.getAttribute('id');
-    this.scrollElement = element.querySelector(STICKY_SCROLL_ELEMENT_HOOK);
+    this.element = element
+    this.id = element.getAttribute('id')
+    this.scrollElement = element.querySelector(STICKY_SCROLL_ELEMENT_HOOK)
     this.threshold = element.dataset.stickyThreshold
       ? parseInt(element.dataset.stickyThreshold, 10)
-      : 0;
+      : 0
 
-    this._bindStickyComponentEvents();
+    this._bindStickyComponentEvents()
 
-    Events.$trigger(`sticky[${this.id}]::update`);
+    Events.$trigger(`sticky[${this.id}]::update`)
   }
 
   /**
@@ -34,14 +34,14 @@ class Sticky {
         namespace: `StickyComponentResize-${this.id}`,
         fn: () => this._setScrollElementSize(),
       },
-    ]);
+    ])
 
-    this._setScrollElementSize();
+    this._setScrollElementSize()
 
-    Events.$on(`sticky[${this.id}]::recalc`, () => this._setScrollElementSize());
+    Events.$on(`sticky[${this.id}]::recalc`, () => this._setScrollElementSize())
     Events.$on(`sticky[${this.id}]::update`, () =>
-      setStickyValues(this.element, this.scrollElement, this.threshold, this.windowHeight)
-    );
+      setStickyValues(this.element, this.scrollElement, this.threshold, this.windowHeight),
+    )
   }
 
   /**
@@ -49,19 +49,19 @@ class Sticky {
    * @param {HTMLElement} element HTML element that is used to calculate the position
    */
   _setScrollElementSize() {
-    const isStuck = this.scrollElement.classList.contains(STICKY_STUCK_CLASS);
+    const isStuck = this.scrollElement.classList.contains(STICKY_STUCK_CLASS)
 
-    if (isStuck) this.scrollElement.classList.remove(STICKY_STUCK_CLASS);
+    if (isStuck) this.scrollElement.classList.remove(STICKY_STUCK_CLASS)
 
-    this.scrollElement.style.width = '';
-    this.scrollElement.position = this.scrollElement.getBoundingClientRect();
+    this.scrollElement.style.width = ''
+    this.scrollElement.position = this.scrollElement.getBoundingClientRect()
 
-    if (isStuck) this.scrollElement.classList.add(STICKY_STUCK_CLASS);
+    if (isStuck) this.scrollElement.classList.add(STICKY_STUCK_CLASS)
 
-    this.scrollElement.style.width = `${this.scrollElement.position.width}px`;
+    this.scrollElement.style.width = `${this.scrollElement.position.width}px`
 
-    this.element.position = this.element.getBoundingClientRect();
-    this.windowHeight = window.innerHeight;
+    this.element.position = this.element.getBoundingClientRect()
+    this.windowHeight = window.innerHeight
   }
 }
 
@@ -77,8 +77,8 @@ function setStickyValues(element, scrollElement, threshold, windowHeight) {
     windowHeight <= scrollElement.position.height + threshold ||
     element.position.height <= scrollElement.position.height
   ) {
-    resetStickyClasses(scrollElement);
-    return;
+    resetStickyClasses(scrollElement)
+    return
   }
 
   if (element.inviewProperties.position.top - threshold <= 0) {
@@ -86,31 +86,31 @@ function setStickyValues(element, scrollElement, threshold, windowHeight) {
       element.inviewProperties.position.top - scrollElement.position.height - threshold >=
       -element.inviewProperties.height
     ) {
-      setStickyClasses(scrollElement, threshold);
+      setStickyClasses(scrollElement, threshold)
     } else {
-      setUnStickyClasses(scrollElement);
+      setUnStickyClasses(scrollElement)
     }
   } else {
-    resetStickyClasses(scrollElement);
+    resetStickyClasses(scrollElement)
   }
 }
 
 function setStickyClasses(scrollElement, threshold) {
-  scrollElement.style.top = `${threshold}px`;
-  scrollElement.classList.add(STICKY_STUCK_CLASS);
-  scrollElement.classList.remove(STICKY_UNSTUCK_CLASS);
+  scrollElement.style.top = `${threshold}px`
+  scrollElement.classList.add(STICKY_STUCK_CLASS)
+  scrollElement.classList.remove(STICKY_UNSTUCK_CLASS)
 }
 
 function setUnStickyClasses(scrollElement) {
-  scrollElement.style.top = '';
-  scrollElement.classList.add(STICKY_UNSTUCK_CLASS);
-  scrollElement.classList.remove(STICKY_STUCK_CLASS);
+  scrollElement.style.top = ''
+  scrollElement.classList.add(STICKY_UNSTUCK_CLASS)
+  scrollElement.classList.remove(STICKY_STUCK_CLASS)
 }
 
 function resetStickyClasses(scrollElement) {
-  scrollElement.style.top = '';
-  scrollElement.classList.remove(STICKY_STUCK_CLASS);
-  scrollElement.classList.remove(STICKY_UNSTUCK_CLASS);
+  scrollElement.style.top = ''
+  scrollElement.classList.remove(STICKY_STUCK_CLASS)
+  scrollElement.classList.remove(STICKY_UNSTUCK_CLASS)
 }
 
-export default Sticky;
+export default Sticky

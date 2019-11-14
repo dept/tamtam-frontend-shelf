@@ -167,17 +167,17 @@ const MAP_STYLE = [
       },
     ],
   },
-];
+]
 
-export const MAP_API_KEY = '1234567890qwertyuiop';
+export const MAP_API_KEY = '1234567890qwertyuiop'
 
 export const MAP_MARKER =
-  'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-hawaii-ushi_1f3f4-e0075-e0073-e0068-e0069-e007f.png';
+  'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-hawaii-ushi_1f3f4-e0075-e0073-e0068-e0069-e007f.png'
 
 export const MAP_MARKER_ACTIVE =
-  'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-bong-lrbg_1f3f4-e006c-e0072-e0062-e0067-e007f.png';
+  'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-bong-lrbg_1f3f4-e006c-e0072-e0062-e0067-e007f.png'
 
-export const MAP_MAX_ZOOM = 10;
+export const MAP_MAX_ZOOM = 10
 
 export const MAP_SETTINGS = {
   center: {
@@ -189,7 +189,7 @@ export const MAP_SETTINGS = {
   zoomControl: true,
   scaleControl: false,
   styles: MAP_STYLE || null,
-};
+}
 
 export const DEFAULT_REGIONS = [
   {
@@ -236,4 +236,4 @@ export const DEFAULT_REGIONS = [
       },
     ],
   },
-];
+]

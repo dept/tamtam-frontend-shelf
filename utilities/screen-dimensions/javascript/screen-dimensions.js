@@ -1,4 +1,4 @@
-import RafThrottle from '@utilities/raf-throttle';
+import RafThrottle from '@utilities/raf-throttle'
 
 const MEDIA_QUERIES = [
   {
@@ -29,15 +29,15 @@ const MEDIA_QUERIES = [
     reference: 'isWidescreen',
     breakpoint: 1920,
   },
-];
+]
 
 class ScreenDimensions {
   get screenHeight() {
-    return this.height;
+    return this.height
   }
 
   get screenWidth() {
-    return this.width;
+    return this.width
   }
 
   constructor() {
@@ -48,46 +48,46 @@ class ScreenDimensions {
         namespace: 'ScreenDimensionsWidthChange',
         fn: () => this.updateWidth(),
       },
-    ]);
+    ])
 
     MEDIA_QUERIES.forEach((mqObject, index) => {
-      const breakpoint = mqObject.breakpoint;
+      const breakpoint = mqObject.breakpoint
 
       installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
-        this[`${mqObject.reference}AndBigger`] = matches;
-      });
+        this[`${mqObject.reference}AndBigger`] = matches
+      })
 
       if (!index) {
         installMediaQueryWatcher(`(max-width: ${breakpoint}px)`, matches => {
-          this[mqObject.reference] = matches;
-        });
+          this[mqObject.reference] = matches
+        })
       } else if (MEDIA_QUERIES[index + 1]) {
         installMediaQueryWatcher(
           `(min-width: ${breakpoint}px) and (max-width: ${MEDIA_QUERIES[index + 1].breakpoint -
             1}px)`,
           matches => {
-            this[mqObject.reference] = matches;
-          }
-        );
+            this[mqObject.reference] = matches
+          },
+        )
       } else {
         installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
-          this[mqObject.reference] = matches;
-        });
+          this[mqObject.reference] = matches
+        })
       }
-    });
+    })
 
-    this.updateWidth();
+    this.updateWidth()
   }
 
   updateWidth() {
-    (this.width = window.innerWidth), (this.height = window.innerHeight);
+    ;(this.width = window.innerWidth), (this.height = window.innerHeight)
   }
 }
 
 const installMediaQueryWatcher = (mediaQuery, layoutChangedCallback) => {
-  const mql = window.matchMedia(mediaQuery);
-  mql.addListener(event => layoutChangedCallback(event.matches, event.media));
-  layoutChangedCallback(mql.matches, mql.media);
-};
+  const mql = window.matchMedia(mediaQuery)
+  mql.addListener(event => layoutChangedCallback(event.matches, event.media))
+  layoutChangedCallback(mql.matches, mql.media)
+}
 
-export default new ScreenDimensions();
+export default new ScreenDimensions()
