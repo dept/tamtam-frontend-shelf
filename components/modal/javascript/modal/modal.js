@@ -43,8 +43,8 @@ class Modal {
 
     const id = el.getAttribute('id')
 
-    const triggerBtn = [...document.querySelectorAll(`[aria-controls=${id}]`)]
-    const closeBtn = [...el.querySelectorAll(MODAL_CLOSE_HOOK)]
+    const triggerBtn = Array.from(document.querySelectorAll(`[aria-controls=${id}]`))
+    const closeBtn = Array.from(el.querySelectorAll(MODAL_CLOSE_HOOK))
     const mobileOnly = el.dataset.modalMobileOnly === 'true'
 
     const modal = {

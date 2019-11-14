@@ -126,7 +126,7 @@ class Toggle {
       .map(id => `#${id}`)
       .join(', ')
 
-    return [...document.querySelectorAll(LINKS_SELECTOR)]
+    return Array.from(document.querySelectorAll(LINKS_SELECTOR))
   }
 
   /**

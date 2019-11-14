@@ -39,7 +39,7 @@ class ObjectFit {
       }
       images.push(element)
     } else {
-      images = [...document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`)]
+      images = Array.from(document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`))
     }
 
     return images
