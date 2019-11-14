@@ -1,10 +1,10 @@
-import Cookie from 'js-cookie';
+import Cookie from 'js-cookie'
 
 class Storage {
   constructor(storageType) {
-    this.storagePrefix = '';
-    this.storageType = setStorageType(storageType);
-    this.supported = storageTypeIsSupported(this.storageType);
+    this.storagePrefix = ''
+    this.storageType = setStorageType(storageType)
+    this.supported = storageTypeIsSupported(this.storageType)
   }
 
   /**
@@ -12,7 +12,7 @@ class Storage {
    * @param {string} prefix
    */
   setPrefix(prefix) {
-    this.storagePrefix = `${prefix}.`;
+    this.storagePrefix = `${prefix}.`
   }
 
   /**
@@ -20,7 +20,7 @@ class Storage {
    * @returns {string}
    */
   getPrefix() {
-    return this.storagePrefix;
+    return this.storagePrefix
   }
 
   /**
@@ -28,7 +28,7 @@ class Storage {
    * @returns {string}
    */
   getPrefixedStorageKey(key) {
-    return `${this.storagePrefix}${key}`;
+    return `${this.storagePrefix}${key}`
   }
 
   /**
@@ -37,19 +37,19 @@ class Storage {
    * @param {string} value The data to be stored
    */
   set(key, value) {
-    let convertedValue = value;
+    let convertedValue = value
 
     if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
       if (typeof convertedValue === 'object') {
-        convertedValue = JSON.stringify(convertedValue);
+        convertedValue = JSON.stringify(convertedValue)
       }
 
       if (this.supported) {
-        window[this.storageType].setItem(this.getPrefixedStorageKey(key), convertedValue);
+        window[this.storageType].setItem(this.getPrefixedStorageKey(key), convertedValue)
       } else {
         Cookie.set(this.getPrefixedStorageKey(key), convertedValue, {
           expires: 30,
-        });
+        })
       }
     }
   }
@@ -60,23 +60,23 @@ class Storage {
    * @returns {string|Object}
    */
   get(key) {
-    let data = null;
-    const storageKey = this.getPrefixedStorageKey(key);
+    let data = null
+    const storageKey = this.getPrefixedStorageKey(key)
 
     if (this.supported) {
-      data = window[this.storageType].getItem(storageKey);
+      data = window[this.storageType].getItem(storageKey)
     } else {
-      data = Cookie.get(storageKey);
+      data = Cookie.get(storageKey)
     }
 
     try {
-      data = JSON.parse(data);
+      data = JSON.parse(data)
 
       if (data && typeof data === 'object') {
-        return data;
+        return data
       }
     } catch (e) {
-      return data;
+      return data
     }
   }
 
@@ -85,12 +85,12 @@ class Storage {
    * @param {string} key Identifier of the data we are removing
    */
   remove(key) {
-    const storageKey = this.getPrefixedStorageKey(key);
+    const storageKey = this.getPrefixedStorageKey(key)
 
     if (this.supported) {
-      window[this.storageType].removeItem(storageKey);
+      window[this.storageType].removeItem(storageKey)
     } else {
-      Cookie.remove(storageKey);
+      Cookie.remove(storageKey)
     }
   }
 }
@@ -102,9 +102,9 @@ class Storage {
  */
 function setStorageType(storageType) {
   if (['localStorage', 'sessionStorage'].indexOf(storageType) !== -1) {
-    return storageType;
+    return storageType
   } else {
-    return 'localStorage';
+    return 'localStorage'
   }
 }
 
@@ -115,11 +115,11 @@ function setStorageType(storageType) {
  */
 function storageTypeIsSupported(storageType) {
   try {
-    window[storageType].x = 1;
-    window[storageType].removeItem('x');
-    return true;
+    window[storageType].x = 1
+    window[storageType].removeItem('x')
+    return true
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -128,17 +128,17 @@ function storageTypeIsSupported(storageType) {
  * @returns {Boolean}
  */
 function localStorageIsSupported() {
-  return storageTypeIsSupported('localStorage');
+  return storageTypeIsSupported('localStorage')
 }
 /**
  * Check if sessionStorage is supported
  * @returns {Boolean}
  */
 function sessionStorageIsSupported() {
-  return storageTypeIsSupported('sessionStorage');
+  return storageTypeIsSupported('sessionStorage')
 }
 
-const LocalStorage = new Storage();
-const SessionStorage = new Storage('sessionStorage');
+const LocalStorage = new Storage()
+const SessionStorage = new Storage('sessionStorage')
 
-export { localStorageIsSupported, sessionStorageIsSupported, LocalStorage, SessionStorage };
+export { localStorageIsSupported, sessionStorageIsSupported, LocalStorage, SessionStorage }

@@ -1,10 +1,10 @@
-import raf from 'raf';
+import raf from 'raf'
 
 class RafThrottle {
   constructor() {
-    this.namespaces = {};
-    this.timeoutList = {};
-    this.runningList = {};
+    this.namespaces = {}
+    this.timeoutList = {}
+    this.runningList = {}
   }
 
   /**
@@ -17,7 +17,7 @@ class RafThrottle {
    * @param {Function} bind[].fn Function we want to execute
    */
   set(binds) {
-    this._addEvents(binds);
+    this._addEvents(binds)
   }
 
   /**
@@ -30,7 +30,7 @@ class RafThrottle {
    */
   remove(binds) {
     if (binds) {
-      this._removeEvents(binds);
+      this._removeEvents(binds)
     }
   }
 
@@ -57,13 +57,13 @@ class RafThrottle {
         callback: event => this._trigger(bind, event),
         eventOptions: { passive: true },
         delay: bind.delay,
-      };
+      }
 
-      this.timeoutList[eventOptions.namespace] = null;
-      this.runningList[eventOptions.namespace] = false;
+      this.timeoutList[eventOptions.namespace] = null
+      this.runningList[eventOptions.namespace] = false
 
-      this._addThrottledEvent(eventOptions);
-    });
+      this._addThrottledEvent(eventOptions)
+    })
   }
 
   /**
@@ -80,10 +80,10 @@ class RafThrottle {
         element: bind.element,
         event: bind.event,
         namespace: generateNamespace(bind.event, bind.namespace),
-      };
+      }
 
-      this._removeThrottledEvent(eventOptions);
-    });
+      this._removeThrottledEvent(eventOptions)
+    })
   }
 
   /**
@@ -97,20 +97,20 @@ class RafThrottle {
    * @param {Event} event Event object
    */
   _trigger(bind, event) {
-    const eventNamespace = generateNamespace(bind.event, bind.namespace);
+    const eventNamespace = generateNamespace(bind.event, bind.namespace)
 
     if (bind.delay) {
       if (this.timeoutList[eventNamespace]) {
-        this.runningList[eventNamespace] = false;
-        clearTimeout(this.timeoutList[eventNamespace]);
+        this.runningList[eventNamespace] = false
+        clearTimeout(this.timeoutList[eventNamespace])
       }
 
       this.timeoutList[eventNamespace] = setTimeout(
         () => this.createRafInstance(bind, event, eventNamespace),
-        bind.delay
-      );
+        bind.delay,
+      )
     } else {
-      this.createRafInstance(bind, event, eventNamespace);
+      this.createRafInstance(bind, event, eventNamespace)
     }
   }
 
@@ -127,14 +127,14 @@ class RafThrottle {
    * @param eventNamespace {string} - Name of event space
    */
   createRafInstance(bind, event, eventNamespace) {
-    if (this.runningList[eventNamespace]) return;
+    if (this.runningList[eventNamespace]) return
 
     raf(() => {
-      bind.fn(event);
-      this.runningList[eventNamespace] = false;
-    });
+      bind.fn(event)
+      this.runningList[eventNamespace] = false
+    })
 
-    this.runningList[eventNamespace] = true;
+    this.runningList[eventNamespace] = true
   }
 
   /**
@@ -147,13 +147,13 @@ class RafThrottle {
    * @param {object} [options[].eventOptions] Give options to your event
    */
   _addThrottledEvent(options) {
-    const { element, event, namespace, callback } = options;
-    let { eventOptions } = options;
+    const { element, event, namespace, callback } = options
+    let { eventOptions } = options
 
-    this.namespaces[namespace] = callback;
-    eventOptions = eventOptions || false;
+    this.namespaces[namespace] = callback
+    eventOptions = eventOptions || false
 
-    element.addEventListener(event, callback, eventOptions);
+    element.addEventListener(event, callback, eventOptions)
   }
 
   /**
@@ -164,10 +164,10 @@ class RafThrottle {
    * @param {string} options[].namespace Namepace of the event we are removing
    */
   _removeThrottledEvent(options) {
-    const { element, event, namespace } = options;
+    const { element, event, namespace } = options
     if (this.namespaces[namespace]) {
-      element.removeEventListener(event, this.namespaces[namespace]);
-      delete this.namespaces[namespace];
+      element.removeEventListener(event, this.namespaces[namespace])
+      delete this.namespaces[namespace]
     }
   }
 }
@@ -178,7 +178,7 @@ class RafThrottle {
  * @param {string} namespace
  */
 function generateNamespace(eventName, namespace) {
-  return `${eventName}.${namespace}`;
+  return `${eventName}.${namespace}`
 }
 
-export default new RafThrottle();
+export default new RafThrottle()

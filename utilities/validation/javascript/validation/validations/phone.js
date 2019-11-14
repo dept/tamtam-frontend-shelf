@@ -6,9 +6,9 @@
  */
 function isValidPhoneNumber(
   phone,
-  regex = /^(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)$/
+  regex = /^(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)$/,
 ) {
-  return regex.test(phone);
+  return regex.test(phone)
 }
 
-export { isValidPhoneNumber };
+export { isValidPhoneNumber }

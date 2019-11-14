@@ -4,27 +4,27 @@ const hasResponsiveImages = function() {
     currentSrc: false,
     sizes: false,
     picture: false,
-  };
+  }
 
-  const img = new Image();
+  const img = new Image()
 
   if ('srcset' in img) {
-    supports.srcset = true;
+    supports.srcset = true
   }
 
   if ('currentSrc' in img) {
-    supports.currentSrc = true;
+    supports.currentSrc = true
   }
 
   if ('sizes' in img) {
-    supports.sizes = true;
+    supports.sizes = true
   }
 
   if ('HTMLPictureElement' in window) {
-    supports.picture = true;
+    supports.picture = true
   }
 
-  return supports;
-};
+  return supports
+}
 
-export default hasResponsiveImages();
+export default hasResponsiveImages()

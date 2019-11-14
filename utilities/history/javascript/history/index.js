@@ -2,6 +2,6 @@
  *  @shelf-version: 1.0.0
  */
 
-import History from './history';
+import History from './history'
 
-export default History;
+export default History

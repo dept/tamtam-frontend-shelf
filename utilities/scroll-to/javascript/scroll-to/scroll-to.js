@@ -1,14 +1,14 @@
-import raf from 'raf';
-import Events from '@utilities/events';
+import raf from 'raf'
+import Events from '@utilities/events'
 
-const ST_HOOK = 'a[href^="#"]';
-const ST_DURATION = 500;
-const ST_OFFSET = 50;
+const ST_HOOK = 'a[href^="#"]'
+const ST_DURATION = 500
+const ST_OFFSET = 50
 
 class ScrollTo {
   constructor() {
-    this._bindEvents();
-    this._initElements();
+    this._bindEvents()
+    this._initElements()
   }
 
   /**
@@ -16,34 +16,34 @@ class ScrollTo {
    */
   _bindEvents() {
     Events.$on('scroll-to::scroll', (event, data) => {
-      if (!data) return;
+      if (!data) return
 
-      const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement = false } = data;
+      const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement = false } = data
 
-      if (!target) return;
+      if (!target) return
 
       const scrollConfig = {
         position: target.getBoundingClientRect(),
         duration,
         offset: parseInt(offset, 10),
         scrollElement,
-      };
+      }
 
-      scrollTo(scrollConfig);
-    });
+      scrollTo(scrollConfig)
+    })
   }
 
   _initElements() {
-    this.elements = getElements();
+    this.elements = getElements()
 
     Array.from(this.elements).forEach(element => {
-      if (element.scrollToisInitialised) return;
+      if (element.scrollToisInitialised) return
 
       element.addEventListener('click', event => {
-        const target = element.getAttribute('href').split('#');
-        const targetEl = target[1] !== '' ? document.querySelector(`#${target[1]}`) : false;
+        const target = element.getAttribute('href').split('#')
+        const targetEl = target[1] !== '' ? document.querySelector(`#${target[1]}`) : false
         if (targetEl) {
-          event.preventDefault();
+          event.preventDefault()
           const scrollConfig = {
             position: targetEl.getBoundingClientRect(),
             duration: element.dataset.scrollDuration
@@ -53,13 +53,13 @@ class ScrollTo {
               ? parseInt(element.dataset.scrollOffset, 10)
               : ST_OFFSET,
             scrollElement: element.dataset.scrollElement,
-          };
-          scrollTo(scrollConfig);
+          }
+          scrollTo(scrollConfig)
         }
-      });
+      })
 
-      element.scrollToisInitialised = true;
-    });
+      element.scrollToisInitialised = true
+    })
   }
 
   scrollTo(target, duration, offset, scrollElement) {
@@ -68,9 +68,9 @@ class ScrollTo {
       duration: typeof duration !== 'undefined' ? parseInt(duration, 10) : ST_DURATION,
       offset: typeof offset !== 'undefined' ? parseInt(offset, 10) : ST_OFFSET,
       scrollElement: scrollElement,
-    };
+    }
 
-    return scrollTo(scrollConfig);
+    return scrollTo(scrollConfig)
   }
 }
 
@@ -79,7 +79,7 @@ class ScrollTo {
  * @returns {NodeList} All matching HTMLElements
  */
 function getElements() {
-  return document.querySelectorAll(ST_HOOK);
+  return document.querySelectorAll(ST_HOOK)
 }
 
 /**
@@ -89,45 +89,45 @@ function scrollTo({ position, duration, offset, scrollElement }) {
   return new Promise(resolve => {
     const scrollPosition = scrollElement
       ? scrollElement.scrollTop
-      : window.scrollY || window.pageYOffset;
-    const to = parseInt((position.top + scrollPosition - offset).toFixed(0), 10);
+      : window.scrollY || window.pageYOffset
+    const to = parseInt((position.top + scrollPosition - offset).toFixed(0), 10)
     const start = scrollElement
       ? scrollElement.scrollTop
-      : Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-    const change = to - start;
-    let currentTime = 0;
-    const increment = 10;
-    const direction = to > start ? 1 : 0;
+      : Math.max(document.body.scrollTop, document.documentElement.scrollTop)
+    const change = to - start
+    let currentTime = 0
+    const increment = 10
+    const direction = to > start ? 1 : 0
 
     const animate = () => {
-      currentTime += increment;
-      const val = parseInt(easeInOutQuad(currentTime, start, change, duration).toFixed(0), 10);
+      currentTime += increment
+      const val = parseInt(easeInOutQuad(currentTime, start, change, duration).toFixed(0), 10)
 
       if (scrollElement) {
-        scrollElement.scrollTop = val;
+        scrollElement.scrollTop = val
       } else {
-        document.body.scrollTop = val;
-        document.documentElement.scrollTop = val;
+        document.body.scrollTop = val
+        document.documentElement.scrollTop = val
       }
 
       if ((val >= to && direction === 1) || (val <= to && direction === 0)) {
-        resolve();
+        resolve()
       } else {
-        raf(animate);
+        raf(animate)
       }
-    };
+    }
 
-    animate();
-  });
+    animate()
+  })
 }
 
 function easeInOutQuad(t, b, c, d) {
-  t /= d / 2;
+  t /= d / 2
   if (t < 1) {
-    return (c / 2) * t * t + b;
+    return (c / 2) * t * t + b
   }
-  t--;
-  return (-c / 2) * (t * (t - 2) - 1) + b;
+  t--
+  return (-c / 2) * (t * (t - 2) - 1) + b
 }
 
-export default new ScrollTo();
+export default new ScrollTo()
