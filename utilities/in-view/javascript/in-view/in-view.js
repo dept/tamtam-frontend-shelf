@@ -52,7 +52,7 @@ class InView {
           ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false
           : false
       }
-      if (!node.__inviewInitialized) {
+      if (!node.__inviewInitialized && this.observer) {
         this.observer.observe(node)
       }
       if (!node.__inviewInitialized) {
@@ -161,10 +161,10 @@ function getElementOffset(entry) {
   const elementStyles = window.getComputedStyle(targetElement)
 
   const margin = {}
-  margin.top = parseInt(elementStyles.marginTop, 10) / 2 || 0
-  margin.right = parseInt(elementStyles.marginRight, 10) / 2 || 0
-  margin.bottom = parseInt(elementStyles.marginBottom, 10) / 2 || 0
-  margin.left = parseInt(elementStyles.marginLeft, 10) / 2 || 0
+  margin.top = (elementStyles.marginTop && parseInt(elementStyles.marginTop, 10) / 2) || 0
+  margin.right = (elementStyles.marginRight && parseInt(elementStyles.marginRight, 10) / 2) || 0
+  margin.bottom = (elementStyles.marginBottom && parseInt(elementStyles.marginBottom, 10) / 2) || 0
+  margin.left = (elementStyles.marginLeft && parseInt(elementStyles.marginLeft, 10) / 2) || 0
 
   let top = 0 + margin.top + margin.bottom
   let left = 0 + margin.left + margin.right

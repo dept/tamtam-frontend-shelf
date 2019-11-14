@@ -23,14 +23,14 @@ class Store {
         // Set the value as we would normally
         state[key] = value
 
-        console.log(`stateChange: ${key}: ${value}`)
+        console.log(`stateChange: ${String(key)}: ${value}`)
 
         // Fire off our callback processor because if there's listeners,
         // they're going to want to know that something has changed
         self.processCallbacks(self.state, self.prevState)
 
         if (self.status !== 'mutation') {
-          console.warn(`You should use a mutation to set ${key}`)
+          console.warn(`You should use a mutation to set ${String(key)}`)
         }
         // Reset the status ready for the next operation
         self.status = 'resting'
@@ -45,7 +45,7 @@ class Store {
    * collection and runs the action if it can find it
    *
    * @param {string} actionKey
-   * @param {mixed} payload
+   * @param {object} payload
    * @returns {boolean}
    * @memberof Store
    */
@@ -73,7 +73,7 @@ class Store {
    * if that mutation exists by calling it
    *
    * @param {string} mutationKey
-   * @param {mixed} payload
+   * @param {object} payload
    * @returns {boolean}
    * @memberof Store
    */

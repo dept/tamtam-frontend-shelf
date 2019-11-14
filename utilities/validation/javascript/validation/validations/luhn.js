@@ -1,3 +1,4 @@
+// @ts-ignore
 import luhn from 'luhn'
 
 /**

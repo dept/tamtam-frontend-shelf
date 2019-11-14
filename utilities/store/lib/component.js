@@ -1,3 +1,6 @@
+// @ts-ignore
+import idx from 'idx'
+
 import Store from '../store/store'
 
 class Component {
@@ -21,7 +24,7 @@ class Component {
     const { state: newState, prevState } = store
     const previousPropState = idx(prevState, _ => _[prop])
     const newPropState = idx(newState, _ => _[prop])
-    if (array.isArray(previousPropState)) {
+    if (Array.isArray(previousPropState)) {
       if (
         previousPropState &&
         previousPropState.length &&

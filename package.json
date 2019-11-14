@@ -1,0 +1,16 @@
+{
+  "name": "tamtam-frontend-shelf",
+  "version": "1.0.0",
+  "description": "In this repository you find all standardized front-end components and utilities. Please see the readme's of all components/utilities for more information about them.",
+  "main": "index.js",
+  "scripts": {
+    "type-check": "tsc --noEmit -p jsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/tamtam-nl/tamtam-frontend-shelf.git"
+  },
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme"
+}

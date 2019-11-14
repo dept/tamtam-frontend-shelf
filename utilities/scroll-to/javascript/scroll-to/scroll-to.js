@@ -1,3 +1,4 @@
+// @ts-ignore
 import raf from 'raf'
 import Events from '@utilities/events'
 
@@ -15,7 +16,7 @@ class ScrollTo {
    * Bind event
    */
   _bindEvents() {
-    Events.$on('scroll-to::scroll', (event, data) => {
+    Events.$on('scroll-to::scroll', (_event, data) => {
       if (!data) return
 
       const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement = false } = data
@@ -40,8 +41,11 @@ class ScrollTo {
       if (element.scrollToisInitialised) return
 
       element.addEventListener('click', event => {
-        const target = element.getAttribute('href').split('#')
-        const targetEl = target[1] !== '' ? document.querySelector(`#${target[1]}`) : false
+        const elementHref = element.getAttribute('href')
+        const target = elementHref && elementHref.split('#')
+        const targetEl =
+          target && target[1] !== '' ? document.querySelector(`#${target[1]}`) : false
+
         if (targetEl) {
           event.preventDefault()
           const scrollConfig = {
@@ -76,7 +80,7 @@ class ScrollTo {
 
 /**
  * Gets all elements matching the ST_HOOK
- * @returns {NodeList} All matching HTMLElements
+ * @returns {NodeListOf<Element & { scrollToisInitialised: boolean, dataset: any }>} All matching HTMLElements
  */
 function getElements() {
   return document.querySelectorAll(ST_HOOK)
