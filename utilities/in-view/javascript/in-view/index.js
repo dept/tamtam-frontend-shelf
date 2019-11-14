@@ -2,6 +2,6 @@
  * @shelf-version: 2.0.0
  */
 
-import InView from './in-view';
+import InView from './in-view'
 
-export default InView;
+export default InView

@@ -1,26 +1,26 @@
-import Store from '../store/store';
+import Store from '../store/store'
 
 class Component {
   constructor(props = {}) {
-    this.watch = Component.watch || function() {};
-    this.watchCollection = Component.watchCollection || function() {};
-    this.stateChanged = this.stateChanged || function() {};
+    this.watch = Component.watch || function() {}
+    this.watchCollection = Component.watchCollection || function() {}
+    this.stateChanged = this.stateChanged || function() {}
     if (props.store instanceof Store) {
       // This fires every time the state updates
       props.store.subscribe((state, prevState) => {
-        this.stateChanged(state, prevState);
-      });
+        this.stateChanged(state, prevState)
+      })
     }
 
     if (props.element) {
-      this.element = props.element;
+      this.element = props.element
     }
   }
 
   static watchCollection(store, prop, callback) {
-    const { state: newState, prevState } = store;
-    const previousPropState = idx(prevState, _ => _[prop]);
-    const newPropState = idx(newState, _ => _[prop]);
+    const { state: newState, prevState } = store
+    const previousPropState = idx(prevState, _ => _[prop])
+    const newPropState = idx(newState, _ => _[prop])
     if (array.isArray(previousPropState)) {
       if (
         previousPropState &&
@@ -29,17 +29,17 @@ class Component {
       ) {
         // Make sure the callback is a function
         if (typeof callback === 'function') {
-          return callback();
+          return callback()
         }
       }
     }
-    return undefined;
+    return undefined
   }
 
   static watch(store, prop, callback) {
-    const { state: newState, prevState } = store;
-    const previousPropState = idx(prevState, _ => _[prop]);
-    const newPropState = idx(newState, _ => _[prop]);
+    const { state: newState, prevState } = store
+    const previousPropState = idx(prevState, _ => _[prop])
+    const newPropState = idx(newState, _ => _[prop])
     if (
       typeof newPropState === 'boolean' ||
       typeof newPropState === 'string' ||
@@ -48,11 +48,11 @@ class Component {
       if (previousPropState && newPropState !== previousPropState) {
         // Make sure the callback is a function
         if (typeof callback === 'function') {
-          return callback();
+          return callback()
         }
       }
     }
-    return undefined;
+    return undefined
   }
 }
-export default Component;
+export default Component

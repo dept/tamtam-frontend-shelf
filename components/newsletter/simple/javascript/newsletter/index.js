@@ -2,6 +2,6 @@
  * @shelf-version: 1.0.0
  */
 
-import Newsletter from './newsletter';
+import Newsletter from './newsletter'
 
-export default Newsletter;
+export default Newsletter

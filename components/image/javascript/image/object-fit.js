@@ -1,32 +1,32 @@
-import Events from '@utilities/events';
+import Events from '@utilities/events'
 
-const HAS_POLYFILL_CLASS = 'has--object-fit-polyfill';
-const OBJECT_FIT_IMAGE_HOOK = 'js-hook-objectfit-img';
-const OBJECT_FIT_CONTAINER_HOOK = 'js-hook-objectfit-container';
+const HAS_POLYFILL_CLASS = 'has--object-fit-polyfill'
+const OBJECT_FIT_IMAGE_HOOK = 'js-hook-objectfit-img'
+const OBJECT_FIT_CONTAINER_HOOK = 'js-hook-objectfit-container'
 
-const html = document.querySelector('html');
+const html = document.querySelector('html')
 
 class ObjectFit {
   constructor() {
-    this.bindEvents();
+    this.bindEvents()
   }
 
   bindEvents() {
-    Events.$on('image::object-fit', (event, element) => this.polyfillObjectFit(element));
+    Events.$on('image::object-fit', (event, element) => this.polyfillObjectFit(element))
   }
 
   polyfillObjectFit(element) {
     if ('objectFit' in document.documentElement.style) {
-      return;
+      return
     }
 
-    const images = this.getObjectfitImages(element);
-    html.classList.add(HAS_POLYFILL_CLASS);
-    images.forEach(image => this.polyfillImage(image));
+    const images = this.getObjectfitImages(element)
+    html.classList.add(HAS_POLYFILL_CLASS)
+    images.forEach(image => this.polyfillImage(image))
   }
 
   getObjectfitImages(element) {
-    let images = [];
+    let images = []
 
     if (element) {
       // If element without hook is passed in, ignore it.
@@ -35,20 +35,20 @@ class ObjectFit {
         element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === null ||
         element.getAttribute(OBJECT_FIT_IMAGE_HOOK) === false
       ) {
-        return images;
+        return images
       }
-      images.push(element);
+      images.push(element)
     } else {
-      images = [...document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`)];
+      images = [...document.querySelectorAll(`[${OBJECT_FIT_IMAGE_HOOK}]`)]
     }
 
-    return images;
+    return images
   }
 
   polyfillImage(image) {
-    const container = image.closest(`[${OBJECT_FIT_CONTAINER_HOOK}]`);
-    container.setAttribute('style', `background-image: url(${image.currentSrc});`);
+    const container = image.closest(`[${OBJECT_FIT_CONTAINER_HOOK}]`)
+    container.setAttribute('style', `background-image: url(${image.currentSrc});`)
   }
 }
 
-export default new ObjectFit();
+export default new ObjectFit()

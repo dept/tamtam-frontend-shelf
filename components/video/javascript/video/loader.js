@@ -3,10 +3,10 @@ function VideoLoader() {
     return Promise.all([
       import(/* webpackChunkName: "Video-Platforms" */ '@components/video/platforms'),
       import(/* webpackChunkName: "Video" */ '@components/video'),
-    ]);
+    ])
   } else {
-    return Promise.reject('No video element found');
+    return Promise.reject('No video element found')
   }
 }
 
-export default VideoLoader();
+export default VideoLoader()
