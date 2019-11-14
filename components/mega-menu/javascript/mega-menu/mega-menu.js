@@ -240,11 +240,10 @@ class MainMenu {
   getTallestFlyout() {
     const flyouts = [...this.menu.querySelectorAll(FLYOUT_MENU_HOOK)]
     let tallest = null
-    for (let i = 0; i < flyouts.length; i++) {
-      const el = flyouts[i]
-      const elHeight = el.offsetHeight
-      tallest = elHeight > tallest ? elHeight : tallest
-    }
+    flyouts.forEach(flyout => {
+      const flyoutHeight = flyout.offsetHeight
+      tallest = flyoutHeight > tallest ? flyoutHeight : tallest
+    })
     return tallest
   }
 
