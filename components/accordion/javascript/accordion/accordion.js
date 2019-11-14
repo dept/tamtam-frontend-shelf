@@ -46,7 +46,7 @@ class Accordion {
       }
     });
 
-    Events.$on(`accordion[${id}]::animating`, (event, data) => {
+    Events.$on(`accordion[${id}]::animating`, (_event, data) => {
       if (this.accordionItems[data.id]) {
         this.isAnimating = data.animating;
       }
