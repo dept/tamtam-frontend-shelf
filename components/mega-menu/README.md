@@ -39,7 +39,7 @@ Import mega menu in HTML of header
 
 
 ## Dependencies
-* [DetectTouch utilitu](/utilities/detect-touch/)
+* [DetectTouch utility](/utilities/detect-touch/)
 * [Events utility](/utilities/events/)
 * [Focus trap utility](/utilities/focus-trap/)
 * [Screen Dimensions](/utilities/screen-dimensions/README.md)
