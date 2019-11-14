@@ -8,7 +8,10 @@ const MENU_ITEM_HOOK = '[js-hook-mega-menu-item]'
 const MENU_LINK_HOOK = '[js-hook-mega-menu-link]'
 const FLYOUT_MENU_HOOK = '[js-hook-flyout-menu]'
 const FLYOUT_BG_HOOK = '[js-hook-flyout-background]'
+
 const KEYBOARD_FOCUSED = 'has--keyboard-focus'
+const MENU_ITEM_ACTIVE_CLASS =  'mega-menu__item--is-open'
+const HTML_ACTIVE_CLASS =  'header--mega-menu-open'
 
 class MainMenu {
   constructor(element) {
@@ -17,8 +20,8 @@ class MainMenu {
     this.menuItems = [...this.menu.querySelectorAll(MENU_ITEM_HOOK)]
     this.registeredMenuItems = {}
 
-    this.activeClass = 'mega-menu__item--is-open'
-    this.menuHTMLClass = 'header--mega-menu-open'
+    this.activeClass = MENU_ITEM_ACTIVE_CLASS
+    this.menuHTMLClass = HTML_ACTIVE_CLASS
 
     this.debounceCloseMenu = debounce(() => this.closeMenu(), 300)
     this.debounceMouseEnter = debounce(item => this.handleMouseEnter(item), 400)
