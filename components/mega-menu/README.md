@@ -11,6 +11,8 @@
 ## What does it do
 Add an accessible mega menu to your header
 
+![Mega Menu Demo](https://media.giphy.com/media/cgdxJTC3dypYYF34lb/giphy.gif)
+
 ## Install
 Import module
 ```javascript
