@@ -84,7 +84,7 @@ class GoogleMaps {
       .join('')
 
     list.innerHTML = items
-    this.createdLocations = [...document.querySelectorAll(HOOK_LOCATION)]
+    this.createdLocations = Array.from(document.querySelectorAll(HOOK_LOCATION))
   }
 
   createRegionsLocationsArray() {

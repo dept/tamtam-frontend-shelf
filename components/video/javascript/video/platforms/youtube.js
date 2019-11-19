@@ -40,6 +40,7 @@ class YoutubeVideo {
   }
 
   init() {
+    // @ts-ignore
     if (!window.YT) {
       YoutubeVideo.loadAPI()
       this.checkAPIReady()
@@ -54,22 +55,27 @@ class YoutubeVideo {
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
     const firstScriptTag = document.getElementsByTagName('script')[0]
+    // @ts-ignore
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
   }
 
   initPlayer() {
+    // @ts-ignore
     window.youtubeIsReady = true
     if (this.videoInterval) clearInterval(this.videoInterval)
+    // @ts-ignore
     this.player = new window.YT.Player(this.options.player, this.playerOptions)
   }
 
   checkAPIReady() {
+    // @ts-ignore
     window.onYouTubeIframeAPIReady = () => this.initPlayer()
 
     this.videoInterval = setInterval(() => {
+      // @ts-ignore
       if (window.youtubeIsReady) {
         this.initPlayer()
-        clearInterval(this.videoInterval)
+        this.videoInterval && clearInterval(this.videoInterval)
       }
     }, 200)
   }

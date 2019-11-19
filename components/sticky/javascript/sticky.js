@@ -46,7 +46,6 @@ class Sticky {
 
   /**
    * Calculates the position of an element
-   * @param {HTMLElement} element HTML element that is used to calculate the position
    */
   _setScrollElementSize() {
     const isStuck = this.scrollElement.classList.contains(STICKY_STUCK_CLASS)
@@ -67,9 +66,10 @@ class Sticky {
 
 /**
  * Sets the classes for the sticky element
- * @param {HTMLElement} el sticky component lane element
- * @param {HTMLElement} scrollElement Element that is updated
+ * @param {HTMLElement & {inviewProperties: any, position: any}} element sticky component lane element
+ * @param {HTMLElement & {inviewProperties: any, position: any}} scrollElement Element that is updated
  * @param {number} threshold amount of offset before starting the animation
+ * @param {number} windowHeight Height of window
  */
 function setStickyValues(element, scrollElement, threshold, windowHeight) {
   if (

@@ -108,7 +108,7 @@ function checkResponsiveImageRequirements() {
  * @returns {Array}
  */
 function getImageNodes(selector) {
-  return [...document.querySelectorAll(selector)]
+  return Array.from(document.querySelectorAll(selector))
 }
 
 export default new LazyImage()

@@ -2,10 +2,11 @@
  * @shelf-version: 1.0.0
  */
 
+// @ts-ignore
 import Environment from '@utilities/environment'
-
+// @ts-ignore
 import axios from 'axios'
-
+// @ts-ignore
 const endpointBase = window.EnvironmentSettings.endpoint
 
 class API {
@@ -38,7 +39,7 @@ class API {
       method: getMethod('POST', json),
     }
 
-    if (this.antiForgeryToken) {
+    if (this.antiForgeryToken && this.antiForgeryToken.name) {
       config.headers = {}
       config.headers[this.antiForgeryToken.name] = this.antiForgeryToken.value
     }

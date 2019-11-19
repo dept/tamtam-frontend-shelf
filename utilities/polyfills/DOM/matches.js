@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Polyfill for element.matches
  * @source: https://raw.githubusercontent.com/jonathantneal/closest/master/element-closest.js

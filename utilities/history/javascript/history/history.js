@@ -10,8 +10,8 @@ class History {
    * Bind events
    */
   bindEvents() {
-    Events.$on('history::push', (e, data) => this.pushHistory(data))
-    Events.$on('history::replace', (e, data) => this.replaceHistory(data))
+    Events.$on('history::push', (_e, data) => this.pushHistory(data))
+    Events.$on('history::replace', (_e, data) => this.replaceHistory(data))
   }
 
   /**
@@ -63,6 +63,7 @@ function prepareHistoryEvents() {
   events.forEach(obj => addHistoryCallbackEvent(obj))
 
   // Add callback to all events
+  // @ts-ignore
   window.onpopstate = history.onreplacestate = history.onpushstate = state =>
     Events.$trigger('history::update', { data: { state } })
 }

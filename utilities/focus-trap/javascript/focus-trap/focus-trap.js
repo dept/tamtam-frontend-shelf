@@ -14,7 +14,6 @@ class FocusTrap {
     /**
      *  Bind event listeners so other function can invoke the trap.
      */
-    Events.$on('focustrap::activate', (event, data) => this.activate(data))
     Events.$on('focustrap::deactivate', () => this.deactivate())
 
     /**
@@ -36,8 +35,8 @@ class FocusTrap {
      * And the element is set.
      * On event it will check if the focused element is inside the trap and if not, it will reset to the trap.
      */
-    Events.$on('focustrap::trap', (event, data) => {
-      if (!this.focusTrapElement.contains(data)) {
+    Events.$on('focustrap::trap', (_event, data) => {
+      if (this.focusTrapElement && !this.focusTrapElement.contains(data)) {
         this.focusClosestFocusTarget()
       }
     })
@@ -64,19 +63,22 @@ class FocusTrap {
    * Finds and focuses the first focusable element inside the trap
    */
   focusClosestFocusTarget() {
-    const focusTarget = findClosestFocusTarget(this.focusTrapElement)
-    focusTarget.focus()
+    if (this.focusTrapElement) {
+      const focusTarget = findClosestFocusTarget(this.focusTrapElement)
+      focusTarget.focus()
+    }
   }
 
   /**
    * Public method to cancel the trap
    */
   deactivate() {
-    this.activated = false
-    this.focusTrapElement = false
+    this.activated = null
+    this.focusTrapElement = null
     this.autoFocus = false
 
     if (this.originalFocus) {
+      // @ts-ignore
       this.originalFocus.focus()
     }
   }
@@ -84,7 +86,7 @@ class FocusTrap {
 
 /**
  * Finds the closets focusable target
- * @param focus element
+ * @param {Element} el
  * @return { Object }
  */
 function findClosestFocusTarget(el) {

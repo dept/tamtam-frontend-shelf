@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Polyfill for new Event > new CustomEvents
  * There's an IE polyfill for the CustomEvent constructor at MDN.

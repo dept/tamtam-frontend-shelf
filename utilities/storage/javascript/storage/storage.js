@@ -1,3 +1,4 @@
+// @ts-ignore
 import Cookie from 'js-cookie'
 
 class Storage {
@@ -70,6 +71,7 @@ class Storage {
     }
 
     try {
+      // @ts-ignore
       data = JSON.parse(data)
 
       if (data && typeof data === 'object') {
@@ -97,8 +99,8 @@ class Storage {
 
 /**
  * Set storage type
- * @param {string('localStorage'|'sessionStorage')} storageType
- * @returns {string('localStorage'|'sessionStorage')}
+ * @param {('localStorage'|'sessionStorage')} storageType
+ * @returns {('localStorage'|'sessionStorage')}
  */
 function setStorageType(storageType) {
   if (['localStorage', 'sessionStorage'].indexOf(storageType) !== -1) {

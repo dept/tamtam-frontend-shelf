@@ -1,41 +1,47 @@
-
 # Form elements
 
 ## Table of contents
+
 1. [What does it do](#what-does-it-do)
 2. [Install](#install)
 3. [How to use](#how-to-use)
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
-
 ## What does it do
-* Render form elements
+
+- Render form elements
 
 ## Install
 
 ### File input
-Import module for file input
-```javascript
-import { CustomFile } from '@components/form-elements';
 
-moduleInit.sync('[js-hook-input-file]', CustomFile);
+Import module for file input
+
+```javascript
+import { CustomFile } from '@components/form-elements'
+
+moduleInit.sync('[js-hook-input-file]', CustomFile)
 ```
 
 ### Label as placeholder
-Import module for label as placeholder
-```javascript
-import { LabelAsPlaceholder } from '@components/form-elements';
 
-moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder);
+Import module for label as placeholder
+
+```javascript
+import { LabelAsPlaceholder } from '@components/form-elements'
+
+moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder)
 ```
 
 ### Autocomplete
-Import module for autocomplete
-```javascript
-import { Autocomplete } from '@components/form-elements';
 
-moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
+Import module for autocomplete
+
+```javascript
+import { Autocomplete } from '@components/form-elements'
+
+moduleInit.sync('[js-hook-autocomplete]', Autocomplete)
 ```
 
 ```htmlmixed
@@ -43,33 +49,39 @@ moduleInit.sync('[js-hook-autocomplete]', Autocomplete);
 ```
 
 ### Input type number sanitization
-Sanitize all input type number fields from anything other than numeric values
-```javascript
-import { NumberInput } from '@components/form-elements';
 
-moduleInit.sync('input[type="number"]', NumberInput);
+Sanitize all input type number fields from anything other than numeric values
+
+```javascript
+import { NumberInput } from '@components/form-elements'
+
+moduleInit.sync('input[type="number"]', NumberInput)
 ```
 
 Or call it asynchronously
+
 ```javascript
 moduleInit.async('input[type="number"]', () =>
   import(/* webpackChunkName: "js/NumberInput" */ '@components/form-elements/input-number'),
-);
+)
 ```
 
 ### Emoji killer
+
 (Optionally) remove all emoji's from an input field
+
 ```javascript
-import EmojiKiller from "@form-elements/element/emoji-killer";
+import EmojiKiller from '@form-elements/element/emoji-killer'
 ```
 
 <br>
 
 Call EmojiKiller() and pass a single DOM element, array of elements or NodeList. Spreading the elements is not required.
+
 ```javascript
 Examples:
 
-this.elements = [...document.querySelectorAll('.input-class')];
+this.elements = Array.from(document.querySelectorAll('.input-class')];
 EmojiKiller(this.elements);
 
 or
@@ -84,20 +96,25 @@ EmojiKiller(element);
 ```
 
 ## How to use
+
 There are multiple macros available
 
 ### Form
+
 See the [form](/components/form-elements/template/form-elements/form.html) macro for all available options.
+
 ```htmlmixed
 {% call form.form() %}
-    
+
     HTML HERE
 
 {% endcall %}
 ```
 
 ### Fieldset
+
 See the [fieldset](/components/form-elements/template/form-elements/fieldset.html) macro for all available options.
+
 ```htmlmixed
 {% call form.fieldset({
     legend: 'Test form data'
@@ -109,7 +126,9 @@ See the [fieldset](/components/form-elements/template/form-elements/fieldset.htm
 ```
 
 ### Input
+
 See the [input](/components/form-elements/template/form-elements/input.html) macro for all available options.
+
 ```htmlmixed
 {{ form.input({
     name: 'input-text',
@@ -120,7 +139,9 @@ See the [input](/components/form-elements/template/form-elements/input.html) mac
 ```
 
 ### Input - file upload
+
 See the [file](/components/form-elements/template/form-elements/file.html) macro for all available options.
+
 ```htmlmixed
 {{ form.file({
     name: 'input-file',
@@ -131,7 +152,9 @@ See the [file](/components/form-elements/template/form-elements/file.html) macro
 ```
 
 ### Radio
+
 See the [radio](/components/form-elements/template/form-elements/radio.html) macro for all available options.
+
 ```htmlmixed
 {{ form.radio({
     name: 'radio-1',
@@ -156,7 +179,9 @@ See the [radio](/components/form-elements/template/form-elements/radio.html) mac
 ```
 
 ### Checkbox
+
 See the [checkbox](/components/form-elements/template/form-elements/checkbox.html) macro for all available options.
+
 ```htmlmixed
 {{ form.checkbox({
     name: 'checkbox 1',
@@ -181,7 +206,9 @@ See the [checkbox](/components/form-elements/template/form-elements/checkbox.htm
 ```
 
 ### Select
+
 See the [select](/components/form-elements/template/form-elements/select.html) macro for all available options.
+
 ```htmlmixed
 {{ form.select({
     name: 'Select',
@@ -209,7 +236,9 @@ See the [select](/components/form-elements/template/form-elements/select.html) m
 ```
 
 ### Textarea
+
 See the [input](/components/form-elements/template/form-elements/textarea.html) macro for all available options.
+
 ```htmlmixed
 {{ form.textarea({
     name: 'textarea-text',
@@ -219,8 +248,8 @@ See the [input](/components/form-elements/template/form-elements/textarea.html) 
 }) }}
 ```
 
-
 ### Label as placeholder
+
 Works on input, file and textarea
 
 ```htmlmixed
@@ -232,12 +261,14 @@ Works on input, file and textarea
 }) }}
 ```
 
-
 ### Autocomplete
+
 See the [autocomplete](/components/form-elements/template/form-elements/autocomplete.html) macro for all available options.
 
 #### With API endpoint
+
 HTML:
+
 ```htmlmixed
 {{ form.autocomplete({
     name: 'query',
@@ -249,17 +280,20 @@ HTML:
 ```
 
 API response:
+
 ```json
 [
-  { "id":"1", "name":"Dylan Vens" },
-  { "id":"2", "name":"Anne van den Hoogen" },
-  { "id":"3", "name":"Matt van Voorst", "keywords": "Sexy man, with, amazing hair" }
+  { "id": "1", "name": "Dylan Vens" },
+  { "id": "2", "name": "Anne van den Hoogen" },
+  { "id": "3", "name": "Matt van Voorst", "keywords": "Sexy man, with, amazing hair" }
 ]
 ```
 
 #### No API endpoint
-Add data-list="autocomplete-list" to the attributes 
+
+Add data-list="autocomplete-list" to the attributes
 If no API call after each keypress is wanted, an inline json can be used. HTML:
+
 ```htmlmixed
 
 {{ form.autocomplete({
@@ -287,12 +321,14 @@ If no API call after each keypress is wanted, an inline json can be used. HTML:
 ```
 
 ## Dependencies
-* [RAF](https://www.npmjs.com/package/raf)
-* [Raf throttle utility](/utilities/raf-throttle/)
-* [Events utility](/utilities/events/)
-* [API utility](/utilities/api/)
+
+- [RAF](https://www.npmjs.com/package/raf)
+- [Raf throttle utility](/utilities/raf-throttle/)
+- [Events utility](/utilities/events/)
+- [API utility](/utilities/api/)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
-* [Anne van den Hoogen](mailto:anne.vandenhoogen@deptagency.com)
-* [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)
+
+- [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+- [Anne van den Hoogen](mailto:anne.vandenhoogen@deptagency.com)
+- [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)

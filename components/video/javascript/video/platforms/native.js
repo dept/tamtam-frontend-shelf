@@ -8,8 +8,8 @@ class NativeVideo {
   constructor(options) {
     this.options = options
 
-    if (this.parseSources()) {
-      this.initPlayer()
+    if (!this.parseSources()) {
+      this.player = this.initPlayer()
       this.bindEvents()
     }
   }
@@ -19,7 +19,7 @@ class NativeVideo {
    */
   initPlayer() {
     this.sourceData = getClosestVideoSource(this.sources)
-    this.player = document.createElement('video')
+    const player = document.createElement('video')
 
     this._addMediaSources()
 
@@ -28,31 +28,33 @@ class NativeVideo {
     }
 
     if (this.options.videoControls) {
-      this.player.setAttribute('controls', 'controls')
+      player.setAttribute('controls', 'controls')
     }
 
     if (this.options.videoLoop) {
-      this.player.setAttribute('loop', 'loop')
+      player.setAttribute('loop', 'loop')
     }
 
     if (this.options.videoPlaysinline) {
       // For mobile autoplay
-      this.player.setAttribute('playsinline', 'playsinline')
+      player.setAttribute('playsinline', 'playsinline')
     }
 
     if (this.options.videoAutoplay) {
-      this.player.setAttribute('autoplay', 'autoplay')
+      player.setAttribute('autoplay', 'autoplay')
 
       // For mobile autoplay
-      this.player.setAttribute('playsinline', 'playsinline')
+      player.setAttribute('playsinline', 'playsinline')
     }
 
     if (this.options.videoMuted) {
-      this.player.setAttribute('muted', 'muted')
-      this.player.muted = true
+      player.setAttribute('muted', 'muted')
+      player.muted = true
     }
 
-    this.options.player.appendChild(this.player)
+    this.options.player.appendChild(player)
+
+    return player
   }
 
   /**
@@ -63,7 +65,7 @@ class NativeVideo {
 
     this.player.addEventListener('loadedmetadata', () => {
       if (this.options.videoTime) this.player.currentTime = this.options.videoTime
-      if (this.options.videoControls) this.player.controls = 0
+      if (this.options.videoControls) this.player.controls = false
 
       Events.$trigger('video::ready', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::ready`, {
@@ -72,7 +74,7 @@ class NativeVideo {
     })
 
     this.player.addEventListener('playing', () => {
-      if (this.options.videoControls) this.player.controls = 1
+      if (this.options.videoControls) this.player.controls = false
 
       Events.$trigger('video::playing', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::playing`, {
@@ -81,7 +83,7 @@ class NativeVideo {
     })
 
     this.player.addEventListener('pause', () => {
-      if (this.options.videoControls) this.player.controls = 0
+      if (this.options.videoControls) this.player.controls = false
 
       Events.$trigger('video::paused', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::paused`, {

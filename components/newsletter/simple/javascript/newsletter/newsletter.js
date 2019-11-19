@@ -79,7 +79,7 @@ class Newsletter {
     if (this.message.state && this.message[this.message.state]) {
       this.message[this.message.state].classList.remove(MESSAGE_CLASS)
       this.message[this.message.state].setAttribute('aria-hidden', true)
-      Events.$triggger('focustrap::deactivate')
+      Events.$trigger('focustrap::deactivate')
       delete this.message.state
     }
   }
@@ -128,7 +128,7 @@ class Newsletter {
       this.message.state = state
       this.message[state].classList.add(MESSAGE_CLASS)
       this.message[state].setAttribute('aria-hidden', false)
-      Events.$triggger('focustrap::activate', {
+      Events.$trigger('focustrap::activate', {
         data: { element: this.message[state] },
       })
     }
@@ -137,7 +137,7 @@ class Newsletter {
 
 /**
  * Validate form elements.
- * @param {NodeList} elements All form elements that should be validated
+ * @param {HTMLInputElement[]} elements All form elements that should be validated
  * @returns {Number} Number of errors
  */
 function validateElements(elements) {
@@ -160,7 +160,7 @@ function validateElements(elements) {
 
 /**
  * Convert the form fields to JSON.
- * @param {HTMLElement} form The form element
+ * @param {HTMLFormElement} form The form element
  * @returns {Object}
  */
 function generateFormDataJson(form) {

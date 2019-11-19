@@ -1,6 +1,9 @@
 import 'intersection-observer'
 import Events from '@utilities/events'
 
+/**
+ * @type {Window|Element}
+ */
 const SCROLL_ELEMENT = window
 
 const OBSERVER_DEFAULT_OFFSET_Y = 0
@@ -27,7 +30,7 @@ class InView {
   }
 
   bindEvents() {
-    Events.$on('in-view::update', (event, data) => {
+    Events.$on('in-view::update', (_event, data) => {
       const elements = data && data.elements ? data.elements : undefined
       const hook = data && data.hook ? data.hook : undefined
       this.addElements(elements, hook)
@@ -48,11 +51,10 @@ class InView {
         node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'
       }
       if (!node.__inviewThreshold) {
-        node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK)
-          ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false
-          : false
+        const attribute = node.getAttribute(INVIEW_THRESHOLD_HOOK)
+        node.__inviewThreshold = attribute ? parseFloat(attribute) || false : false
       }
-      if (!node.__inviewInitialized) {
+      if (!node.__inviewInitialized && this.observer) {
         this.observer.observe(node)
       }
       if (!node.__inviewInitialized) {
@@ -119,8 +121,17 @@ function getTriggers(triggers) {
   return triggers ? triggers.split(',') : []
 }
 
+/**
+ * @typedef {Element & {
+ *  __inviewTriggerHook: any
+ *  __inviewPersistent: any
+ *  __inviewThreshold: any
+ *  __inviewInitialized: any
+ * }} InViewElement
+ * @return {InViewElement[]}
+ */
 function getNodes() {
-  return [...document.querySelectorAll(INVIEW_JS_HOOK)]
+  return Array.from(document.querySelectorAll(INVIEW_JS_HOOK))
 }
 
 /**
@@ -128,10 +139,16 @@ function getNodes() {
  * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-  const scrollTop =
-    SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop
-  const scrollLeft =
-    SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft
+  let scrollTop
+  let scrollLeft
+
+  if (SCROLL_ELEMENT instanceof Window) {
+    scrollTop = SCROLL_ELEMENT.pageYOffset || document.documentElement.scrollTop
+    scrollLeft = SCROLL_ELEMENT.pageXOffset || document.documentElement.scrollLeft
+  } else {
+    scrollTop = SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop
+    scrollLeft = SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft
+  }
 
   const { top, bottom, left, right } = getElementOffset(entry)
   const position = { top, bottom, left, right }
@@ -161,10 +178,10 @@ function getElementOffset(entry) {
   const elementStyles = window.getComputedStyle(targetElement)
 
   const margin = {}
-  margin.top = parseInt(elementStyles.marginTop, 10) / 2 || 0
-  margin.right = parseInt(elementStyles.marginRight, 10) / 2 || 0
-  margin.bottom = parseInt(elementStyles.marginBottom, 10) / 2 || 0
-  margin.left = parseInt(elementStyles.marginLeft, 10) / 2 || 0
+  margin.top = (elementStyles.marginTop && parseInt(elementStyles.marginTop, 10) / 2) || 0
+  margin.right = (elementStyles.marginRight && parseInt(elementStyles.marginRight, 10) / 2) || 0
+  margin.bottom = (elementStyles.marginBottom && parseInt(elementStyles.marginBottom, 10) / 2) || 0
+  margin.left = (elementStyles.marginLeft && parseInt(elementStyles.marginLeft, 10) / 2) || 0
 
   let top = 0 + margin.top + margin.bottom
   let left = 0 + margin.left + margin.right

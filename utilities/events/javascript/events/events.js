@@ -92,6 +92,9 @@ _Events.$on('events::dom-reinit', () => readAndBindEventsFromDOM())
  * These are than passed to bindEvent.
  */
 function readAndBindEventsFromDOM() {
+  if (!crawlEl) {
+    return
+  }
   // Elements that have attributes starting with on:
   const elements = _domFind(
     crawlEl,
@@ -155,7 +158,7 @@ function eventIsBoundToEventEl(event, callback) {
 
 /**
  * Map over modifiers and modify event with prevent or stop.
- * @param {string} modifiers
+ * @param {string[]} modifiers
  * @param {Event} e
  */
 function runModifiers(modifiers, e) {
@@ -185,19 +188,21 @@ function parseEventString(eventString) {
 /**
  * Event delegation. Bind clicks on parent, for live elements,
  * on event traverse up the DOM to find the clicked parent if present.
- * @param {HTMLElement} criteria Criteria function which matches the requested target
+ * @param {Function} criteria Criteria function which matches the requested target
  * @param {Function} callback Callback to execute on event.
- * @returns {Function}
+ * @returns {any}
  */
 function _delegate(criteria, callback) {
   return function(e) {
     let el = e.target
     if (criteria(el)) {
+      // @ts-ignore
       callback.apply(this, arguments)
     }
     while ((el = el.parentNode)) {
       if (criteria(el)) {
         e.delegateTarget = el
+        // @ts-ignore
         callback.apply(this, arguments)
         return
       }
@@ -208,7 +213,7 @@ function _delegate(criteria, callback) {
 /**
  * Treewalker to match elements based on a function
  * @param {HTMLElement} element Parent element (eg document) to bind event on.
- * @param {HTMLElement} predicate Function expected to return a boolean if an element matches.
+ * @param {Function} predicate Function expected to return a boolean if an element matches.
  * @param results
  * @returns {Array}
  */

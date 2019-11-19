@@ -1,7 +1,7 @@
 /**
  * Check if string is valid phone number
  * @param  {String} phone Phone number
- * @param  {String} regex Default dutch phone regex
+ * @param  {RegExp} regex Default dutch phone regex
  * @return {Boolean} TRUE if provided argument is a valid phone number, FALSE if not
  */
 function isValidPhoneNumber(

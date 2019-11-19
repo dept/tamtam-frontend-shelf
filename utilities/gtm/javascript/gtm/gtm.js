@@ -6,13 +6,17 @@ class GTM {
   }
 
   _bindEvents() {
-    Events.$on('gtm::push', (event, data) => this.push(data))
+    Events.$on('gtm::push', (_event, data) => this.push(data))
   }
 
   push(data) {
-    window.dataLayer = window.dataLayer || []
+    /**
+     * @type {object}
+     */
+    let { dataLayer } = window
 
-    window.dataLayer.push(data)
+    dataLayer = dataLayer || []
+    dataLayer.push(data)
   }
 }
 

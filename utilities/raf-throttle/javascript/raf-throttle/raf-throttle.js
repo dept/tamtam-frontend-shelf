@@ -1,4 +1,22 @@
+// @ts-ignore
 import raf from 'raf'
+
+/**
+ * @typedef {Object} Bind
+ * @property {HTMLElement|Window} element Element we are binding to ie. document or window
+ * @property {string} event Event type we are binding ie. scroll
+ * @property {string} namespace Namepace of the event
+ * @property {Function} fn Function we want to execute
+ * @property {Number} [delay] Amount of delay
+ *
+ *
+ * @typedef {Object} Options
+ * @property {HTMLElement|Window} element
+ * @property {string} event Event type we are binding ie. scroll
+ * @property {string} namespace Namepace of the event
+ * @property {EventListenerOrEventListenerObject} [callback]
+ * @property {object} [eventOptions] Give options to your event
+ */
 
 class RafThrottle {
   constructor() {
@@ -9,12 +27,7 @@ class RafThrottle {
 
   /**
    * Public function to set the assigned binds
-   * @param {Array[]} binds
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
-   * @param {Function} bind[].fn Function we want to execute
+   * @param {Bind[]} binds
    */
   set(binds) {
     this._addEvents(binds)
@@ -22,11 +35,7 @@ class RafThrottle {
 
   /**
    * Public function to remove an assigned bind
-   * @param {Array[]} binds
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element to unbind ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
+   * @param {Bind[]} binds
    */
   remove(binds) {
     if (binds) {
@@ -40,13 +49,7 @@ class RafThrottle {
 
   /**
    * Loop over binds and bind them
-   * @param {Array[]} binds
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
-   * @param {Function} bind[].fn Function we want to execute
-   * @param {Number} [bind[].delay] Amount of delay
+   * @param {Bind[]} binds
    */
   _addEvents(binds) {
     binds.forEach(bind => {
@@ -68,11 +71,7 @@ class RafThrottle {
 
   /**
    * Loop over binds and remove them
-   * @param {Array[]} binds
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element to unbind ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
+   * @param {Bind[]} binds
    */
   _removeEvents(binds) {
     binds.forEach(bind => {
@@ -88,12 +87,7 @@ class RafThrottle {
 
   /**
    * Append requestAnimationFrame before firing event
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
-   * @param {Function} bind[].fn Function we want to execute
-   * @param {Number} [bind[].delay] Amount of delay
+   * @param {Bind} bind
    * @param {Event} event Event object
    */
   _trigger(bind, event) {
@@ -116,13 +110,7 @@ class RafThrottle {
 
   /**
    *
-   * @param {Object[]} bind
-   * @param {HTMLElement} bind[].element Element we are binding to ie. document or window
-   * @param {string} bind[].event Event type we are binding ie. scroll
-   * @param {string} bind[].namespace Namepace of the event
-   * @param {Function} bind[].fn Function we want to execute
-   * @param {Event} event Event object
-   * @param {Number} [bind[].delay] Amount of delay
+   * @param {Bind} bind
    * @param {Event} event Event object
    * @param eventNamespace {string} - Name of event space
    */
@@ -139,12 +127,7 @@ class RafThrottle {
 
   /**
    * Bind a namespaced eventlistener to given element
-   * @param {Object[]} options
-   * @param {HTMLElement} options[].element
-   * @param {string} options[].event Event type we are binding ie. scroll
-   * @param {string} options[].namespace Namepace of the event
-   * @callback {Function} options.[]callback
-   * @param {object} [options[].eventOptions] Give options to your event
+   * @param {Options} options
    */
   _addThrottledEvent(options) {
     const { element, event, namespace, callback } = options
@@ -158,10 +141,7 @@ class RafThrottle {
 
   /**
    * Remove a namespaced eventlistener to given element
-   * @param {object[]} options
-   * @param {HTMLElement} options[].element
-   * @param {string} options[].event Event type we are removing ie. scroll
-   * @param {string} options[].namespace Namepace of the event we are removing
+   * @param {Options} options
    */
   _removeThrottledEvent(options) {
     const { element, event, namespace } = options
