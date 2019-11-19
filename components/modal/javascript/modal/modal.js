@@ -11,6 +11,8 @@ const MODAL_HTML_CLASS = 'is--modal-open'
 class Modal {
   constructor() {
     this.registeredModals = {}
+    this.tabIndexExceptionIds = ['modal-mega-menu']
+
     this.scrollElement = document.scrollingElement || html
     this.scrollTop = 0
 
@@ -54,7 +56,9 @@ class Modal {
     }
 
     if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger) {
-      setTabIndexOfChildren(modal.el, -1)
+      if (!this.tabIndexExceptionIds.includes(id)) {
+        setTabIndexOfChildren(modal.el, -1)
+      }
       this.registeredModals[`modal-${id}`] = modal
     }
 
@@ -146,8 +150,11 @@ class Modal {
     if (!noBodyClass) html.classList.add(MODAL_HTML_CLASS)
 
     // Add tabindex and add visible class
-    modal.el.tabIndex = 0
-    setTabIndexOfChildren(modal.el, 0)
+    if (!this.tabIndexExceptionIds.includes(data.id)) {
+      modal.el.tabIndex = 0
+      setTabIndexOfChildren(modal.el, 0)
+    }
+
     modal.el.classList.add(MODAL_VISIBLE_CLASS)
     modal.el.modalIsOpen = true
 
@@ -192,8 +199,11 @@ class Modal {
       this.removeScrollPosition()
 
     // Remove tabindex and remove visible class
-    modal.el.tabIndex = -1
-    setTabIndexOfChildren(modal.el, -1)
+    if (!this.tabIndexExceptionIds.includes(data.id)) {
+      modal.el.tabIndex = -1
+      setTabIndexOfChildren(modal.el, -1)
+    }
+
     modal.el.classList.remove(MODAL_VISIBLE_CLASS)
     modal.el.modalIsOpen = false
 
