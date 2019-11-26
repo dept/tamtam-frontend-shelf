@@ -21,14 +21,13 @@ class Cookies {
     this.cookiebar = document.querySelector(COOKIE_BAR_HOOK)
     this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK)
 
-    this.cookiebarVersion = this.cookiebar.dataset.policyVersion || COOKIE_DEFAULT_VALUE
+    this.cookiebarVersion = this.cookiebar.dataset.policyVersion || '1'
 
     this.form = {}
     this.form.element = document.querySelector(COOKIE_FORM_HOOK)
 
     this.hostname = window.location.hostname
     this.cookiePrefix = 'default'
-    this.hostname = window.location.hostname
 
     this.cookieName = {
       functional: 'functional',
@@ -122,8 +121,8 @@ class Cookies {
     const acceptedCookies = {}
 
     this.config.cookies.forEach(cookie => {
-      this.setCookie(cookie.name, this.config.version)
-      acceptedCookies[this.prefixCookieName(cookie.name)] = this.config.version
+      this.setCookie(cookie.name, COOKIE_DEFAULT_VALUE)
+      acceptedCookies[this.prefixCookieName(cookie.name)] = COOKIE_DEFAULT_VALUE
     })
 
     this._addGlobalCookies(acceptedCookies)
@@ -167,7 +166,7 @@ class Cookies {
       const { value } = option
       this.config.cookies.forEach(cookie => {
         if (cookie.name.indexOf(value) !== -1) {
-          const state = option.checked ? this.config.version : COOKIE_DECLINED_VALUE
+          const state = option.checked ? COOKIE_DEFAULT_VALUE : COOKIE_DECLINED_VALUE
           this.setCookie(value, state)
           acceptedCookies[this.prefixCookieName(value)] = state
         }
