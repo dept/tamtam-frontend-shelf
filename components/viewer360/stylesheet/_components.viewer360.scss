@@ -1,0 +1,20 @@
+.c-viewer-360 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.viewer-360__control {
+    position: absolute;
+    bottom: $global-spacing;
+    top: auto;
+    display: none;
+}
+
+.viewer-360__control--next {
+    left: 70px;
+}
+
+.viewer-360__control--prev {
+    left: $global-spacing;
+}
