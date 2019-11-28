@@ -1,5 +1,5 @@
-import 'intersection-observer';
-import Events from '@utilities/events';
+import "intersection-observer";
+import Events from "@utilities/events";
 
 const SCROLL_ELEMENT = window;
 
@@ -7,11 +7,11 @@ const OBSERVER_DEFAULT_OFFSET_Y = 0;
 const OBSERVER_DEFAULT_OFFSET_X = 0;
 const OBSERVER_DEFAULT_THRESHOLD = buildThresholdList();
 
-const INVIEW_JS_HOOK = '[js-hook-inview]';
-const INVIEW_TRIGGERS_HOOK = 'data-inview-trigger';
-const INVIEW_OUTVIEW_CLASS = 'is--out-view';
-const INVIEW_THRESHOLD_HOOK = 'data-inview-threshold';
-const INVIEW_PERSISTENT_HOOK = 'data-inview-persistent';
+const INVIEW_JS_HOOK = "[js-hook-inview]";
+const INVIEW_TRIGGERS_HOOK = "data-inview-trigger";
+const INVIEW_OUTVIEW_CLASS = "is--out-view";
+const INVIEW_THRESHOLD_HOOK = "data-inview-threshold";
+const INVIEW_PERSISTENT_HOOK = "data-inview-persistent";
 
 const CONFIG = {
     rootMargin: `${OBSERVER_DEFAULT_OFFSET_Y}px ${OBSERVER_DEFAULT_OFFSET_X}px`,
@@ -19,127 +19,122 @@ const CONFIG = {
 };
 
 class InView {
-
     constructor() {
-
         this.nodes = getNodes();
         this.observer = null;
         this.setObserver();
         this.bindEvents();
-
     }
 
     bindEvents() {
-
-        Events.$on('in-view::update', (event, data) => {
+        Events.$on("in-view::update", (event, data) => {
             const elements = data && data.elements ? data.elements : undefined;
             const hook = data && data.hook ? data.hook : undefined;
             this.addElements(elements, hook);
         });
-
     }
 
     setObserver() {
-
-        this.observer = new IntersectionObserver(this.onObserve.bind(this), CONFIG);
+        this.observer = new IntersectionObserver(
+            this.onObserve.bind(this),
+            CONFIG
+        );
         this.bindObservedNodes();
-
     }
 
     bindObservedNodes() {
-
         this.nodes.forEach(node => {
-
-            if (!node.__inviewTriggerHook) { node.__inviewTriggerHook = node.getAttribute(INVIEW_TRIGGERS_HOOK); }
-            if (!node.__inviewPersistent) { node.__inviewPersistent = node.getAttribute(INVIEW_PERSISTENT_HOOK) === 'true'; }
-            if (!node.__inviewThreshold) { node.__inviewThreshold = node.getAttribute(INVIEW_THRESHOLD_HOOK) ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) || false : false; }
-            if (!node.__inviewInitialized) { this.observer.observe(node); }
-            if (!node.__inviewInitialized) { node.__inviewInitialized = true; }
-
+            if (!node.__inviewTriggerHook) {
+                node.__inviewTriggerHook = node.getAttribute(
+                    INVIEW_TRIGGERS_HOOK
+                );
+            }
+            if (!node.__inviewPersistent) {
+                node.__inviewPersistent =
+                    node.getAttribute(INVIEW_PERSISTENT_HOOK) === "true";
+            }
+            if (!node.__inviewThreshold) {
+                node.__inviewThreshold = node.getAttribute(
+                    INVIEW_THRESHOLD_HOOK
+                )
+                    ? parseFloat(node.getAttribute(INVIEW_THRESHOLD_HOOK)) ||
+                      false
+                    : false;
+            }
+            if (!node.__inviewInitialized) {
+                this.observer.observe(node);
+            }
+            if (!node.__inviewInitialized) {
+                node.__inviewInitialized = true;
+            }
         });
-
     }
 
     onObserve(entries) {
-
-        entries.forEach(entry => this.whenElementInViewport(entry, this.observer));
-
+        entries.forEach(entry =>
+            this.whenElementInViewport(entry, this.observer)
+        );
     }
 
     whenElementInViewport(entry, observer) {
-
         const triggers = entry.target.__inviewTriggerHook;
         const element = entry.target;
 
         element.inviewProperties = calculateInviewProperties(entry);
-
         if (
             // Element is past bottom of the screen
-            element.inviewProperties.scrolledPastViewport.bottom
-            &&
-            (
-                // Element does not have a threshold or it has a threshold and the threshold is met
-                !element.__inviewThreshold
-                || element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio
-            )
+            element.inviewProperties.scrolledPastViewport.bottom &&
+            (element.inviewProperties.scrolledPastViewport.left ||
+                element.inviewProperties.scrolledPastViewport.right) &&
+            // Element does not have a threshold or it has a threshold and the threshold is met
+            (!element.__inviewThreshold ||
+                (element.__inviewThreshold &&
+                    element.__inviewThreshold <= entry.intersectionRatio))
         ) {
-
             element.classList.remove(INVIEW_OUTVIEW_CLASS);
             triggerEvents(getTriggers(triggers), element);
 
-
-            if (!element.__inviewPersistent) {
-                observer.unobserve(entry.target);
-            }
-
+            if (!element.__inviewPersistent) observer.unobserve(entry.target);
         } else {
-
             element.classList.add(INVIEW_OUTVIEW_CLASS);
 
-            if (element.__inviewPersistent) {
+            if (
+                element.__inviewPersistent &&
+                (element.inviewProperties.scrolledPastViewport.left ||
+                    element.inviewProperties.scrolledPastViewport.right)
+            )
                 triggerEvents(getTriggers(triggers), element);
-            }
-
-
         }
-
     }
 
     addElements(elements = getNodes(), hook = false) {
-
         elements.forEach(element => {
-
-            if (element.__inviewInitialized) { return; }
-            if (hook) { element.__inviewTriggerHook = hook; }
+            if (element.__inviewInitialized) {
+                return;
+            }
+            if (hook) {
+                element.__inviewTriggerHook = hook;
+            }
 
             this.nodes.push(element);
 
             this.bindObservedNodes();
-
         });
-
     }
-
 }
 
 function triggerEvents(triggers, data) {
-
     triggers.forEach(trigger => {
-        Events.$trigger(trigger, { data })
+        Events.$trigger(trigger, { data });
     });
-
 }
 
 function getTriggers(triggers) {
-
-    return (triggers) ? triggers.split(',') : [];
-
+    return triggers ? triggers.split(",") : [];
 }
 
 function getNodes() {
-
     return [...document.querySelectorAll(INVIEW_JS_HOOK)];
-
 }
 
 /**
@@ -147,9 +142,14 @@ function getNodes() {
  * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-
-    const scrollTop = SCROLL_ELEMENT.pageYOffset || SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop;
-    const scrollLeft = SCROLL_ELEMENT.pageXOffset || SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft;
+    const scrollTop =
+        SCROLL_ELEMENT.pageYOffset ||
+        SCROLL_ELEMENT.scrollTop ||
+        document.documentElement.scrollTop;
+    const scrollLeft =
+        SCROLL_ELEMENT.pageXOffset ||
+        SCROLL_ELEMENT.scrollLeft ||
+        document.documentElement.scrollLeft;
 
     const { top, bottom, left, right } = getElementOffset(entry);
     const position = { top, bottom, left, right };
@@ -163,11 +163,10 @@ function calculateInviewProperties(entry) {
         rootHeight,
         rootWidth,
         scrollTop,
-        scrollLeft,
+        scrollLeft
     });
 
     return inViewDirections;
-
 }
 
 /**
@@ -176,7 +175,6 @@ function calculateInviewProperties(entry) {
  * @returns {Object} Object of top, bottom, left and right position
  */
 function getElementOffset(entry) {
-
     let targetElement = entry.target;
     const elementStyles = window.getComputedStyle(targetElement);
 
@@ -209,7 +207,6 @@ function getElementOffset(entry) {
  * @returns {Object} matches
  */
 function getInViewDirections(options) {
-
     const { width, height } = options.entry.boundingClientRect;
 
     const topPosition = options.entry.boundingClientRect.top;
@@ -222,13 +219,18 @@ function getInViewDirections(options) {
     const isVisible = elementIsVisible(width, height);
 
     scrolledPastViewport.top = topPosition + height < 0 && isVisible;
-    scrolledPastViewport.bottom = topPosition <= options.rootHeight && isVisible;
+    scrolledPastViewport.bottom =
+        topPosition <= options.rootHeight && isVisible;
     scrolledPastViewport.right = leftPosition <= options.rootWidth && isVisible;
     scrolledPastViewport.left = leftPosition <= 0 && isVisible;
 
     const isInViewport = {
-        horizontal: options.entry.isIntersecting && (scrolledPastViewport.left || scrolledPastViewport.right),
-        vertical: options.entry.isIntersecting && (scrolledPastViewport.top || scrolledPastViewport.bottom),
+        horizontal:
+            options.entry.isIntersecting &&
+            (scrolledPastViewport.left || scrolledPastViewport.right),
+        vertical:
+            options.entry.isIntersecting &&
+            (scrolledPastViewport.top || scrolledPastViewport.bottom)
     };
 
     return {
@@ -243,12 +245,11 @@ function getInViewDirections(options) {
         height,
         width,
         windowHeight: window.innerHeight,
-        windowWidth: window.innerWidth,
+        windowWidth: window.innerWidth
     };
 }
 
 function buildThresholdList() {
-
     const numSteps = 1000;
     const thresholds = [];
 
