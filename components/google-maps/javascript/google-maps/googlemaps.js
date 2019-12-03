@@ -20,7 +20,7 @@ const HOOK_REGION = '[js-hook-region]'
 const HOOK_LOCATION = '[js-hook-location]'
 
 //CLASSES
-const CLASS_API_LOADED = 'googlempas--has-loaded-api'
+const CLASS_API_LOADED = 'googlemaps--has-loaded-api'
 const CLASS_LIST_VIEW = 'googlemaps--is-list-view'
 const CLASS_LOCATION_VISIBLE = 'location--is-visible'
 const CLASS_REGION_ACTIVE = 'region--is-active'
