@@ -14,7 +14,11 @@ class Autocomplete {
     this.element = element
     this.list = this.element.querySelector(HOOK_INPUT_LIST)
     this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE)
-    this.input = this.element.closest(HOOK_AUTOCOMPLETE_WRAPPER).querySelector(`[js-hook-${this.type}]`)
+    this.inputWrapper = this.element.closest(HOOK_AUTOCOMPLETE_WRAPPER)
+
+    if(!this.inputWrapper) return
+
+    this.input = this.inputWrapper.querySelector(`[js-hook-${this.type}]`)
 
     if (!this.list || !this.input) return
 
