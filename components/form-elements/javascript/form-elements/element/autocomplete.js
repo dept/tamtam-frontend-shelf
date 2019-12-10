@@ -2,6 +2,7 @@ import RafThrottle from '@utilities/raf-throttle'
 import Events from '@utilities/events'
 import Api from '@utilities/api'
 
+const HOOK_AUTOCOMPLETE_WRAPPER = '[js-hook-autocomplete-wrapper]'
 const HOOK_AUTOCOMPLETE = 'js-hook-autocomplete'
 const HOOK_INPUT_LIST = '[js-hook-autocomplete-list]'
 const INPUT_VALUE_ID = 'data-value-id'
@@ -13,7 +14,11 @@ class Autocomplete {
     this.element = element
     this.list = this.element.querySelector(HOOK_INPUT_LIST)
     this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE)
-    this.input = document.querySelector(`[js-hook-${this.type}]`)
+    this.inputWrapper = this.element.closest(HOOK_AUTOCOMPLETE_WRAPPER)
+
+    if(!this.inputWrapper) return
+
+    this.input = this.inputWrapper.querySelector(`[js-hook-${this.type}]`)
 
     if (!this.list || !this.input) return
 
