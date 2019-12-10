@@ -18,7 +18,7 @@ class SocialShare {
   }
 
   showTwitterDialogue() {
-    this.openDialogue(`https://twitter.com/home?status=${window.location.href}`)
+    this.openDialogue(`https://twitter.com/intent/tweet?text=${window.location.href}`)
   }
 
   showPinterestDialogue() {
