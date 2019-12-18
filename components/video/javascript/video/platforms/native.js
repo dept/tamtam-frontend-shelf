@@ -8,8 +8,8 @@ class NativeVideo {
   constructor(options) {
     this.options = options
 
-    if (!this.parseSources()) {
-      this.player = this.initPlayer()
+    if (this.parseSources()) {
+      this.initPlayer()
       this.bindEvents()
     }
   }
@@ -19,7 +19,7 @@ class NativeVideo {
    */
   initPlayer() {
     this.sourceData = getClosestVideoSource(this.sources)
-    const player = document.createElement('video')
+    this.player = document.createElement('video')
 
     this._addMediaSources()
 
@@ -28,33 +28,32 @@ class NativeVideo {
     }
 
     if (this.options.videoControls) {
-      player.setAttribute('controls', 'controls')
+      this.player.setAttribute('controls', 'controls')
     }
 
     if (this.options.videoLoop) {
-      player.setAttribute('loop', 'loop')
+      this.player.setAttribute('loop', 'loop')
     }
 
     if (this.options.videoPlaysinline) {
       // For mobile autoplay
-      player.setAttribute('playsinline', 'playsinline')
+      this.player.setAttribute('playsinline', 'playsinline')
     }
 
     if (this.options.videoAutoplay) {
-      player.setAttribute('autoplay', 'autoplay')
+      this.player.setAttribute('autoplay', 'autoplay')
 
       // For mobile autoplay
-      player.setAttribute('playsinline', 'playsinline')
+      this.player.setAttribute('playsinline', 'playsinline')
     }
 
     if (this.options.videoMuted) {
-      player.setAttribute('muted', 'muted')
-      player.muted = true
+      this.player.setAttribute('muted', 'muted')
+      this.player.muted = true
     }
 
-    this.options.player.appendChild(player)
+    this.options.player.appendChild(this.player)
 
-    return player
   }
 
   /**
