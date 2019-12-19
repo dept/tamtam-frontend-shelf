@@ -61,7 +61,10 @@ class Accordion {
       const item = new AccordionItem(el)
       this.accordionItems[item.id] = item
       this.bindAccordionEvents(this.accordionItems[item.id])
+
     })
+
+    this.openItemByHash()
   }
 
   /**
@@ -75,6 +78,18 @@ class Accordion {
       if (skipId === id) return
       this.accordionItems[id].close()
     })
+  }
+
+  /**
+   * Check if url contains hash
+   * Open accordion item with same id
+   */
+  openItemByHash() {
+    const urlHash = String(window.location).split('#')[1];
+
+    if (!urlHash) return;
+
+    Events.$trigger(`accordion[${urlHash}]::open`);
   }
 }
 
