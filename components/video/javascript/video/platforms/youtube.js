@@ -20,11 +20,16 @@ class YoutubeVideo {
       host: 'https://www.youtube.com',
       playerVars: {
         start: this.options.videoTime,
-        modestbranding: 0,
+        modestbranding: 1,
         showinfo: 0,
         controls: this.options.videoControls || 0,
         rel: 0,
         origin: window.location.href,
+        loop: this.options.videoLoop,
+        autoplay: this.options.videoAutoplay,
+        mute: this.options.videoMuted,
+        playlist: this.options.videoLoop ? this.options.videoId : false,
+        playsinline: this.options.videoAutoplay || this.options.videoPlaysinline ? 1 : 0,
       },
       events: {
         onReady: this.onReady.bind(this),
