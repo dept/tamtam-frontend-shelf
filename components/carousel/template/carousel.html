@@ -1,0 +1,43 @@
+{% macro carousel(data) %}
+<div class="c-carousel">
+
+    <div js-hook-carousel 
+    data-id="{{ data.id }}" 
+    {%- if data.slidesMobile %} data-slides-mobile="{{ data.slidesMobile }}"{% endif %}
+    {%- if data.slidesTabletPortrait %} data-slides-tablet-portrait="{{ data.slidesTabletPortrait }}"{% endif %}
+    {%- if data.slidesTabletLandscape %} data-slides-tablet-landscape="{{ data.slidesTabletLandscape }}"{% endif %}
+    {%- if data.slidesDesktop %} data-slides-desktop="{{ data.slidesDesktop }}"{% endif %}
+
+    {%- if data.gutter %} data-gutter="{{ data.gutter }}"{% endif %}
+    {%- if data.gutterMobile %} data-gutter-mobile="{{ data.gutterMobile }}"{% endif %}
+    {%- if data.gutterTabletPortrait %} data-gutter-tablet-portrait="{{ data.gutterTabletPortrait }}"{% endif %}
+    {%- if data.gutterTabletLandscape %} data-gutter-tablet-landscape="{{ data.gutterTabletLandscape }}"{% endif %}
+    {%- if data.gutterDesktop %} data-gutter-desktop="{{ data.gutterDesktop }}"{% endif %}
+    
+    {%- if data.nav %} data-nav="{{ data.nav }}"{% endif %}
+    {%- if data.navContainer %} data-nav-container="{{ data.navContainer }}"{% endif %}
+
+    {%- if data.prevButtonID %} data-prev-button="#{{ data.prevButtonID }}"{% endif %}
+    {%- if data.nextButtonID %} data-next-button="#{{ data.nextButtonID }}"{% endif %}
+
+    {%- if data.mode %} data-mode="{{ data.mode }}"{% endif %}
+    {%- if data.autoplay %} data-autoplay="{{ data.autoplay }}"{% endif %}
+    {%- if data.autoplayTimeout %} data-autoplay-timeout="{{ data.autoplayTimeout }}"{% endif %}
+    {%- if data.loop %} data-loop="{{ data.loop }}"{% endif %}
+    {%- if data.speed %} data-speed="{{ data.speed }}"{% endif %}
+    {%- if data.slideBy %} data-slide-by="{{ data.slideBy }}"{% endif %}>
+
+        {{ caller() }}
+    
+    </div>
+
+    {% if (data.controls) and not (data.prevButtonID) %}
+    <div class="carousel__controls">
+        <button class="carousel__control-button carousel__control-button--prev" js-hook-carousel-button-prev-{{ data.id }}>prev</button>
+        <button class="carousel__control-button carousel__control-button--next" js-hook-carousel-button-next-{{ data.id }}>next</button>
+    </div>
+    {% endif %}
+
+
+</div>
+{% endmacro %}
