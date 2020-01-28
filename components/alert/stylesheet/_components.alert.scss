@@ -1,3 +1,7 @@
+$color-alert-error: #ff0000;
+$color-alert-warning: orange;
+$color-alert-success: green;
+
 .c-alert {
   padding: $global-spacing;
   margin-bottom: $global-spacing-md;
@@ -8,14 +12,14 @@
 }
 
 .alert--error {
-  background-color: #ff0000;
+  background-color: $color-alert-error;
   color: $color-white;
 }
 
 .alert--warning {
-  background-color: orange;
+  background-color: $color-alert-warning;
 }
 
 .alert--success {
-  background-color: green;
+  background-color: $color-alert-success;
 }

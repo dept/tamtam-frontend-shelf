@@ -287,9 +287,8 @@ class Form {
    * @param {Object} messages | error messages returned from validation
    */
   showInputErrors(messages) {
-    const formItems = [...this.form.querySelectorAll(this.inputTypes)]
     let scrolledToError = false
-    formItems.map(input => {
+    this.inputs.map(input => {
       if (!scrolledToError && messages[input.name]) {
         this.scrollToItem(input)
         scrolledToError = true
