@@ -1,6 +1,6 @@
-import cookies from 'js-cookie'
 import Events from '@utilities/events'
 import setTabIndexOfChildren from '@utilities/set-tabindex-of-children'
+import cookies from 'js-cookie'
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]'
 const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]'
@@ -195,11 +195,6 @@ class Cookies {
       setTabIndexOfChildren(this.cookiebar, 0)
 
       this.cookiebar.focus()
-      Events.$trigger('focustrap::activate', {
-        data: {
-          element: this.cookiebar,
-        },
-      })
     }
   }
 
