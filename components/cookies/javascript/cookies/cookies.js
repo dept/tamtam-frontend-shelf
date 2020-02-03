@@ -214,11 +214,6 @@ class Cookies {
             setTabIndexOfChildren(this.cookiebar, 0);
 
             this.cookiebar.focus();
-            Events.$trigger("focustrap::activate", {
-                data: {
-                    element: this.cookiebar
-                }
-            });
         }
     }
 
