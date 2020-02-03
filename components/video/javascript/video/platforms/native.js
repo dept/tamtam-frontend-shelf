@@ -53,7 +53,6 @@ class NativeVideo {
     }
 
     this.options.player.appendChild(this.player)
-
   }
 
   /**

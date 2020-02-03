@@ -10,8 +10,8 @@ const FLYOUT_MENU_HOOK = '[js-hook-flyout-menu]'
 const FLYOUT_BG_HOOK = '[js-hook-flyout-background]'
 
 const KEYBOARD_FOCUSED = 'has--keyboard-focus'
-const MENU_ITEM_ACTIVE_CLASS =  'mega-menu__item--is-open'
-const HTML_ACTIVE_CLASS =  'header--mega-menu-open'
+const MENU_ITEM_ACTIVE_CLASS = 'mega-menu__item--is-open'
+const HTML_ACTIVE_CLASS = 'header--mega-menu-open'
 
 class MainMenu {
   constructor(element) {

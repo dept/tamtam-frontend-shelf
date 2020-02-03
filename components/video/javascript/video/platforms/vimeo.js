@@ -55,16 +55,16 @@ class VimeoVideo {
     })
 
     // Workaround on iOS where the play event would not be triggered on autoplay - https://github.com/vimeo/player.js/issues/315
-    if(this.options.videoAutoplay) {
+    if (this.options.videoAutoplay) {
       this.player.on('timeupdate', () => {
-        this.player.off('timeupdate');
-        Events.$trigger('video::playing', { data: this.options });
-        Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options });
-      });
+        this.player.off('timeupdate')
+        Events.$trigger('video::playing', { data: this.options })
+        Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options })
+      })
     }
 
     this.player.on('play', () => {
-      this.player.off('timeupdate'); // Remove timeupdate event listener on play.
+      this.player.off('timeupdate') // Remove timeupdate event listener on play.
       Events.$trigger('video::playing', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::playing`, {
         data: this.options,

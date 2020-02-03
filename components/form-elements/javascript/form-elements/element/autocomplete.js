@@ -16,7 +16,7 @@ class Autocomplete {
     this.type = this.element.getAttribute(HOOK_AUTOCOMPLETE)
     this.inputWrapper = this.element.closest(HOOK_AUTOCOMPLETE_WRAPPER)
 
-    if(!this.inputWrapper) return
+    if (!this.inputWrapper) return
 
     this.input = this.inputWrapper.querySelector(`[js-hook-${this.type}]`)
 
