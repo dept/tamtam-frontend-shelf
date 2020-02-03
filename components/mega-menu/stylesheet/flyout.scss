@@ -1,0 +1,28 @@
+.c-flyout-menu {
+  padding: $global-spacing-sm 0;
+  background-color: $color-white;
+}
+
+.flyout-menu__lists {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flyout-menu__title {
+  margin-bottom: $global-spacing-sm;
+  display: block;
+}
+
+.flyout-menu__list-item {
+  display: block;
+  margin-bottom: $global-spacing;
+}
+
+.flyout-menu__list-item-link {
+  display: inline-block;
+  white-space: nowrap;
+
+  @include hover-focus {
+    color: $color-secondary;
+  }
+}

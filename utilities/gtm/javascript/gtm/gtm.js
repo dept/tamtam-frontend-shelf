@@ -1,27 +1,23 @@
-import Events from '@utilities/events';
+import Events from '@utilities/events'
 
 class GTM {
+  constructor() {
+    this._bindEvents()
+  }
 
-    constructor() {
+  _bindEvents() {
+    Events.$on('gtm::push', (_event, data) => this.push(data))
+  }
 
-        this._bindEvents();
+  push(data) {
+    /**
+     * @type {object}
+     */
+    let { dataLayer } = window
 
-    }
-
-    _bindEvents() {
-
-        Events.$on('gtm::push', (event, data) => this.push(data));
-
-    }
-
-    push(data) {
-
-        window.dataLayer = window.dataLayer || [];
-
-        window.dataLayer.push(data);
-
-    }
-
+    dataLayer = dataLayer || []
+    dataLayer.push(data)
+  }
 }
 
-export default new GTM();
+export default new GTM()
