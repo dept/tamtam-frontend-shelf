@@ -12,6 +12,7 @@
         accept                   (optional) - Limit file extension selection
         disabled {boolean}       (optional) - Add disabled property to the input
         required {boolean}       (optional) - Add required property to the input
+        validate {string}        (optional) - Add form validation rules to input (validate: 'required,email')
         error {string}           (optional) - Add error state and message
 
 #}
@@ -39,16 +40,14 @@
                     {%- if data.required %} required="required"{% endif -%}
                     {%- if data.disabled %} disabled="disabled"{% endif -%}
                     js-hook-input-file
+                    {%- if data.validate %} data-validate="{{ data.validate }}"{% endif -%}
                     {%- if data.accept %} accept="{{ data.accept }}"{% endif -%}
                     {%- if data.multiple %} multiple data-multiple-label="{count} files selected"{% endif -%}
                     {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
                 <span class="focus-helper"></span>
             </div>
         </div>
-        {%- if data.error %}
-            <div class="form__item-error">{{ data.error }}</div>
-        {% endif -%}
-
+        <div id="{{ data.name }}_error" class="form__item-error{%- if not data.error %} u-hidden{% endif -%}">{{ data.error }}</div>
     </div>
 
 {% endmacro %}

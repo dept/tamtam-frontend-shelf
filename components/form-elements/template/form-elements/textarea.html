@@ -12,6 +12,7 @@
         pattern {string}           (optional) - Adds attributes to the input
         disabled {boolean}       (optional) - Add disabled property to the input
         error {string}           (optional) - Add error state and message
+        validate {string}        (optional) - Add form validation rules to input (validate: 'required,email')
         labelAsPlaceholder {boolean}       (optional) - Adds label as placeholder
 
 #}
@@ -33,14 +34,12 @@
                 id="{{ data.id }}"
                 {%- if data.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.placeholder and not data.labelAsPlaceholder %} placeholder="{{ data.placeholder }}"{% endif -%}
+                {%- if data.validate %} data-validate="{{ data.validate }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}></textarea>
             <span class="focus-helper"></span>
         </div>
-        {%- if data.error %}
-            <div class="form__item-error">{{ data.error }}</div>
-        {% endif -%}
-
+        <div id="{{ data.name }}_error" class="form__item-error{%- if not data.error %} u-hidden{% endif -%}">{{ data.error }}</div>
     </div>
 
 {% endmacro %}
