@@ -30,6 +30,9 @@ class Form {
     this.alertHook = ALERT_SELECTOR
     this.inputTypes = INPUT_TYPES
 
+    // Methods
+    this.afterSubmitFormSuccess = null
+
     // Events
     this.bindChangeEvents()
     this.bindSubmitEvents()
@@ -55,7 +58,7 @@ class Form {
   /**
    * Checks if input type="number" fields contain text
    *
-   * @param {HTMLElement} input | input element to check
+   * @param {HTMLInputElement} input | input element to check
    * @returns {Boolean} return true if number field contains text, false otherwise
    */
   numberFieldContainsText(input) {
@@ -69,8 +72,9 @@ class Form {
   /**
    * Add alert message to page
    *
-   * @param {String} message -  the message string to show
-   * @param {String} type - success, warning or error type
+   * @param {Object} obj Alert information
+   * @param {String} obj.message -  the message string to show
+   * @param {String} obj.type - success, warning or error type
    */
   addAlertMessage({ message, type }) {
     const status = type || 'error'
@@ -90,7 +94,6 @@ class Form {
    * Process API error
    *
    * @param {Object|String} error - error message
-   * @param {string} selector - error message selector
    */
   apiErrorHandler(error) {
     if (!error) return
@@ -162,16 +165,17 @@ class Form {
   /**
    * Show the error state and message
    *
-   * @param {HTMLElement} formItem | input parent that holds error/success classes
+   * @param {Element} formItem | input parent that holds error/success classes
    * @param {HTMLElement} input | input to show error on
    * @param {String} message | message returned from validation or backend
    */
   showErrorMessage(formItem, input, message) {
     const formItemErrorContainer = this.getErrorContainer(input)
+    input.setAttribute(FORM_ITEM_ERROR_ARIA, 'true')
+    input.setAttribute(FORM_ITEM_DESCRIBE_ARIA, formItemErrorContainer.id)
+
     if (!formItemErrorContainer) return
 
-    input.setAttribute(FORM_ITEM_ERROR_ARIA, true)
-    input.setAttribute(FORM_ITEM_DESCRIBE_ARIA, formItemErrorContainer.id)
     formItem.classList.add(FORM_ITEM_ERROR_CLASS)
     formItemErrorContainer.textContent = message
     formItemErrorContainer.classList.remove(HIDDEN_CLASS)
@@ -194,7 +198,6 @@ class Form {
    * Set validation success state on an input
    *
    * @param {HTMLElement} input | input to show error on
-   * @param {String} message | message returned from validation or backend
    */
   showInputSuccess(input) {
     const formItem = input.closest(FORM_ITEM_CLASS)
@@ -207,7 +210,7 @@ class Form {
 
   /**
    * Remove error classes and any old error message
-   * @param {HTMLElement} formItem | input parent that holds error/success classes
+   * @param {Element} formItem | input parent that holds error/success classes
    * @param {HTMLElement} input | input element
    */
   resetFormItem(formItem, input) {
@@ -245,7 +248,7 @@ class Form {
 
   /**
    * Handle onchange of an input
-   * @param {HTMLElement} input | input that fired onChange event
+   * @param {HTMLInputElement} input | input that fired onChange event
    */
   handleInputChange(input) {
     if (this.numberFieldContainsText(input)) {
