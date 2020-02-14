@@ -17,7 +17,7 @@
     {% set hook = data.hook or '' %}
     {%- if not data.disableFormValidation %}
         {% set hook = hook or 'form' %}
-    {% endif %}
+    {% endif -%}
 
     <form class="c-form{%- if data.class %} {{ data.class }}{% endif -%}"
         action="{{ data.action or '#' }}"

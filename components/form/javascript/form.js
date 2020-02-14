@@ -5,7 +5,6 @@ import { rules } from '@utilities/validation'
 
 const JS_HOOK_DEFAULT_SUBMIT = '[type="submit"]:not(.u-sr-only)'
 const ALERT_SELECTOR = '[js-hook-alert]'
-const FORM_SELECTOR = '.c-form'
 const INPUT_TYPES = 'input[name]:not([type="hidden"]), textarea[name], select[name]'
 const HIDDEN_CLASS = 'u-hidden'
 const FORM_ITEM_CLASS = '.form__item'
@@ -29,14 +28,7 @@ class Form {
 
     // DOM Elements
     this.alertHook = ALERT_SELECTOR
-    this.formSelector = FORM_SELECTOR
-    this.class = FORM_ITEM_CLASS
     this.inputTypes = INPUT_TYPES
-    this.errorClass = FORM_ITEM_ERROR_CLASS
-    this.errorAria = FORM_ITEM_ERROR_ARIA
-    this.describeAria = FORM_ITEM_DESCRIBE_ARIA
-    this.successClass = FORM_ITEM_SUCCESS_CLASS
-    this.errorMessage = FORM_ITEM_ERROR_MESSAGE_HOOK
 
     // Events
     this.bindChangeEvents()
@@ -163,8 +155,8 @@ class Form {
   }
 
   getErrorContainer(input) {
-    const formItem = input.closest(this.class)
-    return formItem.querySelector(this.errorMessage)
+    const formItem = input.closest(FORM_ITEM_CLASS)
+    return formItem.querySelector(FORM_ITEM_ERROR_MESSAGE_HOOK)
   }
 
   /**
@@ -178,9 +170,9 @@ class Form {
     const formItemErrorContainer = this.getErrorContainer(input)
     if (!formItemErrorContainer) return
 
-    input.setAttribute(this.errorAria, true)
-    input.setAttribute(this.describeAria, formItemErrorContainer.id)
-    formItem.classList.add(this.errorClass)
+    input.setAttribute(FORM_ITEM_ERROR_ARIA, true)
+    input.setAttribute(FORM_ITEM_DESCRIBE_ARIA, formItemErrorContainer.id)
+    formItem.classList.add(FORM_ITEM_ERROR_CLASS)
     formItemErrorContainer.textContent = message
     formItemErrorContainer.classList.remove(HIDDEN_CLASS)
   }
@@ -192,7 +184,7 @@ class Form {
    * @param {String} message | message returned from validation or backend
    */
   showInputError(input, message) {
-    const formItem = input.closest(this.class)
+    const formItem = input.closest(FORM_ITEM_CLASS)
 
     this.resetFormItem(formItem, input)
     this.showErrorMessage(formItem, input, message)
@@ -205,11 +197,11 @@ class Form {
    * @param {String} message | message returned from validation or backend
    */
   showInputSuccess(input) {
-    const formItem = input.closest(this.class)
+    const formItem = input.closest(FORM_ITEM_CLASS)
     this.resetFormItem(formItem, input)
 
     if (input.hasAttribute('required')) {
-      formItem.classList.add(this.successClass)
+      formItem.classList.add(FORM_ITEM_SUCCESS_CLASS)
     }
   }
 
@@ -221,10 +213,10 @@ class Form {
   resetFormItem(formItem, input) {
     const formItemErrorContainer = this.getErrorContainer(input)
 
-    formItem.classList.remove(this.errorClass)
-    formItem.classList.remove(this.successClass)
-    input.removeAttribute(this.errorAria)
-    input.removeAttribute(this.describeAria)
+    formItem.classList.remove(FORM_ITEM_ERROR_CLASS)
+    formItem.classList.remove(FORM_ITEM_SUCCESS_CLASS)
+    input.removeAttribute(FORM_ITEM_ERROR_ARIA)
+    input.removeAttribute(FORM_ITEM_DESCRIBE_ARIA)
 
     if (formItemErrorContainer) {
       formItemErrorContainer.textContent = ''
