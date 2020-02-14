@@ -5,7 +5,7 @@ $map-height-tablet-landscape: 60rem;
 .c-googlemaps {
     position: relative;
 
-    &:not(.googlempas--has-loaded-api) {
+    &:not(.googlemaps--has-loaded-api) {
 
         .googlemaps__toggle,
         .googlemaps__container {
