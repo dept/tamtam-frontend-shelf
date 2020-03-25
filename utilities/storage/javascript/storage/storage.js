@@ -41,8 +41,13 @@ class Storage {
     let convertedValue = value
 
     if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
+      const lastUpdated = Date.now();
+
       if (typeof convertedValue === 'object') {
-        convertedValue = JSON.stringify(convertedValue)
+        const data = Object.assign(convertedValue, { lastUpdated });
+        convertedValue = JSON.stringify(data)
+      } else {
+        convertedValue = JSON.stringify([lastUpdated, convertedValue])
       }
 
       if (this.supported) {
@@ -58,9 +63,10 @@ class Storage {
   /**
    * Get item
    * @param {string} key Identifier of the data we are requesting
+   * @param {number} expiry Expiry in seconds (default = 30 days)
    * @returns {string|Object}
    */
-  get(key) {
+  get(key, expiry = 2592000) {
     let data = null
     const storageKey = this.getPrefixedStorageKey(key)
 
@@ -72,14 +78,48 @@ class Storage {
 
     try {
       // @ts-ignore
-      data = JSON.parse(data)
+      data = JSON.parse(data);
+
+      if (data && Array.isArray(data)) {
+        const [lastUpdated, value] = data;
+
+        if (lastUpdated && this.isExpired(lastUpdated, expiry)) {
+          this.remove(key)
+          return null
+        }
+
+        return value
+      }
 
       if (data && typeof data === 'object') {
-        return data
+        const { lastUpdated } = data
+
+        if (lastUpdated && this.isExpired(lastUpdated, expiry)) {
+          this.remove(key)
+          return null
+        }
+
+        return data;
       }
+
     } catch (e) {
       return data
     }
+  }
+
+  /**
+   * Validate expiry
+   * @param {number} updated identifier for when data was last updated
+   * @param {number} expiryInSeconds expiry in seconds (3600 = 1 hour)
+   */
+  isExpired(updated, expiryInSeconds) {
+    const now = new Date();
+    const lastUpdated = new Date(updated);
+
+    const timeDiff = Math.abs(now.getTime() - lastUpdated.getTime());
+    const timeDiffInSecond = Math.ceil(timeDiff / 1000);
+
+    return timeDiffInSecond > expiryInSeconds
   }
 
   /**
