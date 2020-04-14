@@ -35,77 +35,74 @@ class Storage {
   /**
    * Set item
    * @param {string} key Identifier of the data
-   * @param {string} value The data to be stored
+   * @param {string|Object|Array} value The data to be stored
    */
-  set(key, value) {
-    let convertedValue = value
+    set(key, value) {
 
-    if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
-      const lastUpdated = Date.now();
+      let convertedValue = value;
 
-      if (typeof convertedValue === 'object') {
-        const data = Object.assign(convertedValue, { lastUpdated });
-        convertedValue = JSON.stringify(data)
-      } else {
-        convertedValue = JSON.stringify([lastUpdated, convertedValue])
+      if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
+
+        // Asign a timestamp to the data
+        const value = JSON.stringify({ value: convertedValue , lastUpdated: Date.now() })
+
+        if (this.supported) {
+
+            window[this.storageType].setItem(this.getPrefixedStorageKey(key), value);
+
+        } else {
+
+            Cookie.set(this.getPrefixedStorageKey(key), value, { expires: 30 });
+
+        }
+
       }
 
-      if (this.supported) {
-        window[this.storageType].setItem(this.getPrefixedStorageKey(key), convertedValue)
-      } else {
-        Cookie.set(this.getPrefixedStorageKey(key), convertedValue, {
-          expires: 30,
-        })
-      }
     }
-  }
 
   /**
    * Get item
    * @param {string} key Identifier of the data we are requesting
    * @param {number} expiry Expiry in seconds (default = 30 days)
-   * @returns {string|Object}
+   * @returns {string|Object|Array}
    */
+
   get(key, expiry = 2592000) {
-    let data = null
-    const storageKey = this.getPrefixedStorageKey(key)
+
+    let data = null;
+    const storageKey = this.getPrefixedStorageKey(key);
 
     if (this.supported) {
-      data = window[this.storageType].getItem(storageKey)
+
+        data = window[this.storageType].getItem(storageKey);
+
     } else {
-      data = Cookie.get(storageKey)
+
+        data = Cookie.get(storageKey);
+
     }
 
     try {
-      // @ts-ignore
-      data = JSON.parse(data);
+        data = JSON.parse(data);
 
-      if (data && Array.isArray(data)) {
-        const [lastUpdated, value] = data;
+        if (this.isExpired(data.lastUpdated, expiry)) {
 
-        if (lastUpdated && this.isExpired(lastUpdated, expiry)) {
-          this.remove(key)
-          return null
+            this.remove(key)
+
+            return ''
         }
 
-        return value
-      }
+        return data.value
 
-      if (data && typeof data === 'object') {
-        const { lastUpdated } = data
+    }
 
-        if (lastUpdated && this.isExpired(lastUpdated, expiry)) {
-          this.remove(key)
-          return null
-        }
+    catch (e) {
 
         return data;
-      }
 
-    } catch (e) {
-      return data
     }
-  }
+
+}
 
   /**
    * Validate expiry
