@@ -69,21 +69,21 @@ class Storage {
 
   get(key, expiry = 2592000) {
 
-    let data = null;
-    const storageKey = this.getPrefixedStorageKey(key);
+    let data = null
+    const storageKey = this.getPrefixedStorageKey(key)
 
     if (this.supported) {
 
-        data = window[this.storageType].getItem(storageKey);
+        data = window[this.storageType].getItem(storageKey)
 
     } else {
 
-        data = Cookie.get(storageKey);
+        data = Cookie.get(storageKey)
 
     }
 
     try {
-        data = JSON.parse(data);
+        data = JSON.parse(data)
 
         if (this.isExpired(data.lastUpdated, expiry)) {
 
