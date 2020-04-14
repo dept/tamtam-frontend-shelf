@@ -39,7 +39,7 @@ class Storage {
    */
     set(key, value) {
 
-      let convertedValue = value;
+      let convertedValue = value
 
       if (typeof convertedValue !== 'undefined' && convertedValue !== null) {
 
@@ -98,11 +98,11 @@ class Storage {
 
     catch (e) {
 
-        return data;
+        return data
 
     }
 
-}
+  }
 
   /**
    * Validate expiry
