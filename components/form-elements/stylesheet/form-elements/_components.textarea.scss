@@ -11,41 +11,41 @@ $textarea-transition-time: $input-transition-time;
 $textarea-transition-ease: $input-transition-ease;
 
 .c-textarea {
-    position: relative;
+  position: relative;
 }
 
 .textarea__label {
-    display: block;
+  display: block;
 }
 
 .textarea__input {
-    display: block;
-    appearance: none;
-    width: 100%;
-    padding-top: $textarea-padding-top;
-    padding-bottom: $textarea-padding-bottom;
-    padding-left: $textarea-padding-left;
-    padding-right: $textarea-padding-right;
-    border-radius: $textarea-border-radius;
-    border: 0;
-    box-shadow: 0 0 0 $textarea-border-width $textarea-border-color inset;
-    background-color: $textarea-fill-color;
-    line-height: $font-line-height-body;
+  display: block;
+  appearance: none;
+  width: 100%;
+  padding-top: $textarea-padding-top;
+  padding-bottom: $textarea-padding-bottom;
+  padding-left: $textarea-padding-left;
+  padding-right: $textarea-padding-right;
+  border-radius: $textarea-border-radius;
+  border: 0;
+  box-shadow: 0 0 0 $textarea-border-width $textarea-border-color inset;
+  background-color: $textarea-fill-color;
+  line-height: $font-line-height-body;
 
-    &[disabled] {
-        cursor: default;
-        opacity: 0.5;
-    }
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
 
-    &::-ms-expand {
-        display: none;
-    }
+  &::-ms-expand {
+    display: none;
+  }
 
-    .form__item--error & {
-        box-shadow: 0 0 0 $textarea-border-width $textarea-error-color inset;
-    }
+  .form__item--error & {
+    box-shadow: 0 0 0 $textarea-border-width $textarea-error-color inset;
+  }
 }
 
 .textarea__wrapper {
-    position: relative;
+  position: relative;
 }

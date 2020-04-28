@@ -3,19 +3,19 @@ $tab-active-color: $color-off-white;
 $tab-padding: $global-spacing / 2 $global-spacing;
 
 .c-tabs {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .tabs__item {
-    list-style: none;
+  list-style: none;
 }
 
 .tabs__tab {
-    background-color: $tab-color;
-    padding: $tab-padding;
+  background-color: $tab-color;
+  padding: $tab-padding;
 
-    &.tabs__tab--is-active {
-        background-color: $tab-active-color;
-    }
+  &.tabs__tab--is-active {
+    background-color: $tab-active-color;
+  }
 }

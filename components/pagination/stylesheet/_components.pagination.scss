@@ -4,88 +4,88 @@ $pagination-item-margin-left: 10px;
 $pagination-item-margin-right: $pagination-item-margin-left;
 
 .c-pagination {
-    margin-top: $pagination-margin-top;
-    margin-bottom: $pagination-margin-bottom;
+  margin-top: $pagination-margin-top;
+  margin-bottom: $pagination-margin-bottom;
 }
 
 .pagination__list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination__item {
-    line-height: 1;
+  line-height: 1;
 
-    &:not(.pagination__item--arrow) {
-        display: none;
+  &:not(.pagination__item--arrow) {
+    display: none;
 
-        @include screen-mobile-plus-and-bigger {
-            display: inline-block;
-        }
+    @include screen-mobile-plus-and-bigger {
+      display: inline-block;
     }
+  }
 }
 
 @mixin pagination-link-base {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    margin-left: $pagination-item-margin-left;
-    margin-right: $pagination-item-margin-right;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: $pagination-item-margin-left;
+  margin-right: $pagination-item-margin-right;
 }
 
 .pagination__link,
 .pagination__item--active,
 .pagination__item--seperator {
-    @include pagination-link-base;
+  @include pagination-link-base;
 }
 
 .pagination__item--active {
-    position: relative;
-    pointer-events: none;
-    color: $color-primary;
+  position: relative;
+  pointer-events: none;
+  color: $color-primary;
 
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: $color-primary;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $color-primary;
+  }
 }
 
 .pagination__link {
-    display: block;
-    text-decoration: none;
+  display: block;
+  text-decoration: none;
 
-    @include hover-focus {
-        color: $color-black;
-    }
+  @include hover-focus {
+    color: $color-black;
+  }
 
-    @include keyboard-focus {
-        color: $color-grey;
-    }
+  @include keyboard-focus {
+    color: $color-grey;
+  }
 }
 
 .pagination__arrow {
-    @include pagination-link-base;
-    text-decoration: none;
+  @include pagination-link-base;
+  text-decoration: none;
 
-    @include hover-focus {
-        color: $color-black;
-    }
+  @include hover-focus {
+    color: $color-black;
+  }
 
-    @include keyboard-focus {
-        color: $color-grey;
-    }
+  @include keyboard-focus {
+    color: $color-grey;
+  }
 }
 
 .pagination__item--active,
 .pagination__arrow {
-    font-weight: $font-weight-bold;
+  font-weight: $font-weight-bold;
 }

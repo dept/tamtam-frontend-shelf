@@ -5,76 +5,76 @@ $breadcrumb-transition-ease: $ease-in-out-quad !default;
 $breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !default;
 
 .c-breadcrumb {
-    overflow: auto;
+  overflow: auto;
 
-    @include screen-mobile-plus-and-smaller {
-        margin-left: - $breadcrumb-mobile-offset;
-        margin-right: - $breadcrumb-mobile-offset;
-        padding-left: $breadcrumb-mobile-offset;
-        padding-right: $breadcrumb-mobile-offset;
-    }
+  @include screen-mobile-plus-and-smaller {
+    margin-left: -$breadcrumb-mobile-offset;
+    margin-right: -$breadcrumb-mobile-offset;
+    padding-left: $breadcrumb-mobile-offset;
+    padding-right: $breadcrumb-mobile-offset;
+  }
 }
 
 .breadcrumb__list {
-    display: flex;
-    flex-wrap: nowrap;
-    list-style: none;
-    padding-left: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  list-style: none;
+  padding-left: 0;
 }
 
 .breadcrumb__list-item {
-    position: relative;
-    padding-right: $breadcrumb-spacing;
-    overflow: hidden;
+  position: relative;
+  padding-right: $breadcrumb-spacing;
+  overflow: hidden;
+
+  &:not(:last-child) {
+    &::after {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: $breadcrumb-spacing;
+      text-align: center;
+      transform: translateY(-50%);
+      content: '\276D';
+    }
+  }
+
+  @include screen-mobile-plus-and-smaller {
+    padding-left: $breadcrumb-spacing / 2;
+    padding-right: 0;
 
     &:not(:last-child) {
-        &::after {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            width: $breadcrumb-spacing;
-            text-align: center;
-            transform: translateY(-50%);
-            content: '\276D';
-        }
+      &::after {
+        width: $breadcrumb-spacing / 2;
+        right: auto;
+        left: 0;
+        text-align: left;
+        content: '\276C';
+      }
     }
 
-    @include screen-mobile-plus-and-smaller {
-        padding-left: $breadcrumb-spacing / 2;
-        padding-right: 0;
-
-        &:not(:last-child) {
-            &::after {
-                width: $breadcrumb-spacing / 2;
-                right: auto;
-                left: 0;
-                text-align: left;
-                content: '\276C';
-            }
-        }
-
-        &:not(:nth-last-child(2)) {
-            display: none;
-        }
+    &:not(:nth-last-child(2)) {
+      display: none;
     }
+  }
 }
 
 .breadcrumb__item {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-    @include hover-focus {
-        color: darken($color-primary, 20%);
-    }
+  @include hover-focus {
+    color: darken($color-primary, 20%);
+  }
 
-    @include keyboard-focus {
-        color: darken($color-primary, 50%);
-    }
+  @include keyboard-focus {
+    color: darken($color-primary, 50%);
+  }
 }
 
 .breadcrumb__item--current {
-    color: $color-grey;
-    pointer-events: none;
+  color: $color-grey;
+  pointer-events: none;
 }
