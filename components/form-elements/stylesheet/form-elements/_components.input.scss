@@ -11,59 +11,59 @@ $input-transition-time: 200ms;
 $input-transition-ease: $ease-in-out-quad;
 
 .c-input {
-    position: relative;
+  position: relative;
 }
 
 .input__label {
-    display: block;
+  display: block;
 }
 
 .input__input {
-    display: block;
-    appearance: none;
-    width: 100%;
-    padding-top: $input-padding-top;
-    padding-bottom: $input-padding-bottom;
-    padding-left: $input-padding-left;
-    padding-right: $input-padding-right;
-    border-radius: $input-border-radius;
-    border: 0;
-    box-shadow: 0 0 0 $input-border-width $input-border-color inset;
-    background-color: $input-fill-color;
-    line-height: $font-line-height-body;
+  display: block;
+  appearance: none;
+  width: 100%;
+  padding-top: $input-padding-top;
+  padding-bottom: $input-padding-bottom;
+  padding-left: $input-padding-left;
+  padding-right: $input-padding-right;
+  border-radius: $input-border-radius;
+  border: 0;
+  box-shadow: 0 0 0 $input-border-width $input-border-color inset;
+  background-color: $input-fill-color;
+  line-height: $font-line-height-body;
 
-    &[disabled] {
-        cursor: default;
-        opacity: 0.5;
-    }
+  &[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
 
-    &::-ms-expand {
-        display: none;
-    }
+  &::-ms-expand {
+    display: none;
+  }
 
-    .form__item--error & {
-        box-shadow: 0 0 0 $input-border-width $input-error-color inset;
-    }
+  .form__item--error & {
+    box-shadow: 0 0 0 $input-border-width $input-error-color inset;
+  }
 }
 
 .input__wrapper {
-    position: relative;
+  position: relative;
 }
 
 /**
  * File
  */
 .input--file {
-    .input__input {
-        cursor: pointer;
-        padding-left: $input-padding-right;
+  .input__input {
+    cursor: pointer;
+    padding-left: $input-padding-right;
 
-        &::before {
-            position: absolute;
-            text-align: center;
-            width: $input-padding-right;
-            left: 0;
-            content: '\21EA';
-        }
+    &::before {
+      position: absolute;
+      text-align: center;
+      width: $input-padding-right;
+      left: 0;
+      content: '\21EA';
     }
+  }
 }
