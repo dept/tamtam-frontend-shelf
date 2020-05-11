@@ -41,10 +41,9 @@ class NativeVideo {
     }
 
     if (this.options.videoAutoplay) {
-      this.player.setAttribute('autoplay', 'autoplay')
-
       // For mobile autoplay
       this.player.setAttribute('playsinline', 'playsinline')
+      this.player.setAttribute('autoplay', 'autoplay')
     }
 
     if (this.options.videoMuted) {
@@ -112,7 +111,7 @@ class NativeVideo {
   }
 
   _addMediaSources() {
-    this.sourceData.source.forEach(source => {
+    this.sourceData.source.forEach((source) => {
       this.source = document.createElement('source')
       this.source.type = source.type
       this.source.src = source.url
@@ -124,7 +123,7 @@ class NativeVideo {
     try {
       this.closedcaptions = JSON.parse(this.options.videoClosedcaptions)
 
-      this.closedcaptions.forEach(cc => {
+      this.closedcaptions.forEach((cc) => {
         this.cc = document.createElement('track')
         this.cc.src = cc.url
         this.cc.kind = 'subtitles'
@@ -188,7 +187,7 @@ function getClosestVideoSource(sources) {
   let closestSource = null
 
   try {
-    sources.map(el => {
+    sources.map((el) => {
       if (
         closestSource == null ||
         Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)

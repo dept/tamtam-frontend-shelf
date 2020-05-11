@@ -31,6 +31,7 @@ class Video {
   registerPlatforms(platforms) {
     if (typeof platforms !== 'object') return
     this.registeredPlatforms = platforms
+    this.videos = this.videos.concat(getVideos(this.registeredPlatforms))
 
     this._bindEvent()
   }
@@ -39,14 +40,16 @@ class Video {
    * Bind generic events
    */
   _bindEvent() {
-    Events.$on('video::inview', (_event, element) => {
-      if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
-        Events.$trigger(`video[${element.id}]::pause`)
-      }
+    this.videos.forEach((video) => {
+      Events.$on(`video[${video.id}]::inview`, (_event, element) => {
+        if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
+          Events.$trigger(`video[${element.id}]::pause`)
+        }
 
-      if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
-        this.initVideo(element)
-      }
+        if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
+          this.initVideo(element)
+        }
+      })
     })
 
     Events.$on('video::update', (_event, element) => {
@@ -91,9 +94,7 @@ class Video {
    * Iterate over platform types
    */
   iterateVideos() {
-    this.videos = this.videos.concat(getVideos(this.registeredPlatforms))
-
-    this.videos.forEach(video => {
+    this.videos.forEach((video) => {
       this.initVideo(video)
     })
   }
@@ -120,7 +121,7 @@ class Video {
  * @returns {Object}
  */
 function getVideos(platforms) {
-  return VIDEOS.filter(video =>
+  return VIDEOS.filter((video) =>
     Object.prototype.hasOwnProperty.call(platforms, video.dataset.videoPlatform) &&
     !video._videoIsInitialised
       ? video
