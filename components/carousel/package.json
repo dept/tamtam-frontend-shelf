@@ -1,0 +1,8 @@
+{
+    "name": "dept-carousel",
+    "license": "MIT",
+    "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
+    "dependencies": {
+        "tiny-slider": "2.9.2"
+    }
+}
