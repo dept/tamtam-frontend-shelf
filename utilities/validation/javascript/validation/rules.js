@@ -17,7 +17,7 @@ import { isValidEmail, isValidIBAN, isValidZipcode, isValidFile } from './'
 const rules = {
   required: {
     message: 'Veld is verplicht',
-    method: (el) => {
+    method: el => {
       if (el.type === 'checkbox') {
         return el.checked
       } else if (el.type === 'radio') {
@@ -29,19 +29,19 @@ const rules = {
   },
   email: {
     message: 'Geen gelding e-mailadres',
-    method: (el) => el.value === '' || isValidEmail(el.value),
+    method: el => el.value === '' || isValidEmail(el.value),
   },
   iban: {
     message: 'Geen gelding IBAN nummer',
-    method: (el) => el.value === '' || isValidIBAN(el.value),
+    method: el => el.value === '' || isValidIBAN(el.value),
   },
   zipcode: {
     message: 'Geen geldinge postcode',
-    method: (el) => el.value === '' || isValidZipcode(el.value),
+    method: el => el.value === '' || isValidZipcode(el.value),
   },
   file: {
     message: 'Geen geldig bestand',
-    method: (el) => el.value === '' || isValidFile(el),
+    method: el => el.value === '' || isValidFile(el),
   },
 }
 
