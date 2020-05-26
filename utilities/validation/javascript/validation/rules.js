@@ -28,15 +28,15 @@ const rules = {
     },
   },
   email: {
-    message: 'Geen gelding e-mailadres',
+    message: 'Geen geldig e-mailadres',
     method: el => el.value === '' || isValidEmail(el.value),
   },
   iban: {
-    message: 'Geen gelding IBAN nummer',
+    message: 'Geen geldig IBAN nummer',
     method: el => el.value === '' || isValidIBAN(el.value),
   },
   zipcode: {
-    message: 'Geen geldinge postcode',
+    message: 'Geen geldige postcode',
     method: el => el.value === '' || isValidZipcode(el.value),
   },
 }
