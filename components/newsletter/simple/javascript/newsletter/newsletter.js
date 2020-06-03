@@ -113,10 +113,7 @@ class Newsletter {
 
     Api.post(API_URL, {
       data: generateFormDataJson(this.form),
-    }).then(
-      () => this._setMessageState('success'),
-      () => this._setMessageState('error'),
-    )
+    }).then(() => this._setMessageState('success'), () => this._setMessageState('error'))
   }
 
   /**

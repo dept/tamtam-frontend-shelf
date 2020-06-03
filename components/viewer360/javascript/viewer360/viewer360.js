@@ -244,7 +244,7 @@ class Viewer360 {
       ((this.element.offsetWidth * this.devicePixelRatio) / event.target.width) *
       event.target.height
     this.canvas.style.height = `${(this.element.offsetWidth / event.target.width) *
-      event.target.height}px`
+    event.target.height}px`
 
     const ctx = this.canvas.getContext('2d')
 

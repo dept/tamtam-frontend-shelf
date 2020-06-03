@@ -8,21 +8,13 @@ const hasResponsiveImages = function() {
 
   const img = new Image()
 
-  if ('srcset' in img) {
-    supports.srcset = true
-  }
+  if ('srcset' in img) supports.srcset = true
 
-  if ('currentSrc' in img) {
-    supports.currentSrc = true
-  }
+  if ('currentSrc' in img) supports.currentSrc = true
 
-  if ('sizes' in img) {
-    supports.sizes = true
-  }
+  if ('sizes' in img) supports.sizes = true
 
-  if ('HTMLPictureElement' in window) {
-    supports.picture = true
-  }
+  if ('HTMLPictureElement' in window) supports.picture = true
 
   return supports
 }

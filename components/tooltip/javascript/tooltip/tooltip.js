@@ -44,6 +44,10 @@ class Tooltip {
 
     this.resetTouchEvent = event => this.resetTouch(event)
 
+    this.bindEvents()
+  }
+
+  bindEvents() {
     if (DetectTouch.isTouchDevice) {
       this.tooltipTrigger.addEventListener('touchstart', event => this.handleTouch(event))
     } else {

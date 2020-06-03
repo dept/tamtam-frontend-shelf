@@ -13,24 +13,14 @@ import Events from '@utilities/events'
  */
 class YoutubeVideo {
   constructor(options) {
+    console.log(Cookies)
+
     this.options = options
 
     this.playerOptions = {
       videoId: this.options.videoId,
       host: 'https://www.youtube.com',
-      playerVars: {
-        start: this.options.videoTime,
-        modestbranding: 1,
-        showinfo: 0,
-        controls: this.options.videoControls || 0,
-        rel: 0,
-        origin: window.location.href,
-        loop: this.options.videoLoop,
-        autoplay: this.options.videoAutoplay,
-        mute: this.options.videoMuted,
-        playlist: this.options.videoLoop ? this.options.videoId : false,
-        playsinline: this.options.videoAutoplay || this.options.videoPlaysinline ? 1 : 0,
-      },
+      playerVars: this.getDefaultPlayerVars(),
       events: {
         onReady: this.onReady.bind(this),
         onStateChange: this.onStateChange.bind(this),
@@ -53,6 +43,22 @@ class YoutubeVideo {
     }
 
     this.checkAPIReady()
+  }
+
+  getDefaultPlayerVars() {
+    return {
+      start: this.options.videoTime,
+      modestbranding: 1,
+      showinfo: 0,
+      controls: this.options.videoControls || 0,
+      rel: 0,
+      origin: window.location.href,
+      loop: this.options.videoLoop,
+      autoplay: this.options.videoAutoplay,
+      mute: this.options.videoMuted,
+      playlist: this.options.videoLoop ? this.options.videoId : false,
+      playsinline: this.options.videoAutoplay || this.options.videoPlaysinline ? 1 : 0,
+    }
   }
 
   static loadAPI() {
@@ -98,32 +104,44 @@ class YoutubeVideo {
     switch (event.data) {
       // finished
       case 0:
-        Events.$trigger('video::ended', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-          data: this.options,
-        })
+        this.triggerFinishEvents()
         break
 
       // playing
       case 1:
-        Events.$trigger('video::playing', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-          data: this.options,
-        })
+        this.triggerPlayEvents()
         break
 
       // paused
       case 2:
-        Events.$trigger('video::paused', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-          data: this.options,
-        })
+        this.triggerPauseEvents()
         break
 
       // do nothing
       default:
         break
     }
+  }
+
+  triggerFinishEvents() {
+    Events.$trigger('video::ended', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+      data: this.options,
+    })
+  }
+
+  triggerPlayEvents() {
+    Events.$trigger('video::playing', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+      data: this.options,
+    })
+  }
+
+  triggerPauseEvents() {
+    Events.$trigger('video::paused', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+      data: this.options,
+    })
   }
 
   play() {

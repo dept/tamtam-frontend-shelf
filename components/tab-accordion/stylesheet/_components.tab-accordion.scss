@@ -17,7 +17,7 @@
     }
 
     .accordion__item-content-holder {
-      height: auto !important; // Overrides the inline styling added by javascript
+      height: auto !important; // sass-lint:disable-line no-important
       transition: none;
       visibility: visible;
     }

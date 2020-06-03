@@ -108,6 +108,21 @@ class Header {
    */
 
   _calculateHeaderTranslateValue() {
+    this.setTranslateValue()
+
+    this.isScrollingDown = this.scrollValue > this.prevScrollValue
+    this.prevScrollValue = this.scrollValue
+
+    if (this.scrollValue <= 0) {
+      this._transformHeader(0)
+    } else {
+      this._transformHeader(this.translateValue)
+    }
+
+    if (this.shadow) this._applyShadow()
+  }
+
+  setTranslateValue() {
     const scrollDiff = this.scrollValue - this.prevScrollValue
 
     if (this.condenses || !this.fixed) {
@@ -126,19 +141,6 @@ class Header {
         this.condenses && !this.fixed
           ? Math.max(this.scrollingDistanceHeight, this.translateValue)
           : this.translateValue
-    }
-
-    this.isScrollingDown = this.scrollValue > this.prevScrollValue
-    this.prevScrollValue = this.scrollValue
-
-    if (this.scrollValue <= 0) {
-      this._transformHeader(0)
-    } else {
-      this._transformHeader(this.translateValue)
-    }
-
-    if (this.shadow) {
-      this._applyShadow()
     }
   }
 

@@ -72,11 +72,7 @@ class Sticky {
  * @param {number} windowHeight Height of window
  */
 function setStickyValues(element, scrollElement, threshold, windowHeight) {
-  if (
-    !element.inviewProperties ||
-    windowHeight <= scrollElement.position.height + threshold ||
-    element.position.height <= scrollElement.position.height
-  ) {
+  if (elementCantBeSticky(element, scrollElement, threshold, windowHeight)) {
     resetStickyClasses(scrollElement)
     return
   }
@@ -93,6 +89,14 @@ function setStickyValues(element, scrollElement, threshold, windowHeight) {
   } else {
     resetStickyClasses(scrollElement)
   }
+}
+
+function elementCantBeSticky(element, scrollElement, threshold, windowHeight) {
+  return (
+    !element.inviewProperties ||
+    windowHeight <= scrollElement.position.height + threshold ||
+    element.position.height <= scrollElement.position.height
+  )
 }
 
 function setStickyClasses(scrollElement, threshold) {

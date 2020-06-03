@@ -32,59 +32,71 @@ class Video {
     if (typeof platforms !== 'object') return
     this.registeredPlatforms = platforms
 
-    this._bindEvent()
+    this.bindEvents()
   }
 
   /**
    * Bind generic events
    */
-  _bindEvent() {
-    Events.$on('video::inview', (_event, element) => {
-      if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
-        Events.$trigger(`video[${element.id}]::pause`)
-      }
+  bindEvents() {
+    Events.$on('video::inview', (_event, element) => this.onInView(element))
+    Events.$on('video::update', (_event, element) => this.onUpdate(element))
+    Events.$on('video::ready', (_event, data) => this.setReadyClasses(data))
+    Events.$on('video::playing', (_event, data) => this.setPlayingClasses(data))
+    Events.$on('video::paused', (_event, data) => this.setPausedClasses(data))
+    Events.$on('video::ended', (_event, data) => this.setEndedClasses(data))
+    Events.$on('video::bind-player-events', (_event, data) => this.bindPlayerEvents(data))
+    Events.$on('video::cookie-invalid', (_event, element) => this.setCookieInvalidClasses(element))
+  }
 
-      if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
-        this.initVideo(element)
-      }
-    })
+  onInView(element) {
+    if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
+      Events.$trigger(`video[${element.id}]::pause`)
+    }
 
-    Events.$on('video::update', (_event, element) => {
-      if (!element) {
-        this.iterateVideos()
-      } else {
-        this.initVideo(element)
-      }
-    })
+    if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
+      this.initVideo(element)
+    }
+  }
 
-    Events.$on('video::ready', (_event, data) => {
-      data.element.classList.add(VIDEO_READY_CLASS)
-      data.element.classList.add(VIDEO_PAUSED_CLASS)
-    })
+  onUpdate(element) {
+    if (!element) {
+      this.iterateVideos()
+    } else {
+      this.initVideo(element)
+    }
+  }
 
-    Events.$on('video::playing', (_event, data) => {
-      data.element.classList.remove(VIDEO_REPLAY_CLASS)
-      data.element.classList.remove(VIDEO_PAUSED_CLASS)
-      data.element.classList.add(VIDEO_PLAYING_CLASS)
-    })
+  setReadyClasses(data) {
+    data.element.classList.add(VIDEO_READY_CLASS)
+    data.element.classList.add(VIDEO_PAUSED_CLASS)
+  }
 
-    Events.$on('video::paused', (_event, data) => {
-      data.element.classList.remove(VIDEO_PLAYING_CLASS)
-      data.element.classList.add(VIDEO_PAUSED_CLASS)
-    })
+  setPlayingClasses(data) {
+    data.element.classList.remove(VIDEO_REPLAY_CLASS)
+    data.element.classList.remove(VIDEO_PAUSED_CLASS)
+    data.element.classList.add(VIDEO_PLAYING_CLASS)
+  }
 
-    Events.$on('video::ended', (_event, data) => {
-      data.element.classList.remove(VIDEO_PLAYING_CLASS)
-      data.element.classList.add(VIDEO_REPLAY_CLASS)
-    })
+  setPausedClasses(data) {
+    data.element.classList.remove(VIDEO_PLAYING_CLASS)
+    data.element.classList.add(VIDEO_PAUSED_CLASS)
+  }
 
-    Events.$on('video::bind-player-events', (_event, data) => {
-      if (data) bindPlayerEvents(data)
-    })
+  setEndedClasses(data) {
+    data.element.classList.remove(VIDEO_PLAYING_CLASS)
+    data.element.classList.add(VIDEO_REPLAY_CLASS)
+  }
 
-    Events.$on('video::cookie-invalid', (_event, element) => {
-      if (element) element.classList.add(VIDEO_COOKIE_INVALID_CLASS)
-    })
+  setCookieInvalidClasses(element) {
+    if (element) element.classList.add(VIDEO_COOKIE_INVALID_CLASS)
+  }
+
+  bindPlayerEvents(data) {
+    if (data) {
+      bindPlayerElementEvents(data)
+      bindPlayerUiEvents(data)
+    }
   }
 
   /**
@@ -178,7 +190,7 @@ function constructVideoOptions(element) {
  * Bind all the player specific events
  * @param {Object} options
  */
-function bindPlayerEvents(options) {
+function bindPlayerElementEvents(options) {
   Events.$on(`video[${options.instanceId}]::play`, () => {
     options.element.playerInstance.play()
   })
@@ -202,7 +214,9 @@ function bindPlayerEvents(options) {
   Events.$on(`video[${options.instanceId}]::volume`, (_event, data) => {
     options.element.playerInstance.setVolume(data.data)
   })
+}
 
+function bindPlayerUiEvents(options) {
   const playButton = options.element.querySelector(VIDEO_PLAY_HOOK)
   if (playButton) {
     playButton.addEventListener('click', () => {

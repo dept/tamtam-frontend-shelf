@@ -44,45 +44,53 @@ class VimeoVideo {
     Events.$trigger('video::bind-player-events', { data: this.options })
 
     this.player.ready().then(() => {
-      if (this.options.videoTime && !this.initialPlay) {
-        this.setStartTime(this.options.videoTime)
-      }
-
-      Events.$trigger('video::ready', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-        data: this.options,
-      })
+      if (this.options.videoTime && !this.initialPlay) this.setStartTime(this.options.videoTime)
+      this.triggerReadyEvents()
     })
 
     // Workaround on iOS where the play event would not be triggered on autoplay - https://github.com/vimeo/player.js/issues/315
     if (this.options.videoAutoplay) {
       this.player.on('timeupdate', () => {
         this.player.off('timeupdate')
-        Events.$trigger('video::playing', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options })
+        this.triggerPlayEvents()
       })
     }
 
     this.player.on('play', () => {
       this.player.off('timeupdate') // Remove timeupdate event listener on play.
-      Events.$trigger('video::playing', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-        data: this.options,
-      })
+      this.triggerPlayEvents()
     })
 
-    this.player.on('pause', () => {
-      Events.$trigger('video::paused', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-        data: this.options,
-      })
-    })
+    this.player.on('pause', () => this.triggerPauseEvents())
 
-    this.player.on('ended', () => {
-      Events.$trigger('video::ended', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-        data: this.options,
-      })
+    this.player.on('ended', () => this.triggerEndEvents())
+  }
+
+  triggerPlayEvents() {
+    Events.$trigger('video::playing', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+      data: this.options,
+    })
+  }
+
+  triggerPauseEvents() {
+    Events.$trigger('video::paused', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+      data: this.options,
+    })
+  }
+
+  triggerEndEvents() {
+    Events.$trigger('video::ended', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+      data: this.options,
+    })
+  }
+
+  triggerReadyEvents() {
+    Events.$trigger('video::ready', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::ready`, {
+      data: this.options,
     })
   }
 

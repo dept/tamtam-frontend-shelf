@@ -23,22 +23,14 @@ class NativeVideo {
 
     this._addMediaSources()
 
-    if (this.options.videoClosedcaptions) {
-      this._addClosedCaptions()
-    }
+    if (this.options.videoClosedcaptions) this._addClosedCaptions()
 
-    if (this.options.videoControls) {
-      this.player.setAttribute('controls', 'controls')
-    }
+    if (this.options.videoControls) this.player.setAttribute('controls', 'controls')
 
-    if (this.options.videoLoop) {
-      this.player.setAttribute('loop', 'loop')
-    }
+    if (this.options.videoLoop) this.player.setAttribute('loop', 'loop')
 
-    if (this.options.videoPlaysinline) {
-      // For mobile autoplay
-      this.player.setAttribute('playsinline', 'playsinline')
-    }
+    // For mobile autoplay
+    if (this.options.videoPlaysinline) this.player.setAttribute('playsinline', 'playsinline')
 
     if (this.options.videoAutoplay) {
       this.player.setAttribute('autoplay', 'autoplay')
@@ -61,39 +53,47 @@ class NativeVideo {
   bindEvents() {
     Events.$trigger('video::bind-player-events', { data: this.options })
 
-    this.player.addEventListener('loadedmetadata', () => {
-      if (this.options.videoTime) this.player.currentTime = this.options.videoTime
-      if (this.options.videoControls) this.player.controls = true
+    this.player.addEventListener('loadedmetadata', () => this.hasLoadedMetaData())
 
-      Events.$trigger('video::ready', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-        data: this.options,
-      })
+    this.player.addEventListener('playing', () => this.isPlaying())
+
+    this.player.addEventListener('pause', () => this.isPaused())
+
+    this.player.addEventListener('ended', () => this.isEnded())
+  }
+
+  hasLoadedMetaData() {
+    if (this.options.videoTime) this.player.currentTime = this.options.videoTime
+    if (this.options.videoControls) this.player.controls = true
+
+    Events.$trigger('video::ready', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::ready`, {
+      data: this.options,
     })
+  }
 
-    this.player.addEventListener('playing', () => {
-      if (this.options.videoControls) this.player.controls = false
+  isPlaying() {
+    if (this.options.videoControls) this.player.controls = false
 
-      Events.$trigger('video::playing', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-        data: this.options,
-      })
+    Events.$trigger('video::playing', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::playing`, {
+      data: this.options,
     })
+  }
 
-    this.player.addEventListener('pause', () => {
-      if (this.options.videoControls) this.player.controls = true
+  isPaused() {
+    if (this.options.videoControls) this.player.controls = true
 
-      Events.$trigger('video::paused', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-        data: this.options,
-      })
+    Events.$trigger('video::paused', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::paused`, {
+      data: this.options,
     })
+  }
 
-    this.player.addEventListener('ended', () => {
-      Events.$trigger('video::ended', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-        data: this.options,
-      })
+  isEnded() {
+    Events.$trigger('video::ended', { data: this.options })
+    Events.$trigger(`video[${this.options.instanceId}]::ended`, {
+      data: this.options,
     })
   }
 
