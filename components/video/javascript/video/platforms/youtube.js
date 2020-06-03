@@ -13,8 +13,6 @@ import Events from '@utilities/events'
  */
 class YoutubeVideo {
   constructor(options) {
-    console.log(Cookies)
-
     this.options = options
 
     this.playerOptions = {

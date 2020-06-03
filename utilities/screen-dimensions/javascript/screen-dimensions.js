@@ -1,5 +1,3 @@
-/* eslint-disable max-lines-per-function */
-
 import RafThrottle from '@utilities/raf-throttle'
 
 const MEDIA_QUERIES = [
