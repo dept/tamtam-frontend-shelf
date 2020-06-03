@@ -58,6 +58,7 @@ class Cookies {
     this.form = {}
     this.form.element = document.querySelector(COOKIE_FORM_HOOK)
 
+    this.cookieName = COOKIE_NAME
     this.hostname = window.location.hostname
 
     if (this.form.element) this.setFormArguments()
