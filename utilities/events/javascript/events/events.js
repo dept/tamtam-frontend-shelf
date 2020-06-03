@@ -4,6 +4,11 @@ const listenQueue = {}
 const boundEvents = {}
 
 class Events {
+  constructor() {
+    this._logging = false
+    readAndBindEventsFromDOM()
+  }
+
   get logging() {
     return this._logging
   }
@@ -12,19 +17,11 @@ class Events {
     this._logging = boolean
   }
 
-  constructor() {
-    this._logging = false
-    readAndBindEventsFromDOM()
-  }
-
   $on(event, callback) {
-    if (this.logging) {
-      console.log('Listening to event', '--- Name:', event, '--- Callback:', callback)
-    }
+    if (this.logging) console.log(`Listening to event --- Name: ${event} --- Callback: ${callback}`)
 
-    if (eventIsBoundToEventEl(event, callback)) {
+    if (eventIsBoundToEventEl(event, callback))
       eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false)
-    }
 
     boundEvents[event] = {
       callbackString: callback.toString(),
@@ -39,24 +36,19 @@ class Events {
 
     eventEl.addEventListener(event, boundEvents[event].callbackWrapper)
 
-    if (!listenQueue[event]) {
-      listenQueue[event] = {}
-    }
+    if (!listenQueue[event]) listenQueue[event] = {}
+
     listenQueue[event].eventIsBound = true
   }
 
   $trigger(event, data, currentTarget) {
-    if (this.logging) {
+    if (this.logging)
       console.log(
-        'Event triggered',
-        '--- Name:',
-        event,
-        '--- Params:',
-        data,
-        '--- currentTarget',
-        currentTarget,
+        `Event triggered`,
+        `--- Name: ${event},`,
+        `--- Params: ${data},`,
+        `--- currentTarget: ${currentTarget}`,
       )
-    }
 
     if (listenQueue[event] && listenQueue[event].interval)
       clearInterval(listenQueue[event].interval)
@@ -64,18 +56,14 @@ class Events {
     const _data = currentTarget ? { currentTarget, data } : data
     const _event = new CustomEvent(event, { detail: _data })
 
-    if (typeof listenQueue[event] === 'undefined') {
-      listenQueue[event] = { eventIsBound: false }
-    }
+    if (typeof listenQueue[event] === 'undefined') listenQueue[event] = { eventIsBound: false }
 
     if (listenQueue[event].eventIsBound === false) {
       listenQueue[event].interval = setInterval(
         () => this.$trigger(event, data, currentTarget),
         1000,
       )
-    } else {
-      eventEl.dispatchEvent(_event)
-    }
+    } else eventEl.dispatchEvent(_event)
   }
 }
 
@@ -92,9 +80,8 @@ _Events.$on('events::dom-reinit', () => readAndBindEventsFromDOM())
  * These are than passed to bindEvent.
  */
 function readAndBindEventsFromDOM() {
-  if (!crawlEl) {
-    return
-  }
+  if (!crawlEl) return
+
   // Elements that have attributes starting with on:
   const elements = _domFind(
     crawlEl,

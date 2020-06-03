@@ -1,3 +1,5 @@
+/* eslint-disable max-lines-per-function */
+
 import RafThrottle from '@utilities/raf-throttle'
 
 const MEDIA_QUERIES = [
@@ -32,6 +34,14 @@ const MEDIA_QUERIES = [
 ]
 
 class ScreenDimensions {
+  constructor() {
+    this.bindEvents()
+
+    this.bindQueryEvents()
+
+    this.updateWidth()
+  }
+
   get screenHeight() {
     return this.height
   }
@@ -40,7 +50,7 @@ class ScreenDimensions {
     return this.width
   }
 
-  constructor() {
+  bindEvents() {
     RafThrottle.set([
       {
         element: window,
@@ -49,34 +59,34 @@ class ScreenDimensions {
         fn: () => this.updateWidth(),
       },
     ])
+  }
 
+  bindQueryEvents() {
     MEDIA_QUERIES.forEach((mqObject, index) => {
-      const breakpoint = mqObject.breakpoint
-
-      installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
-        this[`${mqObject.reference}AndBigger`] = matches
-      })
-
-      if (!index) {
-        installMediaQueryWatcher(`(max-width: ${breakpoint}px)`, matches => {
-          this[mqObject.reference] = matches
-        })
-      } else if (MEDIA_QUERIES[index + 1]) {
-        installMediaQueryWatcher(
-          `(min-width: ${breakpoint}px) and (max-width: ${MEDIA_QUERIES[index + 1].breakpoint -
-            1}px)`,
-          matches => {
-            this[mqObject.reference] = matches
-          },
-        )
-      } else {
-        installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
-          this[mqObject.reference] = matches
-        })
-      }
+      this.installDefaultQueryWatcher(mqObject.breakpoint, mqObject.reference)
+      this.installOtherQueryWatchers(mqObject.breakpoint, mqObject.reference, index)
     })
+  }
 
-    this.updateWidth()
+  installDefaultQueryWatcher(breakpoint, reference) {
+    installMediaQueryWatcher(`(min-width: ${breakpoint}px)`, matches => {
+      this[`${reference}AndBigger`] = matches
+    })
+  }
+
+  installOtherQueryWatchers(breakpoint, reference, index) {
+    let mediaQuery = `(min-width: ${breakpoint}px)`
+
+    if (!index) {
+      mediaQuery = `(max-width: ${breakpoint}px)`
+    } else if (MEDIA_QUERIES[index + 1]) {
+      const maxBreakPoint = MEDIA_QUERIES[index + 1].breakpoint - 1
+      mediaQuery = `(min-width: ${breakpoint}px) and (max-width: ${maxBreakPoint}px)`
+    }
+
+    installMediaQueryWatcher(mediaQuery, matches => {
+      this[reference] = matches
+    })
   }
 
   updateWidth() {

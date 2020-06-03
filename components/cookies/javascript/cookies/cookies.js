@@ -13,8 +13,40 @@ const COOKIEBAR_COOKIE_NAME = 'accepted'
 const COOKIEBAR_COOKIE_VERSION = 'version'
 const SHOW_CLASS = 'cookie-bar--is-visible'
 
+const COOKIE_PREFIX = 'default'
+const COOKIE_NAME = {
+  functional: 'functional',
+  analytics: 'analytics',
+  social: 'social',
+  advertising: 'advertising',
+  other: 'other',
+}
+
 const COOKIE_DEFAULT_VALUE = '1'
 const COOKIE_DECLINED_VALUE = '0'
+
+const DEFAULT_COOKIES = [
+  {
+    name: COOKIE_NAME.functional,
+    default: COOKIE_DEFAULT_VALUE,
+  },
+  {
+    name: COOKIE_NAME.analytics,
+    default: COOKIE_DEFAULT_VALUE,
+  },
+  {
+    name: COOKIE_NAME.social,
+    default: COOKIE_DECLINED_VALUE,
+  },
+  {
+    name: COOKIE_NAME.advertising,
+    default: COOKIE_DECLINED_VALUE,
+  },
+  {
+    name: COOKIE_NAME.other,
+    default: COOKIE_DECLINED_VALUE,
+  },
+]
 
 class Cookies {
   constructor() {
@@ -27,50 +59,22 @@ class Cookies {
     this.form.element = document.querySelector(COOKIE_FORM_HOOK)
 
     this.hostname = window.location.hostname
-    this.cookiePrefix = 'default'
 
-    this.cookieName = {
-      functional: 'functional',
-      analytics: 'analytics',
-      social: 'social',
-      advertising: 'advertising',
-      other: 'other',
-    }
-
-    if (this.form.element) {
-      this.form.url = this.form.element.getAttribute('action')
-      this.form.options = [...this.form.element.querySelectorAll(COOKIE_OPTION_HOOK)]
-      this.form.submit = this.form.element.querySelector(COOKIE_FORM_SUBMIT_HOOK)
-    }
+    if (this.form.element) this.setFormArguments()
 
     this.config = {
-      cookiePrefix: this.cookiePrefix,
+      cookiePrefix: COOKIE_PREFIX,
       version: this.cookiebarVersion,
-      cookies: [
-        {
-          name: this.cookieName.functional,
-          default: COOKIE_DEFAULT_VALUE,
-        },
-        {
-          name: this.cookieName.analytics,
-          default: COOKIE_DEFAULT_VALUE,
-        },
-        {
-          name: this.cookieName.social,
-          default: COOKIE_DECLINED_VALUE,
-        },
-        {
-          name: this.cookieName.advertising,
-          default: COOKIE_DECLINED_VALUE,
-        },
-        {
-          name: this.cookieName.other,
-          default: COOKIE_DECLINED_VALUE,
-        },
-      ],
+      cookies: DEFAULT_COOKIES,
     }
 
     this.init()
+  }
+
+  setFormArguments() {
+    this.form.url = this.form.element.getAttribute('action')
+    this.form.options = [...this.form.element.querySelectorAll(COOKIE_OPTION_HOOK)]
+    this.form.submit = this.form.element.querySelector(COOKIE_FORM_SUBMIT_HOOK)
   }
 
   init() {

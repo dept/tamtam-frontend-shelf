@@ -3,12 +3,12 @@ import RafThrottle from '@utilities/raf-throttle'
 import Cookies from '@components/cookies'
 
 import {
-  MAP_SETTINGS,
+  DEFAULT_REGIONS,
+  MAP_API_KEY,
   MAP_MARKER,
   MAP_MARKER_ACTIVE,
   MAP_MAX_ZOOM,
-  MAP_API_KEY,
-  DEFAULT_REGIONS,
+  MAP_SETTINGS,
 } from './map-settings.js'
 
 // HOOKS
@@ -168,40 +168,42 @@ class GoogleMaps {
   addMarkers(locations) {
     this.removeAllMarkers()
 
-    locations.forEach(location => {
-      const id = location.id ? location.id : location.getAttribute('id')
-      const icon = location.position ? MAP_MARKER : location.getAttribute(DATA_ICON) || MAP_MARKER
-
-      const position = {
-        lat: location.position
-          ? location.position.lat
-          : parseFloat(location.getAttribute(DATA_LAT)),
-        lng: location.position
-          ? location.position.lng
-          : parseFloat(location.getAttribute(DATA_LNG)),
-      }
-
-      const item = {
-        position,
-        id,
-        icon,
-      }
-
-      const marker = new google.maps.Marker({
-        position: item.position,
-        map: this.map,
-        icon: item.icon,
-        id: item.id,
-      })
-
-      marker.addListener('click', function() {
-        Events.$trigger('googlemaps::handleMarkerClick', marker)
-      })
-
-      this.markers.push(marker)
-    })
+    locations.forEach(location => this.addLocationMarker(location))
 
     this.setBounds()
+  }
+
+  addLocationMarker(location) {
+    const id = location.id ? location.id : location.getAttribute('id')
+    const icon = location.position ? MAP_MARKER : location.getAttribute(DATA_ICON) || MAP_MARKER
+
+    const position = {
+      lat: location.position ? location.position.lat : parseFloat(location.getAttribute(DATA_LAT)),
+      lng: location.position ? location.position.lng : parseFloat(location.getAttribute(DATA_LNG)),
+    }
+
+    const item = {
+      position,
+      id,
+      icon,
+    }
+
+    const marker = this.createGMMarker(item)
+
+    marker.addListener('click', function() {
+      Events.$trigger('googlemaps::handleMarkerClick', marker)
+    })
+
+    this.markers.push(marker)
+  }
+
+  createGMMarker(item) {
+    return new google.maps.Marker({
+      position: item.position,
+      map: this.map,
+      icon: item.icon,
+      id: item.id,
+    })
   }
 
   removeAllMarkers() {

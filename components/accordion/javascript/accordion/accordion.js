@@ -20,37 +20,55 @@ class Accordion {
    * @param {HTMLElement} item  | accordion item
    */
   bindAccordionEvents({ id }) {
-    Events.$on(`accordion[${id}]::close`, () => {
-      if (id) {
-        if (this.accordionItems[id] && !this.isAnimating) {
-          this.accordionItems[id].close()
-        }
-      } else if (!this.isAnimating) {
-        Object.keys(this.accordionItems).forEach(i => {
-          this.accordionItems[i].close()
-        })
-      }
-    })
+    Events.$on(`accordion[${id}]::close`, () => this.closeAccordion(id))
 
-    Events.$on(`accordion[${id}]::open`, () => {
-      if (id && this.accordionItems[id] && !this.isAnimating) {
-        this.closeAllChildren(id)
-        this.accordionItems[id].open()
-      }
-    })
+    Events.$on(`accordion[${id}]::open`, () => this.openAccordion(id))
 
-    Events.$on(`accordion[${id}]::toggle`, () => {
-      if (id && this.accordionItems[id] && !this.isAnimating) {
-        this.closeAllChildren(id)
-        this.accordionItems[id].toggle()
-      }
-    })
+    Events.$on(`accordion[${id}]::toggle`, () => this.toggleAccordion(id))
 
     Events.$on(`accordion[${id}]::animating`, (_event, data) => {
       if (this.accordionItems[data.id]) {
         this.isAnimating = data.animating
       }
     })
+  }
+
+  /**
+   * Toggle accordion
+   * @param id
+   */
+  toggleAccordion(id) {
+    if (id && this.accordionItems[id] && !this.isAnimating) {
+      this.closeAllChildren(id)
+      this.accordionItems[id].toggle()
+    }
+  }
+
+  /**
+   * Close accordion
+   * @param id
+   */
+  closeAccordion(id) {
+    if (id) {
+      if (this.accordionItems[id] && !this.isAnimating) {
+        this.accordionItems[id].close()
+      }
+    } else if (!this.isAnimating) {
+      Object.keys(this.accordionItems).forEach(i => {
+        this.accordionItems[i].close()
+      })
+    }
+  }
+
+  /**
+   * Open accordion
+   * @param id
+   */
+  openAccordion(id) {
+    if (id && this.accordionItems[id] && !this.isAnimating) {
+      this.closeAllChildren(id)
+      this.accordionItems[id].open()
+    }
   }
 
   /**

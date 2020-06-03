@@ -4,7 +4,6 @@ import Events from '@utilities/events'
 /**
  * @type {Window|Element}
  */
-const SCROLL_ELEMENT = window
 
 const OBSERVER_DEFAULT_OFFSET_Y = 0
 const OBSERVER_DEFAULT_OFFSET_X = 0
@@ -68,20 +67,12 @@ class InView {
   }
 
   whenElementInViewport(entry, observer) {
-    const triggers = entry.target.__inviewTriggerHook
     const element = entry.target
+    const triggers = element.__inviewTriggerHook
 
     element.inviewProperties = calculateInviewProperties(entry)
 
-    if (
-      // Element is past bottom of the screen
-      element.inviewProperties.scrolledPastViewport.bottom &&
-      (element.inviewProperties.scrolledPastViewport.left ||
-        element.inviewProperties.scrolledPastViewport.right) &&
-      // Element does not have a threshold or it has a threshold and the threshold is met
-      (!element.__inviewThreshold ||
-        (element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio))
-    ) {
+    if (elementIsPastBottom(entry, element)) {
       element.classList.remove(INVIEW_OUTVIEW_CLASS)
       triggerEvents(getTriggers(triggers), element)
 
@@ -114,6 +105,18 @@ class InView {
   }
 }
 
+function elementIsPastBottom(entry, element) {
+  return (
+    // Element is past bottom of the screen
+    element.inviewProperties.scrolledPastViewport.bottom &&
+    (element.inviewProperties.scrolledPastViewport.left ||
+      element.inviewProperties.scrolledPastViewport.right) &&
+    // Element does not have a threshold or it has a threshold and the threshold is met
+    (!element.__inviewThreshold ||
+      (element.__inviewThreshold && element.__inviewThreshold <= entry.intersectionRatio))
+  )
+}
+
 function triggerEvents(triggers, data) {
   triggers.forEach(trigger => {
     Events.$trigger(trigger, { data })
@@ -142,109 +145,53 @@ function getNodes() {
  * @param {Object} entry Intersection observer entry
  */
 function calculateInviewProperties(entry) {
-  let scrollTop
-  let scrollLeft
-
-  if (SCROLL_ELEMENT instanceof Window) {
-    scrollTop = SCROLL_ELEMENT.pageYOffset || document.documentElement.scrollTop
-    scrollLeft = SCROLL_ELEMENT.pageXOffset || document.documentElement.scrollLeft
-  } else {
-    scrollTop = SCROLL_ELEMENT.scrollTop || document.documentElement.scrollTop
-    scrollLeft = SCROLL_ELEMENT.scrollLeft || document.documentElement.scrollLeft
-  }
-
-  const { top, bottom, left, right } = getElementOffset(entry)
-  const position = { top, bottom, left, right }
-
   const rootHeight = entry.rootBounds ? entry.rootBounds.height : 0
   const rootWidth = entry.rootBounds ? entry.rootBounds.width : 0
 
-  const inViewDirections = getInViewDirections({
-    entry,
-    position,
-    rootHeight,
-    rootWidth,
-    scrollTop,
-    scrollLeft,
-  })
-
-  return inViewDirections
-}
-
-/**
- * Returns the offsetTop and offsetLeft of given element
- * @param {Object} entry
- * @returns {Object} Object of top, bottom, left and right position
- */
-function getElementOffset(entry) {
-  let targetElement = entry.target
-  const elementStyles = window.getComputedStyle(targetElement)
-
-  const margin = {}
-  margin.top = (elementStyles.marginTop && parseInt(elementStyles.marginTop, 10) / 2) || 0
-  margin.right = (elementStyles.marginRight && parseInt(elementStyles.marginRight, 10) / 2) || 0
-  margin.bottom = (elementStyles.marginBottom && parseInt(elementStyles.marginBottom, 10) / 2) || 0
-  margin.left = (elementStyles.marginLeft && parseInt(elementStyles.marginLeft, 10) / 2) || 0
-
-  let top = 0 + margin.top + margin.bottom
-  let left = 0 + margin.left + margin.right
-
-  do {
-    top += targetElement.offsetTop || 0
-    left += targetElement.offsetLeft || 0
-    targetElement = targetElement.offsetParent
-  } while (targetElement)
-
-  return {
-    top,
-    left,
-    right: left + entry.boundingClientRect.width,
-    bottom: top + entry.boundingClientRect.height,
-  }
+  return getInViewDirections(entry, rootHeight, rootWidth)
 }
 
 /**
  * Get matching in view directions
- * @param {Object} options
- * @returns {Object} matches
+ * @param entry
+ * @param rootHeight
+ * @param rootWidth
+ * @returns {Object}
  */
-function getInViewDirections(options) {
-  const { width, height } = options.entry.boundingClientRect
-
-  const topPosition = options.entry.boundingClientRect.top
-  const bottomPosition = options.entry.boundingClientRect.bottom
-  const leftPosition = options.entry.boundingClientRect.left
-  const rightPosition = options.entry.boundingClientRect.right
-
-  const scrolledPastViewport = {}
-
-  const isVisible = elementIsVisible(width, height)
-
-  scrolledPastViewport.top = topPosition + height < 0 && isVisible
-  scrolledPastViewport.bottom = topPosition <= options.rootHeight && isVisible
-  scrolledPastViewport.right = leftPosition <= options.rootWidth && isVisible
-  scrolledPastViewport.left = leftPosition <= 0 && isVisible
-
-  const isInViewport = {
-    horizontal:
-      options.entry.isIntersecting && (scrolledPastViewport.left || scrolledPastViewport.right),
-    vertical:
-      options.entry.isIntersecting && (scrolledPastViewport.top || scrolledPastViewport.bottom),
-  }
+function getInViewDirections(entry, rootHeight, rootWidth) {
+  const { width, height, top, bottom, left, right } = entry.boundingClientRect
+  const scrolledPastViewportObject = scrolledPastViewport(
+    entry.boundingClientRect,
+    rootHeight,
+    rootWidth,
+    elementIsVisible(width, height),
+  )
 
   return {
-    position: {
-      top: topPosition,
-      right: rightPosition,
-      bottom: bottomPosition,
-      left: leftPosition,
-    },
-    scrolledPastViewport,
-    isInViewport,
+    position: { top, right, bottom, left },
+    scrolledPastViewport: scrolledPastViewportObject,
+    isInViewport: isInViewport(entry, scrolledPastViewportObject),
     height,
     width,
     windowHeight: window.innerHeight,
     windowWidth: window.innerWidth,
+  }
+}
+
+function scrolledPastViewport(boundingClientRect, rootHeight, rootWidth, isVisible) {
+  const { top, left, height } = boundingClientRect
+  return {
+    top: top + height < 0 && isVisible,
+    bottom: top <= rootHeight && isVisible,
+    right: left <= rootWidth && isVisible,
+    left: left <= 0 && isVisible,
+  }
+}
+
+function isInViewport(entry, scrolledPastViewport) {
+  return {
+    horizontal: entry.isIntersecting && (scrolledPastViewport.left || scrolledPastViewport.right),
+    vertical: entry.isIntersecting && (scrolledPastViewport.top || scrolledPastViewport.bottom),
   }
 }
 
