@@ -173,13 +173,17 @@ class GoogleMaps {
     this.setBounds()
   }
 
+  /**
+   * Add location marker
+   * @param {HTMLElement} location
+   */
   addLocationMarker(location) {
-    const id = location.id ? location.id : location.getAttribute('id')
+    const id = location?.id || location.getAttribute('id')
     const icon = location.position ? MAP_MARKER : location.getAttribute(DATA_ICON) || MAP_MARKER
 
     const position = {
-      lat: location.position ? location.position.lat : parseFloat(location.getAttribute(DATA_LAT)),
-      lng: location.position ? location.position.lng : parseFloat(location.getAttribute(DATA_LNG)),
+      lat: location?.position?.lat || parseFloat(location.getAttribute(DATA_LAT)),
+      lng: location?.position?.lng || parseFloat(location.getAttribute(DATA_LNG)),
     }
 
     const item = {

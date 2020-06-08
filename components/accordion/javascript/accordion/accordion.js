@@ -35,7 +35,7 @@ class Accordion {
 
   /**
    * Toggle accordion
-   * @param id
+   * @param {string} id
    */
   toggleAccordion(id) {
     if (id && this.accordionItems[id] && !this.isAnimating) {
@@ -46,13 +46,11 @@ class Accordion {
 
   /**
    * Close accordion
-   * @param id
+   * @param {string} id
    */
   closeAccordion(id) {
-    if (id) {
-      if (this.accordionItems[id] && !this.isAnimating) {
-        this.accordionItems[id].close()
-      }
+    if (id && this.accordionItems[id] && !this.isAnimating) {
+      this.accordionItems[id].close()
     } else if (!this.isAnimating) {
       Object.keys(this.accordionItems).forEach(i => {
         this.accordionItems[i].close()
@@ -62,7 +60,7 @@ class Accordion {
 
   /**
    * Open accordion
-   * @param id
+   * @param {string} id
    */
   openAccordion(id) {
     if (id && this.accordionItems[id] && !this.isAnimating) {
