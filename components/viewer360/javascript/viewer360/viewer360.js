@@ -22,6 +22,21 @@ class Viewer360 {
     this.init(element)
   }
 
+  static getSrc(responsive, element, folder, filename) {
+    let src = `${folder}${filename}`
+
+    if (responsive) {
+      // TODO: handle responsiveness
+      // Add the size attribute to your backend image sizing mechanism
+      // for example `https://via.placeholder.com/${size}`
+      // const imageOffsetWidth = element.offsetWidth;
+      // const imageSize = getSizeAccordingToPixelRatio(getResponsiveWidthOfContainer(imageOffsetWidth));
+      src = `${folder}${filename}`
+    }
+
+    return src
+  }
+
   mousedown(event) {
     event.preventDefault()
 
@@ -105,30 +120,40 @@ class Viewer360 {
 
   onMove(pageX) {
     if (pageX - this.movementStart >= this.speedFactor) {
-      const itemsSkippedRight = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1
-
-      this.movementStart = pageX
-
-      if (this.spinReverse) {
-        this.moveActiveIndexDown(itemsSkippedRight)
-      } else {
-        this.moveActiveIndexUp(itemsSkippedRight)
-      }
-
-      this.update()
+      const itemsSkipped = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1
+      this.move(itemsSkipped, true, pageX)
     } else if (this.movementStart - pageX >= this.speedFactor) {
-      const itemsSkippedLeft = Math.floor((this.movementStart - pageX) / this.speedFactor) || 1
-
-      this.movementStart = pageX
-
-      if (this.spinReverse) {
-        this.moveActiveIndexUp(itemsSkippedLeft)
-      } else {
-        this.moveActiveIndexDown(itemsSkippedLeft)
-      }
-
-      this.update()
+      const itemsSkipped = Math.floor((this.movementStart - pageX) / this.speedFactor) || 1
+      this.move(itemsSkipped, false, pageX)
     }
+  }
+
+  /**
+   * Move
+   * @param { Number } itemsSkipped
+   * @param { Boolean } isRight
+   * @param { Number } pageX
+   */
+  move(itemsSkipped, isRight, pageX) {
+    this.movementStart = pageX
+
+    if (this.getMoveIndexDown(isRight, this.spinReverse)) {
+      this.moveActiveIndexDown(itemsSkipped)
+    } else {
+      this.moveActiveIndexUp(itemsSkipped)
+    }
+
+    this.update()
+  }
+
+  /**
+   * Get move index down
+   * @param { boolean } isRight
+   * @param { boolean } isReverse
+   */
+  getMoveIndexDown(isRight, isReverse) {
+    if ((isRight && !isReverse) || (!isRight && isReverse)) return false
+    if ((isRight && isReverse) || (!isRight && !isReverse)) return true
   }
 
   moveActiveIndexUp(itemsSkipped) {
@@ -237,14 +262,18 @@ class Viewer360 {
     this.initControls()
   }
 
-  onFirstImageLoaded(event) {
+  setCanvasSize(event) {
     this.canvas.width = this.element.offsetWidth * this.devicePixelRatio
     this.canvas.style.width = `${this.element.offsetWidth}px`
     this.canvas.height =
       ((this.element.offsetWidth * this.devicePixelRatio) / event.target.width) *
       event.target.height
     this.canvas.style.height = `${(this.element.offsetWidth / event.target.width) *
-    event.target.height}px`
+      event.target.height}px`
+  }
+
+  onFirstImageLoaded(event) {
+    this.setCanvasSize(event)
 
     const ctx = this.canvas.getContext('2d')
 
@@ -323,48 +352,35 @@ class Viewer360 {
     window.clearTimeout(this.loopTimeoutId)
   }
 
-  static getSrc(responsive, element, folder, filename) {
-    let src = `${folder}${filename}`
-
-    if (responsive) {
-      // TODO: handle responsiveness
-      // Add the size attribute to your backend image sizing mechanism
-      // for example `https://via.placeholder.com/${size}`
-      // const imageOffsetWidth = element.offsetWidth;
-      // const imageSize = getSizeAccordingToPixelRatio(getResponsiveWidthOfContainer(imageOffsetWidth));
-      src = `${folder}${filename}`
-    }
-
-    return src
+  preloadImages(amount, src, lazyload, lazySelector) {
+    ;[...new Array(amount)].map((item, index) =>
+      this.createImage(src, lazyload, lazySelector, index),
+    )
   }
 
-  preloadImages(amount, src, lazyload, lazySelector) {
-    ;[...new Array(amount)].map((item, index) => {
-      const image = new Image()
-      const resultSrc = src.replace('{index}', index + 1)
+  createImage(src, lazyload, lazySelector, index) {
+    const image = new Image()
+    const resultSrc = src.replace('{index}', index + 1)
 
-      if (lazyload) {
-        image.setAttribute('data-src', resultSrc)
-        image.className = image.className.length
-          ? `${image.className} ${lazySelector}`
-          : lazySelector
+    if (lazyload) {
+      image.setAttribute('data-src', resultSrc)
+      image.className = image.className.length ? `${image.className} ${lazySelector}` : lazySelector
 
-        if (index === 0) {
-          this.lazyloadInitImage = image
-          image.style.position = 'absolute'
-          image.style.top = '0'
-          image.style.left = '0'
-          this.innerContainer.appendChild(image)
-        }
-      } else {
-        image.src = resultSrc
+      if (index === 0) {
+        this.lazyloadInitImage = image
+        image.style.position = 'absolute'
+        image.style.top = '0'
+        image.style.left = '0'
+        this.innerContainer.appendChild(image)
       }
+    } else {
+      image.src = resultSrc
+    }
 
-      image.onload = this.onImageLoad.bind(this)
-      image.onerror = this.onImageLoad.bind(this)
+    image.onload = this.onImageLoad.bind(this)
+    image.onerror = this.onImageLoad.bind(this)
 
-      this.images.push(image)
-    })
+    this.images.push(image)
   }
 
   destroy() {
