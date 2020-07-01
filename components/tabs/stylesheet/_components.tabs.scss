@@ -19,3 +19,11 @@ $tab-padding: $global-spacing / 2 $global-spacing;
     background-color: $tab-active-color;
   }
 }
+
+.tabpanel {
+  display: none;
+}
+
+.tabpanel--is-active {
+  display: block;
+}
