@@ -235,7 +235,7 @@ class Cookies {
   cookieIsValid(name) {
     return (
       this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version &&
-      cookies.get(this.prefixCookieName(name)) === this.config.version
+      cookies.get(this.prefixCookieName(name)) === COOKIE_DEFAULT_VALUE
     )
   }
 }
