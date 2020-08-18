@@ -80,7 +80,8 @@ class ScreenDimensions {
   }
 
   updateWidth() {
-    ;(this.width = window.innerWidth), (this.height = window.innerHeight)
+    this.width = window.innerWidth
+    this.height = window.innerHeight
   }
 }
 
