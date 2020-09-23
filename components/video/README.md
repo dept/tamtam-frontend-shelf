@@ -44,8 +44,9 @@ VideoLoader()
     .catch(() => { });
 ```
 
+### With nullcheck
 If you want to create a nullCheck in case there is no video element on the page:
-```
+```javascript
 if (document.querySelector('[js-hook-video]')) {
     VideoLoader()
     .then(([Platforms, Video]) => {
@@ -58,7 +59,7 @@ if (document.querySelector('[js-hook-video]')) {
 
     })
     .catch(() => { });
-    }
+}
 ```
 The promise in VideoLoader will throw an error that ends up in your catch, if no video element is found.
 
