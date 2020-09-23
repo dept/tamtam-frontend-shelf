@@ -31,7 +31,7 @@ import '@utilities/in-view';
 import '@components/image';
 import VideoLoader from '@components/video/loader';
 
-VideoLoader
+VideoLoader()
     .then(([Platforms, Video]) => {
 
         Video.default.registerPlatforms({
@@ -43,6 +43,25 @@ VideoLoader
     })
     .catch(() => { });
 ```
+
+If you want to create a nullCheck in case there is no video element on the page:
+```
+if (document.querySelector('[js-hook-video]')) {
+    VideoLoader()
+    .then(([Platforms, Video]) => {
+
+        Video.default.registerPlatforms({
+            'native': Platforms.Native,
+            'youtube': Platforms.Youtube,
+            'vimeo': Platforms.Vimeo
+        });
+
+    })
+    .catch(() => { });
+    }
+```
+The promise in VideoLoader will throw an error that ends up in your catch, if no video element is found.
+
 
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
 ```htmlmixed
