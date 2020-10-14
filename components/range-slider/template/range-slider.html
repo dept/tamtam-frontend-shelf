@@ -1,0 +1,93 @@
+{#
+@shelf-version: 1.0.0
+Range Slider macro
+
+Options:
+    currency {string}     - Label in front of input fields (optional)
+    rangeLabel {string}   - Label in between input fields (optional)
+    min {integer}         - Minimum (default) value of slider
+    max {integer}         - Maximum (default) value of slider
+    minLabel {string}     - Label for min value field (hidden)
+    maxLabel {string}     - Label for max value field (hidden)
+#}
+
+{% macro rangeSlider(data) %}
+    <div class="c-range-slider" js-hook-range-slider>
+        <div class="range-slider__input-fields-wrapper">
+            {% if data.currency %}
+            <span class="range-slider__currency" aria-hidden="true">{{ data.currency }}</span>
+            {% endif %}
+
+            <div class="c-input input--number">
+                <div class="input__wrapper">
+                    <label class="input__label u-sr-only" for="price-slider-search-min">
+                        {{ data.minLabel }}
+                    </label>
+                    <input class="input__input range-slider__input range-slider__input--from"
+                            type="number" id="price-slider-search-min"
+                            aria-invalid="false"
+                            value="{{ data.min }}"
+                            name="pmin"
+                            placeholder="{{ data.min }}"
+                            js-hook-range-slider-input-low
+                            autocomplete="off"
+                            tabindex="0"
+                    >
+                    <span class="form__focus-helper"></span>
+                </div>
+                <div class="form__item-error" id="err_price-slider-search-min" aria-hidden="true">
+                </div>
+            </div>
+
+            {% if data.rangeLabel %}
+            <span class="range-slider__label" aria-hidden="true">{{ data.rangeLabel }}</span>
+            {% endif %}
+
+            {% if data.currency %}
+            <span class="range-slider__currency" aria-hidden="true">{{ data.currency }}</span>
+            {% endif %}
+
+            <div class="c-input input--number">
+                <div class="input__wrapper">
+                    <label class="input__label u-sr-only" for="price-slider-search-max">
+                        {{ data.maxLabel }}
+                    </label>
+                    <input class="input__input range-slider__input range-slider__input--to"
+                           type="number"
+                           id="price-slider-search-max"
+                           aria-invalid="false"
+                           value="{{ data.max }}"
+                           name="pmax"
+                           placeholder="{{ data.max }}"
+                           js-hook-range-slider-input-high
+                           autocomplete="off"
+                           tabindex="0"
+                    >
+                    <span class="form__focus-helper"></span>
+                </div>
+                <div class="form__item-error" id="err_price-slider-search-max" aria-hidden="true">
+                </div>
+            </div>
+        </div>
+
+        <div class="range-slider__slider-double-input"
+             js-hook-range-slider-input
+             data-min="{{ data.min }}"
+             data-max="{{ data.max }}"
+             data-from="{{ data.min }}"
+             data-to="{{ data.max }}"
+             data-url="/make-up/oog/mascara/">
+
+            <div class="range-slider__slider-single-input" js-hook-range-slider-min>
+                <div class="range-slider__slider-track"></div>
+                <div class="range-slider__slider-thumb" js-hook-range-slider-thumb></div>
+            </div>
+            <div class="range-slider__slider-range" js-hook-range-slider-range></div>
+            <div class="range-slider__slider-single-input" js-hook-range-slider-max>
+                <div class="range-slider__slider-track"></div>
+                <div class="range-slider__slider-thumb" js-hook-range-slider-thumb></div>
+            </div>
+        </div>
+
+    </div>
+{% endmacro %}
