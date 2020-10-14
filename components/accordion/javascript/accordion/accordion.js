@@ -85,7 +85,7 @@ class Accordion {
    * Open accordion item with same id
    */
   openItemByHash() {
-    const urlHash = String(window.location).split('#')[1];
+    const urlHash = window.location.hash.substring(1);
 
     if (!urlHash) return;
 
