@@ -20,7 +20,7 @@
 import moduleInit from '@utilities/module-init';
 import '@utilities/events';
 
-moduleInit.async('[js-hook-price-range]', () => import(/* webpackChunkName: "PriceRange" */ '@components/price-range'));
+moduleInit.async('[js-hook-range-slider]', () => import(/* webpackChunkName: "RangeSlider" */ '@components/range-slider'));
 ```
 
 ## How to use

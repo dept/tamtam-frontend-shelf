@@ -83,18 +83,6 @@ class RangeSlider {
         return amount;
     }
 
-    updateFilters() {
-        Events.$trigger(`filters::update`, {
-            data: {
-                url: this.input.dataset.url,
-                params: {
-                    pmin: this.lowLabel.value || this.priceRange.minPossibleValue,
-                    pmax: this.highLabel.value || this.priceRange.maxPossibleValue,
-                },
-            },
-        });
-    }
-
     /**
      * Handles slider update
      *
@@ -105,11 +93,6 @@ class RangeSlider {
     handleSliderUpdate(valueLow, valueHigh, isHigh) {
         this.lowLabel.value = valueLow;
         this.highLabel.value = valueHigh;
-
-        this.updateFilters();
-        Events.$trigger('gtm::priceRangeFilter', {
-            data: { element: this.slider, min: valueLow, max: valueHigh, high: isHigh },
-        });
     }
 
     /**
@@ -125,17 +108,6 @@ class RangeSlider {
         this.lowLabel.value = amount;
         const ratio = this.priceRange.getRatioFromValue(amount);
         this.priceRange.onLowChangeByInput(ratio);
-
-        Events.$trigger('gtm::priceRangeFilter', {
-            data: {
-                element: this.slider,
-                min: this.lowLabel.value,
-                max: this.highLabel.value,
-                high: false,
-            },
-        });
-
-        this.updateFilters();
     }
 
     /**
@@ -151,17 +123,6 @@ class RangeSlider {
         this.highLabel.value = amount;
         const ratio = this.priceRange.getRatioFromValue(amount);
         this.priceRange.onHighChangeByInput(ratio);
-
-        Events.$trigger('gtm::priceRangeFilter', {
-            data: {
-                element: this.slider,
-                min: this.lowLabel.value,
-                max: this.highLabel.value,
-                high: true,
-            },
-        });
-
-        this.updateFilters();
     }
 }
 
