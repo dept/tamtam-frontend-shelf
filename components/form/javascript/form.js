@@ -20,6 +20,7 @@ class Form {
 
     // Config
     this.async = !!element.dataset.async
+    this.method = element.getAttribute('method')
     this.events = element.dataset.events
       ? element.dataset.events.join(',')
       : ['change', 'paste', 'blur', 'keyup']
@@ -133,7 +134,9 @@ class Form {
   }
 
   submitForm(data) {
-    API.post(this.action, data)
+    const apiMethod = this.method ? this.method.toLowerCase() : 'post'
+
+    API[apiMethod](this.action, data)
       .then(response => this.submitFormSuccess(response.data))
       .catch(error => this.submitFormError(error))
   }
