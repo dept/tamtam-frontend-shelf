@@ -21,11 +21,7 @@ class Form {
 
     // Config
     this.async = !!element.dataset.async
-    this.method = element.getAttribute('method')
-    this.apiMethod =
-        this.method && SUPPORTED_METHODS.includes(this.method.toLowerCase())
-            ? this.method.toLowerCase()
-            : 'post'
+    this.method = this.getFormMethod()
     this.events = element.dataset.events
       ? element.dataset.events.join(',')
       : ['change', 'paste', 'blur', 'keyup']
@@ -138,8 +134,16 @@ class Form {
     }
   }
 
+  getFormMethod() {
+    const method = this.form.getAttribute('method')
+
+    return method && SUPPORTED_METHODS.includes(method.toLowerCase())
+        ? method.toLowerCase()
+        : 'post'
+  }
+
   submitForm(data) {
-    API[this.apiMethod](this.action, data)
+    API[this.method](this.action, data)
       .then(response => this.submitFormSuccess(response.data))
       .catch(error => this.submitFormError(error))
   }
