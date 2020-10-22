@@ -1,4 +1,4 @@
-import { isValidEmail, isValidIBAN, isValidZipcode } from './'
+import { isValidEmail, isValidIBAN, isValidZipcode, isValidFile } from './'
 
 /**
  * A set of generic form validation rules which you can use on a form input as:
@@ -38,6 +38,10 @@ const rules = {
   zipcode: {
     message: 'Geen geldige postcode',
     method: el => el.value === '' || isValidZipcode(el.value),
+  },
+  file: {
+    message: 'Geen geldig bestand',
+    method: el => el.value === '' || isValidFile(el),
   },
 }
 
