@@ -14,6 +14,7 @@ const FORM_ITEM_DESCRIBE_ARIA = 'aria-describedby'
 const FORM_ITEM_SUCCESS_CLASS = 'form__item--success'
 const FORM_ITEM_ERROR_MESSAGE_HOOK = '.form__item-error'
 const SUPPORTED_METHODS = ['post', 'put', 'get', 'delete']
+const DEFAULT_METHOD = 'post'
 
 class Form {
   constructor(element) {
@@ -139,7 +140,7 @@ class Form {
 
     return method && SUPPORTED_METHODS.includes(method.toLowerCase())
         ? method.toLowerCase()
-        : 'post'
+        : DEFAULT_METHOD
   }
 
   submitForm(data) {
