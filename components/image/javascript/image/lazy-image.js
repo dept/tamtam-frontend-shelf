@@ -4,6 +4,7 @@ import InView from '@utilities/in-view'
 import hasResponsiveImages from './util/detect-responsive-images'
 
 const LAZY_IMAGE_HOOK = '.c-image'
+const LAZY_DEFAULT_IMAGE_HOOK = '.image__default'
 const LAZY_SHADOW_IMAGE_HOOK = '[js-hook-shadow-image]'
 const LAZY_IMAGE_SRC_HOOK = 'data-src'
 const LAZY_IMAGE_SRCSET_HOOK = 'data-srcset'
@@ -14,7 +15,6 @@ const SUPPORTS_SRCSET = checkResponsiveImageRequirements()
 class LazyImage {
   constructor() {
     this.images = getImageNodes(LAZY_IMAGE_HOOK)
-    this.shadowImages = getImageNodes(LAZY_SHADOW_IMAGE_HOOK)
 
     this._bindEvents()
     this._setObserverables()
@@ -23,8 +23,6 @@ class LazyImage {
   _bindEvents() {
     Events.$on('lazyimage::load', (e, element) => this._loadImage(element))
     Events.$on('lazyimage::update', () => this._updateImages())
-
-    this.shadowImages.forEach(shadowImage => LazyImage._removeShadowImage(shadowImage))
   }
 
   _setObserverables() {
@@ -72,17 +70,20 @@ class LazyImage {
    * @param {HTMLElement} element Figure element
    */
   _renderImage(element) {
-    const image = element.querySelector('img')
+    const defaultImage = element.querySelector(LAZY_DEFAULT_IMAGE_HOOK)
+    const shadowImage = element.querySelector(LAZY_SHADOW_IMAGE_HOOK)
 
     element.classList.add(LAZY_IMAGE_ANIMATE_IN_CLASS)
-    image.removeAttribute(LAZY_IMAGE_SRC_HOOK)
-    image.removeAttribute(LAZY_IMAGE_SRCSET_HOOK)
+    defaultImage.removeAttribute(LAZY_IMAGE_SRC_HOOK)
+    defaultImage.removeAttribute(LAZY_IMAGE_SRCSET_HOOK)
+
+    LazyImage._removeShadowImage(shadowImage)
 
     if (!hasResponsiveImages.currentSrc) {
-      image.currentSrc = image.src
+      defaultImage.currentSrc = defaultImage.src
     }
 
-    Events.$trigger('image::object-fit', { data: image })
+    Events.$trigger('image::object-fit', { data: defaultImage })
   }
 
   /**
