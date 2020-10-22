@@ -13,6 +13,8 @@ const FORM_ITEM_ERROR_ARIA = 'aria-invalid'
 const FORM_ITEM_DESCRIBE_ARIA = 'aria-describedby'
 const FORM_ITEM_SUCCESS_CLASS = 'form__item--success'
 const FORM_ITEM_ERROR_MESSAGE_HOOK = '.form__item-error'
+const SUPPORTED_METHODS = ['post', 'put', 'get', 'delete']
+const DEFAULT_METHOD = 'post'
 
 class Form {
   constructor(element) {
@@ -20,6 +22,7 @@ class Form {
 
     // Config
     this.async = !!element.dataset.async
+    this.method = this.getFormMethod()
     this.events = element.dataset.events
       ? element.dataset.events.join(',')
       : ['change', 'paste', 'blur', 'keyup']
@@ -132,8 +135,16 @@ class Form {
     }
   }
 
+  getFormMethod() {
+    const method = this.form.getAttribute('method')
+
+    return method && SUPPORTED_METHODS.includes(method.toLowerCase())
+        ? method.toLowerCase()
+        : DEFAULT_METHOD
+  }
+
   submitForm(data) {
-    API.post(this.action, data)
+    API[this.method](this.action, data)
       .then(response => this.submitFormSuccess(response.data))
       .catch(error => this.submitFormError(error))
   }
