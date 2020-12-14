@@ -10,6 +10,7 @@ import './matches'
 ;(function(ElementProto) {
   if (typeof ElementProto.closest !== 'function') {
     ElementProto.closest = function closest(selector) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       var element = this
 
       while (element && element.nodeType === 1) {

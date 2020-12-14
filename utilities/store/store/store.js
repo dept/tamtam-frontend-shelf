@@ -17,6 +17,7 @@ class Store {
     // Set our state to be a Proxy. We are setting the default state by
     // checking the params and defaulting to an empty object if no default
     // state is passed in
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this
     self.state = new Proxy(params.initialState || {}, {
       set(state, key, value) {

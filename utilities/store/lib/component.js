@@ -3,11 +3,14 @@ import idx from 'idx'
 
 import Store from '../store/store'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = function () {}
+
 class Component {
   constructor(props = {}) {
-    this.watch = Component.watch || function() {}
-    this.watchCollection = Component.watchCollection || function() {}
-    this.stateChanged = this.stateChanged || function() {}
+    this.watch = Component.watch || noop
+    this.watchCollection = Component.watchCollection || noop
+    this.stateChanged = this.stateChanged || noop
     if (props.store instanceof Store) {
       // This fires every time the state updates
       props.store.subscribe((state, prevState) => {
@@ -22,8 +25,8 @@ class Component {
 
   static watchCollection(store, prop, callback) {
     const { state: newState, prevState } = store
-    const previousPropState = idx(prevState, _ => _[prop])
-    const newPropState = idx(newState, _ => _[prop])
+    const previousPropState = idx(prevState, (_) => _[prop])
+    const newPropState = idx(newState, (_) => _[prop])
     if (Array.isArray(previousPropState)) {
       if (
         previousPropState &&
@@ -41,8 +44,8 @@ class Component {
 
   static watch(store, prop, callback) {
     const { state: newState, prevState } = store
-    const previousPropState = idx(prevState, _ => _[prop])
-    const newPropState = idx(newState, _ => _[prop])
+    const previousPropState = idx(prevState, (_) => _[prop])
+    const newPropState = idx(newState, (_) => _[prop])
     if (
       typeof newPropState === 'boolean' ||
       typeof newPropState === 'string' ||
