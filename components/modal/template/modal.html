@@ -14,6 +14,7 @@
         noBodyClass {boolean}    - Prevents setting the body class when modal is open
         closeAllOthers {boolean} - Forces all other modalboxes to close when this one opens
         noClose {boolean}        - Hides the close button (esc. key is still bound)
+        autoClose {integer}      - Amount of seconds after which the modal will close
 #}
 
 {% macro modal(data) %}
@@ -25,6 +26,7 @@
         {%- if data.noBodyClass %} data-modal-no-body-class="{{ data.noBodyClass }}"{% endif -%}
         {%- if data.closeAllOthers %} data-modal-close-all-others="{{ data.closeAllOthers }}"{% endif -%}
         {%- if data.keepScrollPosition %} data-modal-keep-scroll-position="{{ data.keepScrollPosition }}"{% endif -%}
+        {%- if data.autoClose %} data-modal-auto-close="{{ data.autoClose }}"{% endif -%}
         js-hook-modal>
 
         <div class="modal__container">

@@ -133,6 +133,7 @@ class Modal {
     const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
     const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true'
     const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
+    const autoClose = modal.el.dataset.autoClose
 
     // Set scroll position for fixed body on mobile
     if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger) this.setScrollPosition()
@@ -168,6 +169,13 @@ class Modal {
         autoFocus,
       },
     })
+
+    // If auto close is set use value as timeout in seconds to close modal
+    if (autoClose) {
+      setTimeout(() => {
+        Events.$trigger(`modal[${modal.id}]::close`, { data: { id: modal.id } });
+      }, autoClose * 1000);
+    }
   }
 
   /**
