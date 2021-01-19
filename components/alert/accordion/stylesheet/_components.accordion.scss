@@ -1,0 +1,174 @@
+// @shelf-version 1.0.0
+$accordion-spacing: 2rem;
+$accordion-item-border-radius: 5px;
+$accordion-item-header-color: $color-grey;
+$accordion-item-header-padding: $global-spacing $global-spacing * 2;
+$accordion-item-content-padding: $global-spacing * 2;
+$accordion-item-content-color: $color-off-white;
+$accordion-item-spacing: 2px;
+$accordion-icon-size: 15px;
+$accordion-icon-color: $color-black;
+$accordion-transition-time: 200ms;
+$accordion-transition-ease: ease-out;
+
+.c-accordion {
+  margin-bottom: $accordion-spacing;
+
+  @include screen-tablet-landscape-and-bigger {
+    &.accordion--tabs-on-dekstop {
+      display: flex;
+    }
+  }
+}
+
+.accordion__detail {
+  margin-bottom: $accordion-item-spacing;
+  overflow: hidden;
+  transition: height $accordion-transition-time $accordion-transition-ease;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.accordion__item-summary {
+  position: relative;
+  list-style: none;
+  background-color: $accordion-item-header-color;
+  padding: $accordion-item-header-padding;
+  border-radius: $accordion-item-border-radius;
+  cursor: pointer;
+  transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time / 2;
+  transition-property: border-radius;
+
+  [open] & {
+    border-radius: $accordion-item-border-radius $accordion-item-border-radius 0 0;
+    transition: $accordion-transition-time $accordion-transition-ease;
+    transition-property: border-radius;
+  }
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  @include keyboard-focus {
+    background-color: darken($accordion-item-header-color, 50%);
+    color: $color-white;
+  }
+
+  @include screen-tablet-landscape-and-bigger {
+    .accordion--tabs-on-dekstop & {
+      display: none;
+    }
+  }
+
+  //IE only fallback
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .accordion--tabs-on-dekstop & {
+      display: block;
+    }
+  }
+}
+
+.accordion__item-icon {
+  height: $accordion-icon-size;
+  width: $accordion-icon-size;
+
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    right: $global-spacing;
+    top: 50%;
+    height: 2px;
+    width: $accordion-icon-size;
+    background: $accordion-icon-color;
+    transition: $accordion-transition-time / 2 $accordion-transition-ease;
+    transition-property: opacity, transform;
+
+    //IE only fallback
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      display: none;
+    }
+  }
+
+  &::after {
+
+    [open] & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &::before {
+    transform: rotate(90DEG);
+
+    [open] & {
+      transform: scale(0) rotate(270deg);
+    }
+  }
+}
+
+@mixin accordionContentStyle {
+  padding: $accordion-item-content-padding;
+  background: $accordion-item-content-color;
+  border-radius: 0 0 $accordion-item-border-radius $accordion-item-border-radius;
+}
+
+.accordion__item-content {
+  @include accordionContentStyle;
+
+  @include screen-tablet-landscape-and-bigger {
+    .accordion--tabs-on-dekstop & {
+      padding: 0 0 0 2rem;
+      background: none;
+    }
+  }
+
+  // IE only fallback
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .accordion--tabs-on-dekstop & {
+      @include accordionContentStyle;
+    }
+  }
+}
+
+.accordion__tab-list {
+  flex: 0 0 30%;
+  list-style: none;
+
+  @include screen-tablet-portrait-and-smaller {
+    display: none;
+  }
+
+  // IE only fallback
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    display: none;
+  }
+}
+
+.accordion__tab-item {
+  margin-bottom: $accordion-item-spacing;
+}
+
+.accordion__tab-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background-color: $accordion-item-header-color;
+  padding: $accordion-item-header-padding;
+  border-radius: $accordion-item-border-radius;
+  cursor: pointer;
+  transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time / 2;
+  transition-property: background;
+
+  &.accordion__tab-button--is-active {
+    background: $color-off-white;
+  }
+}
+
+.accordion__tab-contents {
+  // IE only fallback
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    flex: 0 0 100%;
+  }
+}

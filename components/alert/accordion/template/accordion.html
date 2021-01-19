@@ -1,0 +1,60 @@
+{#
+    @shelf-version: 2.0.0
+    Accordion macro
+    Usage as a call, inject the accordion items there.
+
+    Options:
+        autoclose {boolean}     - Disable autoclose (optional)
+
+    Item Options:
+        id {string}             - Adds id for a11y reference
+        open {boolean}          - Defaults open or closed
+        title {string}          - Label for default state
+#}
+
+{% macro default(data) %}
+
+    <div class="c-accordion 
+        {%- if data.tabsOnDesktop %} accordion--tabs-on-dekstop{% endif %}"
+        {%- if data.autoclose %} data-autoclose="true"{% endif %}
+        {%- if data.tabsOnDesktop %} data-tabs-on-desktop="true"{% endif %}
+        js-hook-accordion>
+
+        {% if data.tabsOnDesktop %}
+        <ul class="accordion__tab-list">
+            {% for tab in data.tabsOnDesktop %}
+            <li class="accordion__tab-item">
+                <button class="accordion__tab-button 
+                    {%- if tab.active %} accordion__tab-button--is-active{% endif %}" 
+                    on:click.prevent="accordion[{{ tab.id }}]::open" 
+                    aria-controls="{{ tab.id }}" 
+                    js-hook-accordion-tab>
+                    {{ tab.label }}
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="accordion__tab-contents">
+            {{ caller() }}
+        </div>
+        {% else %}
+            {{ caller() }}
+        {% endif %}
+
+    </div>
+
+{% endmacro %}
+
+{% macro item(data) %}
+
+    <details class="accordion__detail" id="{{ data.id }}" {%- if data.open %} open{% endif %} js-hook-accordion-detail>
+        <summary class="accordion__item-summary" js-hook-accordion-summary>
+            {{ data.title }}
+            <span class="accordion__item-icon"></span>
+        </summary>
+        <div class="accordion__item-content" js-hook-accordion-content>
+            {{ caller() }}
+        </div>
+    </details>
+
+{% endmacro %}
