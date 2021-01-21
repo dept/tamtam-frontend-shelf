@@ -108,14 +108,14 @@ $accordion-transition-ease: ease-out;
   }
 }
 
-@mixin accordionContentStyle {
+@mixin accordion-content-style {
   padding: $accordion-item-content-padding;
   background: $accordion-item-content-color;
   border-radius: 0 0 $accordion-item-border-radius $accordion-item-border-radius;
 }
 
 .accordion__item-content {
-  @include accordionContentStyle;
+  @include accordion-content-style;
 
   @include screen-tablet-landscape-and-bigger {
     .accordion--tabs-on-dekstop & {
@@ -127,7 +127,7 @@ $accordion-transition-ease: ease-out;
   // IE only fallback
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     .accordion--tabs-on-dekstop & {
-      @include accordionContentStyle;
+      @include accordion-content-style;
     }
   }
 }

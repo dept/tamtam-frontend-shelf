@@ -9,9 +9,8 @@ const CLASS_ACCORDION_TAB_ACTIVE = 'accordion__tab-button--is-active'
 class Accordion {
   constructor(element) {
     this.element = element
-
-    this.createDetailsArray().then(() => this.bindEvents())
-
+    this.createDetailsArray()
+    this.bindEvents()
     this.settings = {
       autoclose: !!this.element.dataset.autoclose,
       tabsOnDesktop: !!this.element.dataset.tabsOnDesktop,
@@ -24,47 +23,37 @@ class Accordion {
   }
 
   createDetailsArray() {
-    return new Promise(resolve => {
-      this.details = []
-      const details = [...this.element.querySelectorAll(HOOK_ACCORDION_DETAIL)]
-
-      details.forEach(detail => {
-        this.details[detail.id] = {
-          id: detail.id,
-          detail: detail,
-          summary: detail.querySelector(HOOK_ACCORDION_SUMMARY),
-          content: detail.querySelector(HOOK_ACCORDION_CONTENT),
-          animation: null,
-          isClosing: false,
-          isExpanding: false,
-        }
-      })
-
-      resolve()
-    })
+    const details = [...this.element.querySelectorAll(HOOK_ACCORDION_DETAIL)]
+    this.details = details.map((detail) => ({
+      id: detail.id,
+      detail: detail,
+      summary: detail.querySelector(HOOK_ACCORDION_SUMMARY),
+      content: detail.querySelector(HOOK_ACCORDION_CONTENT),
+      animation: null,
+      isClosing: false,
+      isExpanding: false,
+    }))
   }
 
   bindEvents() {
-    Object.entries(this.details).forEach(detail => {
-      const [key, value] = detail
+    this.details.forEach((detail) => {
+      detail.summary.addEventListener('click', (e) => this.handleSummaryClick(e, detail))
 
-      value.summary.addEventListener('click', e => this.handleSummaryClick(e, value))
-
-      Events.$on(`accordion[${key}]::open`, () => {
-        if (!value.isExpanding && !value.animation) {
-          this.open(value)
+      Events.$on(`accordion[${detail.id}]::open`, () => {
+        if (!detail.isExpanding && !detail.animation) {
+          this.open(detail)
         }
       })
 
-      Events.$on(`accordion[${key}]::close`, () => {
-        if (!value.isClosing && !value.animation) {
-          this.close(value)
+      Events.$on(`accordion[${detail.id}]::close`, () => {
+        if (!detail.isClosing && !detail.animation) {
+          this.close(detail)
         }
       })
 
-      Events.$on(`accordion[${key}]::toggle`, () => {
-        if (!value.animation) {
-          value.detail.open ? this.close(value) : this.open(value)
+      Events.$on(`accordion[${detail.id}]::toggle`, () => {
+        if (!detail.animation) {
+          detail.detail.open ? this.close(detail) : this.open(detail)
         }
       })
     })
@@ -123,7 +112,7 @@ class Accordion {
     item.isExpanding = true
     const startHeight = `${item.detail.offsetHeight}px`
     const endHeight = `${item.summary.offsetHeight + item.content.offsetHeight}px`
-
+    
     if (item.animation) {
       item.animation.cancel()
     }
@@ -148,9 +137,7 @@ class Accordion {
   }
 
   closeAll() {
-    Object.values(this.details).forEach(detail => {
-      this.close(detail)
-    })
+    this.details.forEach((detail) => this.close(detail))
   }
 
   getAnimationObj(startHeight, endHeight, open) {
