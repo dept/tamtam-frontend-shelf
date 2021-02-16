@@ -63,24 +63,24 @@ class Accordion {
   }
 
   bindEvents() {
-    this.accordionItems.forEach((detail) => {
-      detail.summary?.addEventListener('click', (e) => this.handleSummaryClick(e, detail))
+    this.accordionItems.forEach((accordionItem) => {
+      accordionItem.summary?.addEventListener('click', (e) => this.handleSummaryClick(e, accordionItem))
 
-      Events.$on(`accordion[${detail.id}]::open`, () => {
-        if (!detail.isExpanding && !detail.animation) {
-          this.open(detail)
+      Events.$on(`accordion[${accordionItem.id}]::open`, () => {
+        if (!accordionItem.isExpanding && !accordionItem.animation) {
+          this.open(accordionItem)
         }
       })
 
-      Events.$on(`accordion[${detail.id}]::close`, () => {
-        if (!detail.isClosing && !detail.animation) {
-          this.close(detail)
+      Events.$on(`accordion[${accordionItem.id}]::close`, () => {
+        if (!accordionItem.isClosing && !accordionItem.animation) {
+          this.close(accordionItem)
         }
       })
 
-      Events.$on(`accordion[${detail.id}]::toggle`, () => {
-        if (!detail.animation) {
-          detail.detail.open ? this.close(detail) : this.open(detail)
+      Events.$on(`accordion[${accordionItem.id}]::toggle`, () => {
+        if (!accordionItem.animation) {
+          accordionItem.detail.open ? this.close(accordionItem) : this.open(accordionItem)
         }
       })
     })
@@ -162,7 +162,7 @@ class Accordion {
   }
 
   closeAll() {
-    this.accordionItems.forEach((detail) => this.close(detail))
+    this.accordionItems.forEach((accordionItem) => this.close(accordionItem))
   }
 
   getAnimationObj(startHeight: string, endHeight: string, open: boolean) {
