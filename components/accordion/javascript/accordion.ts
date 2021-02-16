@@ -1,6 +1,6 @@
 import Events from '@utilities/events'
 
-const HOOK_ACCORDION_DETAIL = '[js-hook-accordion-detail]'
+const HOOK_ACCORDION_DETAIL = '[js-hook-accordion-item]'
 const HOOK_ACCORDION_SUMMARY = '[js-hook-accordion-summary]'
 const HOOK_ACCORDION_CONTENT = '[js-hook-accordion-content]'
 
@@ -18,7 +18,7 @@ interface AnimationOptions {
   easing: string
 }
 
-interface Details {
+interface AccordionItem {
   id: string,
   detail: HTMLDetailsElement
   summary: HTMLElement
@@ -31,7 +31,7 @@ interface Details {
 class Accordion {
   private element: HTMLElement
   private settings: Settings
-  private details: Details[]
+  private accordionItems: AccordionItem[]
 
   constructor(element: HTMLElement) {
     this.element = element
@@ -51,19 +51,19 @@ class Accordion {
   }
 
   createDetailsArray() {
-    const details = [...this.element.querySelectorAll<HTMLDetailsElement>(HOOK_ACCORDION_DETAIL)]
-    this.details = details.map((detail) => ({
-      id: detail.id,
-      detail: detail,
-      summary: detail.querySelector<HTMLElement>(HOOK_ACCORDION_SUMMARY)!,
-      content: detail.querySelector<HTMLElement>(HOOK_ACCORDION_CONTENT)!,
+    const accordionItems = [...this.element.querySelectorAll<HTMLDetailsElement>(HOOK_ACCORDION_DETAIL)]
+    this.accordionItems = accordionItems.map((item) => ({
+      id: item.id,
+      detail: item,
+      summary: item.querySelector<HTMLElement>(HOOK_ACCORDION_SUMMARY)!,
+      content: item.querySelector<HTMLElement>(HOOK_ACCORDION_CONTENT)!,
       isClosing: false,
       isExpanding: false,
     }))
   }
 
   bindEvents() {
-    this.details.forEach((detail) => {
+    this.accordionItems.forEach((detail) => {
       detail.summary?.addEventListener('click', (e) => this.handleSummaryClick(e, detail))
 
       Events.$on(`accordion[${detail.id}]::open`, () => {
@@ -86,7 +86,7 @@ class Accordion {
     })
   }
 
-  handleSummaryClick(e: MouseEvent, item: Details) {
+  handleSummaryClick(e: MouseEvent, item: AccordionItem) {
     e.preventDefault()
 
     if (item.isClosing || !item.detail.open) {
@@ -96,7 +96,7 @@ class Accordion {
     }
   }
 
-  close(item: Details) {
+  close(item: AccordionItem) {
     item.isClosing = true
 
     const startHeight = `${item.detail?.offsetHeight || 0}px`
@@ -117,7 +117,7 @@ class Accordion {
       ?.classList.remove(CLASS_ACCORDION_TAB_ACTIVE)
   }
 
-  open(item: Details) {
+  open(item: AccordionItem) {
     if (
       this.settings.autoclose ||
       (this.settings.tabsOnDesktop && window.innerWidth >= this.settings.breakpointDesktop)
@@ -133,7 +133,7 @@ class Accordion {
       ?.classList.add(CLASS_ACCORDION_TAB_ACTIVE)
   }
 
-  expand(item: Details) {
+  expand(item: AccordionItem) {
     item.isExpanding = true
     const startHeight = `${item.detail.offsetHeight}px`
     const endHeight = `${item.summary.offsetHeight + item.content.offsetHeight}px`
@@ -151,7 +151,7 @@ class Accordion {
     item.animation.oncancel = () => (item.isExpanding = false)
   }
 
-  onAnimationFinish(item: Details, open: boolean) {
+  onAnimationFinish(item: AccordionItem, open: boolean) {
     item.detail.open = open
     item.isClosing = false
     item.isExpanding = false
@@ -162,7 +162,7 @@ class Accordion {
   }
 
   closeAll() {
-    this.details.forEach((detail) => this.close(detail))
+    this.accordionItems.forEach((detail) => this.close(detail))
   }
 
   getAnimationObj(startHeight: string, endHeight: string, open: boolean) {
