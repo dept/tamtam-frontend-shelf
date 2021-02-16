@@ -6,11 +6,39 @@ const HOOK_ACCORDION_CONTENT = '[js-hook-accordion-content]'
 
 const CLASS_ACCORDION_TAB_ACTIVE = 'accordion__tab-button--is-active'
 
+interface Settings {
+  autoclose: boolean
+  tabsOnDesktop: boolean
+  breakpointDesktop: number
+  animateOptions: AnimationOptions
+}
+
+interface AnimationOptions {
+  duration: number
+  easing: string
+}
+
+interface Details {
+  id: string,
+  detail: HTMLDetailsElement
+  summary: HTMLElement
+  content: HTMLElement
+  animation?: Animation
+  isClosing: boolean
+  isExpanding: boolean
+}
+
 class Accordion {
-  constructor(element) {
+  private element: HTMLElement
+  private settings: Settings
+  private details: Details[]
+
+  constructor(element: HTMLElement) {
     this.element = element
+
     this.createDetailsArray()
     this.bindEvents()
+
     this.settings = {
       autoclose: !!this.element.dataset.autoclose,
       tabsOnDesktop: !!this.element.dataset.tabsOnDesktop,
@@ -23,13 +51,12 @@ class Accordion {
   }
 
   createDetailsArray() {
-    const details = [...this.element.querySelectorAll(HOOK_ACCORDION_DETAIL)]
+    const details = [...this.element.querySelectorAll<HTMLDetailsElement>(HOOK_ACCORDION_DETAIL)]
     this.details = details.map((detail) => ({
       id: detail.id,
       detail: detail,
-      summary: detail.querySelector(HOOK_ACCORDION_SUMMARY),
-      content: detail.querySelector(HOOK_ACCORDION_CONTENT),
-      animation: null,
+      summary: detail.querySelector<HTMLElement>(HOOK_ACCORDION_SUMMARY)!,
+      content: detail.querySelector<HTMLElement>(HOOK_ACCORDION_CONTENT)!,
       isClosing: false,
       isExpanding: false,
     }))
@@ -37,7 +64,7 @@ class Accordion {
 
   bindEvents() {
     this.details.forEach((detail) => {
-      detail.summary.addEventListener('click', (e) => this.handleSummaryClick(e, detail))
+      detail.summary?.addEventListener('click', (e) => this.handleSummaryClick(e, detail))
 
       Events.$on(`accordion[${detail.id}]::open`, () => {
         if (!detail.isExpanding && !detail.animation) {
@@ -59,7 +86,7 @@ class Accordion {
     })
   }
 
-  handleSummaryClick(e, item) {
+  handleSummaryClick(e: MouseEvent, item: Details) {
     e.preventDefault()
 
     if (item.isClosing || !item.detail.open) {
@@ -69,15 +96,13 @@ class Accordion {
     }
   }
 
-  close(item) {
+  close(item: Details) {
     item.isClosing = true
 
-    const startHeight = `${item.detail.offsetHeight}px`
-    const endHeight = `${item.summary.offsetHeight}px`
+    const startHeight = `${item.detail?.offsetHeight || 0}px`
+    const endHeight = `${item.summary?.offsetHeight || 0}px`
 
-    if (item.animation) {
-      item.animation.cancel()
-    }
+    item.animation?.cancel()
 
     item.animation = item.detail.animate(
       this.getAnimationObj(startHeight, endHeight, false),
@@ -92,7 +117,7 @@ class Accordion {
       ?.classList.remove(CLASS_ACCORDION_TAB_ACTIVE)
   }
 
-  open(item) {
+  open(item: Details) {
     if (
       this.settings.autoclose ||
       (this.settings.tabsOnDesktop && window.innerWidth >= this.settings.breakpointDesktop)
@@ -108,11 +133,11 @@ class Accordion {
       ?.classList.add(CLASS_ACCORDION_TAB_ACTIVE)
   }
 
-  expand(item) {
+  expand(item: Details) {
     item.isExpanding = true
     const startHeight = `${item.detail.offsetHeight}px`
     const endHeight = `${item.summary.offsetHeight + item.content.offsetHeight}px`
-    
+
     if (item.animation) {
       item.animation.cancel()
     }
@@ -126,11 +151,11 @@ class Accordion {
     item.animation.oncancel = () => (item.isExpanding = false)
   }
 
-  onAnimationFinish(item, open) {
+  onAnimationFinish(item: Details, open: boolean) {
     item.detail.open = open
-    item.animation = null
     item.isClosing = false
     item.isExpanding = false
+    delete item.animation
     item.detail.style.height = item.detail.style.overflow = ''
 
     Events.$trigger(`accordion[${item.id}]::${item.detail.open ? `opened` : `closed`}`)
@@ -140,7 +165,7 @@ class Accordion {
     this.details.forEach((detail) => this.close(detail))
   }
 
-  getAnimationObj(startHeight, endHeight, open) {
+  getAnimationObj(startHeight: string, endHeight: string, open: boolean) {
     return this.settings.tabsOnDesktop && window.innerWidth >= this.settings.breakpointDesktop
       ? { opacity: open ? [0, 1] : [1, 0] }
       : { height: [startHeight, endHeight] }
