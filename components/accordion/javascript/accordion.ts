@@ -138,9 +138,7 @@ class Accordion {
     const startHeight = `${item.detail.offsetHeight}px`
     const endHeight = `${item.summary.offsetHeight + item.content.offsetHeight}px`
 
-    if (item.animation) {
-      item.animation.cancel()
-    }
+    item.animation?.cancel()
 
     item.animation = item.detail.animate(
       this.getAnimationObj(startHeight, endHeight, true),
