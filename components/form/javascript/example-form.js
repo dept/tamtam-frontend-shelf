@@ -16,7 +16,7 @@ class ExampleForm extends Form {
    * - will be called after form is submitted successfully through ajax (see form.js)
    * @param {Object} data - data returned from API call
    */
-  afterSubmitFormSuccess(_data) {
+  afterSubmitFormSuccess = (_data) => {
     // Do something custom after successful form submit
   }
 }
