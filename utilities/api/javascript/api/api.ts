@@ -5,7 +5,7 @@
 // @ts-ignore
 import Environment from '@utilities/environment'
 // @ts-ignore
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, Method } from 'axios'
 // @ts-ignore
 const endpointBase = window.EnvironmentSettings.endpoint
 
@@ -14,28 +14,17 @@ type AntiForgeryToken = {
   value?: string
 }
 
-type Config = {
-  url: string
-  params: object
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
-  data?: object
-  headers:
-}
-
 class API {
-  private antiForgeryToken: AntiForgeryToken
+  private antiForgeryToken?: AntiForgeryToken
   /**
    * Set an anti forgery token to make AJAX requests to the backend
-   * @param {string} name
-   * @param {string} value
    */
   setAntiForgeryToken(name: string, value: string) {
-    this.antiForgeryToken = {} as AntiForgeryToken
     this.antiForgeryToken = { name, value }
   }
 
-  get(path: string, data = {}, json: object, options = {}) {
-    let config: conf = {
+  get<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+    let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'get'),
       params: data,
       method: getMethod('GET', json),
@@ -43,11 +32,11 @@ class API {
 
     config = { ...config, ...options }
 
-    return axios(config)
+    return axios.request<T>(config)
   }
 
-  post(path: string, data = {}, json: object, options = {}) {
-    let config = {
+  post<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+    let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'post'),
       data,
       method: getMethod('POST', json),
@@ -60,11 +49,11 @@ class API {
 
     config = { ...config, ...options }
 
-    return axios(config)
+    return axios.request<T>(config)
   }
 
-  put(path, data = {}, json, options = {}) {
-    let config = {
+  put<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+    let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'put'),
       data,
       method: getMethod('PUT', json),
@@ -72,11 +61,11 @@ class API {
 
     config = { ...config, ...options }
 
-    return axios(config)
+    return axios.request<T>(config)
   }
 
-  delete(path, data = {}, json, options = {}) {
-    let config = {
+  delete<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+    let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'delete'),
       data,
       method: getMethod('DELETE', json),
@@ -84,17 +73,14 @@ class API {
 
     config = { ...config, ...options }
 
-    return axios(config)
+    return axios.request<T>(config)
   }
 }
 
 /**
  * Get the endpoint. If we require json we will return a json file.
- * @param {string} path
- * @param {string|boolean} json
- * @param {string} method
  */
-function getEndpoint(path, json, method) {
+function getEndpoint(path: string, json: string | boolean, method: Method): string {
   if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
     return path
   }
@@ -108,10 +94,8 @@ function getEndpoint(path, json, method) {
 
 /**
  * Will transform the method to GET if we require static json file
- * @param {string} method Given method to check for transformation
- * @param {string|boolean} json To check if we need to transform the method
  */
-function getMethod(method, json) {
+function getMethod(method: Method, json: string | boolean): string {
   return json === true || (json === 'local' && Environment.isLocal) ? 'GET' : method
 }
 
