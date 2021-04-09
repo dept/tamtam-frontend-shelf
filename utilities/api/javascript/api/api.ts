@@ -5,23 +5,37 @@
 // @ts-ignore
 import Environment from '@utilities/environment'
 // @ts-ignore
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 // @ts-ignore
 const endpointBase = window.EnvironmentSettings.endpoint
 
+type AntiForgeryToken = {
+  name?: string
+  value?: string
+}
+
+type Config = {
+  url: string
+  params: object
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  data?: object
+  headers:
+}
+
 class API {
+  private antiForgeryToken: AntiForgeryToken
   /**
    * Set an anti forgery token to make AJAX requests to the backend
    * @param {string} name
    * @param {string} value
    */
-  setAntiForgeryToken(name, value) {
-    this.antiForgeryToken = {}
+  setAntiForgeryToken(name: string, value: string) {
+    this.antiForgeryToken = {} as AntiForgeryToken
     this.antiForgeryToken = { name, value }
   }
 
-  get(path, data = {}, json, options = {}) {
-    let config = {
+  get(path: string, data = {}, json: object, options = {}) {
+    let config: conf = {
       url: getEndpoint(path, json, 'get'),
       params: data,
       method: getMethod('GET', json),
@@ -32,7 +46,7 @@ class API {
     return axios(config)
   }
 
-  post(path, data = {}, json, options = {}) {
+  post(path: string, data = {}, json: object, options = {}) {
     let config = {
       url: getEndpoint(path, json, 'post'),
       data,
