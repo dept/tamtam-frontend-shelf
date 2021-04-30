@@ -2,11 +2,8 @@
  * @shelf-version: 1.0.0
  */
 
-// @ts-ignore
 import Environment from '@utilities/environment'
-// @ts-ignore
 import axios, { AxiosRequestConfig, Method } from 'axios'
-// @ts-ignore
 const endpointBase = window.EnvironmentSettings.endpoint
 
 type AntiForgeryToken = {
@@ -95,7 +92,7 @@ function getEndpoint(path: string, json: string | boolean, method: Method): stri
 /**
  * Will transform the method to GET if we require static json file
  */
-function getMethod(method: Method, json: string | boolean): string {
+function getMethod(method: Method, json: string | boolean): Method {
   return json === true || (json === 'local' && Environment.isLocal) ? 'GET' : method
 }
 
