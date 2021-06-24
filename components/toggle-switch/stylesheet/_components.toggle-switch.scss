@@ -1,0 +1,77 @@
+$toggle-switch-width: 80px;
+$toggle-switch-height: 34px;
+
+$toggle-switch-border-radius: $toggle-switch-height;
+
+$toggle-switch-background: $color-white;
+$toggle-switch-background-checked: $color-primary;
+
+$toggle-switch-dot: $color-primary;
+$toggle-switch-dot-checked: $color-orange;
+$toggle-switch-dot-size: 26px;
+$toggle-switch-dot-offset: 4px;
+
+$toggle-switch-transition-time: 300ms;
+$toggle-switch-transition-ease: $ease-in-out-quad;
+
+$toggle-switch-translateX: calc(#{$toggle-switch-width} - #{$toggle-switch-dot-size} - #{$toggle-switch-dot-offset * 2});
+
+.c-toggle-switch {
+    position: relative;
+    display: inline-block;
+}
+
+.toggle-switch__switch {
+    position: relative;
+    display: block;
+    width: $toggle-switch-width;
+    height: $toggle-switch-height;
+}
+
+.toggle-switch__checkbox {
+    &[type=hidden] {
+        display: none;
+    }
+
+    &:checked {
+        + .toggle-switch__slider {
+            &:before {
+                background-color: $toggle-switch-dot-checked;
+                transform: translate3d($toggle-switch-translateX, 0, 0);
+            }
+        }
+    }
+
+    &:disabled {
+        + .toggle-switch__slider {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    }
+}
+
+.toggle-switch__slider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: $toggle-switch-width;
+    height: $toggle-switch-height;
+    background-color: $toggle-switch-background;
+    border-radius: $toggle-switch-height;
+    cursor: pointer;
+    transition: $toggle-switch-transition-time $toggle-switch-transition-ease;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: $toggle-switch-dot-offset;
+        left: $toggle-switch-dot-offset;
+        width: $toggle-switch-dot-size;
+        height: $toggle-switch-dot-size;
+        border-radius: 50%;
+        background-color: $toggle-switch-dot;
+        transition: $toggle-switch-transition-time $toggle-switch-transition-ease;
+    }
+}
