@@ -1,0 +1,34 @@
+{# 
+    Toggle switch
+
+    Options: 
+        class {string}          (optional) - add class(es)
+        element {string}        (optional) - choose element for label
+
+        checked {boolean}       (optional) - add checked property to switch     (can be combined with disabled option)
+        disabled {boolean}      (optional) - add disabled property to switch    (can be combined with checked option)
+
+        hook {string}           (optional) - add hook;
+        attr {string}           (optional) - add attributes
+ #}
+
+{% macro toggle(data) %}
+
+<div class="c-toggle-switch {%- if data.class %} {{ data.class }}{% endif -%}"
+    {%- if data.attr %} {{ data.attr | safe }}{% endif -%} 
+    js-hook-toggle-switch>
+
+    <label class="toggle-switch__switch">
+
+        <input class="toggle-switch__checkbox" type="checkbox" hidden
+            {%- if data.checked %} checked="checked"{% endif -%}
+            {%- if data.disabled %} disabled="disabled"{% endif -%}
+            {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}>
+
+        <span class="toggle-switch__slider"></span>
+
+    </label>
+    
+</div>
+
+{% endmacro %}
