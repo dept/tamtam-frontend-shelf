@@ -12,7 +12,7 @@
         attr {string}           (optional) - add attributes
  #}
 
-{% macro toggle(data) %}
+{% macro toggleSwitch(data) %}
 
 <div class="c-toggle-switch {%- if data.class %} {{ data.class }}{% endif -%}"
     {%- if data.attr %} {{ data.attr | safe }}{% endif -%} 
