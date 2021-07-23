@@ -28,7 +28,7 @@ class YoutubeVideo {
         loop: this.options.videoLoop,
         autoplay: this.options.videoAutoplay,
         mute: this.options.videoMuted,
-        playlist: this.options.videoLoop ? this.options.videoId : false,
+        ...(this.options.videoLoop ? { playlist: this.options.videoId } : {}),
         playsinline: this.options.videoAutoplay || this.options.videoPlaysinline ? 1 : 0,
       },
       events: {
