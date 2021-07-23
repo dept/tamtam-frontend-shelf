@@ -48,10 +48,9 @@ class LoadingIndicator {
    *
    * @param {Options} options
    */
-  showLoader(options = {}) {
+  showLoader(options) {
     if (this.loaderActive) return
-
-    const { darkTheme, targetElement, classes } = options
+    const { darkTheme, targetElement, classes } = options || {}
     const loadingIndicatorTemplate = LoadingIndicator.buildTemplateFragment(
       darkTheme,
       targetElement,
