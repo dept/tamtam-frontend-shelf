@@ -193,7 +193,7 @@ function parseEventString(eventString) {
  * @returns {any}
  */
 function _delegate(criteria, callback) {
-  return function(e) {
+  return function (e) {
     let el = e.target
     if (criteria(el)) {
       // @ts-ignore

@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "In this repository you find all standardized front-end components and utilities. Please see the readme's of all components/utilities for more information about them.",
   "main": "index.js",
+  "engines": {
+    "node": "^12",
+    "npm": "^6"
+  },
   "scripts": {
-    "type-check": "tsc --noEmit -p jsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "type-check": "tsc --noEmit -p jsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -14,6 +17,6 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme",
   "dependencies": {
-    "tamtam-frontend-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#2.1.0"
+    "dept-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#2.1.0"
   }
 }
