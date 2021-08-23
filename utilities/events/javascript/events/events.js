@@ -9,6 +9,7 @@ const store = new Proxy(
       obj[prop] = value
       if (oldState?.data && value.eventIsBound && !oldState?.eventIsBound)
         _Events.$trigger(prop, oldState.data)
+
       return true
     },
   },
@@ -29,10 +30,6 @@ class Events {
   }
 
   $on(event, callback) {
-    if (this.logging) {
-      console.log('Listening to event', '--- Name:', event, '--- Callback:', callback)
-    }
-
     // Remove if duplicate event is detected
     if (store[event]?.callbackString === callback.toString())
       eventEl.removeEventListener(event, store[event].callbackWrapper, false)
@@ -46,6 +43,10 @@ class Events {
 
     eventEl.addEventListener(event, callbackWrapper)
 
+    if (this.logging) {
+      console.log('Listening to event', '--- Name:', event, '--- Callback:', callback)
+    }
+
     store[event] = {
       eventIsBound: true,
       callbackString: callback.toString(),
@@ -54,18 +55,6 @@ class Events {
   }
 
   $trigger(event, data, currentTarget) {
-    if (this.logging) {
-      console.log(
-        'Event triggered',
-        '--- Name:',
-        event,
-        '--- Params:',
-        data,
-        '--- currentTarget',
-        currentTarget,
-      )
-    }
-
     const _data = currentTarget ? { currentTarget, data } : data
     const _event = new CustomEvent(event, { detail: _data })
 
@@ -75,7 +64,20 @@ class Events {
         data,
       }
 
-    if (store[event].eventIsBound) eventEl.dispatchEvent(_event)
+    if (store[event].eventIsBound) {
+      if (this.logging) {
+        console.log(
+          'Event triggered',
+          '--- Name:',
+          event,
+          '--- Params:',
+          data,
+          '--- currentTarget',
+          currentTarget,
+        )
+      }
+      eventEl.dispatchEvent(_event)
+    }
   }
 }
 
