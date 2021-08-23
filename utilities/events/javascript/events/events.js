@@ -1,7 +1,18 @@
 const eventEl = window
 const crawlEl = document.querySelector('html')
-const listenQueue = {}
-const boundEvents = {}
+
+const store = new Proxy(
+  {},
+  {
+    set: (obj, prop, value) => {
+      const oldState = obj[prop]
+      obj[prop] = value
+      if (oldState?.data && value.eventIsBound && !oldState?.eventIsBound)
+        _Events.$trigger(prop, oldState.data)
+      return true
+    },
+  },
+)
 
 class Events {
   get logging() {
@@ -22,27 +33,24 @@ class Events {
       console.log('Listening to event', '--- Name:', event, '--- Callback:', callback)
     }
 
-    if (eventIsBoundToEventEl(event, callback)) {
-      eventEl.removeEventListener(event, boundEvents[event].callbackWrapper, false)
-    }
+    // Remove if duplicate event is detected
+    if (store[event]?.callbackString === callback.toString())
+      eventEl.removeEventListener(event, store[event].callbackWrapper, false)
 
-    boundEvents[event] = {
+    const callbackWrapper = (ev) =>
+      callback(
+        ev,
+        extractPropFromObject(ev.detail, 'data'),
+        extractPropFromObject(ev.detail, 'currentTarget'),
+      )
+
+    eventEl.addEventListener(event, callbackWrapper)
+
+    store[event] = {
+      eventIsBound: true,
       callbackString: callback.toString(),
-      callbackWrapper: ev => {
-        callback(
-          ev,
-          extractPropFromObject(ev.detail, 'data'),
-          extractPropFromObject(ev.detail, 'currentTarget'),
-        )
-      },
+      callbackWrapper,
     }
-
-    eventEl.addEventListener(event, boundEvents[event].callbackWrapper)
-
-    if (!listenQueue[event]) {
-      listenQueue[event] = {}
-    }
-    listenQueue[event].eventIsBound = true
   }
 
   $trigger(event, data, currentTarget) {
@@ -58,24 +66,16 @@ class Events {
       )
     }
 
-    if (listenQueue[event] && listenQueue[event].interval)
-      clearInterval(listenQueue[event].interval)
-
     const _data = currentTarget ? { currentTarget, data } : data
     const _event = new CustomEvent(event, { detail: _data })
 
-    if (typeof listenQueue[event] === 'undefined') {
-      listenQueue[event] = { eventIsBound: false }
-    }
+    if (typeof store[event] === 'undefined')
+      store[event] = {
+        eventIsBound: false,
+        data,
+      }
 
-    if (listenQueue[event].eventIsBound === false) {
-      listenQueue[event].interval = setInterval(
-        () => this.$trigger(event, data, currentTarget),
-        1000,
-      )
-    } else {
-      eventEl.dispatchEvent(_event)
-    }
+    if (store[event].eventIsBound) eventEl.dispatchEvent(_event)
   }
 }
 
@@ -98,19 +98,19 @@ function readAndBindEventsFromDOM() {
   // Elements that have attributes starting with on:
   const elements = _domFind(
     crawlEl,
-    element =>
+    (element) =>
       element.attributes &&
-      [].slice.call(element.attributes).some(attr => attr.nodeName.substr(0, 3) === 'on:'),
+      [].slice.call(element.attributes).some((attr) => attr.nodeName.substr(0, 3) === 'on:'),
   )
 
-  elements.map(el => {
+  elements.map((el) => {
     if (!el._isInitialised) {
       const attrs = [].slice.call(el.attributes)
       attrs
         // Filter attributes (so not elements this time) starting with on:
-        .filter(attr => attr.name.slice(0, 3) === 'on:')
+        .filter((attr) => attr.name.slice(0, 3) === 'on:')
         // Listen to the native event.
-        .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value))
+        .map((attr) => bindEvent(attr.ownerElement, attr.name, attr.value))
       el._isInitialised = true
     }
   })
@@ -130,30 +130,18 @@ function bindEvent(targetEl, attrName, attrValue) {
   const [eventToTrigger, eventData] = parseEventString(attrValue)
 
   // Filters out only the clicked element, based on event attribute.
-  const delegateFilter = el => el === targetEl
+  const delegateFilter = (el) => el === targetEl
 
   eventEl.addEventListener(
     nativeEvent,
-    _delegate(delegateFilter, e => {
+    _delegate(delegateFilter, (e) => {
       runModifiers(modifiers, e)
       _Events.$trigger(eventToTrigger, eventData, targetEl)
     }),
   )
 
-  if (!listenQueue[eventToTrigger]) {
-    listenQueue[eventToTrigger] = {}
-  }
-  listenQueue[eventToTrigger].eventIsBound = true
-}
-
-/**
- * Returns if an event is already bound to eventEl and matches old callback.
- * @param {string} event
- * @param {function} callback
- * @returns {boolean}
- */
-function eventIsBoundToEventEl(event, callback) {
-  return boundEvents[event] && boundEvents[event].callbackString === callback.toString()
+  if (!store[eventToTrigger]) store[eventToTrigger] = {}
+  store[eventToTrigger].eventIsBound = true
 }
 
 /**
@@ -162,7 +150,7 @@ function eventIsBoundToEventEl(event, callback) {
  * @param {Event} e
  */
 function runModifiers(modifiers, e) {
-  modifiers.map(modifier => {
+  modifiers.map((modifier) => {
     if (modifier === 'prevent' || modifier === 'preventDefault') {
       e.preventDefault()
     }
@@ -193,7 +181,7 @@ function parseEventString(eventString) {
  * @returns {any}
  */
 function _delegate(criteria, callback) {
-  return function(e) {
+  return function (e) {
     let el = e.target
     if (criteria(el)) {
       // @ts-ignore
@@ -225,7 +213,7 @@ function _domFind(element, predicate, results = []) {
     results.push(element)
   }
   if (element.children && element.children.length) {
-    ;[].slice.call(element.children).map(child => {
+    ;[].slice.call(element.children).map((child) => {
       _domFind(child, predicate, results)
     })
   }
