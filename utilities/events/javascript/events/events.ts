@@ -177,7 +177,7 @@ function parseEventString(eventString: string) {
  * on event traverse up the DOM to find the clicked parent if present.
  */
 function _delegate(
-  criteria: (element?: EventTarget | Element | null) => boolean,
+  criteria: (element?: EventTarget | EventElement | null) => boolean,
   callback: (e: Event) => void,
 ) {
   return function (e: Event) {
