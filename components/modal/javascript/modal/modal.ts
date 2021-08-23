@@ -1,66 +1,74 @@
-import Events from '@utilities/events'
-import setTabIndexOfChildren from '@utilities/set-tabindex-of-children'
-import ScreenDimensions from '@utilities/screen-dimensions'
-import { body, html } from '@utilities/dom-elements'
+import { body, html } from '@/utilities/dom-elements'
+import Events from '@/utilities/events'
+import ScreenDimensions from '@/utilities/screen-dimensions'
+import setTabIndexOfChildren from '@/utilities/set-tabindex-of-children/javascript/set-tabindex-of-children'
 
 const MODAL_HOOK = '[js-hook-modal]'
 const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]'
 const MODAL_VISIBLE_CLASS = 'modal--is-showing'
 const MODAL_HTML_CLASS = 'is--modal-open'
 
+export type ModalElement = HTMLElement & { _modalIsInitialised?: boolean }
+
+export type ModalEventId = { id: string }
+export type ModalEventHook = { hook: string }
+
+export type ModalEntry = {
+  id: string
+  el: ModalElement
+  triggerBtn: Element[]
+  closeBtn: Element[] | []
+  isOpen: boolean
+}
+
+type ModalEntries = {
+  [key: string]: ModalEntry
+}
+
+const MODAL_PREFIX = 'modal-'
+
 class Modal {
+  store: ModalEntries = {}
+  tabIndexExceptionIds = ['modal-mega-menu']
+  scrollElement = document.scrollingElement || html
+  scrollTop = 0
+
   constructor() {
-    this.registeredModals = {}
-    this.tabIndexExceptionIds = ['modal-mega-menu']
-
-    this.scrollElement = document.scrollingElement || html
-    this.scrollTop = 0
-
-    /** @type {HTMLElement[]} */
-    const modals = Array.from(document.querySelectorAll(MODAL_HOOK))
-
-    modals.forEach(modal => this.setupModalRegistry(modal))
-
+    this.register({ hook: MODAL_HOOK })
     this.bindEvents()
   }
 
-  /**
-   * Bind event based on custom hook
-   * @param {Object[]} data
-   * @param {string} data[].id
-   */
-  customBind(data) {
-    const modals = Array.from(document.querySelectorAll(data.hook))
-
-    // Loop trough all found modals based on hook
-    modals.forEach(modal => this.setupModalRegistry(modal))
+  register(data: { hook: string }) {
+    Array.from(document.querySelectorAll<ModalElement>(data.hook)).forEach(modal =>
+      this.setupModalRegistry(modal),
+    )
   }
 
   /**
    * Setup an object per found modal
-   * @param {HTMLElement} el Single modalbox
    */
-  setupModalRegistry(el) {
+  setupModalRegistry(el: ModalElement) {
     if (el._modalIsInitialised) return
 
     const id = el.getAttribute('id')
+
+    if (!id) return
 
     const triggerBtn = Array.from(document.querySelectorAll(`[aria-controls=${id}]`))
     const closeBtn = Array.from(el.querySelectorAll(MODAL_CLOSE_HOOK))
     const mobileOnly = el.dataset.modalMobileOnly === 'true'
 
-    const modal = {
+    const modal: ModalEntry = {
       el,
       id,
       triggerBtn,
       closeBtn,
+      isOpen: false,
     }
 
     if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger) {
-      if (!this.tabIndexExceptionIds.includes(id)) {
-        setTabIndexOfChildren(modal.el, -1)
-      }
-      this.registeredModals[`modal-${id}`] = modal
+      if (!this.tabIndexExceptionIds.includes(id)) setTabIndexOfChildren(modal.el, -1)
+      this.addModal(modal)
     }
 
     this.bindModalEvents(modal)
@@ -72,26 +80,17 @@ class Modal {
    * Bind all general events
    */
   bindEvents() {
-    Events.$on('modal::close', (_event, data) => this.closeModal(data))
-    Events.$on('modal::open', (_event, data) => this.openModal(data))
+    Events.$on<ModalEventId>('modal::close', (_, data) => this.closeModal(data))
+    Events.$on<ModalEventId>('modal::open', (_, data) => this.openModal(data))
 
-    Events.$on('modal::bind', (_event, data) => this.customBind(data))
+    Events.$on<ModalEventHook>('modal::bind', (_, data) => this.register(data))
   }
 
-  /**
-   * Bind all modal specific events
-   * @typedef {Object} BindOptions
-   * @property {Element & {modalIsOpen: boolean}} el Modal id
-   * @property {string} id Modal id
-   * @property {HTMLElement[]} triggerBtn Button to open modal
-   * @property {HTMLElement[]} closeBtn Button to close modal
-   *
-   * @param {BindOptions}
-   */
-  bindModalEvents({ el, id, triggerBtn, closeBtn }) {
+  bindModalEvents({ id, triggerBtn, closeBtn }: ModalEntry) {
     triggerBtn.forEach(triggerEl =>
       triggerEl.addEventListener('click', () => {
-        if (el.modalIsOpen) {
+        const { isOpen } = this.getModal(id)
+        if (isOpen) {
           Events.$trigger('modal::close', { data: { id } })
           Events.$trigger(`modal[${id}]::close`, { data: { id } })
         } else {
@@ -113,37 +112,33 @@ class Modal {
 
     // Close on ESCAPE_KEY
     document.addEventListener('keyup', event => {
-      if (event.keyCode === 27) {
+      if (event.key === 'Escape') {
         Events.$trigger('modal::close')
         Events.$trigger(`modal[${id}]::close`, { data: { id } })
       }
     })
   }
 
-  /**
-   * Open modal by given id
-   * @param {{ id: string }} data
-   */
-  openModal(data) {
-    const modal = this.registeredModals[`modal-${data.id}`]
+  openModal(data: Pick<ModalEntry, 'id'>) {
+    const modal = this.getModal(data.id)
 
-    if (!modal || modal.el.modalIsOpen) return
+    if (!modal || modal.isOpen) return
 
     const autoFocus = modal.el.dataset.modalAutoFocus === 'true'
     const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
     const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true'
     const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
-    const autoClose = modal.el.dataset.autoClose
+    const autoClose = parseInt(modal.el.dataset.autoClose || '')
 
     // Set scroll position for fixed body on mobile
     if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger) this.setScrollPosition()
 
     if (closeAllOthers) {
-      Object.keys(this.registeredModals)
-        .filter(key => this.registeredModals[key].id !== data.id)
+      Object.keys(this.store)
+        .filter(key => this.getModal(key).id !== data.id)
         .forEach(id => {
-          const _modal = this.registeredModals[id]
-          if (_modal.el.modalIsOpen) {
+          const _modal = this.getModal(id)
+          if (_modal.isOpen) {
             Events.$trigger(`modal[${_modal.id}]::close`, {
               data: { id: _modal.id },
             })
@@ -161,7 +156,7 @@ class Modal {
     }
 
     modal.el.classList.add(MODAL_VISIBLE_CLASS)
-    modal.el.modalIsOpen = true
+    modal.isOpen = true
 
     Events.$trigger('focustrap::activate', {
       data: {
@@ -173,39 +168,33 @@ class Modal {
     // If auto close is set use value as timeout in seconds to close modal
     if (autoClose) {
       setTimeout(() => {
-        Events.$trigger(`modal[${modal.id}]::close`, { data: { id: modal.id } });
-      }, autoClose * 1000);
+        Events.$trigger(`modal[${modal.id}]::close`, { data: { id: modal.id } })
+      }, autoClose * 1000)
     }
   }
 
-  /**
-   * Open modal by given id
-   * @param {{ id: string }} data
-   */
-  closeModal(data) {
+  closeModal(data: Pick<ModalEntry, 'id'>) {
     // If no ID is given we will close all modals
     if (!data || !data.id) {
-      for (const modalIndex of Object.keys(this.registeredModals)) {
-        this.closeModal({ id: this.registeredModals[modalIndex].id })
+      for (const modalIndex of Object.keys(this.store)) {
+        this.closeModal({ id: this.getModal(modalIndex).id })
         Events.$trigger('focustrap::deactivate')
       }
       return
     }
 
     // Get current modal from all known modals
-    const modal = this.registeredModals[`modal-${data.id}`]
+    const modal = this.getModal(data.id)
 
     // If there is no modal do nothing
-    if (!modal || !modal.el.modalIsOpen) return
-
-    const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
+    if (!modal || !modal.isOpen) return
 
     // Remove modal open class off html element if noBodyClass is false
+    const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
     if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS)
 
-    const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
-
     // Scroll to original position
+    const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
     if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger)
       this.removeScrollPosition()
 
@@ -216,7 +205,7 @@ class Modal {
     }
 
     modal.el.classList.remove(MODAL_VISIBLE_CLASS)
-    modal.el.modalIsOpen = false
+    modal.isOpen = false
 
     Events.$trigger('focustrap::deactivate')
 
@@ -242,6 +231,14 @@ class Modal {
   static clearCurrentFocus() {
     if (document.activeElement != document.body && document.activeElement instanceof HTMLElement)
       document.activeElement.blur()
+  }
+
+  addModal(data: ModalEntry) {
+    this.store[`${MODAL_PREFIX}${data.id}`] = data
+  }
+
+  getModal(id: ModalEntry['id']) {
+    return this.store[`${MODAL_PREFIX}${id}`]
   }
 }
 

@@ -20,7 +20,7 @@ Import module
 ```javascript
 import '@utilities/focus-trap';
 
-moduleInit.async('[js-hook-modal]', () => import(/* webpackChunkName: "Modal" */'@components/modal'));
+moduleInit.async('[js-hook-modal]', () => import('@components/modal/javascript/modal'))
 ```
 
 ## How to use
