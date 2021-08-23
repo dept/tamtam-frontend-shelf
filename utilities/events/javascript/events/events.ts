@@ -1,10 +1,23 @@
 const eventEl = window
 const crawlEl = document.querySelector('html')
 
-const store = new Proxy(
+type EventElement = Element & { _eventIsInitialised?: boolean }
+
+type EventEntry = {
+  eventIsBound: boolean
+  callbackWrapper?: (event: CustomEvent) => void
+  callbackString?: string
+  data?: any
+}
+
+type EventStore = {
+  [key: string]: EventEntry
+}
+
+const store = new Proxy<EventStore>(
   {},
   {
-    set: (obj, prop, value) => {
+    set: (obj, prop: string, value) => {
       const oldState = obj[prop]
       obj[prop] = value
       if (oldState?.data && value.eventIsBound && !oldState?.eventIsBound)
@@ -16,6 +29,8 @@ const store = new Proxy(
 )
 
 class Events {
+  _logging = false
+
   get logging() {
     return this._logging
   }
@@ -29,12 +44,12 @@ class Events {
     readAndBindEventsFromDOM()
   }
 
-  $on(event, callback) {
+  $on<T>(event: string, callback: (event: CustomEvent, data: T, currentTarget?: Element) => void) {
     // Remove if duplicate event is detected
     if (store[event]?.callbackString === callback.toString())
-      eventEl.removeEventListener(event, store[event].callbackWrapper, false)
+      eventEl.removeEventListener(event, store[event].callbackWrapper!, false)
 
-    const callbackWrapper = (ev) =>
+    const callbackWrapper = (ev: CustomEvent<T>) =>
       callback(
         ev,
         extractPropFromObject(ev.detail, 'data'),
@@ -54,7 +69,7 @@ class Events {
     }
   }
 
-  $trigger(event, data, currentTarget) {
+  $trigger<T>(event: string, data?: T, currentTarget?: Element) {
     const _data = currentTarget ? { currentTarget, data } : data
     const _event = new CustomEvent(event, { detail: _data })
 
@@ -100,31 +115,28 @@ function readAndBindEventsFromDOM() {
   // Elements that have attributes starting with on:
   const elements = _domFind(
     crawlEl,
-    (element) =>
+    (element: Element) =>
       element.attributes &&
-      [].slice.call(element.attributes).some((attr) => attr.nodeName.substr(0, 3) === 'on:'),
+      [...element.attributes].some(attr => attr.nodeName.substr(0, 3) === 'on:'),
   )
 
-  elements.map((el) => {
-    if (!el._isInitialised) {
-      const attrs = [].slice.call(el.attributes)
+  elements.map((el: EventElement) => {
+    if (!el._eventIsInitialised) {
+      const attrs = [...el.attributes]
       attrs
         // Filter attributes (so not elements this time) starting with on:
-        .filter((attr) => attr.name.slice(0, 3) === 'on:')
+        .filter(attr => attr.name.slice(0, 3) === 'on:')
         // Listen to the native event.
-        .map((attr) => bindEvent(attr.ownerElement, attr.name, attr.value))
-      el._isInitialised = true
+        .map(attr => bindEvent(attr.ownerElement, attr.name, attr.value))
+      el._eventIsInitialised = true
     }
   })
 }
 
 /**
  * Bind events
- * @param {HTMLElement} targetEl
- * @param {string} attrName data attribute name, eg. on:click.prevent
- * @param {string} attrValue value of the data attribute, eg. on:click.prevent="eventname" -> where attrValue is eventname.
  */
-function bindEvent(targetEl, attrName, attrValue) {
+function bindEvent(targetEl: EventElement | null, attrName: string, attrValue: string) {
   // Split on dot and colon.
   const attrs = attrName.split(/on:|\./)
   const nativeEvent = attrs[1]
@@ -132,27 +144,19 @@ function bindEvent(targetEl, attrName, attrValue) {
   const [eventToTrigger, eventData] = parseEventString(attrValue)
 
   // Filters out only the clicked element, based on event attribute.
-  const delegateFilter = (el) => el === targetEl
+  const delegateFilter = (el: EventElement) => el === targetEl
 
   eventEl.addEventListener(
     nativeEvent,
-    _delegate(delegateFilter, (e) => {
+    _delegate(delegateFilter, (e: Event) => {
       runModifiers(modifiers, e)
-      _Events.$trigger(eventToTrigger, eventData, targetEl)
+      _Events.$trigger(eventToTrigger, eventData, targetEl || undefined)
     }),
   )
-
-  if (!store[eventToTrigger]) store[eventToTrigger] = {}
-  store[eventToTrigger].eventIsBound = true
 }
 
-/**
- * Map over modifiers and modify event with prevent or stop.
- * @param {string[]} modifiers
- * @param {Event} e
- */
-function runModifiers(modifiers, e) {
-  modifiers.map((modifier) => {
+function runModifiers(modifiers: string[], e: Event) {
+  modifiers.map(modifier => {
     if (modifier === 'prevent' || modifier === 'preventDefault') {
       e.preventDefault()
     }
@@ -162,14 +166,7 @@ function runModifiers(modifiers, e) {
   })
 }
 
-/**
- * Event string is attrValue, which can be either only an event name, or an event name with params:
- * eventname or eventname(value).
- * Regex splits this string in an array with two params; the eventname and the value passed (if given).
- * @param {string} eventString
- * @returns {[*,*]}
- */
-function parseEventString(eventString) {
+function parseEventString(eventString: string) {
   const eventStringSplitted = eventString.split(new RegExp(/\(|\)/g))
   return [eventStringSplitted[0], eventStringSplitted[1]]
 }
@@ -178,21 +175,24 @@ function parseEventString(eventString) {
 /**
  * Event delegation. Bind clicks on parent, for live elements,
  * on event traverse up the DOM to find the clicked parent if present.
- * @param {Function} criteria Criteria function which matches the requested target
- * @param {Function} callback Callback to execute on event.
- * @returns {any}
  */
-function _delegate(criteria, callback) {
-  return function (e) {
-    let el = e.target
+function _delegate(
+  criteria: (element?: EventTarget | Element | null) => boolean,
+  callback: (e: Event) => void,
+) {
+  return function (e: Event) {
+    let el = e.target as (Node & ParentNode) | null | undefined
     if (criteria(el)) {
       // @ts-ignore
+      // eslint-disable-next-line prefer-rest-params
       callback.apply(this, arguments)
     }
-    while ((el = el.parentNode)) {
+    while ((el = el?.parentNode)) {
       if (criteria(el)) {
+        // @ts-ignore
         e.delegateTarget = el
         // @ts-ignore
+        // eslint-disable-next-line prefer-rest-params
         callback.apply(this, arguments)
         return
       }
@@ -202,33 +202,23 @@ function _delegate(criteria, callback) {
 
 /**
  * Treewalker to match elements based on a function
- * @param {HTMLElement} element Parent element (eg document) to bind event on.
- * @param {Function} predicate Function expected to return a boolean if an element matches.
- * @param results
- * @returns {Array}
  */
-function _domFind(element, predicate, results = []) {
-  if (!element.children) {
-    return results
-  }
-  if (predicate(element)) {
-    results.push(element)
-  }
-  if (element.children && element.children.length) {
-    ;[].slice.call(element.children).map((child) => {
-      _domFind(child, predicate, results)
-    })
-  }
+function _domFind(
+  element: Element,
+  predicate: (element: Element) => boolean,
+  results: Element[] = [],
+) {
+  if (!element.children) return results
+  if (predicate(element)) results.push(element)
+  if (element.children && element.children.length)
+    [...element.children].map(child => _domFind(child, predicate, results))
   return results
 }
 
 /**
  * Extracts and returns specific properties from an given object
- * @param {Object} object Object to pick from
- * @param {String} propName Property name to return
- * @returns {Object}
  */
-function extractPropFromObject(object, propName) {
+function extractPropFromObject(object: Record<string, any>, propName: string) {
   return object && object[propName] ? object[propName] : null
 }
 
