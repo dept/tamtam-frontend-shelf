@@ -1,0 +1,12 @@
+{
+  "name": "dept-storage",
+  "version": "2.0.0",
+  "license": "MIT",
+  "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
+  "dependencies": {
+    "js-cookie": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^2.2.7"
+  }
+}
