@@ -1,5 +1,5 @@
 {#
-    @shelf-version: 1.0.0
+    @shelf-version: 1.1.0
     Image macro
 
     data {
@@ -13,7 +13,6 @@
         objectFit: boolean, (optional)
         attr: 'string, (optional)
         customDataSrc: 'string', (optional)
-        disableCrossFade: boolean, (optional)
     }
  #}
 
@@ -21,33 +20,26 @@
 
     <figure class="c-image
         {%- if data.classes %} {{ data.classes }}{% endif -%}"
-        {%- if data.objectFit %} js-hook-objectfit-container{% endif -%}
+        {%- if data.objectFit %} js-hook-objectfit{% endif -%}
         {%- if data.attr %} {{ data.attr|safe }}{% endif -%}
     >
 
-    <img class="{%- if not data.disableCrossFade %} image__default{% endif -%}"
-        data-src="{{ data.image }}"
-        {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
-        {%- if data.srcset %} data-srcset="{{ data.srcset }}"{% endif -%}
-        {%- if data.objectFit %} js-hook-objectfit-img{% endif -%}
-        {%- if data.hidden %} aria-hidden="true"{% endif %}
-        {%- if data.customDataSrc %} {{ data.customDataSrc|safe }}{% endif %}
-        alt="{{ data.alt or 'Image' }}"
-    >
-
-    {%- if not data.disableCrossFade %}
-        <img class="image__ghost" aria-hidden="true"
+      <div class="image__holder">
+        <img class="{%- if not data.disableCrossFade %} image__default{% endif -%}"
+            data-src="{{ data.image }}"
             {%- if data.preload %} src="{{ data.preload }}"{% endif -%}
-            {%- if data.objectFit %} js-hook-objectfit-img {% endif -%}
+            {%- if data.srcset %} data-srcset="{{ data.srcset }}"{% endif -%}
+            {%- if data.hidden %} aria-hidden="true"{% endif %}
+            {%- if data.customDataSrc %} {{ data.customDataSrc|safe }}{% endif %}
             alt="{{ data.alt or 'Image' }}"
-            js-hook-shadow-image>
-    {% endif -%}
+        >
+      </div>
 
-    {%- if data.caption %}
-    <figcaption class="c-image__caption">
-        {{ data.caption }}
-    </figcaption>
-    {% endif -%}
+      {%- if data.caption %}
+      <figcaption class="image__caption">
+          {{ data.caption }}
+      </figcaption>
+      {% endif -%}
 
     </figure>
 
