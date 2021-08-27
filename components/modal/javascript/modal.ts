@@ -1,8 +1,9 @@
 import { body, html } from '@/utilities/dom-elements'
 import Events from '@/utilities/events'
 import ScreenDimensions from '@/utilities/screen-dimensions'
-import setTabIndexOfChildren from '@/utilities/set-tabindex-of-children/javascript/set-tabindex-of-children'
+import setTabIndexOfChildren from '@/utilities/set-tabindex-of-children'
 
+const MODAL_PREFIX = 'modal-'
 const MODAL_HOOK = '[js-hook-modal]'
 const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]'
 const MODAL_VISIBLE_CLASS = 'modal--is-showing'
@@ -24,8 +25,6 @@ export type ModalEntry = {
 type ModalEntries = {
   [key: string]: ModalEntry
 }
-
-const MODAL_PREFIX = 'modal-'
 
 class Modal {
   store: ModalEntries = {}
