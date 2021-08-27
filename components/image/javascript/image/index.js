@@ -1,3 +1,1 @@
-import Image from './image'
-
-export default Image
+import './lazy-image'
