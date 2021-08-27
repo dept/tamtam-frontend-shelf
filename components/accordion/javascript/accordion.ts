@@ -1,6 +1,6 @@
 import Events from '@utilities/events'
 
-const HOOK_ACCORDION_DETAIL = '[js-hook-accordion-item]'
+const HOOK_ACCORDION_DETAIL = '[js-hook-accordion-detail]'
 const HOOK_ACCORDION_SUMMARY = '[js-hook-accordion-summary]'
 const HOOK_ACCORDION_CONTENT = '[js-hook-accordion-content]'
 
