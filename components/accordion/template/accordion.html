@@ -14,7 +14,7 @@
 
 {% macro default(data) %}
 
-    <div class="c-accordion 
+    <div class="c-accordion
         {%- if data.tabsOnDesktop %} accordion--tabs-on-dekstop{% endif %}"
         {%- if data.autoclose %} data-autoclose="true"{% endif %}
         {%- if data.tabsOnDesktop %} data-tabs-on-desktop="true"{% endif %}
@@ -24,10 +24,10 @@
         <ul class="accordion__tab-list">
             {% for tab in data.tabsOnDesktop %}
             <li class="accordion__tab-item">
-                <button class="accordion__tab-button 
-                    {%- if tab.active %} accordion__tab-button--is-active{% endif %}" 
-                    on:click.prevent="accordion[{{ tab.id }}]::open" 
-                    aria-controls="{{ tab.id }}" 
+                <button class="accordion__tab-button
+                    {%- if tab.active %} accordion__tab-button--is-active{% endif %}"
+                    on:click.prevent="accordion[{{ tab.id }}]::open"
+                    aria-controls="{{ tab.id }}"
                     js-hook-accordion-tab>
                     {{ tab.label }}
                 </button>

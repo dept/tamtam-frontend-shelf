@@ -1,4 +1,4 @@
-import Events from '@utilities/events'
+import Events from '@/utilities/events'
 
 const HOOK_ACCORDION_DETAIL = '[js-hook-accordion-detail]'
 const HOOK_ACCORDION_SUMMARY = '[js-hook-accordion-summary]'
@@ -19,7 +19,7 @@ interface AnimationOptions {
 }
 
 interface AccordionItem {
-  id: string,
+  id: string
   detail: HTMLDetailsElement
   summary: HTMLElement
   content: HTMLElement
@@ -51,8 +51,10 @@ class Accordion {
   }
 
   createDetailsArray() {
-    const accordionItems = [...this.element.querySelectorAll<HTMLDetailsElement>(HOOK_ACCORDION_DETAIL)]
-    this.accordionItems = accordionItems.map((item) => ({
+    const accordionItems = [
+      ...this.element.querySelectorAll<HTMLDetailsElement>(HOOK_ACCORDION_DETAIL),
+    ]
+    this.accordionItems = accordionItems.map(item => ({
       id: item.id,
       detail: item,
       summary: item.querySelector<HTMLElement>(HOOK_ACCORDION_SUMMARY)!,
@@ -63,8 +65,10 @@ class Accordion {
   }
 
   bindEvents() {
-    this.accordionItems.forEach((accordionItem) => {
-      accordionItem.summary?.addEventListener('click', (e) => this.handleSummaryClick(e, accordionItem))
+    this.accordionItems.forEach(accordionItem => {
+      accordionItem.summary?.addEventListener('click', e =>
+        this.handleSummaryClick(e, accordionItem),
+      )
 
       Events.$on(`accordion[${accordionItem.id}]::open`, () => {
         if (!accordionItem.isExpanding && !accordionItem.animation) {
@@ -126,6 +130,7 @@ class Accordion {
 
     item.detail.style.height = `${item.detail.offsetHeight}px`
     item.detail.open = true
+
     window.requestAnimationFrame(() => this.expand(item))
 
     this.element
@@ -160,7 +165,7 @@ class Accordion {
   }
 
   closeAll() {
-    this.accordionItems.forEach((accordionItem) => this.close(accordionItem))
+    this.accordionItems.forEach(accordionItem => this.close(accordionItem))
   }
 
   getAnimationObj(startHeight: string, endHeight: string, open: boolean) {
