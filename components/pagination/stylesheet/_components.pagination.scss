@@ -68,7 +68,7 @@ $pagination-item-margin-right: $pagination-item-margin-left;
   }
 
   @include keyboard-focus {
-    color: $color-grey;
+    color: $color-grey-20;
   }
 }
 
@@ -81,7 +81,7 @@ $pagination-item-margin-right: $pagination-item-margin-left;
   }
 
   @include keyboard-focus {
-    color: $color-grey;
+    color: $color-grey-20;
   }
 }
 

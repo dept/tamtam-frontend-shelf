@@ -5,14 +5,7 @@ class VimeoVideo {
   constructor(options) {
     this.options = options
 
-    if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
-      Events.$trigger('video::cookie-invalid', {
-        data: this.options.element,
-      })
-      return
-    }
-
-    import(/* webpackChunkName: "Vimeo-Player" */ '@vimeo/player').then(Player => {
+    import(/* webpackChunkName: "Vimeo-Player" */ '@vimeo/player').then((Player) => {
       this.initPlayer(Player.default)
       this.bindEvents()
     })
@@ -34,6 +27,7 @@ class VimeoVideo {
       portrait: false,
       autoplay,
       loop,
+      dnt: !Cookies.cookieIsValid(Cookies.cookieName.advertising),
       playsinline: autoplay ? true : playsinline,
       muted: autoplay ? true : muted,
       controls,

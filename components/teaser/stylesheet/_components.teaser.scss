@@ -3,7 +3,7 @@ $teaser-margin: $global-spacing-md;
 
 .c-teaser {
   margin-bottom: $teaser-margin;
-  background-color: $color-off-white;
+  background-color: $color-grey-5;
 }
 
 .teaser__wrapper {
@@ -20,11 +20,11 @@ $teaser-margin: $global-spacing-md;
 
   &[href] {
     @include hover-focus {
-      background-color: darken($color-off-white, 5%);
+      background-color: darken($color-grey-5, 5%);
     }
 
     @include keyboard-focus {
-      background-color: darken($color-off-white, 10%);
+      background-color: darken($color-grey-5, 10%);
     }
   }
 }

@@ -12,5 +12,8 @@
     "url": "git+ssh://git@bitbucket.org/tamtam-nl/tamtam-frontend-shelf.git"
   },
   "license": "ISC",
-  "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme"
+  "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme",
+  "dependencies": {
+    "tamtam-frontend-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#2.1.0"
+  }
 }

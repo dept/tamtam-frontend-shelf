@@ -14,12 +14,12 @@ $search-transition: 0.4s $ease-in-out-cubic;
   width: 100%;
   height: $search-height;
   padding: $search-padding $search-button-size * 1.5 $search-padding $search-padding;
-  border: $search-border-size solid $color-grey;
+  border: $search-border-size solid $color-grey-20;
   background-color: $color-white;
   transition: background-color $search-transition;
 
   &:focus {
-    background-color: lighten($color-grey, 18%);
+    background-color: lighten($color-grey-20, 18%);
     box-shadow: none;
   }
 }

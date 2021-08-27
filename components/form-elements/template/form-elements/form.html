@@ -7,15 +7,25 @@
         method {string}          (optional) - Adds a label to the input
         attr {string}            (optional) - Adds attributes to the input
         hook {string}            (optional) - Adds a hook to the input
+        async {string}           (optional) - Decide if form submit should be through API (async) or a backend form submit
+        disableFormValidation {boolean} (optional) - Disable the default form validation
 
 #}
+{% from 'alert.html' import alert %}
 {% macro form(data) %}
+
+    {% set hook = data.hook or '' %}
+    {%- if not data.disableFormValidation %}
+        {% set hook = hook or 'form' %}
+    {% endif -%}
 
     <form class="c-form{%- if data.class %} {{ data.class }}{% endif -%}"
         action="{{ data.action or '#' }}"
         {%- if data.method %} method="{{ data.method }}"{% endif -%}
+        {%- if data.async %} data-async="{{ data.async }}"{% endif -%}
         {%- if data.attr %} {{ data.attr|safe }}{% endif -%}
-        {%- if data.hook %} js-hook-{{ data.hook|safe }}{% endif -%}>
+        {%- if hook %} js-hook-{{ hook|safe }}{% endif -%}>
+        {%- if not data.disableFormValidation %}{{ alert({ message: "", type: "error", defaultHidden: true }) }}{% endif -%}
 
         {% if caller() %}
 

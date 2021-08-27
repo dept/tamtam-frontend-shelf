@@ -43,7 +43,7 @@ moduleInit.async('[js-hook-tab]', () => import(/* webpackChunkName: "Tabs" */'@c
 }) }}
 
 <div class="tabpanel tabpanel--is-active"
-    id="id2"
+    id="id1"
     aria-hidden="false"
     role="tabpanel"
     aria-labelledby="id1-tab">

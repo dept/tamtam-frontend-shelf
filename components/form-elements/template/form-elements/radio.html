@@ -14,6 +14,7 @@
         options.value {string                 - Adds a value to the radio option
         options.hook {string}      (optional) - Adds a hook to the radio option
         options.attr {string}      (optional) - Adds attributes to the radio
+        options.validate {string}  (optional) - Add form validation rules to radio (validate: 'required,email')
         options.checked {boolean}  (optional) - Adds attributes to the radio
 
 #}
@@ -35,6 +36,7 @@
                 {%- if option.disabled %} disabled="disabled"{% endif -%}
                 {%- if data.required %} required="required"{% endif -%}
                 {%- if option.checked %} checked="checked"{% endif -%}
+                {%- if option.validate %} data-validate="{{ option.validate }}"{% endif -%}
                 {%- if option.hook %} js-hook-{{ option.hook }}{% endif -%}
                 {%- if option.attr %} {{ option.attr|safe }}{% endif -%}>
             <label class="radio__label" for="{{ option.id }}" role="button">
@@ -43,9 +45,7 @@
             </label>
         {% endfor %}
         </div>
-        {%- if data.error %}
-            <div class="form__item-error">{{ data.error }}</div>
-        {% endif -%}
+        <div id="{{ data.name }}_error" class="form__item-error{%- if not data.error %} u-hidden{% endif -%}">{{ data.error }}</div>
 
     </div>
 

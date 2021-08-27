@@ -12,6 +12,7 @@
       ElementProto.mozMatchesSelector ||
       ElementProto.webkitMatchesSelector ||
       function matches(selector) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         var element = this
         var elements = (element.document || element.ownerDocument).querySelectorAll(selector)
         var index = 0

@@ -12,6 +12,7 @@
         attr {string}                       - Adds attributes to the select
         required {boolean}       (optional) - Add required property to the select
         disabled {boolean}       (optional) - Add disabled property to the select
+        validate {string}        (optional) - Add form validation rules to input (validate: 'required,email')
         error {string}           (optional) - Add error state and message
         options {object}                    - Adds options
         options.default {string} (optional) - Adds option default state
@@ -36,6 +37,7 @@
                 id="{{ data.id }}"
                 {%- if data.required %} required="required"{% endif -%}
                 {%- if data.disabled %} disabled="disabled"{% endif -%}
+                {%- if data.validate %} data-validate="{{ data.validate }}"{% endif -%}
                 {%- if data.hook %} js-hook-{{ data.hook }}{% endif -%}
                 {%- if data.attr %} {{ data.attr|safe }}{% endif -%}>
 
@@ -50,9 +52,7 @@
             </select>
             <span class="focus-helper"></span>
         </div>
-        {%- if data.error %}
-            <div class="form__item-error">{{ data.error }}</div>
-        {% endif -%}
+        <div id="{{ data.name }}_error" class="form__item-error{%- if not data.error %} u-hidden{% endif -%}">{{ data.error }}</div>
 
     </div>
 

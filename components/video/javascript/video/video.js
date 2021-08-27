@@ -94,7 +94,7 @@ class Video {
    * Iterate over platform types
    */
   iterateVideos() {
-    this.videos.forEach((video) => {
+    this.videos.forEach(video => {
       this.initVideo(video)
     })
   }

@@ -1,5 +1,5 @@
 $tab-color: $color-white;
-$tab-active-color: $color-off-white;
+$tab-active-color: $color-grey-5;
 $tab-padding: $global-spacing / 2 $global-spacing;
 
 .c-tabs {
@@ -18,4 +18,12 @@ $tab-padding: $global-spacing / 2 $global-spacing;
   &.tabs__tab--is-active {
     background-color: $tab-active-color;
   }
+}
+
+.tabpanel {
+  display: none;
+}
+
+.tabpanel--is-active {
+  display: block;
 }

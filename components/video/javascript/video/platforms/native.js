@@ -62,7 +62,7 @@ class NativeVideo {
 
     this.player.addEventListener('loadedmetadata', () => {
       if (this.options.videoTime) this.player.currentTime = this.options.videoTime
-      if (this.options.videoControls) this.player.controls = false
+      if (this.options.videoControls) this.player.controls = true
 
       Events.$trigger('video::ready', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::ready`, {
@@ -80,7 +80,7 @@ class NativeVideo {
     })
 
     this.player.addEventListener('pause', () => {
-      if (this.options.videoControls) this.player.controls = false
+      if (this.options.videoControls) this.player.controls = true
 
       Events.$trigger('video::paused', { data: this.options })
       Events.$trigger(`video[${this.options.instanceId}]::paused`, {

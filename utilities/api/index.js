@@ -1,1 +1,1 @@
-export * from './javascript/api'
+export API from './javascript/api'
