@@ -1,5 +1,5 @@
 {#
-    @shelf-version: 1.0.0
+    @shelf-version: 2.0.0
     Accordion macro
     Usage as a call, inject the accordion items there.
 
@@ -9,17 +9,37 @@
     Item Options:
         id {string}             - Adds id for a11y reference
         open {boolean}          - Defaults open or closed
-        title.default {string}  - Label for default state
-        title.open {string}     - Label for open state
+        title {string}          - Label for default state
 #}
 
 {% macro default(data) %}
 
-    <div class="c-accordion"
-        {% if not data.autoclose %}data-autoclose="{{ data.autoclose }}"{% endif %}
+    <div class="c-accordion 
+        {%- if data.tabsOnDesktop %} accordion--tabs-on-dekstop{% endif %}"
+        {%- if data.autoclose %} data-autoclose="true"{% endif %}
+        {%- if data.tabsOnDesktop %} data-tabs-on-desktop="true"{% endif %}
         js-hook-accordion>
 
-        {{ caller() }}
+        {% if data.tabsOnDesktop %}
+        <ul class="accordion__tab-list">
+            {% for tab in data.tabsOnDesktop %}
+            <li class="accordion__tab-item">
+                <button class="accordion__tab-button 
+                    {%- if tab.active %} accordion__tab-button--is-active{% endif %}" 
+                    on:click.prevent="accordion[{{ tab.id }}]::open" 
+                    aria-controls="{{ tab.id }}" 
+                    js-hook-accordion-tab>
+                    {{ tab.label }}
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="accordion__tab-contents">
+            {{ caller() }}
+        </div>
+        {% else %}
+            {{ caller() }}
+        {% endif %}
 
     </div>
 
@@ -27,38 +47,14 @@
 
 {% macro item(data) %}
 
-    <div class="accordion__item {% if data.open %} accordion__item--is-active{% endif %}"
-        js-hook-accordion-item>
-
-        <button type="button" class="accordion__item-header"
-            on:click.prevent="accordion[{{ data.id }}]::toggle"
-            aria-expanded="{% if data.open %}true{% else %}false{% endif %}"
-            aria-controls="{{ data.id }}"
-            js-hook-accordion-button>
-
-            <span class="accordion__item-header--open">{{ data.title.default }}</span>
-            <span class="accordion__item-header--close">{{ data.title.close }}</span>
-
+    <details class="accordion__detail" id="{{ data.id }}" {%- if data.open %} open{% endif %} js-hook-accordion-detail>
+        <summary class="accordion__item-summary" js-hook-accordion-summary>
+            {{ data.title }}
             <span class="accordion__item-icon"></span>
-
-        </button>
-
-        <div class="accordion__item-content-holder {% if data.tabAccordion %}tabpanel{% if data.open %} tabpanel--is-active{% endif %}{% endif %}"
-            aria-hidden="{% if data.open %}false{% else %}true{% endif %}"
-            id="{{ data.id }}"
-            {%- if data.tabAccordion %}
-                role="tabpanel"
-                aria-labelledby="{{ data.id }}-tab"
-            {% endif -%}
-            {%- if data.open %} style="height:auto;" {% endif -%}
-            js-hook-accordion-content-holder>
-
-            <div class="accordion__item-content" js-hook-accordion-content>
-                {{ caller() }}
-            </div>
-
+        </summary>
+        <div class="accordion__item-content" js-hook-accordion-content>
+            {{ caller() }}
         </div>
-
-    </div>
+    </details>
 
 {% endmacro %}

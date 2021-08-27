@@ -7,8 +7,6 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Accordion Demo](https://media.giphy.com/media/DAFNXViloWqVspasDJ/giphy.gif)
-
 ## What does it do
 * Creates an accordion with multiple items
 * Auto closes accordion items when opening another one
@@ -32,15 +30,53 @@ Create an accordion in html and add items.
 {% import 'accordion.html' as accordion %}
 
 {% call accordion.default({
-    autoclose: false // optional
+    autoclose: "true" //optional
 }) %}
 
     {% call accordion.item({
-        "id" : "1",
-        "title" : {
-            "default" : "Open 1",
-            "close" : "Close 1"
-        },
+        id : "acc1",
+        title : "Open 1",
+        open: true
+    }) %}
+
+       Content 1
+
+    {% endcall %}
+
+    {% call accordion.item({
+        id : "acc2",
+        title : "Open 2"
+    }) %}
+
+        Content 2
+
+    {% endcall %}
+
+{% endcall %}
+```
+
+Or create an accordion with tabs on desktop.
+```htmlmixed
+{% import 'accordion.html' as accordion %}
+
+{% call accordion.default({
+    autoclose: "true",
+    tabsOnDesktop: [
+    {
+        label: 'Open 1',
+        id: 'acctab1',
+        active: true
+    },
+    {
+        label: 'Open 2',
+        id: 'acctab2'
+    },
+    ]
+}) %}
+
+    {% call accordion.item({
+        id : "acctab1",
+        title : "Open 1",
         open: true
     }) %}
 
@@ -49,11 +85,8 @@ Create an accordion in html and add items.
     {% endcall %}
 
     {% call accordion.item({
-        "id" : "2",
-        "title" : {
-            "default" : "Open 2",
-            "close" : "Close 2"
-        }
+        id : "acctab2",
+        title : "Open 2"
     }) %}
 
         Content 2
@@ -61,27 +94,22 @@ Create an accordion in html and add items.
     {% endcall %}
 
 {% endcall %}
-
 ```
 
 ### Listen to events
 Each accordion item will trigger a generic and specific `accordion::opened` and `accordion::closed` event.
 ```javascript
 // accordion has been opened
-Events.$on('accordion::opened', doSomething);
 Events.$on('accordion[{id}]::opened', doSomethingSpecific);
 
 // accordion has been closed
-Events.$on('accordion::closed', doSomething);
 Events.$on('accordion[{id}]::closed', doSomethingSpecific);
 ```
 
 ## Dependencies
 * [moduleInit utility](/utilities/module-init.js) from the Dept Frontend Setup
-* [Screen Dimensions utility](/utilities/screen-dimensions/)
-* [Scroll to utility](/utilities/scroll-to/)
 * [Events utility](/utilities/events/)
-* [Set tabindex of children utility](/utilities/set-tabindex-of-children)
 
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
+* [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)

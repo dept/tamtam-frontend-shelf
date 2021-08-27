@@ -49,7 +49,7 @@
         {% if data.inview != false %}
             js-hook-inview
             data-inview-persistent="true"
-            data-inview-trigger="video::inview"
+            data-inview-trigger="video[video-{{ data.instance_id }}]::inview"
         {% endif %}
         role="application"
         js-hook-video>

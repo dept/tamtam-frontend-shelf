@@ -41,10 +41,9 @@ class NativeVideo {
     }
 
     if (this.options.videoAutoplay) {
-      this.player.setAttribute('autoplay', 'autoplay')
-
       // For mobile autoplay
       this.player.setAttribute('playsinline', 'playsinline')
+      this.player.setAttribute('autoplay', 'autoplay')
     }
 
     if (this.options.videoMuted) {
