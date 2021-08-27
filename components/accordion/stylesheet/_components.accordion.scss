@@ -1,10 +1,10 @@
 // @shelf-version 1.0.0
 $accordion-spacing: 2rem;
 $accordion-item-border-radius: 5px;
-$accordion-item-header-color: $color-grey;
+$accordion-item-header-color: $color-grey-20;
 $accordion-item-header-padding: $global-spacing $global-spacing * 2;
 $accordion-item-content-padding: $global-spacing * 2;
-$accordion-item-content-color: $color-off-white;
+$accordion-item-content-color: $color-grey-5;
 $accordion-item-spacing: 2px;
 $accordion-icon-size: 15px;
 $accordion-icon-color: $color-black;
@@ -93,14 +93,13 @@ $accordion-transition-ease: ease-out;
   }
 
   &::after {
-
     [open] & {
       transform: rotate(180deg);
     }
   }
 
   &::before {
-    transform: rotate(90DEG);
+    transform: rotate(90deg);
 
     [open] & {
       transform: scale(0) rotate(270deg);
@@ -159,10 +158,10 @@ $accordion-transition-ease: ease-out;
   border-radius: $accordion-item-border-radius;
   cursor: pointer;
   transition: $accordion-transition-time $accordion-transition-ease $accordion-transition-time / 2;
-  transition-property: background;
+  transition-property: background-color;
 
   &.accordion__tab-button--is-active {
-    background: $color-off-white;
+    background-color: $color-grey-5;
   }
 }
 
