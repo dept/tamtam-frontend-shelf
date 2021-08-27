@@ -31,6 +31,7 @@ class Video {
   registerPlatforms(platforms) {
     if (typeof platforms !== 'object') return
     this.registeredPlatforms = platforms
+    this.videos = this.videos.concat(getVideos(this.registeredPlatforms))
 
     this._bindEvent()
   }
@@ -39,17 +40,19 @@ class Video {
    * Bind generic events
    */
   _bindEvent() {
-    Events.$on('video::inview', (_event, element) => {
-      if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
-        Events.$trigger(`video[${element.id}]::pause`)
-      }
+    this.videos.forEach(video => {
+      Events.$on(`video[${video.id}]::inview`, (_, element) => {
+        if (!element.inviewProperties.isInViewport.vertical && !element.dataset.videoLoop) {
+          Events.$trigger(`video[${element.id}]::pause`)
+        }
 
-      if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
-        this.initVideo(element)
-      }
+        if (!element._videoIsInitialised && element.inviewProperties.scrolledPastViewport.bottom) {
+          this.initVideo(element)
+        }
+      })
     })
 
-    Events.$on('video::update', (_event, element) => {
+    Events.$on('video::update', (_, element) => {
       if (!element) {
         this.iterateVideos()
       } else {
@@ -57,32 +60,32 @@ class Video {
       }
     })
 
-    Events.$on('video::ready', (_event, data) => {
+    Events.$on('video::ready', (_, data) => {
       data.element.classList.add(VIDEO_READY_CLASS)
       data.element.classList.add(VIDEO_PAUSED_CLASS)
     })
 
-    Events.$on('video::playing', (_event, data) => {
+    Events.$on('video::playing', (_, data) => {
       data.element.classList.remove(VIDEO_REPLAY_CLASS)
       data.element.classList.remove(VIDEO_PAUSED_CLASS)
       data.element.classList.add(VIDEO_PLAYING_CLASS)
     })
 
-    Events.$on('video::paused', (_event, data) => {
+    Events.$on('video::paused', (_, data) => {
       data.element.classList.remove(VIDEO_PLAYING_CLASS)
       data.element.classList.add(VIDEO_PAUSED_CLASS)
     })
 
-    Events.$on('video::ended', (_event, data) => {
+    Events.$on('video::ended', (_, data) => {
       data.element.classList.remove(VIDEO_PLAYING_CLASS)
       data.element.classList.add(VIDEO_REPLAY_CLASS)
     })
 
-    Events.$on('video::bind-player-events', (_event, data) => {
+    Events.$on('video::bind-player-events', (_, data) => {
       if (data) bindPlayerEvents(data)
     })
 
-    Events.$on('video::cookie-invalid', (_event, element) => {
+    Events.$on('video::cookie-invalid', (_, element) => {
       if (element) element.classList.add(VIDEO_COOKIE_INVALID_CLASS)
     })
   }
@@ -91,8 +94,6 @@ class Video {
    * Iterate over platform types
    */
   iterateVideos() {
-    this.videos = this.videos.concat(getVideos(this.registeredPlatforms))
-
     this.videos.forEach(video => {
       this.initVideo(video)
     })
