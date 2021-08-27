@@ -1,6 +1,7 @@
-import Events from '@utilities/events'
-import setTabIndexOfChildren from '@utilities/set-tabindex-of-children'
 import cookies from 'js-cookie'
+
+import Events from '@/utilities/events'
+import setTabIndexOfChildren from '@/utilities/set-tabindex-of-children'
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]'
 const COOKIE_OPTIONS_BUTTON_HOOK = '[js-hook-cookies-settings-button]'
@@ -16,55 +17,63 @@ const SHOW_CLASS = 'cookie-bar--is-visible'
 const COOKIE_DEFAULT_VALUE = '1'
 const COOKIE_DECLINED_VALUE = '0'
 
+type CookiesFormOptions = {
+  element: HTMLElement | null
+  url?: string | null
+  options?: HTMLInputElement[] | null
+  submit?: HTMLButtonElement | null
+}
+
+type CookiesConfig = {
+  cookiePrefix: string
+  version: string
+  cookies: { name: string; default: string }[]
+}
+
+type CookiesByName = Record<string, string>
+
 class Cookies {
+  config: CookiesConfig
+  cookiebar = document.querySelector<HTMLElement>(COOKIE_BAR_HOOK)
+  cookiebarOptionsButton = document.querySelector<HTMLButtonElement>(COOKIE_OPTIONS_BUTTON_HOOK)
+
+  form: CookiesFormOptions = {
+    element: document.querySelector(COOKIE_FORM_HOOK),
+  }
+
+  hostname = window.location.hostname
+
   constructor() {
-    this.cookiebar = document.querySelector(COOKIE_BAR_HOOK)
-    this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK)
-
-    this.cookiebarVersion = this.cookiebar.dataset.policyVersion || '1'
-
-    this.form = {}
-    this.form.element = document.querySelector(COOKIE_FORM_HOOK)
-
-    this.hostname = window.location.hostname
-    this.cookiePrefix = 'default'
-
-    this.cookieName = {
-      functional: 'functional',
-      analytics: 'analytics',
-      social: 'social',
-      advertising: 'advertising',
-      other: 'other',
-    }
-
     if (this.form.element) {
       this.form.url = this.form.element.getAttribute('action')
-      this.form.options = [...this.form.element.querySelectorAll(COOKIE_OPTION_HOOK)]
-      this.form.submit = this.form.element.querySelector(COOKIE_FORM_SUBMIT_HOOK)
+      this.form.options = [
+        ...this.form.element.querySelectorAll<HTMLInputElement>(COOKIE_OPTION_HOOK),
+      ]
+      this.form.submit = this.form.element.querySelector<HTMLButtonElement>(COOKIE_FORM_SUBMIT_HOOK)
     }
 
     this.config = {
-      cookiePrefix: this.cookiePrefix,
-      version: this.cookiebarVersion,
+      cookiePrefix: 'default',
+      version: this.cookiebar?.dataset.policyVersion || '1',
       cookies: [
         {
-          name: this.cookieName.functional,
+          name: 'functional',
           default: COOKIE_DEFAULT_VALUE,
         },
         {
-          name: this.cookieName.analytics,
+          name: 'analytics',
           default: COOKIE_DEFAULT_VALUE,
         },
         {
-          name: this.cookieName.social,
+          name: 'social',
           default: COOKIE_DECLINED_VALUE,
         },
         {
-          name: this.cookieName.advertising,
+          name: 'advertising',
           default: COOKIE_DECLINED_VALUE,
         },
         {
-          name: this.cookieName.other,
+          name: 'other',
           default: COOKIE_DECLINED_VALUE,
         },
       ],
@@ -118,7 +127,7 @@ class Cookies {
   }
 
   _acceptAllCookies() {
-    const acceptedCookies = {}
+    const acceptedCookies: CookiesByName = {}
 
     this.config.cookies.forEach(cookie => {
       this.setCookie(cookie.name, COOKIE_DEFAULT_VALUE)
@@ -130,8 +139,8 @@ class Cookies {
     window.location.reload()
   }
 
-  _addGlobalCookies(_cookies) {
-    _cookies.date = Date(Date.now())
+  _addGlobalCookies(_cookies: CookiesByName) {
+    _cookies.date = new Date(Date.now()).toUTCString()
     _cookies.version = this.config.version
 
     this.setCookie(COOKIEBAR_COOKIE_NAME, _cookies)
@@ -139,7 +148,7 @@ class Cookies {
   }
 
   _prefillFormCookies() {
-    this.form.options.forEach(option => {
+    this.form.options?.forEach(option => {
       if (this.getCookie(option.value) === COOKIE_DEFAULT_VALUE) {
         option.setAttribute('checked', 'checked')
       } else {
@@ -157,12 +166,12 @@ class Cookies {
     this.removeCookie(COOKIEBAR_COOKIE_VERSION)
   }
 
-  _submitFormCookies(event) {
+  _submitFormCookies(event: Event) {
     event.preventDefault()
 
-    const acceptedCookies = {}
+    const acceptedCookies: CookiesByName = {}
 
-    this.form.options.forEach(option => {
+    this.form.options?.forEach(option => {
       const { value } = option
       this.config.cookies.forEach(cookie => {
         if (cookie.name.indexOf(value) !== -1) {
@@ -175,11 +184,15 @@ class Cookies {
 
     this._addGlobalCookies(acceptedCookies)
 
-    window.location = this.form.url
+    if (this.form.url) {
+      window.location.href = this.form.url
+      return
+    }
+    window.location.reload()
   }
 
   _setDefaultPreferences() {
-    this.form.options.forEach(option => {
+    this.form.options?.forEach(option => {
       if (this.getCookie(option.value) === COOKIE_DEFAULT_VALUE) {
         option.setAttribute('checked', 'checked')
       } else {
@@ -200,39 +213,33 @@ class Cookies {
 
   /**
    * Sets cookie with given value
-   * @param {String} name
-   * @param {any} value
    */
-  setCookie(name, value) {
+  setCookie(name: string, value: any) {
     cookies.set(this.prefixCookieName(name), value, { expires: 365 })
   }
 
   /**
    * Remove cookie with given value
-   * @param {String} name
    */
-  removeCookie(name) {
+  removeCookie(name: string) {
     cookies.remove(this.prefixCookieName(name))
   }
 
   /**
    * Gets cookie with given value
-   * @param {String} name
-   * @returns {Any} value
    */
-  getCookie(name) {
+  getCookie(name: string) {
     return cookies.get(this.prefixCookieName(name))
   }
 
-  prefixCookieName(name) {
+  prefixCookieName(name: string) {
     return `${this.config.cookiePrefix}-cookie-${name}`
   }
 
   /**
    * Checks if cookie is valid and version is correct
-   * @returns {Boolean}
    */
-  cookieIsValid(name) {
+  cookieIsValid(name: string) {
     return (
       this.getCookie(COOKIEBAR_COOKIE_VERSION) === this.config.version &&
       cookies.get(this.prefixCookieName(name)) === COOKIE_DEFAULT_VALUE
