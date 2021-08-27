@@ -1,4 +1,4 @@
-export const getSizeLimit = currentSize => {
+export const getSizeLimit = (currentSize: number) => {
   if (currentSize <= 25) return '25'
   if (currentSize <= 50) return '50'
 

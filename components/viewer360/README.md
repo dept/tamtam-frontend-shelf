@@ -16,7 +16,7 @@
 ## Install
 Import module and init with moduleInit on a DOM element
 ```javascript
-moduleInit.async('[js-hook-viewer-360]', () => import(/* webpackChunkName: "Viewer360" */'@components/viewer360'));
+moduleInit.async('[js-hook-viewer-360]', () => import('@/components/viewer360'));
 ```
 
 ## How to use

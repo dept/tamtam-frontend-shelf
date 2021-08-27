@@ -1,4 +1,5 @@
-import Events from '@utilities/events'
+import Events from '@/utilities/events'
+
 import { createElementFromString, getViewer360Props } from './util'
 
 const JS_HOOK_PREV_BUTTON = '[js-hook-viewer-360-prev]'
@@ -6,23 +7,45 @@ const JS_HOOK_NEXT_BUTTON = '[js-hook-viewer-360-next]'
 const JS_HOOK_LOADING_TEXT = '[js-hook-loading-indicator-text]'
 
 class Viewer360 {
-  constructor(element, ratio) {
+  element: HTMLElement
+  images: HTMLImageElement[] = []
+  loader?: Element | null
+  canvas: HTMLCanvasElement
+  innerContainer: HTMLElement
+  prevElem?: HTMLElement
+  nextElem?: HTMLElement
+  lazyloadInitImage?: HTMLImageElement
+  activeImage = 1
+  movementStart = 0
+  isClicked = false
+  loadedImages = 0
+  imagesLoaded = false
+  reversed = false
+  devicePixelRatio = Math.round(window.devicePixelRatio || 1)
+  isMobile = !!('ontouchstart' in window || navigator.msMaxTouchPoints)
+  ratio?: number
+  controlReverse?: boolean
+  stopAtEdges?: boolean
+  amount: number
+  speedFactor: number
+  autoplay?: boolean
+  spinReverse?: boolean
+  folder: string
+  filename: string
+  speed?: number
+  lazyload?: boolean
+  dragSpeed: number
+  autoplaySpeed?: number
+  loopTimeoutId?: number | null
+
+  constructor(element: HTMLElement, ratio?: number) {
     this.element = element
-    this.activeImage = 1
-    this.movementStart = 0
-    this.isClicked = false
-    this.loadedImages = 0
-    this.imagesLoaded = false
-    this.reversed = false
-    this.ratio = ratio || false
-    this.images = []
-    this.devicePixelRatio = Math.round(window.devicePixelRatio || 1)
-    this.isMobile = !!('ontouchstart' in window || navigator.msMaxTouchPoints)
+    this.ratio = ratio
 
     this.init(element)
   }
 
-  mousedown(event) {
+  mousedown(event: MouseEvent) {
     event.preventDefault()
 
     if (!this.imagesLoaded) return
@@ -45,13 +68,13 @@ class Viewer360 {
     this.element.style.cursor = 'grab'
   }
 
-  mousemove(event) {
+  mousemove(event: MouseEvent) {
     if (!this.isClicked || !this.imagesLoaded) return
 
     this.onMove(event.pageX)
   }
 
-  touchstart(event) {
+  touchstart(event: TouchEvent) {
     if (!this.imagesLoaded) return
 
     if (this.autoplay || this.loopTimeoutId) {
@@ -70,7 +93,7 @@ class Viewer360 {
     this.isClicked = false
   }
 
-  touchmove(event) {
+  touchmove(event: TouchEvent) {
     if (!this.isClicked || !this.imagesLoaded) return
 
     this.onMove(event.touches[0].clientX)
@@ -80,14 +103,14 @@ class Viewer360 {
     if (!this.imagesLoaded) return
   }
 
-  keydown(event) {
+  keydown(event: KeyboardEvent) {
     if (!this.imagesLoaded) return
 
-    if ([37, 39].includes(event.keyCode)) {
-      if (event.keyCode === 37) {
+    if (['ArrowLeft', 'ArrowRight'].includes(event.code)) {
+      if (event.code === 'ArrowLeft') {
         if (this.reversed) this.prev()
         else this.next()
-      } else if (event.keyCode === 39) {
+      } else if (event.code === 'ArrowRight') {
         if (this.reversed) this.next()
         else this.prev()
       }
@@ -103,7 +126,7 @@ class Viewer360 {
     }
   }
 
-  onMove(pageX) {
+  onMove(pageX: number) {
     if (pageX - this.movementStart >= this.speedFactor) {
       const itemsSkippedRight = Math.floor((pageX - this.movementStart) / this.speedFactor) || 1
 
@@ -131,7 +154,7 @@ class Viewer360 {
     }
   }
 
-  moveActiveIndexUp(itemsSkipped) {
+  moveActiveIndexUp(itemsSkipped: number) {
     const isReverse = this.controlReverse ? !this.spinReverse : this.spinReverse
 
     if (!this.stopAtEdges) {
@@ -144,22 +167,17 @@ class Viewer360 {
 
       if (isReverse ? this.prevElem : this.nextElem) {
         const element = isReverse ? this.prevElem : this.nextElem
-        element.setAttribute('disabled', '')
+        element?.setAttribute('disabled', '')
       }
     } else {
       this.activeImage += itemsSkipped
 
-      if (this.nextElem) {
-        this.nextElem.removeAttribute('disabled')
-      }
-
-      if (this.prevElem) {
-        this.prevElem.removeAttribute('disabled')
-      }
+      this.nextElem?.removeAttribute('disabled')
+      this.prevElem?.removeAttribute('disabled')
     }
   }
 
-  moveActiveIndexDown(itemsSkipped) {
+  moveActiveIndexDown(itemsSkipped: number) {
     const isReverse = this.controlReverse ? !this.spinReverse : this.spinReverse
 
     if (this.stopAtEdges) {
@@ -168,17 +186,13 @@ class Viewer360 {
 
         if (isReverse ? this.nextElem : this.prevElem) {
           const element = isReverse ? this.nextElem : this.prevElem
-          element.setAttribute('disabled', '')
+          element?.setAttribute('disabled', '')
         }
       } else {
         this.activeImage -= itemsSkipped
 
-        if (this.prevElem) {
-          this.prevElem.removeAttribute('disabled')
-        }
-        if (this.nextElem) {
-          this.nextElem.removeAttribute('disabled')
-        }
+        this.prevElem?.removeAttribute('disabled')
+        this.nextElem?.removeAttribute('disabled')
       }
     } else if (this.activeImage - itemsSkipped < 1) {
       this.activeImage = this.amount + (this.activeImage - itemsSkipped)
@@ -187,7 +201,7 @@ class Viewer360 {
     }
   }
 
-  loop(reversed) {
+  loop(reversed: boolean) {
     if (reversed) {
       this.prev()
       return
@@ -208,6 +222,7 @@ class Viewer360 {
   update() {
     const image = this.images[this.activeImage - 1]
     const ctx = this.canvas.getContext('2d')
+    if (!ctx) return
 
     ctx.scale(this.devicePixelRatio, this.devicePixelRatio)
 
@@ -237,31 +252,32 @@ class Viewer360 {
     this.initControls()
   }
 
-  onFirstImageLoaded(event) {
+  onFirstImageLoaded(event: Event) {
+    if (!(event.target instanceof Image)) return
+
     this.canvas.width = this.element.offsetWidth * this.devicePixelRatio
     this.canvas.style.width = `${this.element.offsetWidth}px`
     this.canvas.height =
       ((this.element.offsetWidth * this.devicePixelRatio) / event.target.width) *
       event.target.height
-    this.canvas.style.height = `${(this.element.offsetWidth / event.target.width) *
-      event.target.height}px`
+    this.canvas.style.height = `${
+      (this.element.offsetWidth / event.target.width) * event.target.height
+    }px`
 
     const ctx = this.canvas.getContext('2d')
-
+    if (!ctx) return
     ctx.drawImage(event.target, 0, 0, this.canvas.width, this.canvas.height)
 
     if (this.lazyload) {
       this.images.forEach((image, index) => {
         if (index === 0) {
-          this.innerContainer.removeChild(this.lazyloadInitImage)
+          if (this.lazyloadInitImage) this.innerContainer.removeChild(this.lazyloadInitImage)
           return
         }
 
         const dataSrc = image.getAttribute('data-src')
 
-        if (dataSrc) {
-          image.src = image.getAttribute('data-src')
-        }
+        if (dataSrc) image.src = dataSrc
       })
     }
 
@@ -270,20 +286,20 @@ class Viewer360 {
     }
   }
 
-  onImageLoad(event) {
+  onImageLoad(event: Event) {
     const percentage = Math.round((this.loadedImages / this.amount) * 100)
 
     this.loadedImages += 1
     this.updatePercentageInLoader(percentage)
 
     if (this.loadedImages === this.amount) {
-      this.onAllImagesLoaded(event)
+      this.onAllImagesLoaded()
     } else if (this.loadedImages === 1) {
       this.onFirstImageLoaded(event)
     }
   }
 
-  updatePercentageInLoader(percentage) {
+  updatePercentageInLoader(percentage: number) {
     if (this.loader) {
       const textElement = this.loader.querySelector(JS_HOOK_LOADING_TEXT)
       if (textElement) textElement.innerHTML = `${percentage}%`
@@ -302,8 +318,10 @@ class Viewer360 {
     const loaderText = createElementFromString(
       `<div class="loading-indicator__text" js-hook-loading-indicator-text></div>`,
     )
-    loader.appendChild(loaderText)
-    this.loader = loader
+    if (loader && loaderText) {
+      loader?.appendChild(loaderText)
+      this.loader = loader
+    }
   }
 
   removeLoader() {
@@ -320,10 +338,15 @@ class Viewer360 {
   }
 
   stop() {
-    window.clearTimeout(this.loopTimeoutId)
+    if (this.loopTimeoutId) window.clearTimeout(this.loopTimeoutId)
   }
 
-  static getSrc(responsive, element, folder, filename) {
+  static getSrc(
+    responsive: boolean,
+    folder: string,
+    filename: string,
+    // element: HTMLElement
+  ) {
     let src = `${folder}${filename}`
 
     if (responsive) {
@@ -338,10 +361,10 @@ class Viewer360 {
     return src
   }
 
-  preloadImages(amount, src, lazyload, lazySelector) {
-    ;[...new Array(amount)].map((item, index) => {
+  preloadImages(amount: number, src: string, lazyload: boolean, lazySelector: string) {
+    ;[...new Array(amount)].forEach((_, index) => {
       const image = new Image()
-      const resultSrc = src.replace('{index}', index + 1)
+      const resultSrc = src.replace('{index}', String(index + 1))
 
       if (lazyload) {
         image.setAttribute('data-src', resultSrc)
@@ -371,43 +394,46 @@ class Viewer360 {
     this.stop()
 
     const oldElement = this.element
-    const newElement = oldElement.cloneNode(true)
+    const newElement = oldElement.cloneNode(true) as HTMLElement
     const innerContainer = newElement.querySelector('.viewer-360__container')
 
-    newElement.className = newElement.className.replace(' is--initialized', '')
+    newElement.classList.remove('is--initialized')
     newElement.style.position = 'relative'
     newElement.style.width = '100%'
     newElement.style.cursor = 'default'
     newElement.setAttribute('draggable', 'false')
     newElement.style.minHeight = 'auto'
-    newElement.removeChild(innerContainer)
-    oldElement.parentNode.replaceChild(newElement, oldElement)
+    if (innerContainer) newElement.removeChild(innerContainer)
+    if (oldElement) oldElement.parentNode?.replaceChild(newElement, oldElement)
   }
 
   initControls() {
     const isReverse = this.controlReverse ? !this.spinReverse : this.spinReverse
-    const prev = this.element.querySelector(JS_HOOK_PREV_BUTTON)
-    const next = this.element.querySelector(JS_HOOK_NEXT_BUTTON)
+    const prev = this.element.querySelector<HTMLButtonElement>(JS_HOOK_PREV_BUTTON)
+    const next = this.element.querySelector<HTMLButtonElement>(JS_HOOK_NEXT_BUTTON)
 
     if (!prev && !next) return
 
-    const onLeftStart = event => {
+    const onLeftStart = (event: Event) => {
       event.stopPropagation()
       this.onSpin()
       this.prev()
       this.loopTimeoutId = window.setInterval(this.prev.bind(this), this.autoplaySpeed)
     }
-    const onRightStart = event => {
+
+    const onRightStart = (event: Event) => {
       event.stopPropagation()
       this.onSpin()
       this.next()
       this.loopTimeoutId = window.setInterval(this.next.bind(this), this.autoplaySpeed)
     }
+
     const onLeftEnd = () => {
-      window.clearTimeout(this.loopTimeoutId)
+      if (this.loopTimeoutId) window.clearTimeout(this.loopTimeoutId)
     }
+
     const onRightEnd = () => {
-      window.clearTimeout(this.loopTimeoutId)
+      if (this.loopTimeoutId) window.clearTimeout(this.loopTimeoutId)
     }
 
     if (prev) {
@@ -433,7 +459,7 @@ class Viewer360 {
     if (isReverse ? next : prev) {
       if (this.stopAtEdges) {
         const element = isReverse ? next : prev
-        element.setAttribute('disabled', '')
+        element?.setAttribute('disabled', '')
       }
     }
   }
@@ -458,7 +484,7 @@ class Viewer360 {
     this.innerContainer.appendChild(this.canvas)
   }
 
-  bindEvents(draggable, swipeable, keys) {
+  bindEvents(draggable: boolean, swipeable: boolean, keys: boolean) {
     if (draggable) {
       this.element.addEventListener('mousedown', this.mousedown.bind(this))
       this.element.addEventListener('mouseup', this.mouseup.bind(this))
@@ -486,7 +512,7 @@ class Viewer360 {
     this.element.className = `${this.element.className} is--initialized`
   }
 
-  init(element) {
+  init(element: HTMLElement) {
     const {
       folder,
       filename,
@@ -527,7 +553,12 @@ class Viewer360 {
     this.applyStylesToContainer()
     this.addCanvas()
 
-    const src = Viewer360.getSrc(responsive, element, folder, filename)
+    const src = Viewer360.getSrc(
+      responsive,
+      folder,
+      filename,
+      // element
+    )
     this.preloadImages(amount, src, lazyload, lazySelector)
 
     this.bindEvents(draggable, swipeable, keys)
