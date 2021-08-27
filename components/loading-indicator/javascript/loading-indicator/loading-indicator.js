@@ -59,13 +59,9 @@ class LoadingIndicator {
     )
 
     if (targetElement) {
-      let targetElementDom
-      if (typeof targetElement === 'object') {
-        targetElementDom = targetElement
-      } else {
-        targetElementDom = document.querySelector(targetElement)
-      }
-      targetElementDom.appendChild(loadingIndicatorTemplate)
+      const targetElementDom =
+        targetElement instanceof HTMLElement ? targetElement : document.querySelector(targetElement)
+      targetElementDom?.appendChild(loadingIndicatorTemplate)
     } else {
       document.body.appendChild(loadingIndicatorTemplate)
     }
