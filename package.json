@@ -7,9 +7,6 @@
     "node": "^12",
     "npm": "^6"
   },
-  "scripts": {
-    "type-check": "tsc --noEmit -p jsconfig.json"
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/tamtam-nl/tamtam-frontend-shelf.git"
@@ -17,6 +14,6 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme",
   "dependencies": {
-    "dept-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#2.1.0"
+    "dept-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#release/webpack"
   }
 }
