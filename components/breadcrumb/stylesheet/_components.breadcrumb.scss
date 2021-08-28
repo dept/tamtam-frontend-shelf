@@ -67,6 +67,7 @@ $breadcrumb-mobile-offset: map-get($grid-config, container-gutter-small) !defaul
   @include hover-focus {
     color: darken($color-primary, 20%);
   }
+
   @include keyboard-focus {
     color: darken($color-primary, 50%);
   }

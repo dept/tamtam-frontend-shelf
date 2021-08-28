@@ -55,6 +55,7 @@ $accordion-transition-ease: ease-out;
     background-color: darken($accordion-item-header-color, 50%);
     color: $color-white;
   }
+
   @include screen-tablet-landscape-and-bigger {
     .accordion--tabs-on-dekstop & {
       display: none;
@@ -114,6 +115,7 @@ $accordion-transition-ease: ease-out;
 
 .accordion__item-content {
   @include accordion-content-style;
+
   @include screen-tablet-landscape-and-bigger {
     .accordion--tabs-on-dekstop & {
       padding: 0 0 0 2rem;

@@ -66,6 +66,7 @@ $pagination-item-margin-right: $pagination-item-margin-left;
   @include hover-focus {
     color: $color-black;
   }
+
   @include keyboard-focus {
     color: $color-grey-20;
   }
@@ -78,6 +79,7 @@ $pagination-item-margin-right: $pagination-item-margin-left;
   @include hover-focus {
     color: $color-black;
   }
+
   @include keyboard-focus {
     color: $color-grey-20;
   }

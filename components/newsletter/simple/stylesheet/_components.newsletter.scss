@@ -72,6 +72,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
   @include screen-tablet-portrait-and-smaller {
     max-height: 46px;
   }
+
   @include screen-tablet-portrait-and-bigger {
     width: 300%;
   }
@@ -80,6 +81,7 @@ $newsletter-transition-ease: $ease-in-out-quad !default;
     @include screen-tablet-portrait-and-smaller {
       max-height: 300px;
     }
+
     @include screen-tablet-portrait-and-bigger {
       width: 100%;
     }

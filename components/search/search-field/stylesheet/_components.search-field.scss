@@ -36,6 +36,7 @@ $search-transition: 0.4s $ease-in-out-cubic;
   @include hover-focus {
     background-color: darken($color-primary, 10%);
   }
+
   @include keyboard-focus {
     background-color: darken($color-primary, 20%);
   }
