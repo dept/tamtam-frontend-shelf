@@ -30,6 +30,14 @@ type CookiesConfig = {
   cookies: { name: string; default: string }[]
 }
 
+export enum CookieName {
+  FUNCTIONAL = 'functional',
+  ANALYTICS = 'analytics',
+  SOCIAL = 'social',
+  ADVERTISING = 'advertising',
+  OTHER = 'other',
+}
+
 type CookiesByName = Record<string, string>
 
 class Cookies {
@@ -57,23 +65,23 @@ class Cookies {
       version: this.cookiebar?.dataset.policyVersion || '1',
       cookies: [
         {
-          name: 'functional',
+          name: CookieName.FUNCTIONAL,
           default: COOKIE_DEFAULT_VALUE,
         },
         {
-          name: 'analytics',
+          name: CookieName.ANALYTICS,
           default: COOKIE_DEFAULT_VALUE,
         },
         {
-          name: 'social',
+          name: CookieName.SOCIAL,
           default: COOKIE_DECLINED_VALUE,
         },
         {
-          name: 'advertising',
+          name: CookieName.ADVERTISING,
           default: COOKIE_DECLINED_VALUE,
         },
         {
-          name: 'other',
+          name: CookieName.OTHER,
           default: COOKIE_DECLINED_VALUE,
         },
       ],
