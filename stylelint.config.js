@@ -1,0 +1,50 @@
+const BEMPattern = '^.[a-z]?([a-z0-9-]+)?(__([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+){0,2}$'
+const kebabCasePattern = '^([a-z][a-z0-9]*)(-[a-z0-9]+)*$'
+
+module.exports = {
+  plugins: ['dept-builder/node_modules/stylelint-scss'],
+  syntax: 'scss',
+  ignoreFiles: [
+    './node_modules',
+    './source/sass/_dev/**/*.scss',
+    './source/**/node_modules/**/*.scss',
+  ],
+  rules: {
+    'declaration-no-important': true,
+    'declaration-colon-space-after': 'always',
+    'declaration-colon-space-before': 'never',
+    'function-whitespace-after': 'always',
+    'max-nesting-depth': [4, { ignore: ['pseudo-classes'] }],
+    'no-empty-source': null,
+    'no-descending-specificity': null,
+    'selector-class-pattern': BEMPattern,
+    'block-opening-brace-newline-after': 'always-multi-line',
+    'block-opening-brace-space-after': 'always-single-line',
+    'block-opening-brace-space-before': 'always',
+    'at-rule-empty-line-before': [
+      'always',
+      {
+        except: [
+          'blockless-after-same-name-blockless',
+          'blockless-after-blockless',
+          'first-nested',
+        ],
+      },
+    ],
+    'at-rule-no-unknown': null,
+    'at-rule-no-vendor-prefix': true,
+    'rule-empty-line-before': [
+      'always',
+      {
+        except: ['first-nested'],
+        ignore: ['after-comment'],
+      },
+    ],
+    'property-no-vendor-prefix': true,
+    'scss/at-rule-no-unknown': true,
+    'scss/dollar-variable-first-in-block': [true, { ignore: ['comments', 'imports'] }],
+    'scss/dollar-variable-colon-space-after': 'always',
+    'scss/dollar-variable-pattern': kebabCasePattern,
+    'keyframes-name-pattern': kebabCasePattern,
+  },
+}
