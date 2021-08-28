@@ -153,7 +153,6 @@ $video-button-transition-ease: $ease-in-quad;
       color: darken($video-button-icon-color, 20%);
     }
   }
-
   @include keyboard-focus {
     .video__button-icon {
       color: darken($video-button-icon-color, 100%);
@@ -187,6 +186,7 @@ $video-button-transition-ease: $ease-in-quad;
   .video--is-paused & {
     opacity: 1;
     visibility: visible;
+
     @include video-button-show-props;
   }
 
@@ -195,7 +195,6 @@ $video-button-transition-ease: $ease-in-quad;
       border-left-color: darken($video-button-icon-color, 20%);
     }
   }
-
   @include keyboard-focus {
     .video__button-icon {
       border-left-color: darken($video-button-icon-color, 100%);
@@ -210,6 +209,7 @@ $video-button-transition-ease: $ease-in-quad;
 
   .video--is-playing & {
     visibility: visible;
+
     @include video-button-show-props;
   }
 
@@ -226,6 +226,7 @@ $video-button-transition-ease: $ease-in-quad;
   .video--is-ended & {
     opacity: 1;
     visibility: visible;
+
     @include video-button-show-props;
   }
 }

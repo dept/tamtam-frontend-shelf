@@ -32,10 +32,10 @@
   @include hover-focus {
     color: $color-secondary;
   }
-
   @include keyboard-focus {
     color: $color-secondary;
     position: relative;
+
     @include focus-state-pulse;
   }
 }

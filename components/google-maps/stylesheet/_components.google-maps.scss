@@ -25,7 +25,6 @@ $map-height-tablet-landscape: 60rem;
   @include screen-tablet-portrait-and-bigger {
     height: $map-height-tablet-portrait;
   }
-
   @include screen-tablet-landscape-and-bigger {
     height: $map-height-tablet-landscape;
   }

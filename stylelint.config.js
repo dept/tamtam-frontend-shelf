@@ -10,6 +10,7 @@ module.exports = {
     './source/**/node_modules/**/*.scss',
   ],
   rules: {
+    'color-hex-case': 'lower',
     'declaration-no-important': true,
     'declaration-colon-space-after': 'always',
     'declaration-colon-space-before': 'never',
@@ -25,10 +26,13 @@ module.exports = {
       'always',
       {
         except: [
+          'after-same-name',
           'blockless-after-same-name-blockless',
           'blockless-after-blockless',
           'first-nested',
         ],
+        ignore: ['after-comment'],
+        ignoreAtRules: ['else'],
       },
     ],
     'at-rule-no-unknown': null,
@@ -41,10 +45,11 @@ module.exports = {
       },
     ],
     'property-no-vendor-prefix': true,
+    'keyframes-name-pattern': kebabCasePattern,
     'scss/at-rule-no-unknown': true,
     'scss/dollar-variable-first-in-block': [true, { ignore: ['comments', 'imports'] }],
     'scss/dollar-variable-colon-space-after': 'always',
     'scss/dollar-variable-pattern': kebabCasePattern,
-    'keyframes-name-pattern': kebabCasePattern,
+    'scss/at-if-closing-brace-newline-after': 'always-last-in-chain',
   },
 }

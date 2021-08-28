@@ -26,12 +26,14 @@ $helper-transition-time: 200ms;
 .checkbox__focus-helper {
   width: $checkbox-size;
   height: $checkbox-size;
+
   @include focus-state-pulse;
 }
 
 .radio__focus-helper {
   width: $radio-size;
   height: $radio-size;
+
   @include focus-state-pulse($round: true);
 }
 
