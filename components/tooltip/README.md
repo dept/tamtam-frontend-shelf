@@ -14,7 +14,7 @@
 ## Install
 Import module
 ```javascript
-moduleInit.async('[js-hook-tooltip]', () => import('@components/tooltip'));
+moduleInit.async('[js-hook-tooltip]', () => import('@/components/tooltip'));
 ```
 
 ## How to use
@@ -22,6 +22,8 @@ moduleInit.async('[js-hook-tooltip]', () => import('@components/tooltip'));
 ### Default
 
 ```htmlmixed
+{% from 'tooltip.html' import tooltip  %}
+
 {{ tooltip({
     label: 'Read here more',
     element: 'h1',
