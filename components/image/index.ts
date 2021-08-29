@@ -1,1 +1,1 @@
-import './javascript/image'
+import './javascript/lazy-image'
