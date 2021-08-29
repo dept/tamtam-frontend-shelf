@@ -1,3 +1,3 @@
-import * as API from './javascript/api'
+import API from './javascript/api'
 
 export default API

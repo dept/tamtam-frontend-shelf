@@ -1,6 +1,6 @@
-import RafThrottle from '@utilities/raf-throttle'
-import Events from '@utilities/events'
 import Api from '@utilities/api'
+import Events from '@utilities/events'
+import RafThrottle from '@utilities/raf-throttle'
 
 const HOOK_AUTOCOMPLETE_WRAPPER = '[js-hook-autocomplete-wrapper]'
 const HOOK_AUTOCOMPLETE = 'js-hook-autocomplete'

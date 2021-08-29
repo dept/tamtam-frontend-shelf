@@ -1,11 +1,13 @@
-$radio-size: 20px;
-$radio-border-width: 1px;
-$radio-border-radius: $radio-size;
-$radio-color: $color-black;
-$radio-error-color: $form-item-error-border-color;
-$radio-margin-right: $global-spacing * 2;
-$radio-transition-time: 200ms;
-$radio-transition-ease: $ease-in-out-quad;
+:root {
+  --radio-size: var(--checkbox-size);
+  --radio-border-width: var(--checkbox-border-width);
+  --radio-border-radius: var(--radio-size);
+  --radio-color: var(--checkbox-color);
+  --radio-error-color: var(--checkbox-error-color);
+  --radio-margin-right: var(--checkbox-margin-right);
+  --radio-transition-time: var(--checkbox-transition-time);
+  --radio-transition-ease: var(--checkbox-transition-ease);
+}
 
 .radio__input {
   @include sr-only;
@@ -20,7 +22,7 @@ $radio-transition-ease: $ease-in-out-quad;
 
   &:hover {
     + label::after {
-      box-shadow: 0 0 0 $radio-border-width $radio-color inset;
+      box-shadow: 0 0 0 var(--radio-border-width) var(--radio-color) inset;
     }
   }
 }
@@ -29,38 +31,38 @@ $radio-transition-ease: $ease-in-out-quad;
   display: block;
   position: relative;
   cursor: pointer;
-  padding-left: $radio-size + 10px;
+  padding-left: calc(var(--radio-size) + 10px);
 
   &::before,
   &::after {
     position: absolute;
     content: '';
-    border-radius: $radio-border-radius;
+    border-radius: var(--radio-border-radius);
     top: 50%;
     left: 0;
-    width: $radio-size;
-    height: $radio-size;
+    width: var(--radio-size);
+    height: var(--radio-size);
     cursor: pointer;
   }
 
   &::before {
-    box-shadow: 0 0 0 $radio-border-width * 3 $color-white inset,
-      0 0 0 $radio-size $radio-color inset;
+    box-shadow: 0 0 0 calc(var(--radio-border-width) * 3) $color-white inset,
+      0 0 0 var(--radio-size) var(--radio-color) inset;
     transform: translateY(-50%) scale(0);
-    transition: $radio-transition-time $radio-transition-ease;
+    transition: var(--radio-transition-time) var(--radio-transition-ease);
     transition-property: transform;
   }
 
   &::after {
     transform: translateY(-50%);
-    transition: $checkbox-transition-time $checkbox-transition-ease;
+    transition: var(--checkbox-transition-time) var(--checkbox-transition-ease);
     transition-property: box-shadow;
-    box-shadow: 0 0 0 $radio-border-width $radio-color inset,
-      0 0 0 $radio-border-width * 3 $color-white inset;
+    box-shadow: 0 0 0 var(--radio-border-width) var(--radio-color) inset,
+      0 0 0 calc(var(--radio-border-width) * 3) $color-white inset;
 
     .form__item--error & {
-      box-shadow: 0 0 0 $radio-border-width $radio-error-color inset,
-        0 0 0 $radio-border-width * 3 $color-white inset;
+      box-shadow: 0 0 0 var(--radio-border-width) var(--radio-error-color) inset,
+        0 0 0 calc(var(--radio-border-width) * 3) $color-white inset;
     }
   }
 }
@@ -68,6 +70,7 @@ $radio-transition-ease: $ease-in-out-quad;
 /**
  * Horizontal
  */
+
 .radio--horizontal {
   .radio__wrapper {
     display: flex;
@@ -75,6 +78,6 @@ $radio-transition-ease: $ease-in-out-quad;
   }
 
   .radio__label {
-    margin-right: $checkbox-margin-right;
+    margin-right: var(--checkbox-margin-right);
   }
 }
