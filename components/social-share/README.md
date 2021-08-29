@@ -17,7 +17,7 @@
 ## Install
 Import module
 ```javascript
-import '@components/social-share';
+import '@/components/social-share';
 ```
 
 ## How to use
@@ -30,4 +30,4 @@ Include component in your template. Binding of clicks will be handles by the [Ev
 * [Events component](/utilities/events/)
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@deptagency.com)

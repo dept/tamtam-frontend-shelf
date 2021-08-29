@@ -1,4 +1,4 @@
-import Events from '@utilities/events'
+import Events from '@/utilities/events'
 
 class SocialShare {
   constructor() {
@@ -33,7 +33,7 @@ class SocialShare {
     window.location.href = `mailto:?body=${window.location.href}`
   }
 
-  openDialogue(url) {
+  openDialogue(url: string) {
     window.open(encodeURI(url), 'Share', 'height=500,width=700')
   }
 }
