@@ -1,17 +1,23 @@
-import Cookies from '@components/cookies'
-import Events from '@utilities/events'
+import Cookies, { CookieName } from '@components/cookies'
+import Player, { Options } from '@vimeo/player'
+
+import * as triggers from '../triggers'
+import { VideoOptions } from '../video'
 
 class VimeoVideo {
-  constructor(options) {
+  options: VideoOptions
+  playerOptions: Options
+  player: Player
+  initialPlay?: boolean
+
+  constructor(options: VideoOptions) {
     this.options = options
 
-    import(/* webpackChunkName: "Vimeo-Player" */ '@vimeo/player').then((Player) => {
-      this.initPlayer(Player.default)
-      this.bindEvents()
-    })
+    this.initPlayer()
+    this.bindEvents()
   }
 
-  initPlayer(Player) {
+  initPlayer() {
     const {
       videoId: id,
       videoAutoplay: autoplay,
@@ -22,12 +28,12 @@ class VimeoVideo {
     } = this.options
 
     this.player = new Player(this.options.player, {
-      id,
+      id: Number(id),
       title: false,
       portrait: false,
       autoplay,
       loop,
-      dnt: !Cookies.cookieIsValid(Cookies.cookieName.advertising),
+      dnt: !Cookies.cookieIsValid(CookieName.ADVERTISING),
       playsinline: autoplay ? true : playsinline,
       muted: autoplay ? true : muted,
       controls,
@@ -35,48 +41,35 @@ class VimeoVideo {
   }
 
   bindEvents() {
-    Events.$trigger('video::bind-player-events', { data: this.options })
+    triggers.onBindEvents(this.options)
 
     this.player.ready().then(() => {
       if (this.options.videoTime && !this.initialPlay) {
         this.setStartTime(this.options.videoTime)
       }
 
-      Events.$trigger('video::ready', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-        data: this.options,
-      })
+      triggers.onReady(this.options)
     })
 
     // Workaround on iOS where the play event would not be triggered on autoplay - https://github.com/vimeo/player.js/issues/315
     if (this.options.videoAutoplay) {
       this.player.on('timeupdate', () => {
         this.player.off('timeupdate')
-        Events.$trigger('video::playing', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::playing`, { data: this.options })
+        triggers.onPlaying(this.options)
       })
     }
 
     this.player.on('play', () => {
       this.player.off('timeupdate') // Remove timeupdate event listener on play.
-      Events.$trigger('video::playing', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-        data: this.options,
-      })
+      triggers.onPlaying(this.options)
     })
 
     this.player.on('pause', () => {
-      Events.$trigger('video::paused', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-        data: this.options,
-      })
+      triggers.onPaused(this.options)
     })
 
     this.player.on('ended', () => {
-      Events.$trigger('video::ended', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-        data: this.options,
-      })
+      triggers.onEnded(this.options)
     })
   }
 
@@ -101,11 +94,11 @@ class VimeoVideo {
     this.player.setVolume(1)
   }
 
-  setVolume(value) {
+  setVolume(value: number) {
     this.player.setVolume(value)
   }
 
-  setStartTime(seconds) {
+  setStartTime(seconds: number) {
     this.player
       .setCurrentTime(seconds)
       .then(() => {
@@ -113,7 +106,7 @@ class VimeoVideo {
       })
       .catch(() => {
         this.initialPlay = false
-        console.error('Unable to set start time for video', this.options.id)
+        console.error('Unable to set start time for video', this.options.videoId)
       })
   }
 }

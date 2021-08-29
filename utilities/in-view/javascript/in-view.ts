@@ -40,7 +40,7 @@ type InViewProperties = {
   windowWidth: number
 }
 
-type InViewElement = Element & {
+export type InViewElement = Element & {
   __inviewTriggerHook?: string | null
   __inviewPersistent?: boolean
   __inviewThreshold?: number

@@ -17,9 +17,9 @@
 ## Install
 Import module
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view';
+import '@/components/image';
+import VideoLoader from '@/components/video/loader';
 ```
 
 ## How to use
@@ -27,9 +27,9 @@ import VideoLoader from '@components/video/loader';
 ### Default
 
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view';
+import '@/components/image';
+import VideoLoader from '@/components/video/loader';
 
 VideoLoader()
     .then(([Platforms, Video]) => {
@@ -91,8 +91,8 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 ### Without in-view
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
 ```javascript
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/components/image';
+import VideoLoader from '@/components/video/loader';
 
 VideoLoader
     .then(([Platforms, Video]) => {
@@ -138,9 +138,9 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ### Native video
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view';
+import '@/components/image';
+import VideoLoader from '@/components/video/loader';
 
 VideoLoader
     .then(([Platforms, Video]) => {
@@ -179,7 +179,7 @@ VideoLoader
             size : 1920,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
+                    url: 'https://temp.media/video/?width=1920&height=1080&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -188,7 +188,7 @@ VideoLoader
             size : 1280,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    url: 'https://temp.media/video/?width=1280&height=720&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -197,25 +197,16 @@ VideoLoader
             size : 1024,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    url: 'https://temp.media/video/?width=1024&height=576&length=10',
                     type: 'video/mp4'
                 }
             ]
         },
         {
-            size : 960,
+            size : 320,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
-                    type: 'video/mp4'
-                }
-            ]
-        },
-        {
-            size : 640,
-            source: [
-                {
-                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
+                    url: 'https://temp.media/video/?width=480&height=270&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -230,7 +221,6 @@ VideoLoader
 * [Cookie component](/components/cookies/)
 * [Events utility](/utilities/events/)
 * [In-view utility](/utilities/in-view/)
-* [youtube-player](https://github.com/gajus/youtube-player)
 * [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
 ## Developers

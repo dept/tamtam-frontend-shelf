@@ -1,11 +1,29 @@
-/**
- *  @shelf-version: 1.0.0
- */
+import * as triggers from '../triggers'
+import { VideoOptions } from '../video'
 
-import Events from '@utilities/events'
+type NativeVideoSourceType = {
+  url: string
+  type: string
+}
+
+type NativeVideoSourceSize = {
+  size: number
+  source: NativeVideoSourceType[]
+}
+
+type NativeVideoClosedCaption = {
+  url: string
+  label: string
+  lang: string
+}
 
 class NativeVideo {
-  constructor(options) {
+  sourcesJSON: NativeVideoSourceSize[]
+  options: VideoOptions
+  sourceData: NativeVideoSourceSize
+  player: HTMLVideoElement
+
+  constructor(options: VideoOptions) {
     this.options = options
 
     if (this.parseSources()) {
@@ -18,7 +36,11 @@ class NativeVideo {
    * Init the player instance
    */
   initPlayer() {
-    this.sourceData = getClosestVideoSource(this.sources)
+    const closestSource = getClosestVideoSource(this.sourcesJSON)
+    if (!closestSource) return
+
+    this.sourceData = closestSource
+
     this.player = document.createElement('video')
 
     this._addMediaSources()
@@ -35,20 +57,17 @@ class NativeVideo {
       this.player.setAttribute('loop', 'loop')
     }
 
-    if (this.options.videoPlaysinline) {
+    if (this.options.videoPlaysinline || this.options.videoAutoplay) {
       // For mobile autoplay
       this.player.setAttribute('playsinline', 'playsinline')
     }
 
     if (this.options.videoAutoplay) {
-      // For mobile autoplay
-      this.player.setAttribute('playsinline', 'playsinline')
       this.player.setAttribute('autoplay', 'autoplay')
     }
 
     if (this.options.videoMuted) {
-      this.player.setAttribute('muted', 'muted')
-      this.player.muted = true
+      this.mute()
     }
 
     this.options.player.appendChild(this.player)
@@ -58,48 +77,37 @@ class NativeVideo {
    * Bind events
    */
   bindEvents() {
-    Events.$trigger('video::bind-player-events', { data: this.options })
+    triggers.onBindEvents(this.options)
 
     this.player.addEventListener('loadedmetadata', () => {
       if (this.options.videoTime) this.player.currentTime = this.options.videoTime
       if (this.options.videoControls) this.player.controls = true
 
-      Events.$trigger('video::ready', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-        data: this.options,
-      })
+      triggers.onReady(this.options)
     })
 
     this.player.addEventListener('playing', () => {
       if (this.options.videoControls) this.player.controls = false
 
-      Events.$trigger('video::playing', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-        data: this.options,
-      })
+      triggers.onPlaying(this.options)
     })
 
     this.player.addEventListener('pause', () => {
       if (this.options.videoControls) this.player.controls = true
 
-      Events.$trigger('video::paused', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-        data: this.options,
-      })
+      triggers.onPaused(this.options)
     })
 
     this.player.addEventListener('ended', () => {
-      Events.$trigger('video::ended', { data: this.options })
-      Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-        data: this.options,
-      })
+      triggers.onEnded(this.options)
     })
   }
 
   parseSources() {
     try {
-      this.sources = JSON.parse(this.options.videoSources)
-      if (typeof this.sources === 'object') {
+      if (!this.options.videoSources) return false
+      this.sourcesJSON = JSON.parse(this.options.videoSources)
+      if (typeof this.sourcesJSON === 'object') {
         return true
       } else {
         return false
@@ -112,24 +120,27 @@ class NativeVideo {
 
   _addMediaSources() {
     this.sourceData.source.forEach(source => {
-      this.source = document.createElement('source')
-      this.source.type = source.type
-      this.source.src = source.url
-      this.player.appendChild(this.source)
+      const sourceElement = document.createElement('source')
+      sourceElement.type = source.type
+      sourceElement.src = source.url
+      this.player.appendChild(sourceElement)
     })
   }
 
   _addClosedCaptions() {
     try {
-      this.closedcaptions = JSON.parse(this.options.videoClosedcaptions)
+      if (!this.options.videoClosedcaptions) return
+      const closedcaptions: NativeVideoClosedCaption[] = JSON.parse(
+        this.options.videoClosedcaptions,
+      )
 
-      this.closedcaptions.forEach(cc => {
-        this.cc = document.createElement('track')
-        this.cc.src = cc.url
-        this.cc.kind = 'subtitles'
-        this.cc.label = cc.label
-        this.cc.srclang = cc.lang
-        this.player.appendChild(this.cc)
+      closedcaptions.forEach(cc => {
+        const ccElement = document.createElement('track')
+        ccElement.src = cc.url
+        ccElement.kind = 'subtitles'
+        ccElement.label = cc.label
+        ccElement.srclang = cc.lang
+        this.player.appendChild(ccElement)
       })
     } catch (e) {
       console.error('Failed to parse closed captions. Are you sure this is an object?')
@@ -177,22 +188,22 @@ class NativeVideo {
   /**
    * Bind generic setVolume event
    */
-  setVolume(value) {
+  setVolume(value: number) {
     this.player.volume = value
   }
 }
 
-function getClosestVideoSource(sources) {
+function getClosestVideoSource(sources: NativeVideoSourceSize[]) {
   const windowWidth = window.innerWidth
-  let closestSource = null
+  let closestSource: NativeVideoSourceSize | null = null
 
   try {
-    sources.map(el => {
+    sources.map(source => {
       if (
         closestSource == null ||
-        Math.abs(el.size - windowWidth) < Math.abs(closestSource.size - windowWidth)
+        Math.abs(source.size - windowWidth) < Math.abs(closestSource.size - windowWidth)
       ) {
-        closestSource = el
+        closestSource = source
       }
     })
 

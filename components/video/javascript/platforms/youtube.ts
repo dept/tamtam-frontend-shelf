@@ -1,18 +1,15 @@
-import Cookies from '@components/cookies'
-import Events from '@utilities/events'
+import Cookies, { CookieName } from '@/components/cookies'
 
-/**
- *
- * States
- * -1: 'unstarted'
- *  0: 'ended'
- *  1: 'playing'
- *  2: 'paused'
- *  3: 'buffering'
- *  5: 'video cued'
- */
+import * as triggers from '../triggers'
+import { VideoOptions } from '../video'
+
 class YoutubeVideo {
-  constructor(options) {
+  options: VideoOptions
+  playerOptions: YT.PlayerOptions
+  player: YT.Player
+  videoInterval?: NodeJS.Timer
+
+  constructor(options: VideoOptions) {
     this.options = options
 
     this.playerOptions = {
@@ -22,14 +19,14 @@ class YoutubeVideo {
         start: this.options.videoTime,
         modestbranding: 1,
         showinfo: 0,
-        controls: this.options.videoControls || 0,
+        controls: Number(this.options.videoControls),
         rel: 0,
         origin: window.location.href,
-        loop: this.options.videoLoop,
-        autoplay: this.options.videoAutoplay,
-        mute: this.options.videoMuted,
-        ...(this.options.videoLoop ? { playlist: this.options.videoId } : {}),
+        loop: Number(this.options.videoLoop),
+        autoplay: Number(this.options.videoAutoplay),
+        mute: Number(this.options.videoMuted),
         playsinline: this.options.videoAutoplay || this.options.videoPlaysinline ? 1 : 0,
+        ...(this.options.videoLoop ? { playlist: this.options.videoId } : {}),
       },
       events: {
         onReady: this.onReady.bind(this),
@@ -37,7 +34,7 @@ class YoutubeVideo {
       },
     }
 
-    if (!Cookies.cookieIsValid(Cookies.cookieName.advertising)) {
+    if (!Cookies.cookieIsValid(CookieName.ADVERTISING)) {
       this.playerOptions.host = 'https://www.youtube-nocookie.com'
     }
 
@@ -45,7 +42,6 @@ class YoutubeVideo {
   }
 
   init() {
-    // @ts-ignore
     if (!window.YT) {
       YoutubeVideo.loadAPI()
       this.checkAPIReady()
@@ -59,25 +55,20 @@ class YoutubeVideo {
     // This code loads the IFrame Player API code asynchronously.
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
-    const firstScriptTag = document.getElementsByTagName('script')[0]
-    // @ts-ignore
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    document.head.append(tag)
   }
 
   initPlayer() {
-    // @ts-ignore
     window.youtubeIsReady = true
     if (this.videoInterval) clearInterval(this.videoInterval)
-    // @ts-ignore
+
     this.player = new window.YT.Player(this.options.player, this.playerOptions)
   }
 
   checkAPIReady() {
-    // @ts-ignore
     window.onYouTubeIframeAPIReady = () => this.initPlayer()
 
     this.videoInterval = setInterval(() => {
-      // @ts-ignore
       if (window.youtubeIsReady) {
         this.initPlayer()
         this.videoInterval && clearInterval(this.videoInterval)
@@ -86,41 +77,21 @@ class YoutubeVideo {
   }
 
   onReady() {
-    Events.$trigger('video::ready', { data: this.options })
-    Events.$trigger(`video[${this.options.instanceId}]::ready`, {
-      data: this.options,
-    })
-
-    Events.$trigger('video::bind-player-events', { data: this.options })
+    triggers.onBindEvents(this.options)
+    triggers.onReady(this.options)
   }
 
-  onStateChange(event) {
+  onStateChange(event: YT.OnStateChangeEvent) {
     switch (event.data) {
-      // finished
-      case 0:
-        Events.$trigger('video::ended', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::ended`, {
-          data: this.options,
-        })
+      case YT.PlayerState.ENDED:
+        triggers.onEnded(this.options)
         break
-
-      // playing
-      case 1:
-        Events.$trigger('video::playing', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::playing`, {
-          data: this.options,
-        })
+      case YT.PlayerState.PLAYING:
+        triggers.onPlaying(this.options)
         break
-
-      // paused
-      case 2:
-        Events.$trigger('video::paused', { data: this.options })
-        Events.$trigger(`video[${this.options.instanceId}]::paused`, {
-          data: this.options,
-        })
+      case YT.PlayerState.PAUSED:
+        triggers.onPaused(this.options)
         break
-
-      // do nothing
       default:
         break
     }
@@ -147,7 +118,7 @@ class YoutubeVideo {
     this.player.unMute()
   }
 
-  setVolume(value) {
+  setVolume(value: number) {
     this.player.setVolume(value)
   }
 }
