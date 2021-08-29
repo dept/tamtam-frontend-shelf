@@ -1,4 +1,4 @@
-import Form from '@components/form'
+import Form from '@/components/form'
 
 /**
  * {Class} ExampleForm
@@ -7,7 +7,7 @@ import Form from '@components/form'
  *
  */
 class ExampleForm extends Form {
-  constructor(element) {
+  constructor(element: HTMLFormElement) {
     super(element)
   }
 
@@ -16,7 +16,7 @@ class ExampleForm extends Form {
    * - will be called after form is submitted successfully through ajax (see form.js)
    * @param {Object} data - data returned from API call
    */
-  afterSubmitFormSuccess = (_data) => {
+  afterSubmitFormSuccess = (_data: any) => {
     // Do something custom after successful form submit
   }
 }

@@ -1,11 +1,19 @@
-import API from '@utilities/api'
-import Events from '@utilities/events'
-import serializeObject from '@utilities/serialize-object'
-import { rules } from '@utilities/validation'
+import { AxiosError, Method } from 'axios'
+
+import API from '@/utilities/api'
+import Events from '@/utilities/events'
+import serializeObject from '@/utilities/serialize-object'
+import { rules, ValidationRule } from '@/utilities/validation'
+
+type FormErrorMessages = Record<string, string>
+type InputType = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+const INPUT_TYPES = 'input[name]:not([type="hidden"]), textarea[name], select[name]'
+type SupportedMethod = Extract<Method, 'post' | 'put' | 'get' | 'delete'>
+const SUPPORTED_METHODS: SupportedMethod[] = ['post', 'put', 'get', 'delete']
 
 const JS_HOOK_DEFAULT_SUBMIT = '[type="submit"]:not(.u-sr-only)'
 const ALERT_SELECTOR = '[js-hook-alert]'
-const INPUT_TYPES = 'input[name]:not([type="hidden"]), textarea[name], select[name]'
+
 const HIDDEN_CLASS = 'u-hidden'
 const FORM_ITEM_CLASS = '.form__item'
 const FORM_ITEM_ERROR_CLASS = 'form__item--error'
@@ -13,28 +21,34 @@ const FORM_ITEM_ERROR_ARIA = 'aria-invalid'
 const FORM_ITEM_DESCRIBE_ARIA = 'aria-describedby'
 const FORM_ITEM_SUCCESS_CLASS = 'form__item--success'
 const FORM_ITEM_ERROR_MESSAGE_HOOK = '.form__item-error'
-const SUPPORTED_METHODS = ['post', 'put', 'get', 'delete']
+
 const DEFAULT_METHOD = 'post'
 
 class Form {
-  constructor(element) {
-    this.form = element
+  form: HTMLFormElement
+  method: SupportedMethod
+  action: HTMLFormElement['action']
+  async: boolean
+  events: string[]
+  rules: Record<string, ValidationRule>
 
+  // DOM Elements
+  alertHook = ALERT_SELECTOR
+  inputTypes = INPUT_TYPES
+
+  // Methods
+  afterSubmitFormSuccess: ((data: any) => void) | null = null
+
+  constructor(element: HTMLFormElement) {
+    this.form = element
     // Config
     this.async = !!element.dataset.async
     this.method = this.getFormMethod()
     this.events = element.dataset.events
-      ? element.dataset.events.join(',')
+      ? element.dataset.events.split(',')
       : ['change', 'paste', 'blur', 'keyup']
     this.rules = rules
-    this.action = element.getAttribute('action')
-
-    // DOM Elements
-    this.alertHook = ALERT_SELECTOR
-    this.inputTypes = INPUT_TYPES
-
-    // Methods
-    this.afterSubmitFormSuccess = null
+    this.action = element.getAttribute('action') || window.location.href
 
     // Events
     this.bindChangeEvents()
@@ -42,14 +56,14 @@ class Form {
   }
 
   get inputs() {
-    return [...this.form.querySelectorAll(this.inputTypes)]
+    return [...this.form.querySelectorAll<InputType>(this.inputTypes)]
   }
 
   get defaultSubmit() {
     return this.form.querySelector(JS_HOOK_DEFAULT_SUBMIT)
   }
 
-  scrollToItem(target) {
+  scrollToItem(target: HTMLElement) {
     Events.$trigger('scroll-to::scroll', {
       data: {
         target,
@@ -60,56 +74,49 @@ class Form {
 
   /**
    * Checks if input type="number" fields contain text
-   *
-   * @param {HTMLInputElement} input | input element to check
-   * @returns {Boolean} return true if number field contains text, false otherwise
    */
-  numberFieldContainsText(input) {
+  numberFieldContainsText(input: InputType) {
     if (input.getAttribute('type') === 'number') {
       return !/^\d+$/.test(input.value)
     }
-
     return false
   }
 
   /**
    * Add alert message to page
-   *
-   * @param {Object} obj Alert information
-   * @param {String} obj.message -  the message string to show
-   * @param {String} obj.type - success, warning or error type
    */
-  addAlertMessage({ message, type }) {
+  addAlertMessage({ message, type }: { message: string; type: string }) {
     const status = type || 'error'
-    const el = this.form.querySelector(this.alertHook)
-    if (!el) return
-    el.innerHTML = message
-    el.className = el.className.replace(/(?:^|\W)alert--(\w+)(?!\w)/g, ` alert--${status}`)
-    el.classList.remove('u-hidden')
-    el.removeAttribute('aria-hidden')
-    el.focus()
+    const element = this.form.querySelector<HTMLElement>(this.alertHook)
+    if (!element) return
+    element.innerHTML = message
+    element.className = element.className.replace(
+      /(?:^|\W)alert--(\w+)(?!\w)/g,
+      ` alert--${status}`,
+    )
+    element.classList.remove('u-hidden')
+    element.removeAttribute('aria-hidden')
+    element.focus()
 
     // Scroll to alert
-    this.scrollToItem(el)
+    this.scrollToItem(element)
   }
 
   /**
    * Process API error
-   *
-   * @param {Object|String} error - error message
    */
-  apiErrorHandler(error) {
+  apiErrorHandler(error: any) {
     if (!error) return
+
     const errorMessage = error.errorMessage || error.message || error.responseJSON
     if (!errorMessage) return
     this.addAlertMessage({ message: errorMessage, type: 'error' })
   }
 
-  submitFormError(error) {
+  submitFormError(error: AxiosError<any>) {
     Events.$trigger('loader::hide')
-    const { data } = error.response
-    if (data) {
-      this.apiErrorHandler(data)
+    if (error.response?.data) {
+      this.apiErrorHandler(error.response?.data)
     } else {
       throw new Error(`JAVASCRIPT ERROR: ${error}`)
     }
@@ -117,13 +124,13 @@ class Form {
 
   /**
    * Submit form success handler
-   * @param {Object} data - data returned from API call
    */
-  submitFormSuccess(data) {
+  submitFormSuccess(data: Record<string, any>) {
     // If redirect redirect to page
     if (data.redirectUrl) {
       window.location.href = data.redirectUrl
     }
+
     // Handle server field errors from body payload
     if (data.errors) {
       this.validateFormError(data.errors)
@@ -138,54 +145,47 @@ class Form {
   getFormMethod() {
     const method = this.form.getAttribute('method')
 
-    return method && SUPPORTED_METHODS.includes(method.toLowerCase())
+    return (
+      method && SUPPORTED_METHODS.includes(method.toLowerCase() as SupportedMethod)
         ? method.toLowerCase()
         : DEFAULT_METHOD
+    ) as SupportedMethod
   }
 
-  submitForm(data) {
-    API[this.method](this.action, data)
+  submitForm<T>(data: T) {
+    API[this.method]<T>(this.action, data)
       .then(response => this.submitFormSuccess(response.data))
       .catch(error => this.submitFormError(error))
   }
 
   /**
    * Validate field success handler
-   *
-   * @param {HTMLElement} input | input that fired onChange event
    */
-  validateFieldSuccess(input) {
+  validateFieldSuccess(input: InputType) {
     this.showInputSuccess(input)
   }
 
   /**
    * Validate field error handler
-   *
-   * @param {HTMLElement} input | input that fired onChange event
-   * @param {String} message | message returned from validation
    */
-  validateFieldError(input, message) {
+  validateFieldError(input: InputType, message: ValidationRule['message']) {
     this.showInputError(input, message)
   }
 
-  getErrorContainer(input) {
+  getErrorContainer(input: InputType) {
     const formItem = input.closest(FORM_ITEM_CLASS)
-    return formItem.querySelector(FORM_ITEM_ERROR_MESSAGE_HOOK)
+    return formItem?.querySelector(FORM_ITEM_ERROR_MESSAGE_HOOK)
   }
 
   /**
    * Show the error state and message
-   *
-   * @param {Element} formItem | input parent that holds error/success classes
-   * @param {HTMLElement} input | input to show error on
-   * @param {String} message | message returned from validation or backend
    */
-  showErrorMessage(formItem, input, message) {
+  showErrorMessage(formItem: HTMLElement, input: InputType, message: ValidationRule['message']) {
     const formItemErrorContainer = this.getErrorContainer(input)
     input.setAttribute(FORM_ITEM_ERROR_ARIA, 'true')
-    input.setAttribute(FORM_ITEM_DESCRIBE_ARIA, formItemErrorContainer.id)
 
     if (!formItemErrorContainer) return
+    input.setAttribute(FORM_ITEM_DESCRIBE_ARIA, formItemErrorContainer.id)
 
     formItem.classList.add(FORM_ITEM_ERROR_CLASS)
     formItemErrorContainer.textContent = message
@@ -194,26 +194,22 @@ class Form {
 
   /**
    * Set validation error state on an input
-   *
-   * @param {HTMLElement} input | input to show error on
-   * @param {String} message | message returned from validation or backend
    */
-  showInputError(input, message) {
-    const formItem = input.closest(FORM_ITEM_CLASS)
-
+  showInputError(input: InputType, message: ValidationRule['message']) {
+    const formItem = input.closest<HTMLElement>(FORM_ITEM_CLASS)
+    if (!formItem) return
     this.resetFormItem(formItem, input)
     this.showErrorMessage(formItem, input, message)
   }
 
   /**
    * Set validation success state on an input
-   *
-   * @param {HTMLElement} input | input to show error on
    */
-  showInputSuccess(input) {
-    const formItem = input.closest(FORM_ITEM_CLASS)
-    this.resetFormItem(formItem, input)
+  showInputSuccess(input: InputType) {
+    const formItem = input.closest<HTMLElement>(FORM_ITEM_CLASS)
+    if (!formItem) return
 
+    this.resetFormItem(formItem, input)
     if (input.hasAttribute('required')) {
       formItem.classList.add(FORM_ITEM_SUCCESS_CLASS)
     }
@@ -221,10 +217,8 @@ class Form {
 
   /**
    * Remove error classes and any old error message
-   * @param {Element} formItem | input parent that holds error/success classes
-   * @param {HTMLElement} input | input element
    */
-  resetFormItem(formItem, input) {
+  resetFormItem(formItem: HTMLElement, input: InputType) {
     const formItemErrorContainer = this.getErrorContainer(input)
 
     formItem.classList.remove(FORM_ITEM_ERROR_CLASS)
@@ -240,12 +234,10 @@ class Form {
 
   /**
    * Validate field - do field validation
-   * @param {HTMLElement} input | input that fired onChange event
    */
-  validateField(input) {
-    if (input.hasAttribute('data-ignored')) {
-      return
-    }
+  validateField(input: InputType) {
+    if (input.hasAttribute('data-ignored')) return
+
     const validations = input.getAttribute('data-validate')
     if (!validations) return
 
@@ -259,21 +251,16 @@ class Form {
 
   /**
    * Handle onchange of an input
-   * @param {HTMLInputElement} input | input that fired onChange event
    */
-  handleInputChange(input) {
-    if (this.numberFieldContainsText(input)) {
-      input.value = ''
-    }
+  handleInputChange(input: InputType) {
+    if (this.numberFieldContainsText(input)) input.value = ''
+
     const message = this.validateField(input)
-    if (message) {
-      return this.validateFieldError(input, message)
-    }
+    if (message) return this.validateFieldError(input, message)
     return this.validateFieldSuccess(input)
   }
 
   getFormEntries() {
-    console.log('getFormEntries - ', serializeObject(this.form))
     return serializeObject(this.form)
   }
 
@@ -282,7 +269,7 @@ class Form {
    */
   validateFormSuccess() {
     if (this.async) {
-      return this.submitForm(this.getFormEntries())
+      return this.submitForm<any>(this.getFormEntries())
     }
     this.form.submit()
   }
@@ -292,7 +279,7 @@ class Form {
    *
    * @param {Object} messages | error messages returned from validation
    */
-  showInputErrors(messages) {
+  showInputErrors(messages: FormErrorMessages) {
     let scrolledToError = false
     this.inputs.map(input => {
       if (!scrolledToError && messages[input.name]) {
@@ -307,9 +294,8 @@ class Form {
 
   /**
    * Form validation error handler
-   * @param {Object} messages | messages returned from validation of fields
    */
-  validateFormError(messages) {
+  validateFormError(messages: FormErrorMessages) {
     this.showInputErrors(messages)
   }
 
@@ -318,7 +304,7 @@ class Form {
       const message = this.validateField(input)
       if (message) acc[input.name] = message
       return acc
-    }, {})
+    }, {} as Record<string, string>)
   }
 
   validateForm() {
@@ -332,9 +318,8 @@ class Form {
 
   /**
    * Submit the shipping form
-   * @param event, submit event
    */
-  handleFormSubmit(event) {
+  handleFormSubmit(event: Event) {
     event.preventDefault()
     this.validateForm()
   }
@@ -352,8 +337,8 @@ class Form {
    * Bind change events of input elements
    */
   bindChangeEvents() {
-    this.inputs.map(input =>
-      this.events.map(event =>
+    this.inputs.forEach(input =>
+      this.events.forEach(event =>
         input.addEventListener(event, () => this.handleInputChange(input), false),
       ),
     )
