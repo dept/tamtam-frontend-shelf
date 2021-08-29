@@ -42,4 +42,4 @@
 * [Image component](/components/image/README.md)
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@deptagency.com)
