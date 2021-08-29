@@ -1,6 +1,5 @@
-import { InViewElement } from '@utilities/in-view'
-
 import Events from '@/utilities/events'
+import { InViewElement } from '@/utilities/in-view'
 
 import { VideoPlatformOption } from './platforms'
 import NativeVideo from './platforms/native'
