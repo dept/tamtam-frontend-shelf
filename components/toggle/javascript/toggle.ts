@@ -3,13 +3,20 @@ import Events from '@utilities/events'
 const TOGGLE_ACTIVE_CLASS = 'toggle--is-active'
 
 class Toggle {
-  constructor(element) {
+  element: HTMLElement
+  controls: string | null
+  id: string | null
+  links: HTMLElement[]
+  activeClass: string
+  _isActive = false
+  interactiveElements: HTMLElement[]
+
+  constructor(element: HTMLElement) {
     this.element = element
     this.controls = element.getAttribute('aria-controls')
     this.id = element.id || this.controls
     this.links = this.getToggleLinks()
     this.activeClass = element.dataset.toggleActiveClass || TOGGLE_ACTIVE_CLASS
-    this._isActive = false
     this.interactiveElements = Toggle.getInteractiveElements(this.links)
 
     this.bindEvents()
@@ -126,7 +133,7 @@ class Toggle {
       .map(id => `#${id}`)
       .join(', ')
 
-    return Array.from(document.querySelectorAll(LINKS_SELECTOR))
+    return Array.from(document.querySelectorAll<HTMLElement>(LINKS_SELECTOR))
   }
 
   /**
@@ -140,13 +147,13 @@ class Toggle {
    * Find all interactive children in a toggleable element that are hidden when toggled
    * @param elementsToToggle, array with all elements controlled by the toggle
    */
-  static getInteractiveElements(elementsToToggle) {
-    const itemsBelowToggle = []
+  static getInteractiveElements(elementsToToggle: Toggle['links']) {
+    const itemsBelowToggle: Toggle['interactiveElements'] = []
 
     elementsToToggle.forEach(element => {
       const parentHeight = element.clientHeight
       const parentOffsetTop = element.offsetTop // In case parent isn't relatively positioned
-      const interactiveChildren = element.querySelectorAll(
+      const interactiveChildren = element.querySelectorAll<HTMLElement>(
         'a, area, input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, video',
       )
 
@@ -162,10 +169,8 @@ class Toggle {
 
   /**
    * Set tab index for DOM elements
-   * @param elements, elements to set index on
-   * @param value, value to be set
    */
-  static setTabIndex(elements, value) {
+  static setTabIndex(elements: Toggle['interactiveElements'], value: number) {
     elements.forEach(element => {
       element.tabIndex = value
     })
