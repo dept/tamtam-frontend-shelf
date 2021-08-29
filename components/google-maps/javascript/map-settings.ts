@@ -8,7 +8,7 @@
     export const MAP_SETTINGS ( PATH TO ACTIVE MARKER IMAGE )
 */
 
-const MAP_STYLE = [
+const MAP_STYLE: google.maps.MapTypeStyle[] = [
   {
     elementType: 'geometry',
     stylers: [
@@ -169,7 +169,7 @@ const MAP_STYLE = [
   },
 ]
 
-export const MAP_API_KEY = '1234567890qwertyuiop'
+export const MAP_API_KEY = ''
 
 export const MAP_MARKER =
   'https://emojipedia-us.s3.amazonaws.com/thumbs/72/emojipedia/132/flag-for-hawaii-ushi_1f3f4-e0075-e0073-e0068-e0069-e007f.png'
@@ -179,7 +179,7 @@ export const MAP_MARKER_ACTIVE =
 
 export const MAP_MAX_ZOOM = 10
 
-export const MAP_SETTINGS = {
+export const MAP_SETTINGS: google.maps.MapOptions = {
   center: {
     lat: 29.14,
     lng: 28.43,
@@ -191,7 +191,22 @@ export const MAP_SETTINGS = {
   styles: MAP_STYLE || null,
 }
 
-export const DEFAULT_REGIONS = [
+export type MapRegion = {
+  name: string
+  id: string
+  locations?: MapLocation[]
+}
+
+export type MapLocation = {
+  title: string
+  id: string
+  position: {
+    lat: number
+    lng: number
+  }
+}
+
+export const DEFAULT_REGIONS: MapRegion[] = [
   {
     name: 'Name Region',
     id: 'region_1',

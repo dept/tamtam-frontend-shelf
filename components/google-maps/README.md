@@ -15,13 +15,8 @@
 ## Install
 Import modules
 ```javascript
-import Cookiebar from '@components/cookies';
-Cookiebar.init({
-    cookiePrefix: 'client-name', // optional - recommended to change
-    version: '1' // optional - recommended to update. MUST BE STRING
-});
-
-moduleInit.async('[js-hook-googlemaps]', () => import(/* webpackChunkName: "GoogleMaps" */'@components/google-maps'));
+import '@/components/cookies';
+moduleInit.async('[js-hook-googlemaps]', () => import('@/components/google-maps'));
 ```
 
 ## How to use ( MAPS VIEW ONLY )
