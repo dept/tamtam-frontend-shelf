@@ -65,23 +65,25 @@ this is done since locally you can not use a DELETE request on a JSON file.
 #### Use it
 
 ```javascript
-// Pass third property 'true' to use JSON everywhere.
+// Pass fourth property 'true' to use JSON everywhere.
 API.get(
   'your-path/foo-bar',
   {
     data: 'object',
   },
+  null,
   true,
 )
   .then()
   .catch()
 
-// Pass as third property 'local' to use JSON local only. No other environments allowed.
+// Pass as fourth property 'local' to use JSON local only. No other environments allowed.
 API.get(
   'your-path/foo-bar',
   {
     data: 'object',
   },
+  null,
   'local',
 )
   .then()

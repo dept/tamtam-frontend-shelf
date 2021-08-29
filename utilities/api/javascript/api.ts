@@ -13,11 +13,16 @@ class API {
   /**
    * Set an anti forgery token to make AJAX requests to the backend
    */
-  setAntiForgeryToken(name: string, value: string) {
+  public setAntiForgeryToken(name: string, value: string) {
     this.antiForgeryToken = { name, value }
   }
 
-  get<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+  public get<T>(
+    path: string,
+    data = {},
+    json?: string | boolean,
+    options: AxiosRequestConfig = {},
+  ) {
     let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'get'),
       params: data,
@@ -29,7 +34,12 @@ class API {
     return axios.request<T>(config)
   }
 
-  post<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+  public post<T>(
+    path: string,
+    data = {},
+    options: AxiosRequestConfig = {},
+    json?: string | boolean,
+  ) {
     let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'post'),
       data,
@@ -46,7 +56,12 @@ class API {
     return axios.request<T>(config)
   }
 
-  put<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+  public put<T>(
+    path: string,
+    data = {},
+    options: AxiosRequestConfig = {},
+    json?: string | boolean,
+  ) {
     let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'put'),
       data,
@@ -58,7 +73,12 @@ class API {
     return axios.request<T>(config)
   }
 
-  delete<T>(path: string, data = {}, json: string | boolean, options: AxiosRequestConfig = {}) {
+  public delete<T>(
+    path: string,
+    data = {},
+    options: AxiosRequestConfig = {},
+    json?: string | boolean,
+  ) {
     let config: AxiosRequestConfig = {
       url: getEndpoint(path, json, 'delete'),
       data,
@@ -74,7 +94,7 @@ class API {
 /**
  * Get the endpoint. If we require json we will return a json file.
  */
-function getEndpoint(path: string, json: string | boolean, method: Method): string {
+function getEndpoint(path: string, json?: string | boolean, method?: Method): string {
   if (path.substr(0, 2) === '//' || path.substr(0, 4) === 'http' || path.substr(0, 1) === '?') {
     return path
   }
@@ -89,7 +109,7 @@ function getEndpoint(path: string, json: string | boolean, method: Method): stri
 /**
  * Will transform the method to GET if we require static json file
  */
-function getMethod(method: Method, json: string | boolean): Method {
+function getMethod(method: Method, json?: string | boolean): Method {
   return json === true || (json === 'local' && Environment.isLocal) ? 'GET' : method
 }
 
