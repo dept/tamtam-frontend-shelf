@@ -2,62 +2,59 @@ import RafThrottle from '@utilities/raf-throttle'
 
 const HEADER_SHADOW_CLASS = 'header--has-shadow'
 class Header {
-  constructor(element) {
+  element: HTMLElement
+  height = 0
+  scrollValue = 0
+  prevScrollValue = 0
+  translateValue = 0
+  _initialized = false
+  scrollingDistanceHeight: number
+  stickyElementTop: number
+  isScrollingDown: boolean
+
+  constructor(element: HTMLElement) {
     this.element = element
 
-    if (!this.element) {
-      return
-    }
-
-    this.height = 0
-    this.scrollValue = 0
-    this.prevScrollValue = 0
-    this.translateValue = 0
-    this._initialized = false
-
+    if (!this.element) return
     this.bindEvents()
   }
 
-  get fixed() {
+  private get fixed() {
     return this.element.hasAttribute('fixed')
   }
 
-  get condenses() {
+  private get condenses() {
     return this.element.hasAttribute('condenses')
   }
 
-  get reveals() {
+  private get reveals() {
     return this.element.hasAttribute('reveals')
   }
 
-  get shadow() {
+  private get shadow() {
     return this.element.hasAttribute('shadow')
   }
 
-  set shadow(val) {
-    if (val) {
-      this.element.classList.add(HEADER_SHADOW_CLASS)
-    } else {
-      this.element.classList.remove(HEADER_SHADOW_CLASS)
-    }
+  private set shadow(val) {
+    this.element.classList[val ? 'add' : 'remove'](HEADER_SHADOW_CLASS)
   }
 
-  get _maxHeaderHeight() {
-    return this.fixed ? this.scrollingDistanceHeight : this.height + 5
+  private get maxHeaderHeight() {
+    return this.fixed ? this.scrollingDistanceHeight : this.height
   }
 
   /**
    * Gets element with [sticky] attribute
    * Takes the first direct child when [sticky] attribute is not set
    */
-  get stickyElement() {
+  private get stickyElement() {
     const elements = this.element.childNodes
 
     let stickyElement
 
     for (let i = 0, len = elements.length; i < len; i++) {
       if (elements[i].nodeType === Node.ELEMENT_NODE) {
-        const element = elements[i]
+        const element = elements[i] as HTMLElement
 
         if (element.hasAttribute('sticky')) {
           stickyElement = element
@@ -72,26 +69,24 @@ class Header {
     return stickyElement
   }
 
-  bindEvents() {
+  private bindEvents() {
     RafThrottle.set([
       {
         element: window,
         event: 'scroll',
         namespace: 'HeaderScroll',
-        fn: () => this._scrollHandler(),
+        fn: () => this.scrollHandler(),
       },
     ])
 
-    if (!this._initialized) {
-      this._scrollHandler()
-    }
+    if (!this._initialized) this.scrollHandler()
   }
 
-  isOnScreen() {
+  private get isOnScreen() {
     return this.height !== 0 && this.translateValue < this.height
   }
 
-  _scrollHandler() {
+  private scrollHandler() {
     this.height = this.element.offsetHeight
     this.scrollingDistanceHeight = this.stickyElement
       ? this.height - this.stickyElement.offsetHeight
@@ -100,24 +95,24 @@ class Header {
 
     this.scrollValue = window.pageYOffset
 
-    this._calculateHeaderTranslateValue()
+    this.calculateHeaderTranslateValue()
   }
 
   /**
    * Calculates the header translate value based on the options that are set
    */
 
-  _calculateHeaderTranslateValue() {
+  private calculateHeaderTranslateValue() {
     const scrollDiff = this.scrollValue - this.prevScrollValue
 
     if (this.condenses || !this.fixed) {
       if (this.reveals) {
         this.translateValue = Math.min(
-          this._maxHeaderHeight,
+          this.maxHeaderHeight,
           Math.max(0, this.translateValue + scrollDiff),
         )
       } else {
-        this.translateValue = Math.min(this._maxHeaderHeight, Math.max(0, this.scrollValue))
+        this.translateValue = Math.min(this.maxHeaderHeight, Math.max(0, this.scrollValue))
       }
     }
 
@@ -131,52 +126,50 @@ class Header {
     this.isScrollingDown = this.scrollValue > this.prevScrollValue
     this.prevScrollValue = this.scrollValue
 
-    if (this.scrollValue <= 0) {
-      this._transformHeader(0)
-    } else {
-      this._transformHeader(this.translateValue)
+    if (this.reveals || this.stickyElement || (this.fixed && this.condenses)) {
+      this.transformHeader(this.scrollValue <= 0 ? 0 : this.translateValue)
     }
 
     if (this.shadow) {
-      this._applyShadow()
+      this.applyShadow()
     }
   }
 
-  _applyShadow() {
+  private applyShadow() {
     if (this.fixed) {
       this.element.classList.add(HEADER_SHADOW_CLASS)
     }
 
-    if (this.scrollValue <= 0 || !this.isOnScreen()) {
+    if (this.scrollValue <= 0 || !this.isOnScreen) {
       this.element.classList.remove(HEADER_SHADOW_CLASS)
     }
 
-    if (this.isOnScreen() && this.scrollValue > 0 && !this.isScrollingDown) {
+    if (this.isOnScreen && this.scrollValue > 0 && !this.isScrollingDown) {
       this.element.classList.add(HEADER_SHADOW_CLASS)
     }
   }
 
   /**
-   * Applies the calculated value from _calculateHeaderTranslateValue to the header
+   * Applies the calculated value from calculateHeaderTranslateValue to the header
    * and applies it to the sticky element when a sticky element is available
    */
 
-  _transformHeader(value) {
-    this.element.style.transform = `translate3d(0, -${value}px, 0)`
+  private transformHeader(value: number) {
+    this.element.style.setProperty('--header-translate-value', `-${value}px`)
 
     if (this.stickyElement) {
-      this.stickyElement.style.transform = `translate3d(0, ${Math.min(
-        value,
-        this.scrollingDistanceHeight,
-      ) - this.stickyElementTop}px, 0)`
+      this.element.style.setProperty(
+        '--header-sticky-element-translate-value',
+        `${Math.min(value, this.scrollingDistanceHeight) - this.stickyElementTop}px`,
+      )
 
       if (this.condenses && value >= this.stickyElementTop) {
-        this.stickyElement.style.transform = `translate3d(0 ,${Math.min(
-          value,
-          this.scrollingDistanceHeight,
-        ) - this.stickyElementTop}px, 0)`
+        this.element.style.setProperty(
+          '--header-sticky-element-translate-value',
+          `${Math.min(value, this.scrollingDistanceHeight) - this.stickyElementTop}px`,
+        )
       } else {
-        this.stickyElement.style.transform = `translate3d(0, 0, 0)`
+        this.element.style.setProperty('--header-sticky-element-translate-value', `0px`)
       }
     }
 

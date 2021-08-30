@@ -1,27 +1,42 @@
-$header-background-color: $color-primary;
-$header-text-color: $color-black;
-$header-shadow-color: inset 0px 5px 6px -3px rgba($color-black, 0.2);
+:root {
+  --header-background-color: #{$color-primary};
+  --header-text-color: #{$color-black};
+  --header-shadow-color: #{rgba($color-black, 1)};
+  --header-shadow-size: 10px;
+  --header-translate-value: 0px;
+  --header-sticky-element-translate-value: 0px;
+}
 
 .c-header {
-  background-color: $header-background-color;
-  color: $header-text-color;
-  left: 0;
   position: fixed;
   top: 0;
+  left: 0;
+  background-color: var(--header-background-color);
+  color: var(--header-text-color);
   transition-timing-function: linear;
   transition-property: transform;
   transition-duration: 0s;
-  will-change: transform;
   width: 100%;
+
+  &[reveals],
+  &[condenses]:not([reveals]) {
+    transform: translate3d(0, var(--header-translate-value), 0);
+  }
+
+  [sticky] {
+    transform: translate3d(0, var(--header-sticky-element-translate-value), 0);
+  }
 }
 
 .header--has-shadow {
   &::before {
-    bottom: -5px;
-    box-shadow: $header-shadow-color;
-    content: '';
-    height: 5px;
+    pointer-events: none;
     position: absolute;
+    bottom: calc(-1 * var(--header-shadow-size));
     width: 100%;
+    height: var(--header-shadow-size);
+    box-shadow: inset 0px var(--header-shadow-size) calc(var(--header-shadow-size) + 1px)
+      calc(-1 * var(--header-shadow-size) + 2px) var(--header-shadow-color);
+    content: '';
   }
 }
