@@ -1,4 +1,9 @@
-// @shelf-version 1.0.0
+:root {
+  --image-transition-duration: 300ms;
+  --image-transition-timing: #{$ease-out-quad};
+  --image-skeleton-color: #{rgba($color-black, 0.03)};
+}
+
 .c-image {
   position: relative;
 
@@ -9,44 +14,30 @@
     height: auto;
   }
 
-  [js-hook-objectfit-img] {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-
-    .has--object-fit-polyfill & {
-      opacity: 0;
+  &[js-hook-objectfit] {
+    img {
+      object-fit: cover;
+      height: 100%;
+      max-width: none;
+      max-height: none;
     }
   }
 }
 
-[js-hook-objectfit-container] {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.image__holder {
+  background-color: var(--image-skeleton-color);
+
+  .image--is-loaded & {
+    transition: background-color var(--image-transition-duration) var(--image-transition-timing);
+    background-color: transparent;
+  }
 }
 
 .image__default {
   opacity: 0;
-  transition: opacity 200ms ease-out;
+  transition: opacity var(--image-transition-duration) var(--image-transition-timing);
 
   .image--is-loaded & {
     opacity: 1;
-  }
-}
-
-.image__ghost {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0);
-  transition: opacity 200ms ease-out 50ms;
-
-  .image--is-loaded & {
-    opacity: 0;
   }
 }
