@@ -18,7 +18,7 @@ __NOTE: The video module has been updated as well__
 ## Install
 Import module
 ```javascript
-import '@components/cookies';
+import '@/components/cookies';
 ```
 
 ## How to use
@@ -37,7 +37,6 @@ Add cookie form template to page
 {% include "cookie-form.html" %}
 ```
 
-
 ## Dependencies
 * [Form elements component](/components/form-elements/)
 * [Events utility](/utilities/events/)
@@ -47,8 +46,3 @@ Add cookie form template to page
 ## Developers
 * [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 * [Jeroen Reumkens (co author)](mailto:jeroen.reumkens@tamtam.nl)
-
-### 2.0.0
-* Refactored component to meet GDPR requirements
-### 1.0.0
-* Initial version

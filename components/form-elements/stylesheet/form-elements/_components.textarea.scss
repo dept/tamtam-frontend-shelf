@@ -1,14 +1,16 @@
-$textarea-border-width: $input-border-width;
-$textarea-border-radius: $input-border-radius;
-$textarea-border-color: $input-border-color;
-$textarea-error-color: $input-error-color;
-$textarea-fill-color: $input-fill-color;
-$textarea-padding-top: $input-padding-top;
-$textarea-padding-bottom: $input-padding-bottom;
-$textarea-padding-left: $input-padding-left;
-$textarea-padding-right: $input-padding-right;
-$textarea-transition-time: $input-transition-time;
-$textarea-transition-ease: $input-transition-ease;
+:root {
+  --textarea-border-width: var(--input-border-width);
+  --textarea-border-radius: var(--input-border-radius);
+  --textarea-border-color: var(--input-border-color);
+  --textarea-error-color: var(--input-error-color);
+  --textarea-fill-color: var(--input-fill-color);
+  --textarea-padding-top: var(--input-padding-top);
+  --textarea-padding-bottom: var(--input-padding-bottom);
+  --textarea-padding-left: var(--input-padding-left);
+  --textarea-padding-right: var(--input-padding-right);
+  --textarea-transition-time: var(--input-transition-time);
+  --textarea-transition-ease: var(--input-transition-ease);
+}
 
 .c-textarea {
   position: relative;
@@ -22,14 +24,14 @@ $textarea-transition-ease: $input-transition-ease;
   display: block;
   appearance: none;
   width: 100%;
-  padding-top: $textarea-padding-top;
-  padding-bottom: $textarea-padding-bottom;
-  padding-left: $textarea-padding-left;
-  padding-right: $textarea-padding-right;
-  border-radius: $textarea-border-radius;
+  padding-top: var(--textarea-padding-top);
+  padding-bottom: var(--textarea-padding-bottom);
+  padding-left: var(--textarea-padding-left);
+  padding-right: var(--textarea-padding-right);
+  border-radius: var(--textarea-border-radius);
   border: 0;
-  box-shadow: 0 0 0 $textarea-border-width $textarea-border-color inset;
-  background-color: $textarea-fill-color;
+  box-shadow: 0 0 0 var(--textarea-border-width) var(--textarea-border-color) inset;
+  background-color: var(--textarea-fill-color);
   line-height: $font-line-height-body;
 
   &[disabled] {
@@ -42,7 +44,7 @@ $textarea-transition-ease: $input-transition-ease;
   }
 
   .form__item--error & {
-    box-shadow: 0 0 0 $textarea-border-width $textarea-error-color inset;
+    box-shadow: 0 0 0 var(--textarea-border-width) var(--textarea-error-color) inset;
   }
 }
 

@@ -1,8 +1,5 @@
 
 {#
-    @shelf-version: 2.0.0
-    360viewer macro
-
     data {
         classes: 'string' (optional)
         folder: 'string' - Your images folder on server.
@@ -13,6 +10,8 @@
         ratio: 'number' (optional) - Default: none - Prevents page from jumping.
         autoplayReverse: 'bool' (optional) - Default: false - Autoplay 360 spin view on load.
         speed: 'number' (optional) - Default: 150 - Speed of changing frames for autoplay in milliseconds.
+        swipeable: 'boolean' (optional) - Default: true
+        draggable: 'boolean' (optional) - Default: true
         dragSpeed: 'number' (optional) - Default: 150 - Speed Factor of changing frames on drag event.
         spinReverse: 'bool' (optional) - Default: false - Spin direction, by default it uses counterclockwise (image indexes from 1 to data-amount).
         controlReverse: 'bool' (optional) - Default: false - Spin direction using controls, by default it uses counterclockwise (image indexes from 1 to data-amount).
@@ -34,6 +33,8 @@
         {%- if data.keys %} data-keys="{{ data.keys }}"{% endif -%}
         {%- if data.autoplay %} data-autoplay="{{ data.autoplay }}"{% endif -%}
         {%- if data.ratio %} data-ratio="{{ data.ratio }}"{% endif -%}
+        {%- if data.draggable %} data-ratio="{{ data.draggable }} "{% endif -%}
+        {%- if data.swipeable %} data-ratio="{{ data.swipeable }} "{% endif -%}
         {%- if data.autoplayReverse %} data-autoplay-reverse="{{ data.autoplayReverse }}"{% endif -%}
         {%- if data.speed %} data-speed="{{ data.speed }}"{% endif -%}
         {%- if data.dragSpeed %} data-drag-speed="{{ data.dragSpeed }}"{% endif -%}

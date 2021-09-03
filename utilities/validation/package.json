@@ -1,9 +1,13 @@
 {
-    "name": "dept-validation",
-    "license": "MIT",
-    "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
-    "dependencies": {
-        "iban": "0.0.8",
-        "luhn": "2.1.0"
-    }
+  "name": "dept-validation",
+  "license": "MIT",
+  "version": "2.0.0",
+  "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
+  "dependencies": {
+    "iban": "^0.0.14",
+    "luhn": "^2.4.1"
+  },
+  "devDependencies": {
+    "@types/iban": "^0.0.32"
+  }
 }

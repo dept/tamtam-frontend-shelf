@@ -1,13 +1,12 @@
 # Viewer 360
 
 ## Table of contents
-- [Viewer 360](#viewer-360)
-  - [Table of contents](#table-of-contents)
-  - [What does it do](#what-does-it-do)
-  - [Install](#install)
-  - [How to use](#how-to-use)
-  - [Dependencies](#dependencies)
-  - [Developers](#developers)
+- [Table of contents](#table-of-contents)
+- [What does it do](#what-does-it-do)
+- [Install](#install)
+- [How to use](#how-to-use)
+- [Dependencies](#dependencies)
+- [Developers](#developers)
 
 
 ## What does it do
@@ -16,7 +15,7 @@
 ## Install
 Import module and init with moduleInit on a DOM element
 ```javascript
-moduleInit.async('[js-hook-viewer-360]', () => import(/* webpackChunkName: "Viewer360" */'@components/viewer360'));
+moduleInit.async('[js-hook-viewer-360]', () => import('@/components/viewer360'));
 ```
 
 ## How to use

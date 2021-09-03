@@ -1,24 +1,34 @@
-// @shelf-version 1.1.0
-$video-background-color: $color-grey-5;
-$video-loader-size: 50px;
-$video-loader-thickness: 4px;
-$video-loader-color: $color-primary;
-$video-button-size: 75px;
-$video-button-color: $color-white;
-$video-button-icon-color: $color-primary;
-$video-button-transition-time: 250ms * 2;
-$video-button-transition-ease: $ease-in-quad;
+:root {
+  --video-background-color: #{$color-grey-5};
+  --video-reveal-transition-time: 250ms;
+  --video-reveal-transition-ease: #{$ease-in-quad};
+
+  --video-loader-size: 50px;
+  --video-loader-thickness: 4px;
+  --video-loader-color: #{$color-primary};
+  --video-loader-transition-time: 250ms;
+  --video-loader-transition-ease: #{$ease-in-quad};
+
+  --video-button-size: 75px;
+  --video-button-color: #{$color-white};
+  --video-button-icon-color-hover: #{$color-grey-20};
+  --video-button-icon-color-hover: var(--video-button-icon-color-hover);
+  --video-button-icon-color: #{$color-primary};
+  --video-button-transition-time: 500ms;
+  --video-button-transition-ease: #{$ease-in-quad};
+}
 
 @mixin video-button-show-props {
-  transition: $video-button-transition-time $video-button-transition-ease,
-    $video-button-transition-time $video-button-transition-ease, $video-button-transition-time;
+  transition: var(--video-button-transition-time) var(--video-button-transition-ease),
+    var(--video-button-transition-time) var(--video-button-transition-ease),
+    var(--video-button-transition-time);
 }
 
 .c-video {
   position: relative;
   padding-bottom: 56.25%;
   margin-bottom: 20px;
-  background-color: $video-background-color;
+  background-color: var(--video-background-color);
 
   .video__image,
   .video__player,
@@ -38,13 +48,11 @@ $video-button-transition-ease: $ease-in-quad;
 .video__player {
   z-index: 1;
   opacity: 0;
-  transform: scale(0.95);
-  transition: 250ms $ease-in-quad;
-  transition-property: opacity, transform;
+  transition: var(--video-reveal-transition-time) var(--video-reveal-transition-ease);
+  transition-property: opacity;
 
   .video--is-initialised & {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -54,15 +62,15 @@ $video-button-transition-ease: $ease-in-quad;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: $video-loader-size;
-  height: $video-loader-size;
-  background-color: $video-background-color;
-  box-shadow: inset 0 0 0 $video-loader-thickness $video-loader-color;
+  width: var(--video-loader-size);
+  height: var(--video-loader-size);
+  background-color: var(--video-background-color);
+  box-shadow: inset 0 0 0 var(--video-loader-thickness) var(--video-loader-color);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   backface-visibility: hidden;
   z-index: 3;
-  transition: $video-button-transition-time $ease-in-quad;
+  transition: var(--video-button-transition-time) var(--video-button-transition-ease);
   transition-property: opacity;
 
   &::before,
@@ -72,24 +80,25 @@ $video-button-transition-ease: $ease-in-quad;
   }
 
   &::before {
-    width: ($video-loader-size + 2) / 2;
-    height: $video-loader-size + 2;
-    background: $video-background-color;
-    border-radius: ($video-loader-size + 2) 0 0 ($video-loader-size + 2);
+    width: calc((var(--video-loader-size) + 2px) / 2);
+    height: calc(var(--video-loader-size) + 2px);
+    background: var(--video-background-color);
+    border-radius: calc(var(--video-loader-size) + 2px) 0 0 calc(var(--video-loader-size) + 2px);
     top: -1px;
     left: -1px;
-    transform-origin: ($video-loader-size + 2) / 2 ($video-loader-size + 2) / 2;
+    transform-origin: calc((var(--video-loader-size) + 2px) / 2)
+      calc((var(--video-loader-size) + 2px) / 2);
     animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1) 900ms;
   }
 
   &::after {
-    width: ($video-loader-size + 2) / 2;
-    height: $video-loader-size + 2;
-    background: $video-background-color;
-    border-radius: 0 ($video-loader-size + 1) ($video-loader-size + 1) 0;
+    width: calc((var(--video-loader-size) + 2px) / 2);
+    height: calc(var(--video-loader-size) + 2px);
+    background: var(--video-background-color);
+    border-radius: 0 calc(var(--video-loader-size) + 1px) calc(var(--video-loader-size) + 1px) 0;
     top: -1px;
-    left: $video-loader-size / 2;
-    transform-origin: 0 ($video-loader-size + 2) / 2;
+    left: calc(var(--video-loader-size) / 2);
+    transform-origin: 0 calc((var(--video-loader-size) + 2px) / 2);
     animation: video-loader 1200ms infinite cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
@@ -117,7 +126,7 @@ $video-button-transition-ease: $ease-in-quad;
   height: 100%;
   padding: $global-spacing-md;
   z-index: 10;
-  background-color: $video-background-color;
+  background-color: var(--video-background-color);
 
   .video--has-invalid-cookie & {
     display: flex;
@@ -138,30 +147,31 @@ $video-button-transition-ease: $ease-in-quad;
   opacity: 0;
   visibility: hidden;
   position: absolute;
-  width: $video-button-size;
-  height: $video-button-size;
-  border-radius: $video-button-size;
+  width: var(--video-button-size);
+  height: var(--video-button-size);
+  border-radius: var(--video-button-size);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
-  background-color: $video-button-color;
+  background-color: var(--video-button-color);
   box-shadow: 0 2px 10px 0 rgba($color-black, 0.3);
-  transition: $video-button-transition-time $video-button-transition-ease,
-    $video-button-transition-time $video-button-transition-ease, 0ms $video-button-transition-time;
+  transition: var(--video-button-transition-time) var(--video-button-transition-ease),
+    var(--video-button-transition-time) var(--video-button-transition-ease),
+    0ms var(--video-button-transition-time);
   transition-property: box-shadow, opacity, visibility;
 
   @include hover-focus {
     box-shadow: 0 0 0 0 rgba($color-black, 0);
 
     .video__button-icon {
-      color: darken($video-button-icon-color, 20%);
+      color: var(--video-button-icon-color-hover);
     }
   }
 
   @include keyboard-focus {
     .video__button-icon {
-      color: darken($video-button-icon-color, 100%);
+      color: var(--video-button-icon-color-focus);
     }
   }
 }
@@ -174,8 +184,8 @@ $video-button-transition-ease: $ease-in-quad;
   transform: translate(-50%, -50%);
   z-index: 2;
   font-size: 3rem;
-  color: $video-button-icon-color;
-  transition: $video-button-transition-time $video-button-transition-ease;
+  color: var(--video-button-icon-color);
+  transition: var(--video-button-transition-time) var(--video-button-transition-ease);
   transition-property: color, border;
 }
 
@@ -184,7 +194,7 @@ $video-button-transition-ease: $ease-in-quad;
     width: 18px;
     height: 18px;
     border-top: 9px solid transparent;
-    border-left: 18px solid $video-button-icon-color;
+    border-left: 18px solid var(--video-button-icon-color);
     border-right: 0 solid transparent;
     border-bottom: 9px solid transparent;
   }
@@ -192,18 +202,19 @@ $video-button-transition-ease: $ease-in-quad;
   .video--is-paused & {
     opacity: 1;
     visibility: visible;
+
     @include video-button-show-props;
   }
 
   @include hover-focus {
     .video__button-icon {
-      border-left-color: darken($video-button-icon-color, 20%);
+      border-left-color: var(--video-button-icon-color-hover);
     }
   }
 
   @include keyboard-focus {
     .video__button-icon {
-      border-left-color: darken($video-button-icon-color, 100%);
+      border-left-color: var(--video-button-icon-color-focus);
     }
   }
 }
@@ -215,6 +226,7 @@ $video-button-transition-ease: $ease-in-quad;
 
   .video--is-playing & {
     visibility: visible;
+
     @include video-button-show-props;
   }
 
@@ -231,6 +243,7 @@ $video-button-transition-ease: $ease-in-quad;
   .video--is-ended & {
     opacity: 1;
     visibility: visible;
+
     @include video-button-show-props;
   }
 }

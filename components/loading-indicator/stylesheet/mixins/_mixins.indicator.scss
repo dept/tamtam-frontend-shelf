@@ -6,7 +6,7 @@
   height: 100%;
   z-index: 100;
   transition: opacity $loader-transition-time ease-out;
-  animation: loaderReveal $loader-transition-time linear;
+  animation: loading-indicator-reveal $loader-transition-time linear;
   animation-fill-mode: forwards;
   background-color: rgba($color-white, 0.5);
 }

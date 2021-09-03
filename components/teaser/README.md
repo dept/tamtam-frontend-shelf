@@ -39,7 +39,7 @@
 ```
 
 ## Dependencies
-* [Image component](/components/image/README.md)
+* Image component
 
 ## Developers
-* [Jeroen Reumkens](mailto:jeroen.reumkens@tamtam.nl)
+* [Jeroen Reumkens](mailto:jeroen.reumkens@deptagency.com)

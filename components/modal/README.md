@@ -8,8 +8,6 @@
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-![Modal Demo](https://media.giphy.com/media/3BMtWjq6gBFu8iHqsS/giphy.gif)
-
 ## What does it do
 * Create modalboxes with an easy to use macro.
 * Open and close modalboxes.
@@ -18,9 +16,9 @@
 ## Install
 Import module
 ```javascript
-import '@utilities/focus-trap';
+import '@/utilities/focus-trap';
 
-moduleInit.async('[js-hook-modal]', () => import(/* webpackChunkName: "Modal" */'@components/modal'));
+moduleInit.async('[js-hook-modal]', () => import('@/components/modal'))
 ```
 
 ## How to use

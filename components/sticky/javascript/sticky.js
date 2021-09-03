@@ -1,7 +1,3 @@
-/**
- *  @shelf-version: 1.1.0
- */
-
 import Events from '@utilities/events'
 import RafThrottle from '@utilities/raf-throttle'
 

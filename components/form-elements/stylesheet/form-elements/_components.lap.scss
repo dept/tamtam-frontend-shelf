@@ -1,7 +1,9 @@
-$lap-transition-time: 300ms;
-$lap-transition-ease: ease;
-$lap-padding-width: 20px;
-$lap-padding-height: 10px;
+:root {
+  --lap-transition-time: 300ms;
+  --lap-transition-ease: #{$ease-out-quad};
+  --lap-padding-width: 20px;
+  --lap-padding-height: 10px;
+}
 
 .form__item--lap {
   .input__label,
@@ -9,20 +11,20 @@ $lap-padding-height: 10px;
   .select__label {
     pointer-events: none;
     position: absolute;
-    transform: translate3d($lap-padding-width, $lap-padding-height, 0);
+    transform: translate3d(var(--lap-padding-width), var(--lap-padding-height), 0);
     transform-origin: 0 0;
-    transition: $lap-transition-time $lap-transition-ease;
+    transition: var(--lap-transition-time) var(--lap-transition-ease);
     transition-property: transform, color, max-width;
     white-space: nowrap;
     overflow: hidden;
-    max-width: calc(100% - (#{$lap-padding-width} * 2));
+    max-width: calc(100% - (var(--lap-padding-width) * 2));
     text-overflow: ellipsis;
   }
 
   &.input--file {
     .input__label {
       left: 20px;
-      max-width: calc(100% - calc((#{$lap-padding-width} * 2) + 20px));
+      max-width: calc(100% - calc((var(--lap-padding-width) * 2) + 20px));
     }
   }
 }

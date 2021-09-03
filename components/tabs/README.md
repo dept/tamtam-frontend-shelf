@@ -1,6 +1,7 @@
-
 # Tabs component
+
 ## Table of contents
+
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
@@ -8,15 +9,18 @@
 5. [Developers](#markdown-header-developers)
 
 ## What does it do
-* Creates a tab.
+
+- Creates a tab.
 
 ## Install
-Import module
-```javascript
-import moduleInit from '@utilities/module-init';
 
-import '@utilities/events';
-moduleInit.async('[js-hook-tab]', () => import(/* webpackChunkName: "Tabs" */'@components/tabs'));
+Import module
+
+```javascript
+import moduleInit from '@/utilities/module-init'
+
+import '@/utilities/events'
+moduleInit.async('[js-hook-tab]', () => import('@/components/tabs'))
 ```
 
 ## How to use
@@ -49,7 +53,7 @@ moduleInit.async('[js-hook-tab]', () => import(/* webpackChunkName: "Tabs" */'@c
     aria-labelledby="id1-tab">
 
     Phasellus efficitur ipsum magna, vel malesuada erat venenatis ut. Donec vel sollicitudin dui, et convallis lorem. Integer pulvinar, est eget tincidunt dictum, augue tortor fermentum nibh, pharetra mollis mi sem eget erat. Vivamus id ullamcorper quam.
-    
+
 </div>
 
 <div class="tabpanel"
@@ -59,13 +63,15 @@ moduleInit.async('[js-hook-tab]', () => import(/* webpackChunkName: "Tabs" */'@c
     aria-labelledby="id2-tab">
 
     Phasellus efficitur ipsum magna, vel malesuada erat venenatis ut. Donec vel sollicitudin dui, et convallis lorem. Integer pulvinar, est eget tincidunt dictum, augue tortor fermentum nibh, pharetra mollis mi sem eget erat. Vivamus id ullamcorper quam.
-    
+
 </div>
 
 ```
 
 ## Dependencies
-* [Events utility](/utilities/events/)
+
+- [Events utility](/utilities/events/)
 
 ## Developers
-* [Robin Treur](mailto:robin.treur@deptagency.com)
+
+- [Robin Treur](mailto:robin.treur@deptagency.com)

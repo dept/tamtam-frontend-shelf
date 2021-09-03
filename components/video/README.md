@@ -1,6 +1,7 @@
 # Video component
 
 ## Table of contents
+
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
@@ -11,15 +12,18 @@
 ![Video Demo](https://media.giphy.com/media/7AaqrqQUPys39wn1CN/giphy.gif)
 
 ## What does it do
-* Plays Youtube, Vimeo and native video
-* Fires generic video ready, play & pause events.
+
+- Plays Youtube, Vimeo and native video
+- Fires generic video ready, play & pause events.
 
 ## Install
+
 Import module
+
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view'
+import '@/components/image'
+import { videoLoader } from '@/components/video'
 ```
 
 ## How to use
@@ -27,44 +31,35 @@ import VideoLoader from '@components/video/loader';
 ### Default
 
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view'
+import '@/components/image'
+import { videoLoader } from '@/components/video'
 
-VideoLoader()
-    .then(([Platforms, Video]) => {
-
-        Video.default.registerPlatforms({
-            'native': Platforms.Native,
-            'youtube': Platforms.Youtube,
-            'vimeo': Platforms.Vimeo
-        });
-
-    })
-    .catch(() => { });
+videoLoader(['native', 'youtube', 'vimeo'])
+  .then(([platforms, Video]) => {
+    Video.registerPlatforms(platforms)
+  })
+  .catch(() => null)
 ```
 
 ### With nullcheck
+
 If you want to create a nullCheck in case there is no video element on the page:
+
 ```javascript
 if (document.querySelector('[js-hook-video]')) {
-    VideoLoader()
-    .then(([Platforms, Video]) => {
-
-        Video.default.registerPlatforms({
-            'native': Platforms.Native,
-            'youtube': Platforms.Youtube,
-            'vimeo': Platforms.Vimeo
-        });
-
+  videoLoader(['native', 'youtube', 'vimeo'])
+    .then(([platforms, Video]) => {
+      Video.registerPlatforms(platforms)
     })
-    .catch(() => { });
+    .catch(() => {})
 }
 ```
+
 The promise in VideoLoader will throw an error that ends up in your catch, if no video element is found.
 
-
 Create player in HTML. The player will use the [in-view library](/utilities/in-view/) to initialise the videos when they're in view.
+
 ```htmlmixed
 {% from 'video.html' import video  %}
 
@@ -89,28 +84,24 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
 ```
 
 ### Without in-view
+
 This will initialise all the players on the page. If autoplay parameter is set, it will also autoplay all videos.
+
 ```javascript
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/components/image'
+import { videoLoader } from '@/components/video'
 
-VideoLoader
-    .then(([Platforms, Video]) => {
+videoLoader(['native', 'youtube', 'vimeo'])
+  .then(([platforms, Video]) => {
+    Video.registerPlatforms(platforms)
 
-        Video.default.registerPlatforms({
-            'native': Platforms.Native,
-            'youtube': Platforms.Youtube,
-            'vimeo': Platforms.Vimeo
-        });
-
-        Events.$trigger('video::update');
-
-    })
-    .catch(() => { });
-
+    Events.$trigger('video::update')
+  })
+  .catch(() => {})
 ```
 
 Create the player the same as in the previous demo. But now add a `inview: false` as parameter.
+
 ```htmlmixed
 {% from 'video.html' import video  %}
 
@@ -136,21 +127,21 @@ Create the player the same as in the previous demo. But now add a `inview: false
 ```
 
 ### Native video
+
 You can initialise native video elements with srcset detect, it will pick the closest source based on you screen size and the available source sizes.
+
 ```javascript
-import '@utilities/in-view';
-import '@components/image';
-import VideoLoader from '@components/video/loader';
+import '@/utilities/in-view'
+import '@/components/image'
+import { videoLoader } from '@/components/video'
 
-VideoLoader
-    .then(([Platforms, Video]) => {
+videoLoader(['native'])
+  .then(([platforms, Video]) => {
+    Video.registerPlatforms(platforms)
 
-        Video.default.registerPlatforms({
-            'native': Platforms.Native
-        });
-
-    })
-    .catch(() => { });
+    Events.$trigger('video::update')
+  })
+  .catch(() => {})
 ```
 
 ```htmlmixed
@@ -179,7 +170,7 @@ VideoLoader
             size : 1920,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=119',
+                    url: 'https://temp.media/video/?width=1920&height=1080&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -188,7 +179,7 @@ VideoLoader
             size : 1280,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    url: 'https://temp.media/video/?width=1280&height=720&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -197,25 +188,16 @@ VideoLoader
             size : 1024,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.hd.mp4?s=4c5127b6c7a102ca6ba0e4d39ead88c2af6c69f2&profile_id=174',
+                    url: 'https://temp.media/video/?width=1024&height=576&length=10',
                     type: 'video/mp4'
                 }
             ]
         },
         {
-            size : 960,
+            size : 320,
             source: [
                 {
-                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=165',
-                    type: 'video/mp4'
-                }
-            ]
-        },
-        {
-            size : 640,
-            source: [
-                {
-                    url: 'https://player.vimeo.com/external/220648427.sd.mp4?s=ea1a963f2e26c1ceb0e018186579bb5ad03cabdc&profile_id=164',
+                    url: 'https://temp.media/video/?width=480&height=270&length=10',
                     type: 'video/mp4'
                 }
             ]
@@ -224,23 +206,14 @@ VideoLoader
 }) }}
 ```
 
-
 ## Dependencies
-* [Image component](/components/image/)
-* [Cookie component](/components/cookies/)
-* [Events utility](/utilities/events/)
-* [In-view utility](/utilities/in-view/)
-* [youtube-player](https://github.com/gajus/youtube-player)
-* [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
+
+- [Image component](/components/image/)
+- [Cookie component](/components/cookies/)
+- [Events utility](/utilities/events/)
+- [In-view utility](/utilities/in-view/)
+- [@vimeo/player](https://www.npmjs.com/package/@vimeo/player)
 
 ## Developers
-* [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
 
-## Changelog
-
-### 1.1.0
-* Added cookie message
-### 1.0.2
-* Changed export in Javascript to singleton, to prevent multiple instances.
-### 1.0.0
-* Initial version
+- [Adrian Klingen](mailto:adrian.klingen@deptagency.com)
