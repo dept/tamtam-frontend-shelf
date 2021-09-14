@@ -76,9 +76,7 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
     controls: 1,
     info: 1,
     image: {
-        preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
-        image: 'https://i.vimeocdn.com/video/301621689_1024.jpg',
-        srcset: 'https://i.vimeocdn.com/video/301621689_320.jpg 320w, https://i.vimeocdn.com/video/301621689_480.jpg 480w, https://i.vimeocdn.com/video/301621689_768.jpg 768w, https://i.vimeocdn.com/video/301621689_1024.jpg 1024w, https://i.vimeocdn.com/video/301621689_1280.jpg 1280w, https://i.vimeocdn.com/video/301621689_1440.jpg 1440w'
+      backgroundColor: '#8894ae'
     }
 }) }}
 ```
@@ -119,9 +117,7 @@ Create the player the same as in the previous demo. But now add a `inview: false
     info: 1,
     inview: false,
     image: {
-        preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
-        image: 'https://i.vimeocdn.com/video/301621689_1024.jpg',
-        srcset: 'https://i.vimeocdn.com/video/301621689_320.jpg 320w, https://i.vimeocdn.com/video/301621689_480.jpg 480w, https://i.vimeocdn.com/video/301621689_768.jpg 768w, https://i.vimeocdn.com/video/301621689_1024.jpg 1024w, https://i.vimeocdn.com/video/301621689_1280.jpg 1280w, https://i.vimeocdn.com/video/301621689_1440.jpg 1440w'
+      backgroundColor: '#8894ae'
     }
 }) }}
 ```
