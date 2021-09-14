@@ -38,10 +38,13 @@ class LazyImage {
       return
     }
 
+    image.src = ''
+    image.onload = () => this._renderImage(element)
     image.src = src
-    if (srcset) image.srcset = srcset
+    if (SUPPORTS_SRCSET && srcset) {
+      image.srcset = srcset
+    }
 
-    image.decode().then(() => this._renderImage(element))
   }
   /**
    * Set image source
