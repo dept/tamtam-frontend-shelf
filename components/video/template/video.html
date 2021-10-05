@@ -62,7 +62,6 @@
 
         <div class="video__player" js-hook-video-player></div>
 
-
         <div class="video__loader"></div>
 
         {% if data.buttons !== false %}
@@ -83,14 +82,11 @@
         {% endif %}
 
         {% if data.image %}
-            {{ image({
+            {{ image(data.image | merge({
                 classes: 'video__image',
-                preload: data.image.preload,
-                image: data.image.image,
-                srcset: data.image.srcset,
                 attr: 'aria-hidden="true"',
                 objectFit: true
-            }) }}
+            })) }}
         {% endif %}
 
         <div class="video__invalid-cookie">

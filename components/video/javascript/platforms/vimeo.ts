@@ -1,5 +1,6 @@
-import Cookies, { CookieName } from '@components/cookies'
 import Player, { Options } from '@vimeo/player'
+
+import Cookies, { CookieName } from '@/components/cookies'
 
 import * as triggers from '../triggers'
 import { VideoOptions } from '../video'
