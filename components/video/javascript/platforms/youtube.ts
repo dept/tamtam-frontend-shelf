@@ -18,7 +18,6 @@ class YoutubeVideo {
       playerVars: {
         start: this.options.videoTime,
         modestbranding: 1,
-        showinfo: 0,
         controls: Number(this.options.videoControls),
         rel: 0,
         origin: window.location.href,

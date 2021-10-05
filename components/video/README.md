@@ -74,7 +74,6 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
     start_time: '10',
     classes: 'additional-class',
     controls: 1,
-    info: 1,
     image: {
         preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',
         image: 'https://i.vimeocdn.com/video/301621689_1024.jpg',
@@ -116,7 +115,6 @@ Create the player the same as in the previous demo. But now add a `inview: false
     start_time: '10',
     classes: 'additional-class',
     controls: 1,
-    info: 1,
     inview: false,
     image: {
         preload: 'https://i.vimeocdn.com/video/301621689_10.jpg',

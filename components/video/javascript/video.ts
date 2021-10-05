@@ -14,7 +14,6 @@ export type VideoOptions = {
   instanceId: string
   videoPlatform: string
   videoId: string
-  videoInfo?: string
   videoSources?: string
   videoClosedcaptions?: string
   videoTime?: number
@@ -157,7 +156,6 @@ function constructVideoOptions(element: VideoElement): VideoOptions | undefined 
     videoSources,
     videoClosedcaptions,
     videoTime = '0',
-    videoInfo = '0',
     videoControls = '0',
     videoMuted = '0',
     videoAutoplay = '0',
@@ -178,7 +176,6 @@ function constructVideoOptions(element: VideoElement): VideoOptions | undefined 
     instanceId,
     videoPlatform,
     videoId,
-    videoInfo,
     videoSources,
     videoClosedcaptions,
     videoTime: parseInt(videoTime, 10),
