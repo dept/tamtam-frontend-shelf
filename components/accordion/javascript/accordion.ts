@@ -117,7 +117,7 @@ class Accordion {
     item.animation.oncancel = () => (item.isClosing = false)
 
     this.element
-      .querySelector(`[aria-controls=${item.id}]`)
+      .querySelector(`[aria-controls='${item.id}']`)
       ?.classList.remove(CLASS_ACCORDION_TAB_ACTIVE)
   }
 
@@ -134,7 +134,7 @@ class Accordion {
     window.requestAnimationFrame(() => this.expand(item))
 
     this.element
-      .querySelector(`[aria-controls=${item.id}]`)
+      .querySelector(`[aria-controls='${item.id}']`)
       ?.classList.add(CLASS_ACCORDION_TAB_ACTIVE)
   }
 

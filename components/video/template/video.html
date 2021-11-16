@@ -12,11 +12,10 @@
         total_time: 'string', (optional)
         start_time: 'string', (optional)
         classes: 'string', (optional)
-        muted: integer, (optional, default 1)
-        autoplay: integer, (optional, default 1)
-        playsinline: integer, (optional, default 1)
-        controls: integer, (optional, default 0)
-        info: integer (optional, default 0),
+        muted: 'boolean', (optional, default true)
+        autoplay: 'boolean', (optional, default true)
+        playsinline: 'boolean', (optional, default true)
+        controls: 'boolean', (optional, default false)
         sources: object (optional) for native video only
         closedcaptions: object (optional) for native video only
         inview: boolean (optional, default true)
@@ -36,12 +35,11 @@
         {% if data.platform %}data-video-platform="{{ data.platform }}"{% endif %}
         {% if data.id %}data-video-id="{{ data.id }}"{% endif %}
         {% if data.start_time %}data-video-time="{{ data.start_time }}"{% endif %}
-        {% if data.muted >= 0 %}data-video-muted="{{ data.muted }}"{% endif %}
-        {% if data.autoplay >= 0 %}data-video-autoplay="{{ data.autoplay }}"{% endif %}
-        {% if data.playsinline >= 0 %}data-video-playsinline="{{ data.playsinline }}"{% endif %}
-        {% if data.controls >= 0 %}data-video-controls="{{ data.controls }}"{% endif %}
-        {% if data.loop >= 0 %}data-video-loop="{{ data.loop }}"{% endif %}
-        {% if data.info >= 0 %}data-video-info="{{ data.info }}"{% endif %}
+        {% if data.muted %}data-video-muted="{{ data.muted }}"{% endif %}
+        {% if data.autoplay %}data-video-autoplay="{{ data.autoplay }}"{% endif %}
+        {% if data.playsinline %}data-video-playsinline="{{ data.playsinline }}"{% endif %}
+        {% if data.controls %}data-video-controls="{{ data.controls }}"{% endif %}
+        {% if data.loop %}data-video-loop="{{ data.loop }}"{% endif %}
         {% if data.sources %}data-video-sources="{{ data.sources|dump|escape }}"{% endif %}
         {% if data.closedcaptions %}data-video-closedcaptions="{{ data.closedcaptions|dump|escape }}"{% endif %}
         {% if data.title %}aria-label="{{ data.title }}"{% endif %}

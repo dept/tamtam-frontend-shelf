@@ -73,8 +73,7 @@ Create player in HTML. The player will use the [in-view library](/utilities/in-v
     total_time: 'T1M33S',
     start_time: '10',
     classes: 'additional-class',
-    controls: 1,
-    info: 1,
+    controls: true,
     image: {
       backgroundColor: '#8894ae'
     }
@@ -113,8 +112,7 @@ Create the player the same as in the previous demo. But now add a `inview: false
     total_time: 'T1M33S',
     start_time: '10',
     classes: 'additional-class',
-    controls: 1,
-    info: 1,
+    controls: true,
     inview: false,
     image: {
       backgroundColor: '#8894ae'
@@ -153,7 +151,7 @@ videoLoader(['native'])
     total_time: 'T1M33S',
     start_time: '10',
     classes: 'additional-class',
-    controls: 1,
+    controls: true,
     closedcaptions: [
         {
             url: 'url to vtt file',

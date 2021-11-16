@@ -14,7 +14,6 @@ export type VideoOptions = {
   instanceId: string
   videoPlatform: string
   videoId: string
-  videoInfo?: string
   videoSources?: string
   videoClosedcaptions?: string
   videoTime?: number
@@ -157,12 +156,11 @@ function constructVideoOptions(element: VideoElement): VideoOptions | undefined 
     videoSources,
     videoClosedcaptions,
     videoTime = '0',
-    videoInfo = '0',
-    videoControls = '0',
-    videoMuted = '0',
-    videoAutoplay = '0',
-    videoLoop = '0',
-    videoPlaysinline = '0',
+    videoControls = 'false',
+    videoMuted = 'false',
+    videoAutoplay = 'false',
+    videoLoop = 'false',
+    videoPlaysinline = 'false',
   } = element.dataset
 
   const instanceId = element.id
@@ -178,15 +176,14 @@ function constructVideoOptions(element: VideoElement): VideoOptions | undefined 
     instanceId,
     videoPlatform,
     videoId,
-    videoInfo,
     videoSources,
     videoClosedcaptions,
     videoTime: parseInt(videoTime, 10),
-    videoControls: Boolean(parseInt(videoControls, 10)),
-    videoMuted: Boolean(parseInt(videoMuted, 10)),
-    videoAutoplay: Boolean(parseInt(videoAutoplay, 10)),
-    videoPlaysinline: Boolean(parseInt(videoPlaysinline, 10)),
-    videoLoop: Boolean(parseInt(videoLoop, 10)),
+    videoControls: parseBool(videoControls),
+    videoMuted: parseBool(videoMuted),
+    videoAutoplay: parseBool(videoAutoplay),
+    videoPlaysinline: parseBool(videoPlaysinline),
+    videoLoop: parseBool(videoLoop),
   }
 }
 
@@ -238,6 +235,10 @@ function bindPlayerEvents(options: VideoOptions) {
       Events.$trigger(`video[${options.instanceId}]::replay`)
     })
   }
+}
+
+function parseBool(value: string) {
+  return value && (value == '1' || value.toLowerCase() === 'true'))
 }
 
 export default new Video()
