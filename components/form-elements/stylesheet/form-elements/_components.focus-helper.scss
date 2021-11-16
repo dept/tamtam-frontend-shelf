@@ -5,7 +5,7 @@
 }
 
 .focus-helper {
-  @include focus-state-input($height: var(--helper-border-height));
+  @include focus-state-input(var(--helper-border-height));
 
   &::before {
     opacity: 0;
