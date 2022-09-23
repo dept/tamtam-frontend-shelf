@@ -1,5 +1,5 @@
 import Events from '@utilities/events'
-import setTabIndexOfChildren from '@utilities/set-tabindex-of-children'
+import setTabIndexOfChildren from '@utilities/set-tabindex-of-children/javascript/set-tabindex-of-children'
 import cookies from 'js-cookie'
 
 const COOKIE_BAR_HOOK = '[js-hook-cookies-bar]'
@@ -21,7 +21,7 @@ class Cookies {
     this.cookiebar = document.querySelector(COOKIE_BAR_HOOK)
     this.cookiebarOptionsButton = document.querySelector(COOKIE_OPTIONS_BUTTON_HOOK)
 
-    this.cookiebarVersion = this.cookiebar.dataset.policyVersion || '1'
+    this.cookiebarVersion = this.cookiebar?.dataset.policyVersion || '1'
 
     this.form = {}
     this.form.element = document.querySelector(COOKIE_FORM_HOOK)
