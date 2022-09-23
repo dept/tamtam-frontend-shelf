@@ -1,7 +1,9 @@
 function VideoLoader() {
   if (document.querySelectorAll('[js-hook-video]').length) {
     return Promise.all([
-      import(/* webpackChunkName: "Video-Platforms" */ '@components/video/platforms'),
+      import(
+        /* webpackChunkName: "Video-Platforms" */ '@components/video/javascript/video/platforms'
+      ),
       import(/* webpackChunkName: "Video" */ '@components/video'),
     ])
   } else {
