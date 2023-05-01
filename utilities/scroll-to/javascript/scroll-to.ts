@@ -44,14 +44,6 @@ class ScrollTo {
         scrollElement,
       })
     })
-
-    document.addEventListener(
-      'focus',
-      function () {
-        console.log('focused: ', document.activeElement)
-      },
-      true,
-    )
   }
 
   _initElements() {
