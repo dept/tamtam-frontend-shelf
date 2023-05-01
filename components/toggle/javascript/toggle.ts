@@ -48,7 +48,7 @@ class Toggle {
       event.preventDefault()
     })
 
-    Events.$on(`toggle::check-tabindex`, () => this.checkTabIndex())
+    Events.$on(`toggle[${this.id}]::check-tabindex`, () => this.checkTabIndex())
   }
 
   /**
@@ -63,7 +63,7 @@ class Toggle {
     this.setAccesibilityState()
     this.triggerExternalEvents()
 
-    Events.$trigger('toggle::check-tabindex')
+    Events.$trigger(`toggle[${this.id}]::check-tabindex`)
   }
 
   /**
@@ -75,7 +75,7 @@ class Toggle {
     }
 
     this.setAccesibilityState()
-    Events.$trigger('toggle::check-tabindex')
+    Events.$trigger(`toggle[${this.id}]::check-tabindex`)
   }
 
   /**
