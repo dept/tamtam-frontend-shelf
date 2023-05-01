@@ -5,7 +5,7 @@ const ST_DURATION = 500
 const ST_OFFSET = 50
 
 type ScrollToEventProps = {
-  target: Element
+  target: HTMLElement
   duration?: number
   offset?: number
   scrollElement?: HTMLElement
@@ -37,13 +37,21 @@ class ScrollTo {
 
       const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement } = data
 
-      scrollTo({
-        position: target.getBoundingClientRect(),
+      this.scrollToAndSetFocus({
+        target: target,
         duration,
         offset,
         scrollElement,
       })
     })
+
+    document.addEventListener(
+      'focus',
+      function () {
+        console.log('focused: ', document.activeElement)
+      },
+      true,
+    )
   }
 
   _initElements() {
@@ -53,12 +61,12 @@ class ScrollTo {
       element.addEventListener('click', event => {
         const elementHref = element.getAttribute('href')
         const target = elementHref?.split('#')[1]
-        const targetEl = document.querySelector(`#${target}`)
+        const targetEl = document.querySelector(`#${target}`) as HTMLElement
 
         if (targetEl) {
           event.preventDefault()
-          scrollTo({
-            position: targetEl.getBoundingClientRect(),
+          this.scrollToAndSetFocus({
+            target: targetEl,
             duration: element.dataset.scrollDuration
               ? parseInt(element.dataset.scrollDuration, 10)
               : ST_DURATION,
@@ -79,11 +87,28 @@ class ScrollTo {
     offset = ST_OFFSET,
     scrollElement,
   }: ScrollToEventProps) {
-    return scrollTo({
+    this.scrollToAndSetFocus({
+      target: target,
+      duration: duration,
+      offset: offset,
+      scrollElement: scrollElement,
+    })
+  }
+
+  scrollToAndSetFocus({
+    target,
+    duration = ST_DURATION,
+    offset = ST_OFFSET,
+    scrollElement,
+  }: ScrollToEventProps) {
+    scrollTo({
       position: target.getBoundingClientRect(),
       duration: duration,
       offset: offset,
       scrollElement: scrollElement,
+    }).then(() => {
+      const focusTarget = findClosestFocusTarget(target)
+      focusTarget.focus()
     })
   }
 }
@@ -134,6 +159,13 @@ function easeInOutQuad(t: number, b: number, c: number, d: number) {
   }
   t--
   return (-c / 2) * (t * (t - 2) - 1) + b
+}
+
+function findClosestFocusTarget(el: HTMLElement) {
+  const elements = el.querySelectorAll<HTMLElement>(
+    'a:not([tabindex="-1"]):not([data-focus-trap-ignore]), area:not([tabindex="-1"]):not([data-focus-trap-ignore]), input:not([disabled]):not([tabindex="-1"]):not([type="hidden"]):not([data-focus-trap-ignore]), select:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), textarea:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), button:not([disabled]):not([tabindex="-1"]):not([data-focus-trap-ignore]), iframe:not([tabindex="-1"]):not([data-focus-trap-ignore])',
+  )
+  return elements.length ? elements[0] : el
 }
 
 export default new ScrollTo()
