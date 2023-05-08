@@ -38,12 +38,20 @@ class ScrollTo {
       const { target, duration = ST_DURATION, offset = ST_OFFSET, scrollElement } = data
 
       this.scrollToAndSetFocus({
-        target: target,
+        target,
         duration,
         offset,
         scrollElement,
       })
     })
+
+    document.addEventListener(
+      'focus',
+      function () {
+        console.log('focused: ', document.activeElement)
+      },
+      true,
+    )
   }
 
   _initElements() {
@@ -53,7 +61,7 @@ class ScrollTo {
       element.addEventListener('click', event => {
         const elementHref = element.getAttribute('href')
         const target = elementHref?.split('#')[1]
-        const targetEl = document.querySelector(`#${target}`) as HTMLElement
+        const targetEl = target ? document.getElementById(target) : null
 
         if (targetEl) {
           event.preventDefault()
@@ -80,10 +88,10 @@ class ScrollTo {
     scrollElement,
   }: ScrollToEventProps) {
     this.scrollToAndSetFocus({
-      target: target,
-      duration: duration,
-      offset: offset,
-      scrollElement: scrollElement,
+      target,
+      duration,
+      offset,
+      scrollElement,
     })
   }
 
@@ -95,9 +103,9 @@ class ScrollTo {
   }: ScrollToEventProps) {
     scrollTo({
       position: target.getBoundingClientRect(),
-      duration: duration,
-      offset: offset,
-      scrollElement: scrollElement,
+      duration,
+      offset,
+      scrollElement,
     }).then(() => {
       const focusTarget = findClosestFocusTarget(target)
       focusTarget.focus()
