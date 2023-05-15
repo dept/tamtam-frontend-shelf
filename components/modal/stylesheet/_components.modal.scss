@@ -1,109 +1,94 @@
-$modal-max-width: 1600px !default;
-$modal-gutter: $global-spacing * 2 !default;
-$modal-gutter-small: $global-spacing * 2 !default;
-$modal-transition-time: 400ms !default;
-$modal-transition-ease: $ease-in-out-quad !default;
-$modal-min-width-media-query: ($modal-max-width + $modal-gutter-small * 2) - 0.5;
-
-.is--modal-open {
-  overflow: hidden;
-
-  body {
-    overflow: hidden;
-  }
+:root {
+  --modal-padding: 32px;
+  --modal-default-max-height: 80vh;
 }
 
-.is--modal-open.is-touch {
-  body {
-    position: fixed;
-  }
-}
-
-.c-modal {
+@mixin modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  z-index: 9999;
-  display: flex;
-  pointer-events: none;
-  transition: $modal-transition-time $modal-transition-ease, 0ms linear $modal-transition-time;
-  transition-property: opacity, visibility;
-  -webkit-overflow-scrolling: touch;
-  visibility: hidden;
-}
+  overflow: hidden;
+  border: 0;
+  padding: var(--modal-padding) 0;
+  box-sizing: border-box;
+  box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0);
+  transition: 300ms;
 
-.modal--is-showing {
-  left: 0;
-  opacity: 1;
-  pointer-events: all;
-  transition: $modal-transition-time $modal-transition-ease;
-  transition-property: opacity;
-  visibility: visible;
-
-  .modal__content {
-    opacity: 1;
-    transition: $modal-transition-time $modal-transition-ease 100ms,
-      $modal-transition-time $modal-transition-ease;
-    transition-property: transform, opacity;
+  &::backdrop {
+    opacity: 0;
   }
 
-  .modal__background {
-    left: 0;
-    transition: $modal-transition-time $modal-transition-ease, 0ms;
-    transition-property: opacity, left;
+  &[open] {
+    box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.3);
   }
 }
 
-.modal__button-close {
-  position: absolute;
+@mixin drawer {
+  @include modal;
+  display: block;
+  left: unset;
+  right: unset;
   top: 0;
+  bottom: 0;
+  margin: 0;
+  width: 400px;
+  height: 100vh;
+  max-height: unset;
+
+  &[open] {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.modal--drawer-left {
+  @include drawer;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.modal--drawer-right {
+  @include drawer;
   right: 0;
-  background-color: $color-white;
+  transform: translateX(100%);
 }
 
-.modal__container {
-  z-index: 1;
-  left: 50%;
-  max-height: 100%;
-  overflow: auto;
-  position: absolute;
-  transform: translate3d(-50%, -50%, 0);
-  top: 50%;
+.modal--default {
+  @include modal;
+  display: block;
   width: 100%;
+  max-width: 500px;
+  height: fit-content;
+  max-height: var(--modal-default-max-height);
+  opacity: 0;
+  visibility: hidden;
+  margin: auto;
+
+  &[open] {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .modal__content {
-  position: relative;
-  z-index: 1;
-  max-width: $modal-max-width;
-  margin: $modal-gutter-small;
-  width: auto;
-  height: auto;
-  opacity: 0;
-  padding: $modal-gutter;
-  background-color: $color-white;
-  transition: $modal-transition-time $modal-transition-ease,
-    $modal-transition-time $modal-transition-ease;
-  transition-property: transform, opacity;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 var(--modal-padding);
 
-  @include screen-min-width($modal-min-width-media-query) {
-    max-width: calc(#{$modal-max-width} - #{$modal-gutter-small * 2});
-    margin: $modal-gutter-small auto;
+  .modal--default & {
+    height: fit-content;
+    max-height: calc(var(--modal-default-max-height) - var(--modal-padding) * 2);
   }
 }
 
-.modal__background {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba($color-black, 0.8);
-  z-index: 0;
-  cursor: pointer;
-  transition: 0ms linear $modal-transition-time;
-  transition-property: left;
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+html[class^='has-modal-open--'] {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
 }
