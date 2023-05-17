@@ -38,6 +38,7 @@ class Modal {
 
   handleOpen = () => this.#open()
   handleClose = () => this.#close()
+  handleCloseFromCloseAllOthers = () => this.#close(false)
   handleBackdropClick = (event: MouseEvent) => this.#backdropClick(event)
 
   #bindEvents() {
@@ -86,14 +87,14 @@ class Modal {
     html.classList.add(`has-modal-open--${this.element.id}`)
   }
 
-  #close() {
+  #close(removeScrollPositionEnabled = true) {
     this.element.close()
 
     Events.$trigger('focustrap::deactivate')
 
     html.classList.remove(`has-modal-open--${this.element.id}`)
 
-    if (!this.enableDocumentScrollWhileOpen) {
+    if (!this.enableDocumentScrollWhileOpen && removeScrollPositionEnabled) {
       this.#removeScrollPosition()
     }
   }

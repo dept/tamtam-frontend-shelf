@@ -61,7 +61,7 @@ class ModalManager {
       const _modal = this.#getModal(id)
 
       if (_modal) {
-        Events.$trigger(`modal[${_modal.id}]::close`)
+        _modal.instance.handleCloseFromCloseAllOthers()
       }
     })
   }
