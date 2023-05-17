@@ -8,7 +8,7 @@ const JS_HOOK_MODAL_CONTENT = '[js-hook-modal-content]'
 class Modal {
   element: HTMLDialogElement
   btnsOpen: NodeListOf<HTMLButtonElement>
-  btnClose: HTMLButtonElement | null
+  btnsClose: NodeListOf<HTMLButtonElement>
   modalContent: HTMLElement | null
   scrollElement = document.scrollingElement || html
   scrollTop = 0
@@ -19,9 +19,10 @@ class Modal {
   dynamicContentLoaded: boolean
 
   constructor(element: HTMLDialogElement) {
+    if (!element.id) return
     this.element = element
     this.btnsOpen = document.querySelectorAll(`[aria-controls=${this.element.id}]`)
-    this.btnClose = this.element.querySelector(JS_HOOK_MODAL_CLOSE_BTN)
+    this.btnsClose = this.element.querySelectorAll(JS_HOOK_MODAL_CLOSE_BTN)
     this.modalContent = this.element.querySelector(JS_HOOK_MODAL_CONTENT)
     this.closeAllOthers = this.element.dataset.modalCloseAllOthers === 'true'
     this.dynamicContentUrl = this.element.dataset.modalDynamicContentUrl || false
@@ -37,15 +38,18 @@ class Modal {
 
   handleOpen = () => this.#open()
   handleClose = () => this.#close()
+  handleBackdropClick = (event: MouseEvent) => this.#backdropClick(event)
 
   #bindEvents() {
     this.btnsOpen.forEach(el => {
       el.addEventListener('click', this.handleOpen)
     })
 
-    this.btnClose?.addEventListener('click', this.handleClose)
+    this.btnsClose.forEach(el => {
+      el.addEventListener('click', this.handleClose)
+    })
 
-    this.element.addEventListener('click', event => this.#backdropClick(event))
+    this.element.addEventListener('click', this.handleBackdropClick)
 
     Events.$on(`modal[${this.element.id}]::open`, this.handleOpen)
     Events.$on(`modal[${this.element.id}]::close`, this.handleClose)
@@ -121,8 +125,7 @@ class Modal {
     const modalURL = new URL(this.dynamicContentUrl, window.location.origin || window.location.href)
 
     try {
-      const response = await API.get(modalURL.toString())
-      const document = response?.data as string
+      const { data: document } = await API.get<string>(modalURL.toString())
 
       if (document) {
         this.modalContent?.replaceChildren()
@@ -146,9 +149,11 @@ class Modal {
       el.removeEventListener('click', this.handleOpen)
     })
 
-    this.btnClose?.removeEventListener('click', this.handleClose)
+    this.btnsClose.forEach(el => {
+      el.removeEventListener('click', this.handleClose)
+    })
 
-    this.element.removeEventListener('click', event => this.#backdropClick(event))
+    this.element.removeEventListener('click', this.handleBackdropClick)
   }
 }
 

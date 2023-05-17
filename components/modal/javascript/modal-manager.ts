@@ -12,7 +12,7 @@ type ModalEntry = {
 }
 
 type ModalEntries = {
-  [key: string]: ModalEntry
+  [key: ModalEntry['id']]: ModalEntry
 }
 
 class ModalManager {
@@ -36,11 +36,13 @@ class ModalManager {
 
   #createModalRegistry() {
     this.modalItems.forEach(modal => {
-      this.#addModalEntry({
-        id: modal.id,
-        el: modal,
-        instance: this.#initModal(modal),
-      })
+      if (modal.id) {
+        this.#addModalEntry({
+          id: modal.id,
+          el: modal,
+          instance: new Modal(modal),
+        })
+      }
     })
   }
 
@@ -48,15 +50,11 @@ class ModalManager {
     this.store[data.id] = data
   }
 
-  #initModal(el) {
-    return new Modal(el)
-  }
-
   #closeAllOthers(data: any) {
     const otherModals = Object.keys(this.store).filter(key => {
       const foundModal = this.#getModal(key)
-      const isModalToClose = foundModal?.id !== data.id && foundModal?.el?.hasAttribute('open')
-      return isModalToClose
+      if (!foundModal) return false
+      return foundModal.id !== data.id && foundModal.el.hasAttribute('open')
     })
 
     otherModals.forEach(id => {
@@ -69,7 +67,6 @@ class ModalManager {
   }
 
   #getModal(id: ModalEntry['id']) {
-    if (!id) return
     return this.store[id]
   }
 
@@ -84,6 +81,7 @@ class ModalManager {
                 Events.$trigger(`modal[${key}]::remove`)
                 delete this.store[key]
                 observer.disconnect()
+                break
               }
             }
           }
