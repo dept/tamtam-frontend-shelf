@@ -1,6 +1,8 @@
 :root {
   --modal-padding: 32px;
   --modal-default-max-height: 80vh;
+  --modal-transition-duration: 300ms;
+  --modal-transition-timing-function: #{$ease-in-out-quad};
 }
 
 @mixin modal {
@@ -10,7 +12,7 @@
   padding: var(--modal-padding) 0;
   box-sizing: border-box;
   box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0);
-  transition: 300ms;
+  transition: var(--modal-transition-duration) var(--modal-transition-timing-function);
 
   &::backdrop {
     opacity: 0;
@@ -82,8 +84,13 @@
 
 .modal__close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 0;
+  right: 0;
+  height: 44px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 html[class^='has-modal-open--'] {

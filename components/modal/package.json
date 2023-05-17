@@ -1,5 +1,6 @@
 {
-    "name": "modal",
-    "license": "MIT",
-    "version": "1.0.0"
+  "name": "dept-modal",
+  "version": "3.0.0",
+  "license": "MIT",
+  "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf"
 }
