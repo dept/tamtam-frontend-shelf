@@ -17,7 +17,7 @@ class Modal {
   closeAllOthers: boolean
   enableDocumentScrollWhileOpen: boolean
   autoClose: number | false
-  dynamicContentUrlLoaded: string
+  dynamicContentUrlLoaded: string | undefined
 
   constructor(element: HTMLDialogElement) {
     if (!element.id) return
@@ -61,12 +61,12 @@ class Modal {
     Events.$on(`modal[${this.element.id}]::close`, () => this.#close())
     Events.$on(`modal[${this.element.id}]::remove`, () => this.#unbindAll())
     Events.$on(`modal[${this.element.id}]::reloadAndOpen`, (_, data) => {
-      this.dynamicContentUrlLoaded = ''
+      this.dynamicContentUrlLoaded = undefined
       this.#open(data.dynamicContentUrl)
     })
   }
 
-  #open(dynamicContentUrl: string | false = false) {
+  #open(dynamicContentUrl: string | undefined) {
     if (!this.enableDocumentScrollWhileOpen) {
       this.#setScrollPosition()
     }
