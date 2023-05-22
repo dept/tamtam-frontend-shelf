@@ -15,6 +15,8 @@ type ModalEntries = {
   [key: ModalEntry['id']]: ModalEntry
 }
 
+export type ModalEventCloseAllOthersProps = Pick<ModalEntry, 'id'>
+
 class ModalManager {
   store: ModalEntries = {}
   modalItems: NodeListOf<HTMLDialogElement>
@@ -31,7 +33,9 @@ class ModalManager {
   }
 
   #bindEvents() {
-    Events.$on('modals::closeAllOthers', (_, data) => this.#closeAllOthers(data))
+    Events.$on<ModalEventCloseAllOthersProps>('modals::closeAllOthers', (_, data) => {
+      this.#closeAllOthers(data)
+    })
   }
 
   #createModalRegistry() {
@@ -47,10 +51,11 @@ class ModalManager {
   }
 
   #addModalEntry(data: ModalEntry) {
+    if (this.store[data.id]) Events.$trigger(`modal[${data.id}]::remove`)
     this.store[data.id] = data
   }
 
-  #closeAllOthers(data: any) {
+  #closeAllOthers(data: ModalEventCloseAllOthersProps) {
     const otherModals = Object.keys(this.store).filter(key => {
       const foundModal = this.#getModal(key)
       if (!foundModal) return false

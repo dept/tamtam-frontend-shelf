@@ -5,6 +5,8 @@ import Events from '@/utilities/events'
 const JS_HOOK_MODAL_CLOSE_BTN = '[js-hook-modal-close-btn]'
 const JS_HOOK_MODAL_CONTENT = '[js-hook-modal-content]'
 
+export type ModalEventCloseAllOthersProps = Pick<ModalEntry, 'id'>
+
 class Modal {
   element: HTMLDialogElement
   btnsOpen: NodeListOf<HTMLButtonElement>
@@ -13,10 +15,9 @@ class Modal {
   scrollElement = document.scrollingElement || html
   scrollTop = 0
   closeAllOthers: boolean
-  dynamicContentUrl: string | false
   enableDocumentScrollWhileOpen: boolean
   autoClose: number | false
-  dynamicContentLoaded: boolean
+  dynamicContentUrlLoaded: string
 
   constructor(element: HTMLDialogElement) {
     if (!element.id) return
@@ -25,45 +26,55 @@ class Modal {
     this.btnsClose = this.element.querySelectorAll(JS_HOOK_MODAL_CLOSE_BTN)
     this.modalContent = this.element.querySelector(JS_HOOK_MODAL_CONTENT)
     this.closeAllOthers = this.element.dataset.modalCloseAllOthers === 'true'
-    this.dynamicContentUrl = this.element.dataset.modalDynamicContentUrl || false
     this.enableDocumentScrollWhileOpen =
       this.element.dataset.modalEnableDocumentScrollWhileOpen === 'true'
     this.autoClose = this.element.dataset.autoClose
       ? parseInt(this.element.dataset.autoClose)
       : false
-    this.dynamicContentLoaded = false
 
     this.#bindEvents()
   }
 
-  handleOpen = () => this.#open()
-  handleClose = () => this.#close()
-  handleCloseFromCloseAllOthers = () => this.#close(false)
+  handleOpenBtnClick = (event: MouseEvent) => {
+    const targetElement = event.currentTarget as HTMLElement
+    this.#open(targetElement?.dataset.modalDynamicContentUrl || false)
+  }
+
+  handleCloseBtnClick = () => this.#close()
+
   handleBackdropClick = (event: MouseEvent) => this.#backdropClick(event)
+
+  handleCloseFromCloseAllOthers = () => this.#close(false)
 
   #bindEvents() {
     this.btnsOpen.forEach(el => {
-      el.addEventListener('click', this.handleOpen)
+      el.addEventListener('click', this.handleOpenBtnClick)
     })
 
     this.btnsClose.forEach(el => {
-      el.addEventListener('click', this.handleClose)
+      el.addEventListener('click', this.handleCloseBtnClick)
     })
 
     this.element.addEventListener('click', this.handleBackdropClick)
 
-    Events.$on(`modal[${this.element.id}]::open`, this.handleOpen)
-    Events.$on(`modal[${this.element.id}]::close`, this.handleClose)
+    Events.$on(`modal[${this.element.id}]::open`, () => this.#open())
+    Events.$on(`modal[${this.element.id}]::close`, () => this.#close())
     Events.$on(`modal[${this.element.id}]::remove`, () => this.#unbindAll())
+    Events.$on(`modal[${this.element.id}]::reloadAndOpen`, (_, data) => {
+      this.dynamicContentUrlLoaded = ''
+      this.#open(data.dynamicContentUrl)
+    })
   }
 
-  #open() {
+  #open(dynamicContentUrl: string | false = false) {
     if (!this.enableDocumentScrollWhileOpen) {
       this.#setScrollPosition()
     }
 
     if (this.closeAllOthers) {
-      Events.$trigger('modals::closeAllOthers', { data: { id: this.element.id } })
+      Events.$trigger<ModalEventCloseAllOthersProps>('modals::closeAllOthers', {
+        data: { id: this.element.id },
+      })
     }
 
     if (this.autoClose) {
@@ -72,8 +83,8 @@ class Modal {
       }, this.autoClose * 1000)
     }
 
-    if (this.dynamicContentUrl && !this.dynamicContentLoaded) {
-      this.load()
+    if (dynamicContentUrl && dynamicContentUrl !== this.dynamicContentUrlLoaded) {
+      this.load(dynamicContentUrl)
     }
 
     this.element.showModal()
@@ -122,8 +133,8 @@ class Modal {
     }
   }
 
-  async load() {
-    const modalURL = new URL(this.dynamicContentUrl, window.location.origin || window.location.href)
+  async load(dynamicContentUrl: string) {
+    const modalURL = new URL(dynamicContentUrl, window.location.origin || window.location.href)
 
     try {
       const { data: document } = await API.get<string>(modalURL.toString())
@@ -135,7 +146,7 @@ class Modal {
 
       Events.$trigger('lazyimage::update')
 
-      this.dynamicContentLoaded = true
+      this.dynamicContentUrlLoaded = dynamicContentUrl
 
       return true
     } catch (error) {
@@ -147,11 +158,11 @@ class Modal {
 
   #unbindAll() {
     this.btnsOpen.forEach(el => {
-      el.removeEventListener('click', this.handleOpen)
+      el.removeEventListener('click', this.handleOpenBtnClick)
     })
 
     this.btnsClose.forEach(el => {
-      el.removeEventListener('click', this.handleClose)
+      el.removeEventListener('click', this.handleCloseBtnClick)
     })
 
     this.element.removeEventListener('click', this.handleBackdropClick)
