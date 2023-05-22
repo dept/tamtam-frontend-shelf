@@ -1,10 +1,9 @@
 {% macro modal(data) %}
 <dialog class="c-modal {% if data.variant %} modal--{{ data.variant }} {% else %} modal--default{% endif %}" id="{{ data.id }}" js-hook-modal 
-  {% if data.closeAllOthers %} data-modal-close-all-others="true"{% endif %}
-  {% if data.dynamicContentUrl %} data-modal-dynamic-content-url={{ data.dynamicContentUrl }}{% endif %}>
+  {% if data.closeAllOthers %} data-modal-close-all-others="true"{% endif %}>
   <div class="modal__content" js-hook-modal-content>
     {{ caller() }}
   </div>
-  <button class="modal__close" aria-label="Sluit modal" js-hook-modal-close-btn>X</button>
+  <button class="modal__close" aria-label="Sluit modal" js-hook-modal-close-btn>&times;</button>
 </dialog>
 {% endmacro %}
