@@ -3,7 +3,7 @@
 ## Table of contents
 
 1. [What does it do](#markdown-header-what-does-it-do)
-2. [Install](#markdown-header-install)
+2. [Install and preparations](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
@@ -22,19 +22,23 @@ Import module
 moduleInit.async('[js-hook-image-sequencing]', () => import('@/components/image-sequencing'))
 ```
 
+## Preparations
+
+Your image filenames should include a <strong>4-digit sequence number</strong> padded with leading zeros, as in `0001.jpg`. This format is permitted and will allow for proper image retrieval.
+
 ## How to use
 
 The image sequencing component uses data attributes to configure its behavior. Below are the available properties:
 
-| Property        | Required | Type    |
-|-----------------|----------|---------|
-| `imageBaseURL`  |    ✔️     | string  |
-| `imageExtension`  |    ✔️     | string  |
-| `imageFallback` |    ❌    | string  |
-| `frameCount`    |    ✔️     | number  |
-| `scrollAmountInPx`    |    ❌     | number  |
-| `canvasWidth`    |    ✔️     | number  |
-| `canvasHeight`    |    ✔️     | number  |
+| Property           | Required | Type   |
+| ------------------ | -------- | ------ |
+| `imageBaseURL`     | ✔️       | string |
+| `imageExtension`   | ✔️       | string |
+| `imageFallback`    | ❌       | string |
+| `frameCount`       | ✔️       | number |
+| `scrollAmountInPx` | ❌       | number |
+| `canvasWidth`      | ✔️       | number |
+| `canvasHeight`     | ✔️       | number |
 
 ### Example usage
 
