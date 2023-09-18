@@ -1,0 +1,19 @@
+.c-image-sequencing {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-black;
+}
+
+.image-sequencing__canvas {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.image-sequencing__fallback-image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
