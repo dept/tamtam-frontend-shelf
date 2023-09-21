@@ -7,11 +7,7 @@
   background-color: $color-black;
 }
 
-.image-sequencing__canvas {
-  max-width: 100vw;
-  max-height: 100vh;
-}
-
+.image-sequencing__canvas,
 .image-sequencing__fallback-image {
   object-fit: cover;
   height: 100%;
