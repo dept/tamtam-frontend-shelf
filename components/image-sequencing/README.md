@@ -57,7 +57,7 @@ The image sequencing component uses data attributes to configure its behavior. B
   },
   canvas: {
     width: '1158',
-    height: '770',
+    height: '770'
   },
   canvasMobile: {
     width: '400',
