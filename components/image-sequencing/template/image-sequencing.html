@@ -1,10 +1,16 @@
 {% macro imageSequencing(data) %}
   <div class="c-image-sequencing{% if data.classes %} {{ data.classes }}{% endif %}"
-    {% if data.image.fallback %} data-image-fallback="{{ data.image.fallback }}" {% endif %}
     data-image-base-url="{{ data.image.baseURL }}"
     data-image-extension="{{ data.image.extension }}"
     data-frame-count="{{ data.frameCount }}"
+    {% if data.image.fallback %} data-image-fallback="{{ data.image.fallback }}" {% endif %}
+    {% if data.image.baseURLMobile %} data-image-base-url-mobile="{{ data.image.baseURLMobile }}" {% endif %}
+    {% if data.canvas.width %} data-canvas-width="{{ data.canvas.width }}" {% endif %}
+    {% if data.canvas.height %} data-canvas-height="{{ data.canvas.height }}" {% endif %}
+    {% if data.canvasMobile.width %} data-canvas-mobile-width="{{ data.canvasMobile.width }}" {% endif %}
+    {% if data.canvasMobile.height %} data-canvas-mobile-height="{{ data.canvasMobile.height }}" {% endif %}
     js-hook-image-sequencing>
+
 
     <canvas
       class="image-sequencing__canvas"

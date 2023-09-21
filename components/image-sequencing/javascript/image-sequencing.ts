@@ -2,8 +2,10 @@ import { gsap } from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
 import Environment from '@/utilities/environment'
+import ScreenDimensions from '@/utilities/screen-dimensions'
 
 const JS_HOOK_IMAGE_SEQUENCING_CANVAS = '[js-hook-image-sequencing-canvas]'
+const IS_DESKTOP = ScreenDimensions.isTabletPortraitAndBigger
 
 class ImageSequencing {
   element: HTMLElement
@@ -13,15 +15,21 @@ class ImageSequencing {
   imageBaseURL: string | undefined
   imageExtension: string | undefined
   frameCount: number
+  canvasWidth: number
+  canvasHeight: number
 
   constructor(element: HTMLElement) {
     this.element = element
     this.canvas = <HTMLCanvasElement>this.element.querySelector(JS_HOOK_IMAGE_SEQUENCING_CANVAS)
     this.pinContainer = <HTMLElement>this.element.parentElement
     this.imageFallback = this.element.dataset.imageFallback
-    this.imageBaseURL = this.element.dataset.imageBaseUrl
+    this.imageBaseURL = IS_DESKTOP
+      ? this.element.dataset.imageBaseUrl
+      : this.element.dataset.imageBaseUrlMobile || this.element.dataset.imageBaseUrl
     this.imageExtension = this.element.dataset.imageExtension
-    this.frameCount = this.element.dataset.frameCount ? Number(this.element.dataset.frameCount) : 0
+    this.frameCount = parseInt(this.element.dataset.frameCount || '0', 10)
+    this.canvasWidth = parseInt((IS_DESKTOP ? this.element.dataset.canvasWidth : this.element.dataset.canvasMobileWidth) || '1600', 10)
+    this.canvasHeight = parseInt((IS_DESKTOP ? this.element.dataset.canvasHeight : this.element.dataset.canvasMobileHeight) || '900', 10)
 
     if (this.canvas && this.pinContainer && this.imageBaseURL && this.imageExtension && this.frameCount) {
       this.#init()
@@ -94,7 +102,7 @@ class ImageSequencing {
           scrub: 0.5,
         },
         onUpdate: () => {
-          context?.clearRect(0, 0, this.canvas.width, this.canvas.height)
+          context?.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
           context?.drawImage(images[frameState.frame], 0, 0)
         },
       })
@@ -136,6 +144,11 @@ class ImageSequencing {
    * Initializes the image sequence by registering required plugins and setting up the animation.
    */
   #init() {
+    if(!IS_DESKTOP){
+      this.canvas.width = this.canvasWidth
+      this.canvas.height = this.canvasHeight
+    }
+
     this.#registerGsap()
     this.#setSequence()
   }

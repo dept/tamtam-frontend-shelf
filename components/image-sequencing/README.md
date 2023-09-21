@@ -30,15 +30,18 @@ Your image filenames should include a <strong>4-digit sequence number</strong> p
 
 The image sequencing component uses data attributes to configure its behavior. Below are the available properties:
 
-| Property           | Required | Type   |
-| ------------------ | -------- | ------ |
-| `imageBaseURL`     | ✔️       | string |
-| `imageExtension`   | ✔️       | string |
-| `imageFallback`    | ❌       | string |
-| `frameCount`       | ✔️       | number |
-| `scrollAmountInPx` | ❌       | number |
-| `canvasWidth`      | ✔️       | number |
-| `canvasHeight`     | ✔️       | number |
+| Property              | Required | Type   |
+|-----------------------| -------- | ------ |
+| `image.baseURL`       | ✔️       | string |
+| `image.baseURLMobile` | ❌       | string |
+| `image.extension`     | ✔️       | string |
+| `image.fallback`      | ❌       | string |
+| `frameCount`          | ✔️       | number |
+| `scrollAmountInPx`    | ❌       | number |
+| `canvas.width`        | ✔️       | number |
+| `canvas.height`       | ✔️       | number |
+| `canvasMobile.width`  | ❌️       | number |
+| `canvasMobile.height` | ❌       | number |
 
 ### Example usage
 
@@ -48,13 +51,18 @@ The image sequencing component uses data attributes to configure its behavior. B
 {{ imageSequencing({
   image: {
     baseURL: 'https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/',
+    baseURLMobile: 'https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/small/01-hero-lightpass/',
     extension: 'jpg',
     fallback: '/assets/images/placeholder.400x250.jpg'
   },
   canvas: {
     width: '1158',
-    height: '770'
+    height: '770',
   },
+  canvasMobile: {
+    width: '400',
+    height: '460'
+  }
   frameCount: '147',
   scrollAmountInPx: '5000'
 }) }}
