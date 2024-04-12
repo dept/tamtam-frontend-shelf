@@ -1,0 +1,6 @@
+export { isValidEmail } from './validations/email'
+export { isValidFile } from './validations/file'
+export { isValidIBAN } from './validations/iban'
+export { isValidLuhnNumber } from './validations/luhn'
+export { isValidPhoneNumber } from './validations/phone'
+export { isValidZipcode } from './validations/zipcode'

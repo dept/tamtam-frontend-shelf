@@ -1,18 +1,18 @@
-
 # Sticky component
 
 ## Table of contents
+
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
 4. [Dependencies](#markdown-header-dependencies)
 5. [Developers](#markdown-header-developers)
 
-
 ## What does it do
-* Implements Nunjucks macros to easily create sticky content
-* Throttled scroll event to updated the fixed position of a sticky component
-* Additional option to constrain sticky component to the height of its parent element
+
+- Implements Nunjucks macros to easily create sticky content
+- Throttled scroll event to updated the fixed position of a sticky component
+- Additional option to constrain sticky component to the height of its parent element
 
 ```
 ---------------------------------------------
@@ -56,11 +56,12 @@
 ```
 
 ## Install
-```javascript
-import moduleInit from '@utilities/module-init';
-import '@utilities/in-view';
 
-moduleInit.async('[js-hook-sticky]', () => import(/* webpackChunkName: "Sticky" */'@components/sticky'));
+```javascript
+import moduleInit from '@utilities/module-init'
+import '@utilities/in-view'
+
+moduleInit.async('[js-hook-sticky]', () => import('@components/sticky'))
 ```
 
 ## How to use
@@ -68,6 +69,7 @@ moduleInit.async('[js-hook-sticky]', () => import(/* webpackChunkName: "Sticky" 
 ### Default
 
 Create sticky component in HTML.
+
 ```htmlmixed
 {% from 'sticky.html' import sticky  %}
 
@@ -86,13 +88,16 @@ Create sticky component in HTML.
 ### Recalc event
 
 When using dynamic content you can call a `sticky[id]::recalc` event to update the container.
+
 ```javascript
-Events.$trigger('sticky[id]::recalc');
+Events.$trigger('sticky[id]::recalc')
 ```
 
 ## Dependencies
-* [In-view libary](/utilities/in-view/)
-* [Events libary](/utilities/events/)
+
+- [In-view libary](/utilities/in-view/)
+- [Events libary](/utilities/events/)
 
 ## Developers
-* [Kees van Lierop](mailto:kees@tamtam.nl)
+
+- [Kees van Lierop](mailto:kees@tamtam.nl)

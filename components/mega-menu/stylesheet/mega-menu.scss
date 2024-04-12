@@ -36,6 +36,7 @@
   @include keyboard-focus {
     color: $color-secondary;
     position: relative;
+
     @include focus-state-pulse;
   }
 }

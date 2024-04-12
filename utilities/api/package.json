@@ -1,8 +1,9 @@
 {
-    "name": "dept-api",
-    "license": "MIT",
-    "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
-    "dependencies": {
-        "axios": "^0.21.1"
-    }
+  "name": "dept-api",
+  "version": "2.0.0",
+  "license": "MIT",
+  "repository": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }

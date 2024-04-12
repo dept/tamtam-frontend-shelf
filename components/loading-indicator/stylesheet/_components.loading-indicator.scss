@@ -38,7 +38,7 @@
   @include spinnert;
 }
 
-@keyframes loaderReveal {
+@keyframes loading-indicator-reveal {
   0% {
     opacity: 0;
   }

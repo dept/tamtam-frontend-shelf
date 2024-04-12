@@ -1,20 +1,23 @@
-
 # Carousel component
 
 ## Table of contents
+
 1. [What does it do](#markdown-header-what-does-it-do)
 2. [Install](#markdown-header-install)
 3. [How to use](#markdown-header-how-to-use)
 4. [Developers](#markdown-header-developers)
 
 ## What does it do
-* Create carousel with an easy to use macro.
-* Create custom carousels
+
+- Create carousel with an easy to use macro.
+- Create custom carousels
 
 ## Install
+
 Import module
+
 ```javascript
-moduleInit.async('[js-hook-carousel]', () => import(/* webpackChunkName: "Carousel" */'@components/carousel'));
+moduleInit.async('[js-hook-carousel]', () => import('@components/carousel'))
 ```
 
 ## How to use
@@ -22,6 +25,7 @@ moduleInit.async('[js-hook-carousel]', () => import(/* webpackChunkName: "Carous
 ### Default
 
 Create carousel in HTML.
+
 ```htmlmixed
 {% from 'carousel.html' import carousel  %}
 
@@ -67,15 +71,16 @@ You can add the following options:
 ### Custom
 
 Custom html element
+
 ```htmlmixed
-<div class="custom-carousel" 
-    data-id="carousel-custom" 
-    data-slides-mobile="1" 
-    data-slides-tablet-portrait="2" 
-    data-nav="false" 
-    data-controls="true" 
+<div class="custom-carousel"
+    data-id="carousel-custom"
+    data-slides-mobile="1"
+    data-slides-tablet-portrait="2"
+    data-nav="false"
+    data-controls="true"
     data-prev-button="custom-carousel-prev" data-next-button="custom-carousel-next" js-hook-carousel>
-    
+
     Your slides here. Each child component will be a separate slide. You can use images, cards, custom components...
 
 </div>
@@ -87,4 +92,5 @@ Custom html element
 ```
 
 ## Developers
-* [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)
+
+- [Frank van der Hammen](mailto:frank.vanderhammen@deptagency.com)

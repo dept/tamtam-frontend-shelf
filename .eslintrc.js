@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  extends: ['./node_modules/tamtam-frontend-builder/config/eslint'],
+  extends: ['./node_modules/dept-builder/config/eslint'],
 }

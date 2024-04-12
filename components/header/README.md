@@ -23,9 +23,9 @@
 Import module
 
 ```javascript
-import moduleInit from '@utilities/module-init';
-import Header from '@components/header';
-moduleInit('[js-hook-header]', Header);
+import moduleInit from '@/utilities/module-init';
+import Header from '@/components/header';
+moduleInit.sync('[js-hook-header]', Header);
 ```
 
 ## How to use
@@ -70,12 +70,12 @@ The reveals property lets the header reveal it self when scrolling back up.
 {% endcall %}
 ```
 
-#### Condenses(sticky) state 
+#### Condenses (sticky) state 
 The condenses property is used on taller headers (headers that normally have multiple bars/tabs). 
 It lets the header vertically shrink when scrolling down. By default the first direct child element will be the sticky one. 
 
 ```htmlmixed
-{% call header({ condenses: true }) %}
+{% call header({ fixed: true, condenses: true }) %}
     <div class="c-navigation">This is an example navigtion</div>
     <div class="c-some-other-component">Some other example component</div>
     <div class="c-sub-nav">This is an example sub nav</div>
@@ -85,7 +85,7 @@ It lets the header vertically shrink when scrolling down. By default the first d
 You can also customize the sticky element by added a attribute to the child that has to be sticky
 
 ```htmlmixed
-{% call header({ condenses: true }) %}
+{% call header({ fixed: true, condenses: true }) %}
     <div class="c-navigation">This is an example navigtion</div>
     <div class="c-some-other-component" sticky>Some other example component (is now the sticky one)</div>
     <div class="c-sub-nav">This is an example sub nav</div>

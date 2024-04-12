@@ -1,5 +1,5 @@
 {% macro alert(data) %}
-  <div class="c-alert alert--{{ data.type or 'error' }}{%- if data.defaultHidden %} u-hidden{% endif -%}" js-hook-{{ data.hook or 'alert' }}>
+  <div class="c-alert alert--{{ data.type or 'error' }} {%- if data.defaultHidden %} u-hidden{% endif -%}" js-hook-{{ data.hook or 'alert' }}>
     {{ data.message | safe}}
   </div>
 {% endmacro %}

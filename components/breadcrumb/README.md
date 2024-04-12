@@ -8,8 +8,6 @@
 4. [Dependencies](#dependencies)
 5. [Developers](#developers)
 
-![Breadcrumb Demo](./_demo/breadcrumb.png)
-
 ## What does it do
 * Render breadcrumb
 * Meets structured data standard

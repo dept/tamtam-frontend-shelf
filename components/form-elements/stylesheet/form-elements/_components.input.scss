@@ -1,14 +1,16 @@
-$input-border-width: 1px;
-$input-border-radius: 0;
-$input-border-color: $color-black;
-$input-error-color: $form-item-error-border-color;
-$input-fill-color: $color-white;
-$input-padding-top: $global-spacing;
-$input-padding-bottom: $global-spacing;
-$input-padding-left: $global-spacing * 2;
-$input-padding-right: $global-spacing * 4;
-$input-transition-time: 200ms;
-$input-transition-ease: $ease-in-out-quad;
+:root {
+  --input-border-width: 1px;
+  --input-border-radius: 0;
+  --input-border-color: #{$color-black};
+  --input-error-color: rgba(var(--form-item-error-border-color), 1);
+  --input-fill-color: #{$color-white};
+  --input-padding-top: #{$global-spacing};
+  --input-padding-bottom: #{$global-spacing};
+  --input-padding-left: #{$global-spacing * 2};
+  --input-padding-right: #{$global-spacing * 4};
+  --input-transition-time: 200ms;
+  --input-transition-ease: #{$ease-in-out-quad};
+}
 
 .c-input {
   position: relative;
@@ -22,14 +24,14 @@ $input-transition-ease: $ease-in-out-quad;
   display: block;
   appearance: none;
   width: 100%;
-  padding-top: $input-padding-top;
-  padding-bottom: $input-padding-bottom;
-  padding-left: $input-padding-left;
-  padding-right: $input-padding-right;
-  border-radius: $input-border-radius;
+  padding-top: var(--input-padding-top);
+  padding-bottom: var(--input-padding-bottom);
+  padding-left: var(--input-padding-left);
+  padding-right: var(--input-padding-right);
+  border-radius: var(--input-border-radius);
   border: 0;
-  box-shadow: 0 0 0 $input-border-width $input-border-color inset;
-  background-color: $input-fill-color;
+  box-shadow: 0 0 0 var(--input-border-width) var(--input-border-color) inset;
+  background-color: var(--input-fill-color);
   line-height: $font-line-height-body;
 
   &[disabled] {
@@ -42,7 +44,7 @@ $input-transition-ease: $ease-in-out-quad;
   }
 
   .form__item--error & {
-    box-shadow: 0 0 0 $input-border-width $input-error-color inset;
+    box-shadow: 0 0 0 var(--input-border-width) var(--input-error-color) inset;
   }
 }
 
@@ -56,12 +58,12 @@ $input-transition-ease: $ease-in-out-quad;
 .input--file {
   .input__input {
     cursor: pointer;
-    padding-left: $input-padding-right;
+    padding-left: var(--input-padding-right);
 
     &::before {
       position: absolute;
       text-align: center;
-      width: $input-padding-right;
+      width: var(--input-padding-right);
       left: 0;
       content: '\21EA';
     }

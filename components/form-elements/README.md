@@ -19,7 +19,7 @@
 Import module for file input
 
 ```javascript
-import { CustomFile } from '@components/form-elements'
+import { CustomFile } from '@/components/form-elements'
 
 moduleInit.sync('[js-hook-input-file]', CustomFile)
 ```
@@ -29,7 +29,7 @@ moduleInit.sync('[js-hook-input-file]', CustomFile)
 Import module for label as placeholder
 
 ```javascript
-import { LabelAsPlaceholder } from '@components/form-elements'
+import { LabelAsPlaceholder } from '@/components/form-elements'
 
 moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder)
 ```
@@ -39,7 +39,7 @@ moduleInit.sync('[js-hook-lap]', LabelAsPlaceholder)
 Import module for autocomplete
 
 ```javascript
-import { Autocomplete } from '@components/form-elements'
+import { Autocomplete } from '@/components/form-elements'
 
 moduleInit.sync('[js-hook-autocomplete]', Autocomplete)
 ```
@@ -53,7 +53,7 @@ moduleInit.sync('[js-hook-autocomplete]', Autocomplete)
 Sanitize all input type number fields from anything other than numeric values
 
 ```javascript
-import { NumberInput } from '@components/form-elements'
+import { NumberInput } from '@/components/form-elements'
 
 moduleInit.sync('input[type="number"]', NumberInput)
 ```
@@ -62,7 +62,7 @@ Or call it asynchronously
 
 ```javascript
 moduleInit.async('input[type="number"]', () =>
-  import(/* webpackChunkName: "js/NumberInput" */ '@components/form-elements/input-number'),
+  import('@/components/form-elements/input-number'),
 )
 ```
 
@@ -71,28 +71,26 @@ moduleInit.async('input[type="number"]', () =>
 (Optionally) remove all emoji's from an input field
 
 ```javascript
-import EmojiKiller from '@form-elements/element/emoji-killer'
+import emojiKiller from '@/components/form-elements/element/emoji-killer'
 ```
 
 <br>
 
-Call EmojiKiller() and pass a single DOM element, array of elements or NodeList. Spreading the elements is not required.
+Call emojiKiller() and pass a single DOM element, array of elements or NodeList. Spreading the elements is not required.
 
 ```javascript
-Examples:
-
 this.elements = Array.from(document.querySelectorAll('.input-class')];
-EmojiKiller(this.elements);
+emojiKiller(this.elements);
 
 or
 
 this.elements = document.getElementsByTagName('input');
-EmojiKiller(this.elements);
+emojiKiller(this.elements);
 
 or
 
 const element = document.querySelector('input[type="password"]');
-EmojiKiller(element);
+emojiKiller(element);
 ```
 
 ## How to use

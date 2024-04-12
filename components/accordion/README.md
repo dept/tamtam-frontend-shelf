@@ -15,10 +15,10 @@
 ## Install
 Import module
 ```javascript
-import moduleInit from '@utilities/module-init';
-import '@utilities/events';
+import moduleInit from '@/utilities/module-init';
+import '@/utilities/events';
 
-moduleInit.async('[js-hook-accordion]', () => import(/* webpackChunkName: "Accordion" */'@components/accordion'));
+moduleInit.async('[js-hook-accordion]', () => import('@/components/accordion'));
 ```
 
 ## How to use

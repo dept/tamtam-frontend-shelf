@@ -24,18 +24,19 @@ It allows you to:
 Import module
 
 ```javascript
-import Form from '@components/form';
+import Form from '@/components/form';
 ```
 
 ```javascript
 moduleInit.async('[js-hook-form]', () =>
-  import(/* webpackChunkName: "js/Form" */ './components/form')
+  import('@/components/form')
 );
 
 // or extend the form as: Class ExampleForm extends Form {} and init as a seperate module
-moduleInit.async('[js-hook-example-form]', () =>
-  import(/* webpackChunkName: "js/ExampleForm" */ './components/example-form')
-);
+moduleInit.async(
+  '[js-hook-example-form]',
+  () => import('@/components/form/javascript/example-form'),
+)
 ```
 
 ## How to use

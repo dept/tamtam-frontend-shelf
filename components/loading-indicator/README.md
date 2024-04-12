@@ -15,7 +15,7 @@
 ## Install
 Import module
 ```javascript
-import '@components/loading-indicator';
+import '@/components/loading-indicator';
 ```
 
 ## How to use
@@ -34,7 +34,7 @@ Events.$trigger('loader::show', {
   data: {
     targetElement: foo,
     classes: 'bar',
-    lightTheme: true,
+    darkTheme: true,
   },
 });
 ``` 

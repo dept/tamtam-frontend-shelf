@@ -1,13 +1,15 @@
-$helper-border-height: 4px;
-$helper-transition-ease: $ease-in-out-quad;
-$helper-transition-time: 200ms;
+:root {
+  --helper-border-height: 4px;
+  --helper-transition-ease: #{$ease-in-out-quad};
+  --helper-transition-time: 200ms;
+}
 
 .focus-helper {
-  @include focus-state-input($height: $helper-border-height);
+  @include focus-state-input(var(--helper-border-height));
 
   &::before {
     opacity: 0;
-    transition: $helper-transition-time $helper-transition-ease;
+    transition: var(--helper-transition-time) var(--helper-transition-ease);
     transition-property: opacity;
   }
 }
@@ -24,15 +26,17 @@ $helper-transition-time: 200ms;
 }
 
 .checkbox__focus-helper {
-  width: $checkbox-size;
-  height: $checkbox-size;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+
   @include focus-state-pulse;
 }
 
 .radio__focus-helper {
-  width: $radio-size;
-  height: $radio-size;
-  @include focus-state-pulse($round: true);
+  width: var(--radio-size);
+  height: var(--radio-size);
+
+  @include focus-state-pulse(true);
 }
 
 .has--keyboard-focus {
@@ -63,9 +67,7 @@ $helper-transition-time: 200ms;
     &:focus {
       + label {
         .radio__focus-helper {
-          &::before {
-            opacity: 1;
-          }
+          opacity: 1;
         }
       }
     }
