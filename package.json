@@ -4,8 +4,8 @@
   "description": "In this repository you find all standardized front-end components and utilities. Please see the readme's of all components/utilities for more information about them.",
   "main": "index.js",
   "engines": {
-    "node": "^12",
-    "npm": "^6"
+    "node": ">= 20",
+    "npm": "Please use Yarn"
   },
   "repository": {
     "type": "git",
@@ -14,6 +14,6 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/tamtam-nl/tamtam-frontend-shelf#readme",
   "dependencies": {
-    "dept-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#release/webpack"
+    "dept-builder": "git+https://bitbucket.org/tamtam-nl/tamtam-frontend-builder.git#3.5.0"
   }
 }
