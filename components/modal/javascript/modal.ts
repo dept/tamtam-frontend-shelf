@@ -1,244 +1,172 @@
+import API from '@/utilities/api'
 import { body, html } from '@/utilities/dom-elements'
 import Events from '@/utilities/events'
-import ScreenDimensions from '@/utilities/screen-dimensions'
-import setTabIndexOfChildren from '@/utilities/set-tabindex-of-children'
 
-const MODAL_PREFIX = 'modal-'
-const MODAL_HOOK = '[js-hook-modal]'
-const MODAL_CLOSE_HOOK = '[js-hook-button-modal-close]'
-const MODAL_VISIBLE_CLASS = 'modal--is-showing'
-const MODAL_HTML_CLASS = 'is--modal-open'
+const JS_HOOK_MODAL_CLOSE_BTN = '[js-hook-modal-close-btn]'
+const JS_HOOK_MODAL_CONTENT = '[js-hook-modal-content]'
 
-export type ModalElement = HTMLElement & { _modalIsInitialised?: boolean }
-
-export type ModalEventId = { id: string }
-export type ModalEventHook = { hook: string }
-
-export type ModalEntry = {
-  id: string
-  el: ModalElement
-  triggerBtn: Element[]
-  closeBtn: Element[] | []
-  isOpen: boolean
-}
-
-type ModalEntries = {
-  [key: string]: ModalEntry
-}
+export type ModalEventCloseAllOthersProps = Pick<ModalEntry, 'id'>
 
 class Modal {
-  store: ModalEntries = {}
-  tabIndexExceptionIds = ['modal-mega-menu']
+  element: HTMLDialogElement
+  btnsOpen: NodeListOf<HTMLButtonElement>
+  btnsClose: NodeListOf<HTMLButtonElement>
+  modalContent: HTMLElement | null
   scrollElement = document.scrollingElement || html
   scrollTop = 0
+  closeAllOthers: boolean
+  enableDocumentScrollWhileOpen: boolean
+  autoClose: number | false
+  dynamicContentUrlLoaded: string | undefined
 
-  constructor() {
-    this.register({ hook: MODAL_HOOK })
-    this.bindEvents()
+  constructor(element: HTMLDialogElement) {
+    if (!element.id) return
+    this.element = element
+    this.btnsOpen = document.querySelectorAll(`[aria-controls=${this.element.id}]`)
+    this.btnsClose = this.element.querySelectorAll(JS_HOOK_MODAL_CLOSE_BTN)
+    this.modalContent = this.element.querySelector(JS_HOOK_MODAL_CONTENT)
+    this.closeAllOthers = this.element.dataset.modalCloseAllOthers === 'true'
+    this.enableDocumentScrollWhileOpen =
+      this.element.dataset.modalEnableDocumentScrollWhileOpen === 'true'
+    this.autoClose = this.element.dataset.autoClose
+      ? parseInt(this.element.dataset.autoClose)
+      : false
+
+    this.#bindEvents()
   }
 
-  register(data: { hook: string }) {
-    Array.from(document.querySelectorAll<ModalElement>(data.hook)).forEach(modal =>
-      this.setupModalRegistry(modal),
-    )
+  handleOpenBtnClick = (event: MouseEvent) => {
+    const targetElement = event.currentTarget as HTMLElement
+    this.#open(targetElement?.dataset.modalDynamicContentUrl || false)
   }
 
-  /**
-   * Setup an object per found modal
-   */
-  setupModalRegistry(el: ModalElement) {
-    if (el._modalIsInitialised) return
+  handleCloseBtnClick = () => this.#close()
 
-    const id = el.getAttribute('id')
+  handleBackdropClick = (event: MouseEvent) => this.#backdropClick(event)
 
-    if (!id) return
+  handleCloseFromCloseAllOthers = () => this.#close(false)
 
-    const triggerBtn = Array.from(document.querySelectorAll(`[aria-controls=${id}]`))
-    const closeBtn = Array.from(el.querySelectorAll(MODAL_CLOSE_HOOK))
-    const mobileOnly = el.dataset.modalMobileOnly === 'true'
+  #bindEvents() {
+    this.btnsOpen.forEach(el => {
+      el.addEventListener('click', this.handleOpenBtnClick)
+    })
 
-    const modal: ModalEntry = {
-      el,
-      id,
-      triggerBtn,
-      closeBtn,
-      isOpen: false,
-    }
+    this.btnsClose.forEach(el => {
+      el.addEventListener('click', this.handleCloseBtnClick)
+    })
 
-    if (!mobileOnly || !ScreenDimensions.isTabletLandscapeAndBigger) {
-      if (!this.tabIndexExceptionIds.includes(id)) setTabIndexOfChildren(modal.el, -1)
-      this.addModal(modal)
-    }
+    this.element.addEventListener('click', this.handleBackdropClick)
 
-    this.bindModalEvents(modal)
-
-    el._modalIsInitialised = true
-  }
-
-  /**
-   * Bind all general events
-   */
-  bindEvents() {
-    Events.$on<ModalEventId>('modal::close', (_, data) => this.closeModal(data))
-    Events.$on<ModalEventId>('modal::open', (_, data) => this.openModal(data))
-
-    Events.$on<ModalEventHook>('modal::bind', (_, data) => this.register(data))
-  }
-
-  bindModalEvents({ id, triggerBtn, closeBtn }: ModalEntry) {
-    triggerBtn.forEach(triggerEl =>
-      triggerEl.addEventListener('click', () => {
-        const { isOpen } = this.getModal(id)
-        if (isOpen) {
-          Events.$trigger('modal::close', { data: { id } })
-          Events.$trigger(`modal[${id}]::close`, { data: { id } })
-        } else {
-          Events.$trigger('modal::open', { data: { id } })
-          Events.$trigger(`modal[${id}]::open`, { data: { id } })
-        }
-      }),
-    )
-
-    Events.$on(`modal[${id}]::close`, () => this.closeModal({ id }))
-    Events.$on(`modal[${id}]::open`, () => this.openModal({ id }))
-
-    closeBtn.forEach(el =>
-      el.addEventListener('click', () => {
-        Events.$trigger('modal::close', { data: { id } })
-        Events.$trigger(`modal[${id}]::close`, { data: { id } })
-      }),
-    )
-
-    // Close on ESCAPE_KEY
-    document.addEventListener('keyup', event => {
-      if (event.key === 'Escape') {
-        Events.$trigger('modal::close')
-        Events.$trigger(`modal[${id}]::close`, { data: { id } })
-      }
+    Events.$on(`modal[${this.element.id}]::open`, () => this.#open())
+    Events.$on(`modal[${this.element.id}]::close`, () => this.#close())
+    Events.$on(`modal[${this.element.id}]::remove`, () => this.#unbindAll())
+    Events.$on(`modal[${this.element.id}]::reloadAndOpen`, (_, data) => {
+      this.dynamicContentUrlLoaded = undefined
+      this.#open(data.dynamicContentUrl)
     })
   }
 
-  openModal(data: Pick<ModalEntry, 'id'>) {
-    const modal = this.getModal(data.id)
-
-    if (!modal || modal.isOpen) return
-
-    const autoFocus = modal.el.dataset.modalAutoFocus === 'true'
-    const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
-    const closeAllOthers = modal.el.dataset.modalCloseAllOthers === 'true'
-    const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
-    const autoClose = parseInt(modal.el.dataset.autoClose || '')
-
-    // Set scroll position for fixed body on mobile
-    if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger) this.setScrollPosition()
-
-    if (closeAllOthers) {
-      Object.keys(this.store)
-        .filter(key => this.getModal(key).id !== data.id)
-        .forEach(id => {
-          const _modal = this.getModal(id)
-          if (_modal.isOpen) {
-            Events.$trigger(`modal[${_modal.id}]::close`, {
-              data: { id: _modal.id },
-            })
-          }
-        })
+  #open(dynamicContentUrl: string | undefined) {
+    if (!this.enableDocumentScrollWhileOpen) {
+      this.#setScrollPosition()
     }
 
-    // Add modal open class to html element if noBodyClass is false
-    if (!noBodyClass) html.classList.add(MODAL_HTML_CLASS)
-
-    // Add tabindex and add visible class
-    if (!this.tabIndexExceptionIds.includes(data.id)) {
-      modal.el.tabIndex = 0
-      setTabIndexOfChildren(modal.el, 0)
+    if (this.closeAllOthers) {
+      Events.$trigger<ModalEventCloseAllOthersProps>('modals::closeAllOthers', {
+        data: { id: this.element.id },
+      })
     }
 
-    modal.el.classList.add(MODAL_VISIBLE_CLASS)
-    modal.isOpen = true
+    if (this.autoClose) {
+      setTimeout(() => {
+        this.#close()
+      }, this.autoClose * 1000)
+    }
+
+    if (dynamicContentUrl && dynamicContentUrl !== this.dynamicContentUrlLoaded) {
+      this.load(dynamicContentUrl)
+    }
+
+    this.element.showModal()
 
     Events.$trigger('focustrap::activate', {
       data: {
-        element: modal.el,
-        autoFocus,
+        element: this.element,
       },
     })
 
-    // If auto close is set use value as timeout in seconds to close modal
-    if (autoClose) {
-      setTimeout(() => {
-        Events.$trigger(`modal[${modal.id}]::close`, { data: { id: modal.id } })
-      }, autoClose * 1000)
-    }
+    html.classList.add(`has-modal-open--${this.element.id}`)
   }
 
-  closeModal(data: Pick<ModalEntry, 'id'>) {
-    // If no ID is given we will close all modals
-    if (!data || !data.id) {
-      for (const modalIndex of Object.keys(this.store)) {
-        this.closeModal({ id: this.getModal(modalIndex).id })
-        Events.$trigger('focustrap::deactivate')
-      }
-      return
-    }
-
-    // Get current modal from all known modals
-    const modal = this.getModal(data.id)
-
-    // If there is no modal do nothing
-    if (!modal || !modal.isOpen) return
-
-    // Remove modal open class off html element if noBodyClass is false
-    const noBodyClass = modal.el.dataset.modalNoBodyClass === 'true'
-    if (!noBodyClass) html.classList.remove(MODAL_HTML_CLASS)
-
-    // Scroll to original position
-    const keepScrollPosition = modal.el.dataset.modalKeepScrollPosition === 'true'
-    if (keepScrollPosition && !ScreenDimensions.isTabletPortraitAndBigger)
-      this.removeScrollPosition()
-
-    // Remove tabindex and remove visible class
-    if (!this.tabIndexExceptionIds.includes(data.id)) {
-      modal.el.tabIndex = -1
-      setTabIndexOfChildren(modal.el, -1)
-    }
-
-    modal.el.classList.remove(MODAL_VISIBLE_CLASS)
-    modal.isOpen = false
+  #close(removeScrollPositionEnabled = true) {
+    this.element.close()
 
     Events.$trigger('focustrap::deactivate')
 
-    Modal.clearCurrentFocus()
+    html.classList.remove(`has-modal-open--${this.element.id}`)
+
+    if (!this.enableDocumentScrollWhileOpen && removeScrollPositionEnabled) {
+      this.#removeScrollPosition()
+    }
   }
 
-  /**
-   * Sets scrollposition to prevent body scrolling to top when position is fixed
-   */
-  setScrollPosition() {
+  #setScrollPosition() {
     this.scrollTop = this.scrollElement.scrollTop
     body.style.top = `-${this.scrollTop}px`
   }
 
-  /**
-   * Removes scroll position from body and scrolls to original position
-   */
-  removeScrollPosition() {
+  #removeScrollPosition() {
     this.scrollElement.scrollTop = this.scrollTop
     body.style.removeProperty('top')
   }
 
-  static clearCurrentFocus() {
-    if (document.activeElement != document.body && document.activeElement instanceof HTMLElement)
-      document.activeElement.blur()
+  #backdropClick(event: MouseEvent) {
+    const rect = this.element.getBoundingClientRect()
+    const isInDialog =
+      rect.top <= event.clientY &&
+      event.clientY <= rect.top + rect.height &&
+      rect.left <= event.clientX &&
+      event.clientX <= rect.left + rect.width
+
+    if (!isInDialog) {
+      this.#close()
+    }
   }
 
-  addModal(data: ModalEntry) {
-    this.store[`${MODAL_PREFIX}${data.id}`] = data
+  async load(dynamicContentUrl: string) {
+    const modalURL = new URL(dynamicContentUrl, window.location.origin || window.location.href)
+
+    try {
+      const { data: document } = await API.get<string>(modalURL.toString())
+
+      if (document) {
+        this.modalContent?.replaceChildren()
+        this.modalContent?.insertAdjacentHTML('afterbegin', document)
+      }
+
+      Events.$trigger('lazyimage::update')
+
+      this.dynamicContentUrlLoaded = dynamicContentUrl
+
+      return true
+    } catch (error) {
+      console.log(error)
+    }
+
+    return false
   }
 
-  getModal(id: ModalEntry['id']) {
-    return this.store[`${MODAL_PREFIX}${id}`]
+  #unbindAll() {
+    this.btnsOpen.forEach(el => {
+      el.removeEventListener('click', this.handleOpenBtnClick)
+    })
+
+    this.btnsClose.forEach(el => {
+      el.removeEventListener('click', this.handleCloseBtnClick)
+    })
+
+    this.element.removeEventListener('click', this.handleBackdropClick)
   }
 }
 
-export default new Modal()
+export default Modal
