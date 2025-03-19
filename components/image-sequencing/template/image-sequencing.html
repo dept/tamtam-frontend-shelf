@@ -1,0 +1,16 @@
+{% macro imageSequencing(data) %}
+  <div class="c-image-sequencing{% if data.classes %} {{ data.classes }}{% endif %}"
+    {% if data.image.fallback %} data-image-fallback="{{ data.image.fallback }}" {% endif %}
+    data-image-base-url="{{ data.image.baseURL }}"
+    data-image-extension="{{ data.image.extension }}"
+    data-frame-count="{{ data.frameCount }}"
+    js-hook-image-sequencing>
+
+    <canvas
+      class="image-sequencing__canvas"
+      width="{{ data.canvas.width }}"
+      height="{{ data.canvas.height }}"
+      js-hook-image-sequencing-canvas
+    />
+  </div>
+{% endmacro %}
